@@ -1,0 +1,114 @@
+fileFormatVersion: 2
+guid: 3643c9617aa65c94d9b6bf195e298cdd
+timeCreated: 1512505244
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Joint_1
+    100004: Joint_10
+    100006: Joint_11
+    100008: Joint_12
+    100010: Joint_13
+    100012: Joint_14
+    100014: Joint_15
+    100016: Joint_16
+    100018: Joint_17
+    100020: Joint_18
+    100022: Joint_19
+    100024: Joint_2
+    100026: Joint_20
+    100028: Joint_21
+    100030: Joint_3
+    100032: Joint_4
+    100034: Joint_5
+    100036: Joint_6
+    100038: Joint_7
+    100040: Joint_8
+    100042: Joint_9
+    100044: Root
+    400000: //RootNode
+    400002: Joint_1
+    400004: Joint_10
+    400006: Joint_11
+    400008: Joint_12
+    400010: Joint_13
+    400012: Joint_14
+    400014: Joint_15
+    400016: Joint_16
+    400018: Joint_17
+    400020: Joint_18
+    400022: Joint_19
+    400024: Joint_2
+    400026: Joint_20
+    400028: Joint_21
+    400030: Joint_3
+    400032: Joint_4
+    400034: Joint_5
+    400036: Joint_6
+    400038: Joint_7
+    400040: Joint_8
+    400042: Joint_9
+    400044: Root
+    4300000: Garland_Light
+    9500000: //RootNode
+    13700000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .200000003
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
