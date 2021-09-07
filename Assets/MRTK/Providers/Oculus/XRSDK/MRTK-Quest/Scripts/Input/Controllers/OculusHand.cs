@@ -26,18 +26,12 @@
 //SOFTWARE.
 //------------------------------------------------------------------------------ -
 
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
-using UnityEngine;
-
 #if OCULUSINTEGRATION_PRESENT
 using static OVRSkeleton;
 #endif
-
-using Object = UnityEngine.Object;
-using TeleportPointer = Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {

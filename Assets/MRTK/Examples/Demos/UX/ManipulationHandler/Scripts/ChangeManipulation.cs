@@ -1,7 +1,6 @@
 ﻿
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Experimental.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {

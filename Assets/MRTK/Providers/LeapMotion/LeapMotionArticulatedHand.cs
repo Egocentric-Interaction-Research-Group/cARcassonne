@@ -2,10 +2,8 @@
 // Licensed under the MIT License.﻿
 
 using System.Collections.Generic;
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using Unity.Profiling;
 
 #if LEAPMOTIONCORE_PRESENT

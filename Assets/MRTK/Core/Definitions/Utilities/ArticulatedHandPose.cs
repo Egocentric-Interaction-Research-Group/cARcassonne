@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 
 #if UNITY_EDITOR
-using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 #endif
 

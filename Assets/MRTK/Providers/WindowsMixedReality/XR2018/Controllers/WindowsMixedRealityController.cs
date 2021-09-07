@@ -3,8 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
-using System;
 
 #if UNITY_WSA
 using System.Collections.Generic;

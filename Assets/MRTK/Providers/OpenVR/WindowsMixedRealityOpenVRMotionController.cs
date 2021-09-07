@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {

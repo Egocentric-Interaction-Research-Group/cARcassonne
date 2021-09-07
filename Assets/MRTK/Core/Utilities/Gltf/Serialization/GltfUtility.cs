@@ -14,7 +14,7 @@ using UnityEngine;
 using Windows.Storage;
 using Windows.Storage.Streams;
 #else
-using Microsoft.MixedReality.Toolkit.Utilities;
+
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization

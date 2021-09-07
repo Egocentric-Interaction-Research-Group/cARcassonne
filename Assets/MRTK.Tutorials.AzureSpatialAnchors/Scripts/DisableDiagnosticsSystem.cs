@@ -1,5 +1,4 @@
-﻿using Microsoft.MixedReality.Toolkit;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MRTK.Tutorials.AzureSpatialAnchors
 {

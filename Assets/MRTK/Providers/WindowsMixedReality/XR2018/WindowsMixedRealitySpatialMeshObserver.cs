@@ -4,8 +4,6 @@
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Windows.Utilities;
-using System.Collections.Generic;
-using Unity.Profiling;
 using UnityEngine;
 
 #if UNITY_WSA

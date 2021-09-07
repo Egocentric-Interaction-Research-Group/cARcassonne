@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #if UNITY_EDITOR
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEditor;
 

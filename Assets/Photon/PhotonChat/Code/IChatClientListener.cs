@@ -7,7 +7,6 @@
 
 namespace Photon.Chat
 {
-    using System.Collections.Generic;
     using ExitGames.Client.Photon;
 
     /// <summary>

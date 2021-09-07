@@ -1,8 +1,4 @@
-﻿using MRTK.Tutorials.MultiUserCapabilities;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class changenumber : MonoBehaviour
 {

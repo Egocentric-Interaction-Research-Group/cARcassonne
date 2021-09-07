@@ -13,7 +13,6 @@ namespace Photon.Pun
 {
     using System;
     using System.Collections.Generic;
-    using ExitGames.Client.Photon;
     using Photon.Realtime;
     using UnityEngine;
 

@@ -3,10 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
-using System.Collections.Generic;
-using Unity.Profiling;
-using System;
 
 #if LEAPMOTIONCORE_PRESENT
 using Leap;

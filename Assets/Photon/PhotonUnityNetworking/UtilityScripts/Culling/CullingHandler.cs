@@ -12,8 +12,6 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using Photon.Pun;
-
 namespace Photon.Pun.UtilityScripts
 {
     /// <summary>

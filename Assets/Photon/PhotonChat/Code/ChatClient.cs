@@ -12,11 +12,9 @@ namespace Photon.Chat
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using ExitGames.Client.Photon;
 
     #if SUPPORTED_UNITY || NETFX_CORE
-    using Hashtable = ExitGames.Client.Photon.Hashtable;
     using SupportClass = ExitGames.Client.Photon.SupportClass;
     #endif
 

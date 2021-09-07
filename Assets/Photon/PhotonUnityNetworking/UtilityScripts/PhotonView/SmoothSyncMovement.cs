@@ -10,9 +10,6 @@
 
 using UnityEngine;
 
-using Photon.Pun;
-using Photon.Realtime;
-
 namespace Photon.Pun.UtilityScripts
 {
     /// <summary>

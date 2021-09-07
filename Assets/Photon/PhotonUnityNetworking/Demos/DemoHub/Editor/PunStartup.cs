@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor.SceneManagement;
@@ -6,9 +5,6 @@ using UnityEngine;
 using UnityEditor;
 
 using Photon.Pun;
-using Photon.Realtime;
-using ExitGames.Client.Photon;
-using UnityEngine.SceneManagement;
 
 [InitializeOnLoad]
 public class PunStartup : MonoBehaviour

@@ -4,7 +4,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using System;
 #if UNITY_EDITOR
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
