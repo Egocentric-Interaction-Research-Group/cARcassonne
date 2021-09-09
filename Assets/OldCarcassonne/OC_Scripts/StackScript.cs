@@ -1,14 +1,14 @@
 ﻿using Photon.Pun;
 using UnityEngine;
+using Random = System.Random;
 
 /// <summary>
-/// The Stack of tiles.
+///     The Stack of tiles.
 /// </summary>
 public class StackScript : MonoBehaviourPun
 {
-
     /// <summary>
-    /// A reference to the prefab Tile, to be used later.
+    ///     A reference to the prefab Tile, to be used later.
     /// </summary>
     public GameObject tile;
 
@@ -19,131 +19,142 @@ public class StackScript : MonoBehaviourPun
     public int test;
 
     /// <summary>
-    /// The array of tiles
+    ///     The array of tiles
     /// </summary>
     public GameObject[] tileArray;
+
     /// <summary>
-    /// An array of ID's.
+    ///     The next tile
     /// </summary>
-    int[] tiles;
+    private int nextTile;
+
     /// <summary>
-    /// The next tile
+    ///     An array of ID's.
     /// </summary>
-    int nextTile;
+    private int[] tiles;
 
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="array"></param>
-    /// 
-
-    void Update()
+    private void Update()
     {
-
     }
-    public void setArray(UnityEngine.GameObject[] array)
-    {
-        this.tileArray = array;
-        this.nextTile = array.Length;
 
-        if (array != null)
-        {
-            setAll();
-        }
+    public void setArray(GameObject[] array)
+    {
+        tileArray = array;
+        nextTile = array.Length;
+
+        if (array != null) setAll();
     }
 
     /// <summary>
-    /// Creates a new tile by giving it an ID. The ID corresponds to a category of tiles with distinct attributes that only it is aware of.
+    ///     Creates a new tile by giving it an ID. The ID corresponds to a category of tiles with distinct attributes that only
+    ///     it is aware of.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public UnityEngine.GameObject createTiles(int id)
+    public GameObject createTiles(int id)
     {
-
-        GameObject res = Instantiate(tile, new Vector3(2.0f, 0.0f, 0.0f), Quaternion.identity);
+        var res = Instantiate(tile, new Vector3(2.0f, 0.0f, 0.0f), Quaternion.identity);
         res.GetComponent<TileScript>().AssignAttributes(id + 1);
 
         return res;
     }
+
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="tiles"></param>
     /// <returns></returns>
-    /// 
     public int[] generateIDs(int[] tiles)
     {
         tiles = new int[84];
-        int counter = 0;
-        int[] array = new int[33];
+        var counter = 0;
+        var array = new int[33];
 
-        array[0] = 4; array[1] = 2; array[2] = 8; array[3] = 9; array[4] = 4;
-        array[5] = 1; array[6] = 5; array[7] = 4; array[8] = 3; array[9] = 3;
-        array[10] = 3; array[11] = 1; array[12] = 3; array[13] = 3; array[14] = 2;
-        array[15] = 3; array[16] = 2; array[17] = 2; array[18] = 2; array[19] = 3;
-        array[20] = 1; array[21] = 1; array[22] = 2; array[23] = 1; array[24] = 2;
-        array[25] = 2; array[26] = 2; array[27] = 1; array[28] = 1; array[29] = 1;
-        array[30] = 1; array[31] = 0; array[32] = 1;
+        array[0] = 4;
+        array[1] = 2;
+        array[2] = 8;
+        array[3] = 9;
+        array[4] = 4;
+        array[5] = 1;
+        array[6] = 5;
+        array[7] = 4;
+        array[8] = 3;
+        array[9] = 3;
+        array[10] = 3;
+        array[11] = 1;
+        array[12] = 3;
+        array[13] = 3;
+        array[14] = 2;
+        array[15] = 3;
+        array[16] = 2;
+        array[17] = 2;
+        array[18] = 2;
+        array[19] = 3;
+        array[20] = 1;
+        array[21] = 1;
+        array[22] = 2;
+        array[23] = 1;
+        array[24] = 2;
+        array[25] = 2;
+        array[26] = 2;
+        array[27] = 1;
+        array[28] = 1;
+        array[29] = 1;
+        array[30] = 1;
+        array[31] = 0;
+        array[32] = 1;
 
-        for (int i = 0; i < array.Length; i++)
+        for (var i = 0; i < array.Length; i++)
+        for (var j = 0; j < array[i]; j++)
         {
-            for (int j = 0; j < array[i]; j++)
-            {
-                tiles[counter] = i;
-                counter++;
-            }
+            tiles[counter] = i;
+            counter++;
         }
 
         return tiles;
-
     }
 
     /// <summary>
-    /// Creates all of the tiles.
+    ///     Creates all of the tiles.
     /// </summary>
     public void setAll()
     {
-
         tileArray = new GameObject[85];
-        this.tiles = generateIDs(tiles);
+        tiles = generateIDs(tiles);
         nextTile = tileArray.Length - 1;
 
         //this.tiles = shuffle();
 
 
-        for (int j = 0; j < tiles.Length; j++)
+        for (var j = 0; j < tiles.Length; j++)
         {
-            GameObject res = InstatiateTiles(tiles[j], 1f, 0.2f * j, 0.0f);
+            var res = InstatiateTiles(tiles[j], 1f, 0.2f * j, 0.0f);
 
             tileArray[j] = res;
         }
 
-        tileArray[tileArray.Length - 1] = InstatiateTiles(7, basePositionTransform.position.x, basePositionTransform.position.y, basePositionTransform.position.z);
+        tileArray[tileArray.Length - 1] = InstatiateTiles(7, basePositionTransform.position.x,
+            basePositionTransform.position.y, basePositionTransform.position.z);
 
 
-
-
-        for (int j = 0; j < tileArray.Length; j++)
-        {
+        for (var j = 0; j < tileArray.Length; j++)
             tileArray[j].transform.parent = tileArray[tileArray.Length - 1].transform;
-        }
-
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="id"></param>
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="z"></param>
     /// <returns></returns>
-
     public GameObject InstatiateTiles(int id, float x, float y, float z)
     {
         //GameObject res = PhotonNetwork.Instantiate(tile.name, new Vector3(x, y, z), Quaternion.identity);
-        GameObject res = Instantiate(tile, new Vector3(x, y, z), Quaternion.identity);
+        var res = Instantiate(tile, new Vector3(x, y, z), Quaternion.identity);
         res.GetComponent<TileScript>().AssignAttributes(id + 1);
         //res.GetComponentInChildren<MeshRenderer>().enabled = false;
 
@@ -151,18 +162,17 @@ public class StackScript : MonoBehaviourPun
     }
 
     /// <summary>
-    /// Shuffles the array of tiles.
+    ///     Shuffles the array of tiles.
     /// </summary>
     /// <returns></returns>
-    /// 
     private void Shuffle(int[] randomIndex)
     {
         //System.Random rand = new System.Random();
 
-        for (int i = tileArray.Length - 2; i > 0; i--)
+        for (var i = tileArray.Length - 2; i > 0; i--)
         {
             //int randomIndex = rand.Next(0, i + 1);
-            GameObject temp = tileArray[i];
+            var temp = tileArray[i];
             tileArray[i] = tileArray[randomIndex[i]];
             tileArray[randomIndex[i]] = temp;
         }
@@ -171,7 +181,6 @@ public class StackScript : MonoBehaviourPun
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="gameObj"></param>
     public void Push(GameObject gameObj)
@@ -181,16 +190,13 @@ public class StackScript : MonoBehaviourPun
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <returns></returns>
-    /// 
     public GameObject Pop()
     {
+        var tile = tileArray[nextTile];
 
-        GameObject tile = tileArray[nextTile];
 
-       
         nextTile--;
 
         return tile;
@@ -202,10 +208,8 @@ public class StackScript : MonoBehaviourPun
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <returns></returns>
-    /// 
     public StackScript createStackScript()
     {
         //setAll();
@@ -221,22 +225,13 @@ public class StackScript : MonoBehaviourPun
 
         if (PhotonNetwork.IsMasterClient)
         {
-            int[] tmpRandomIndexArray = new int[84];
-            System.Random rand = new System.Random();
-            for (int i = tileArray.Length - 2; i > 0; i--)
-            {
-
-                tmpRandomIndexArray[i] = rand.Next(0, i + 1);
-
-            }
-            this.photonView.RPC("GetRandomIndexRPC", RpcTarget.All, (object)tmpRandomIndexArray);
+            var tmpRandomIndexArray = new int[84];
+            var rand = new Random();
+            for (var i = tileArray.Length - 2; i > 0; i--) tmpRandomIndexArray[i] = rand.Next(0, i + 1);
+            photonView.RPC("GetRandomIndexRPC", RpcTarget.All, tmpRandomIndexArray);
         }
 
-        if(randomIndexArray != null)
-        {
-            Shuffle(randomIndexArray);
-        }
-
+        if (randomIndexArray != null) Shuffle(randomIndexArray);
     }
 
     [PunRPC]
@@ -244,5 +239,4 @@ public class StackScript : MonoBehaviourPun
     {
         randomIndexArray = random;
     }
-
 }

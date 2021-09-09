@@ -3,7 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class StartUIscript : MonoBehaviour
 {
-   
     public void playGame()
     {
         Debug.Log("Kommer till startUi script");

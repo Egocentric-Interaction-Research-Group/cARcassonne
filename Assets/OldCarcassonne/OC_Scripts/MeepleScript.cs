@@ -15,18 +15,21 @@ public class MeepleScript : MonoBehaviourPun
 
 
     public int id;
-    public PlayerScript.Player playerScriptPlayer;
 
     public int playerId;
+    public PlayerScript.Player playerScriptPlayer;
 
-    void Start()
+    private void Start()
     {
         free = true;
         x = 0;
         z = 0;
         id = 1;
+    }
 
-     
+    // Update is called once per frame
+    private void Update()
+    {
     }
 
     public void reset()
@@ -38,16 +41,10 @@ public class MeepleScript : MonoBehaviourPun
         GetComponentInChildren<MeshRenderer>().enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void create(int player)
     {
         free = true;
-        this.playerId = player;
+        playerId = player;
         GetComponentInChildren<Renderer>().material = materials[player];
         GetComponentInChildren<MeshRenderer>().enabled = false;
     }
@@ -55,7 +52,7 @@ public class MeepleScript : MonoBehaviourPun
     public void createByPlayer(PlayerScript.Player player)
     {
         //free = true;
-        this.playerScriptPlayer = player;
+        playerScriptPlayer = player;
         //playerId = player.getID();
         //GetComponentInChildren<MeshRenderer>().material = player.GetMaterial();
         //GetComponentInChildren<Rigidbody>().useGravity = false;
@@ -107,15 +104,12 @@ public class MeepleScript : MonoBehaviourPun
     public void SetMeepleOwner()
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
-        {
             if (tag == "Meeple 1")
             {
                 Debug.Log("PLATER: " + playerScriptPlayer.photonUser.name);
-               // Debug.Log("ÄGARE INNAN: " + photonView.Owner.NickName);
+                // Debug.Log("ÄGARE INNAN: " + photonView.Owner.NickName);
                 photonView.TransferOwnership(PhotonNetwork.PlayerList[1]);
-               // Debug.Log("ÄGARE EFTER: " + photonView.Owner.NickName);
+                // Debug.Log("ÄGARE EFTER: " + photonView.Owner.NickName);
             }
-        }
-
     }
 }

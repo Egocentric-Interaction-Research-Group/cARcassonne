@@ -2,9 +2,7 @@
 
 public class UndoButtonScript : MonoBehaviour
 {
-    
-
-    void OnMouseUp()
+    private void OnMouseUp()
     {
         Debug.Log("Test");
     }

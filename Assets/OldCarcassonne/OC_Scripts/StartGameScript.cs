@@ -2,15 +2,15 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StartGameScript: MonoBehaviour
+public class StartGameScript : MonoBehaviour
 {
-    int nbrOfPlayers = 2;
     public Slider playerSlider;
     public Text playerCount;
+    private int nbrOfPlayers = 2;
     public PlayerPrefs players;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         nbrOfPlayers = (int) playerSlider.value;
         playerCount.text = nbrOfPlayers + " players";
@@ -34,6 +34,4 @@ public class StartGameScript: MonoBehaviour
         //Debug.Log(nbrOfPlayers);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
-
-   
 }

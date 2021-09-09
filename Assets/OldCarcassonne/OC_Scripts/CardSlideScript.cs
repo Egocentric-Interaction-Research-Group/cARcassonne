@@ -2,27 +2,26 @@
 
 public class CardSlideScript : MonoBehaviour
 {
-
     private Animator anim;
 
-    public void InvalidTile(bool toggle)
-    {
-        anim.SetBool("TileNotValid", toggle);
-    }
-    public void InvalidMeeple(bool toggle)
-    {
-        anim.SetBool("InvalidMeeple", toggle);
-    }
-
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+    }
+
+    public void InvalidTile(bool toggle)
+    {
+        anim.SetBool("TileNotValid", toggle);
+    }
+
+    public void InvalidMeeple(bool toggle)
+    {
+        anim.SetBool("InvalidMeeple", toggle);
     }
 }

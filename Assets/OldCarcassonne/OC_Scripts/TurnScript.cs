@@ -2,12 +2,12 @@
 
 public class TurnScript : MonoBehaviour
 {
-    int nbrOfplayers;
-    int turns;
-    int iterator = 0;
-    void Start()
-    {
+    private int iterator;
+    private int nbrOfplayers;
+    private int turns;
 
+    private void Start()
+    {
     }
 
     public int currentPlayer(int playersInRoom)
@@ -20,16 +20,12 @@ public class TurnScript : MonoBehaviour
     public int newTurn()
     {
         Debug.Log("PlayerCount i Room " + nbrOfplayers);
-        if (iterator+1 == nbrOfplayers)
+        if (iterator + 1 == nbrOfplayers)
         {
             return iterator = 0;
         }
-        else
-        {
-            iterator += 1;
-            return iterator;
-        }
-        
+
+        iterator += 1;
+        return iterator;
     }
- 
 }

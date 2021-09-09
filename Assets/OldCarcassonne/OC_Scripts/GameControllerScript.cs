@@ -1,34 +1,28 @@
-﻿using Microsoft.MixedReality.Toolkit.Input;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Photon.Pun;
-using System;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class GameControllerScript : MonoBehaviourPun
 {
+    //Add Meeple Down state functionality
+    public enum GameStates
+    {
+        NewTurn,
+        TileDrawn,
+        TileDown,
+        MeepleDrawn,
+        MeepleDown,
+        GameOver
+    }
 
     public Vector3 currentTileEulersOnManip;
     public bool gravity;
-    private bool isPunEnabled;
     public bool startGame, pcRotate, isManipulating;
-
-    public bool IsPunEnabled
-    {
-        set => isPunEnabled = value;
-    }
-
-    //Number of players
-    private int players;
-    //The points of each player where each index represents a player (index+1).
-    // public int[] points;
-    //The matrix of tiles (separated by 2.0f in all 2D directions)
-    //private GameObject[,] placedTiles;
-    private PlacedTilesScript placedTiles;
-
-    private Vector3 snapPosition;
 
     public Material[] playerMaterials;
     public Material[] buttonMaterials;
@@ -39,104 +33,193 @@ public class GameControllerScript : MonoBehaviourPun
 
     public float scale;
 
-    [HideInInspector]
-    public GameObject currentTile, baseTile, table, currentMeeple;
-    [HideInInspector]
-    public StackScript stackScript;
+    [HideInInspector] public GameObject currentTile, baseTile, table, currentMeeple;
 
-    [HideInInspector]
-    public Vector3 tileSnapPosition;
+    [HideInInspector] public StackScript stackScript;
 
-    private PlayerScript playerScript;
-
-    [HideInInspector]
-    public PlayerScript.Player currentPlayer;
-
-    private PlayerScript.Player lastPlayer;
+    [HideInInspector] public Vector3 tileSnapPosition;
 
 
+    [HideInInspector] public GameObject tileMesh;
 
-    [HideInInspector]
-    public GameObject tileMesh;
-    [HideInInspector]
-    public GameObject meepleMesh;
-    [HideInInspector]
-    public GameObject MeeplePrefab;
-    [HideInInspector]
-    public GameObject playerHUD;
+    [HideInInspector] public GameObject meepleMesh;
 
-    bool canConfirm;
+    [HideInInspector] public GameObject MeeplePrefab;
+
+    [HideInInspector] public GameObject playerHUD;
 
     public GameObject confirmButton, rotateButton;
     public Sprite crossIcon, checkIcon;
 
-    [HideInInspector]
-    public List<MeepleScript> MeeplesInCity;
-
-    //private int xs, zs;
-
-    private float aimX = 0, aimZ = 0;
-
-    private PointScript.Direction direction;
-
-    private TileScript.geography meepleGeography;
-
-    private TurnScript turnScript;
+    [HideInInspector] public List<MeepleScript> MeeplesInCity;
 
     public RectTransform mPanelGameOver;
-
-    int NewTileRotation = 0;
-
-    int VertexItterator;
-
-    bool cityIsFinished;
-
-    bool renderCurrentTile = false;
-
-    bool[,] visited;
-
-    string errorOutput = "";
 
     public GameObject drawTile;
 
     public GameObject tileSpawnPosition, meepleSpawnPosition;
 
+    public GameStates state;
+
+    //private int xs, zs;
+
+    private float aimX = 0, aimZ = 0;
+
+    private bool canConfirm;
+
+    private bool cityIsFinished;
+
+    [HideInInspector] public PlayerScript.Player currentPlayer;
+
     private GameObject decisionButtons;
 
-    RaycastHit meepleHitTileDirection;
+    private PointScript.Direction direction;
 
-    float fTileAimX = 0;
-    float fTileAimZ = 0;
+    private string errorOutput = "";
 
-    float fMeepleAimX = 0;
-    float fMeepleAimZ = 0;
+    private int firstTurnCounter;
+
+    private float fMeepleAimX;
+    private float fMeepleAimZ;
+
+    private float fTileAimX;
+    private float fTileAimZ;
+
+    private int iMeepleAimX, iMeepleAimZ;
+
+    private bool isPunEnabled;
     //float xOffset, zOffset, yOffset;
 
-    int iTileAimX, iTileAimZ;
+    private int iTileAimX, iTileAimZ;
 
-    int iMeepleAimX, iMeepleAimZ;
+    private PlayerScript.Player lastPlayer;
+
+    private TileScript.geography meepleGeography;
+
+    private RaycastHit meepleHitTileDirection;
+
+    private int NewTileRotation;
+
+    //The points of each player where each index represents a player (index+1).
+    // public int[] points;
+    //The matrix of tiles (separated by 2.0f in all 2D directions)
+    //private GameObject[,] placedTiles;
+    private PlacedTilesScript placedTiles;
+    private Color32 playerColor;
+
+    //Number of players
+    private int players;
+
+    private PlayerScript playerScript;
+
+    private bool renderCurrentTile = false;
+
+    private Vector3 snapPosition;
 
     //public ErrorPlaneScript ErrorPlane;
 
 
-    int tempX;
-    int tempY;
+    private int tempX;
+    private int tempY;
 
-    int firstTurnCounter;
-    Color32 playerColor;
+    private TurnScript turnScript;
 
-    //Add Meeple Down state functionality
-    public enum GameStates
+    private int VertexItterator;
+
+    private bool[,] visited;
+
+    public bool IsPunEnabled
     {
-        NewTurn,
-        TileDrawn,
-        TileDown,
-        MeepleDrawn,
-        MeepleDown,
-        GameOver
-    };
+        set => isPunEnabled = value;
+    }
 
-    public GameStates state;
+    private void Start()
+    {
+    }
+
+    // Update is called once per frame
+    private void FixedUpdate()
+    {
+        if (currentTile != null)
+        {
+            CurrentTileRaycastPosition();
+
+            if (placedTiles.TilePlacementIsValid(currentTile, iTileAimX, iTileAimZ))
+                ChangeConfirmButtonApperance(true);
+            else
+                ChangeConfirmButtonApperance(false);
+
+            snapPosition = new Vector3
+            (stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f,
+                currentTile.transform.localPosition.y,
+                stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
+        }
+
+        if (startGame)
+        {
+            NewGame();
+            startGame = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.P)) EndTurn();
+        if (Input.GetKeyDown(KeyCode.R) && PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
+            if (!isManipulating)
+            {
+                pcRotate = true;
+                RotateTileRPC();
+            }
+
+        if (Input.GetKeyDown(KeyCode.J)) FreeMeeple(currentMeeple);
+        if (Input.GetKeyDown(KeyCode.B)) GameOver();
+
+        switch (state)
+        {
+            case GameStates.NewTurn:
+                bellSparkleEffect.Stop();
+                drawMeepleEffect.Stop();
+
+                if (firstTurnCounter != 0) drawTileEffect.Play();
+
+                endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[0];
+                drawTile.GetComponent<BoxCollider>().enabled = true;
+
+
+                break;
+            case GameStates.TileDrawn:
+                //drawTile.GetComponent<BoxCollider>().enabled = false;
+                drawTileEffect.Stop();
+
+                break;
+            case GameStates.TileDown:
+
+                if (firstTurnCounter != 0) drawMeepleEffect.Play();
+                currentTile.transform.localPosition = new Vector3
+                (stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f, 0.5900002f,
+                    stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
+                endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[1];
+
+                break;
+            case GameStates.MeepleDrawn:
+
+                //confirmButton.SetActive(true);
+                //confirmButton.transform.position = new Vector3(currentMeeple.transform.position.x + 0.05f, currentMeeple.transform.position.y + 0.05f, currentMeeple.transform.position.z + 0.07f);
+                ////confirmButton.transform.up = table.transform.forward;
+                drawMeepleEffect.Stop();
+                CurrentMeepleRayCast();
+                AimMeeple();
+
+                break;
+            case GameStates.MeepleDown:
+                //currentMeeple.transform.position = snapPosition;
+                endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[2];
+
+                bellSparkleEffect.Play();
+
+                break;
+            case GameStates.GameOver:
+                break;
+        }
+    }
 
 
     //Startar nytt spel
@@ -159,7 +242,7 @@ public class GameControllerScript : MonoBehaviourPun
 
         BaseTileCreation();
 
-        for (int i = 0; i < players; i++)
+        for (var i = 0; i < players; i++)
         {
             playerScript.CreatePlayer(i, "player " + i, playerMaterials[i], GameObject.Find("User" + (i + 1)));
             playerHuds[i].SetActive(true);
@@ -173,13 +256,9 @@ public class GameControllerScript : MonoBehaviourPun
         }
 
         if (PhotonNetwork.IsMasterClient)
-        {
             playerHuds[0].transform.GetChild(3).gameObject.GetComponent<TextMeshPro>().text = "Player 1    (You)";
-        }
         else
-        {
             playerHuds[1].transform.GetChild(3).gameObject.GetComponent<TextMeshPro>().text = "Player 2    (You)";
-        }
 
         NewTileRotation = 0;
         VertexItterator = 1;
@@ -189,7 +268,7 @@ public class GameControllerScript : MonoBehaviourPun
         currentPlayer = playerScript.players[0];
 
         Debug.Log("Denna spelarese namn: " + PhotonNetwork.LocalPlayer.NickName);
-        Debug.Log("Current " + (currentPlayer.getID() + 1).ToString());
+        Debug.Log("Current " + (currentPlayer.getID() + 1));
 
         playerHuds[0].GetComponentInChildren<MeshRenderer>().material = playerMaterials[0];
         meepleInButton.GetComponent<MeshRenderer>().material = buttonMaterials[3];
@@ -211,18 +290,14 @@ public class GameControllerScript : MonoBehaviourPun
     {
         MeepleScript res = null;
 
-        foreach (PlayerScript.Player p in playerScript.players)
+        foreach (var p in playerScript.players)
+        foreach (var m in p.meeples)
         {
-            foreach (GameObject m in p.meeples)
-            {
-                MeepleScript tmp = m.GetComponent<MeepleScript>();
+            var tmp = m.GetComponent<MeepleScript>();
 
-                if (tmp.geography == geography && tmp.x == x && tmp.z == y)
-                {
-                    return tmp;
-                }
-            }
+            if (tmp.geography == geography && tmp.x == x && tmp.z == y) return tmp;
         }
+
         return res;
     }
 
@@ -230,18 +305,14 @@ public class GameControllerScript : MonoBehaviourPun
     {
         MeepleScript res = null;
 
-        foreach (PlayerScript.Player p in playerScript.players)
+        foreach (var p in playerScript.players)
+        foreach (var m in p.meeples)
         {
-            foreach (GameObject m in p.meeples)
-            {
-                MeepleScript tmp = m.GetComponent<MeepleScript>();
+            var tmp = m.GetComponent<MeepleScript>();
 
-                if (tmp.geography == geography && tmp.x == x && tmp.z == y && tmp.direction == direction)
-                {
-                    return tmp;
-                }
-            }
+            if (tmp.geography == geography && tmp.x == x && tmp.z == y && tmp.direction == direction) return tmp;
         }
+
         return res;
     }
 
@@ -253,7 +324,9 @@ public class GameControllerScript : MonoBehaviourPun
         cityIsFinished = true;
         visited = new bool[170, 170];
         RecursiveCityIsFinishedDirection(x, y, direction);
-        Debug.Log("DIRECTION__________________________CITY IS FINISHED EFTER DIRECTION REKURSIV: ___________________________" + cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + FindMeeple(x, y, TileScript.geography.City));
+        Debug.Log(
+            "DIRECTION__________________________CITY IS FINISHED EFTER DIRECTION REKURSIV: ___________________________" +
+            cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + FindMeeple(x, y, TileScript.geography.City));
         return cityIsFinished;
     }
 
@@ -267,116 +340,93 @@ public class GameControllerScript : MonoBehaviourPun
         cityIsFinished = true;
         visited = new bool[170, 170];
         RecursiveCityIsFinished(x, y);
-        Debug.Log("__________________________CITY IS FINISHED EFTER REKURSIV: ___________________________" + cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + FindMeeple(x, y, TileScript.geography.City));
+        Debug.Log("__________________________CITY IS FINISHED EFTER REKURSIV: ___________________________" +
+                  cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " +
+                  FindMeeple(x, y, TileScript.geography.City));
 
         return cityIsFinished;
     }
+
     public void RecursiveCityIsFinishedDirection(int x, int y, PointScript.Direction direction)
     {
         visited[x, y] = true;
         if (direction == PointScript.Direction.NORTH)
-        {
             if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().North == TileScript.geography.City)
             {
                 if (placedTiles.getPlacedTiles(x, y + 1) != null)
                 {
-                    if (!visited[x, y + 1])
-                    {
-                        RecursiveCityIsFinished(x, y + 1);
-                    }
+                    if (!visited[x, y + 1]) RecursiveCityIsFinished(x, y + 1);
                 }
                 else
                 {
                     cityIsFinished = false;
                 }
             }
-        }
+
         if (direction == PointScript.Direction.EAST)
-        {
             if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().East == TileScript.geography.City)
             {
                 if (placedTiles.getPlacedTiles(x + 1, y) != null)
                 {
-                    if (!visited[x + 1, y])
-                    {
-                        RecursiveCityIsFinished(x + 1, y);
-                    }
+                    if (!visited[x + 1, y]) RecursiveCityIsFinished(x + 1, y);
                 }
                 else
                 {
                     cityIsFinished = false;
                 }
             }
-        }
+
         if (direction == PointScript.Direction.SOUTH)
-        {
             if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().South == TileScript.geography.City)
             {
                 if (placedTiles.getPlacedTiles(x, y - 1) != null)
                 {
-                    if (!visited[x, y - 1])
-                    {
-                        RecursiveCityIsFinished(x, y - 1);
-                    }
+                    if (!visited[x, y - 1]) RecursiveCityIsFinished(x, y - 1);
                 }
                 else
                 {
                     cityIsFinished = false;
                 }
             }
-        }
+
         if (direction == PointScript.Direction.WEST)
-        {
             if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().West == TileScript.geography.City)
             {
                 if (placedTiles.getPlacedTiles(x - 1, y) != null)
                 {
-                    if (!visited[x - 1, y])
-                    {
-
-                        RecursiveCityIsFinished(x - 1, y);
-                    }
+                    if (!visited[x - 1, y]) RecursiveCityIsFinished(x - 1, y);
                 }
                 else
                 {
                     cityIsFinished = false;
                 }
             }
-        }
     }
+
     public bool TileCanBePlaced(TileScript script)
     {
-        for (int i = 0; i < placedTiles.GetLength(0); i++)
-        {
-            for (int j = 0; j < placedTiles.GetLength(1); j++)
-            {
-                if (placedTiles.HasNeighbor(i, j) && placedTiles.getPlacedTiles(i, j) == null)
+        for (var i = 0; i < placedTiles.GetLength(0); i++)
+        for (var j = 0; j < placedTiles.GetLength(1); j++)
+            if (placedTiles.HasNeighbor(i, j) && placedTiles.getPlacedTiles(i, j) == null)
+                for (var k = 0; k < 4; k++)
                 {
-                    for (int k = 0; k < 4; k++)
-                    {
-                        if (placedTiles.MatchGeographyOrNull(i - 1, j, PointScript.Direction.EAST, script.West))
-                        {
-                            if (placedTiles.MatchGeographyOrNull(i + 1, j, PointScript.Direction.WEST, script.East))
-                            {
-                                if (placedTiles.MatchGeographyOrNull(i, j - 1, PointScript.Direction.NORTH, script.South))
+                    if (placedTiles.MatchGeographyOrNull(i - 1, j, PointScript.Direction.EAST, script.West))
+                        if (placedTiles.MatchGeographyOrNull(i + 1, j, PointScript.Direction.WEST, script.East))
+                            if (placedTiles.MatchGeographyOrNull(i, j - 1, PointScript.Direction.NORTH, script.South))
+                                if (placedTiles.MatchGeographyOrNull(i, j + 1, PointScript.Direction.SOUTH,
+                                    script.North))
                                 {
-                                    if (placedTiles.MatchGeographyOrNull(i, j + 1, PointScript.Direction.SOUTH, script.North))
-                                    {
-                                        ResetTileRotation();
-                                        return true;
-                                    }
+                                    ResetTileRotation();
+                                    return true;
                                 }
-                            }
-                        }
-                        RotateTile();
-                    }
+
+                    RotateTile();
                 }
-            }
-        }
+
         ResetTileRotation();
         return false;
-
     }
+
     public void RecursiveCityIsFinished(int x, int y)
     {
         visited[x, y] = true;
@@ -385,90 +435,71 @@ public class GameControllerScript : MonoBehaviourPun
         if (placedTiles.getPlacedTiles(x, y) != null)
         {
             if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().North == TileScript.geography.City)
-            {
                 if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
                 {
                     if (placedTiles.getPlacedTiles(x, y + 1) != null)
 
                     {
-                        if (!visited[x, y + 1])
-                        {
-                            RecursiveCityIsFinished(x, y + 1);
-                        }
+                        if (!visited[x, y + 1]) RecursiveCityIsFinished(x, y + 1);
                     }
                     else
                     {
                         cityIsFinished = false;
                     }
                 }
-            }
+
             if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().East == TileScript.geography.City)
-            {
                 if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
                 {
                     if (placedTiles.getPlacedTiles(x + 1, y) != null)
                     {
-                        if (!visited[x + 1, y])
-                        {
-                            RecursiveCityIsFinished(x + 1, y);
-                        }
+                        if (!visited[x + 1, y]) RecursiveCityIsFinished(x + 1, y);
                     }
                     else
                     {
                         cityIsFinished = false;
                     }
                 }
-            }
+
             if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().South == TileScript.geography.City)
-            {
                 if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
                 {
                     if (placedTiles.getPlacedTiles(x, y - 1) != null)
                     {
-                        if (!visited[x, y - 1])
-                        {
-                            RecursiveCityIsFinished(x, y - 1);
-                        }
+                        if (!visited[x, y - 1]) RecursiveCityIsFinished(x, y - 1);
                     }
                     else
                     {
                         cityIsFinished = false;
                     }
                 }
-            }
+
             if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().West == TileScript.geography.City)
-            {
                 if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
                 {
                     if (placedTiles.getPlacedTiles(x - 1, y) != null)
                     {
-                        if (!visited[x - 1, y])
-                        {
-                            RecursiveCityIsFinished(x - 1, y);
-                        }
+                        if (!visited[x - 1, y]) RecursiveCityIsFinished(x - 1, y);
                     }
                     else
                     {
                         cityIsFinished = false;
                     }
                 }
-            }
         }
-
-
     }
 
     [PunRPC]
     private void CurrentTileRaycastPosition()
     {
-
         RaycastHit hit;
-        int layerMask = 1 << 8;
+        var layerMask = 1 << 8;
 
-        Physics.Raycast(currentTile.transform.position, currentTile.transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity, layerMask);
+        Physics.Raycast(currentTile.transform.position, currentTile.transform.TransformDirection(Vector3.down), out hit,
+            Mathf.Infinity, layerMask);
 
 
-        Vector3 local = table.transform.InverseTransformPoint(hit.point);
+        var local = table.transform.InverseTransformPoint(hit.point);
 
         fTileAimX = local.x;
         fTileAimZ = local.z;
@@ -476,75 +507,64 @@ public class GameControllerScript : MonoBehaviourPun
 
         if (fTileAimX - stackScript.basePositionTransform.localPosition.x > 0)
         {
-            iTileAimX = ((int)(((fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale) + 1f) / 2) + 85;
+            iTileAimX = (int) ((fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale + 1f) / 2 + 85;
 
-            float testX = ((((fTileAimX - stackScript.basePositionTransform.localPosition.x) * 10f) + 1f) / 2f) + 85f;
+            var testX = ((fTileAimX - stackScript.basePositionTransform.localPosition.x) * 10f + 1f) / 2f + 85f;
             //Debug.Log("Float X: " + Math.Round(testX));
-
         }
         else
         {
-            iTileAimX = ((int)(((fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale) - 1f) / 2) + 85;
-            float testX = ((((fTileAimX - stackScript.basePositionTransform.localPosition.x) * 10f) - 1f) / 2f) + 85f;
+            iTileAimX = (int) ((fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale - 1f) / 2 + 85;
+            var testX = ((fTileAimX - stackScript.basePositionTransform.localPosition.x) * 10f - 1f) / 2f + 85f;
             //Debug.Log("Float X: " + Math.Round(testX));
-
         }
+
         if (fTileAimZ - stackScript.basePositionTransform.localPosition.z > 0)
         {
+            iTileAimZ = (int) ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale + 1f) / 2 + 85;
 
-            iTileAimZ = ((int)(((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale) + 1f) / 2) + 85;
-
-            float testZ = ((((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f) + 1f) / 2f) + 85f;
+            var testZ = ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f + 1f) / 2f + 85f;
             //Debug.Log("Float Z: " + Math.Round(testZ));
-
         }
         else
         {
-            iTileAimZ = ((int)(((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale) - 1f) / 2) + 85;
+            iTileAimZ = (int) ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale - 1f) / 2 + 85;
 
-            float testZ = ((((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f) - 1f) / 2f) + 85f;
+            var testZ = ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f - 1f) / 2f + 85f;
             //Debug.Log("Float Z: " + Math.Round(testZ));
-
         }
-
     }
-    public void PlaceMeeple(GameObject meeple, int xs, int zs, PointScript.Direction direction, TileScript.geography meepleGeography)
-    {
-        TileScript currentTileScript = currentTile.GetComponent<TileScript>();
-        TileScript.geography currentCenter = currentTileScript.getCenter();
-        bool res;
-        if (currentCenter == TileScript.geography.Village || currentCenter == TileScript.geography.Grass || currentCenter == TileScript.geography.Cloister && direction != PointScript.Direction.CENTER)
-        {
-            res = GetComponent<PointScript>().testIfMeepleCantBePlacedDirection(currentTileScript.vIndex, meepleGeography, direction);
 
-        }
+    public void PlaceMeeple(GameObject meeple, int xs, int zs, PointScript.Direction direction,
+        TileScript.geography meepleGeography)
+    {
+        var currentTileScript = currentTile.GetComponent<TileScript>();
+        var currentCenter = currentTileScript.getCenter();
+        bool res;
+        if (currentCenter == TileScript.geography.Village || currentCenter == TileScript.geography.Grass ||
+            currentCenter == TileScript.geography.Cloister && direction != PointScript.Direction.CENTER)
+            res = GetComponent<PointScript>()
+                .testIfMeepleCantBePlacedDirection(currentTileScript.vIndex, meepleGeography, direction);
         else if (currentCenter == TileScript.geography.Cloister && direction == PointScript.Direction.CENTER)
-        {
             res = false;
-        }
         else
-        {
             res = GetComponent<PointScript>().testIfMeepleCantBePlaced(currentTileScript.vIndex, meepleGeography);
-        }
 
         if (meepleGeography == TileScript.geography.City)
         {
             if (currentCenter == TileScript.geography.City)
-            {
                 res = CityIsFinished(xs, zs) || res;
-            }
             else
-            {
                 res = CityIsFinishedDirection(xs, zs, direction) || res;
-            }
         }
+
         if (!currentTileScript.checkIfOcupied(direction) && !res)
         {
             meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
             meeple.GetComponentInChildren<BoxCollider>().enabled = false;
             meeple.GetComponent<ObjectManipulator>().enabled = false;
 
-            TileScript.geography geography = currentTileScript.getGeographyAt(direction);
+            var geography = currentTileScript.getGeographyAt(direction);
             currentTileScript.occupy(direction);
             if (meepleGeography == TileScript.geography.Cityroad) meepleGeography = TileScript.geography.City;
 
@@ -563,7 +583,9 @@ public class GameControllerScript : MonoBehaviourPun
         tempY = z;
         tile.GetComponent<TileScript>().vIndex = VertexItterator;
 
-        GetComponent<PointScript>().placeVertex(VertexItterator, placedTiles.GetNeighbors(tempX, tempY), placedTiles.getWeights(tempX, tempY), currentTile.GetComponent<TileScript>().getCenter(), placedTiles.getCenters(tempX, tempY), placedTiles.getDirections(tempX, tempY));
+        GetComponent<PointScript>().placeVertex(VertexItterator, placedTiles.GetNeighbors(tempX, tempY),
+            placedTiles.getWeights(tempX, tempY), currentTile.GetComponent<TileScript>().getCenter(),
+            placedTiles.getCenters(tempX, tempY), placedTiles.getDirections(tempX, tempY));
 
         VertexItterator++;
 
@@ -587,31 +609,28 @@ public class GameControllerScript : MonoBehaviourPun
 
 
         calculatePoints(false, false);
-
     }
 
 
     public void PickupTileRPC()
     {
         if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-        {
             photonView.RPC("PickupTile", RpcTarget.All);
-        }
-
     }
 
     //Metod för att plocka upp en ny tile
     [PunRPC]
     public void PickupTile()
     {
-        if(state == GameStates.NewTurn)
+        if (state == GameStates.NewTurn)
         {
             currentTile = stackScript.Pop();
             UpdateDecisionButtons(true, true, currentTile);
             ActivateCurrentTile();
             if (!TileCanBePlaced(currentTile.GetComponent<TileScript>()))
             {
-                Debug.Log("Tile not possible to place: discarding and drawing a new one. " + "Tile id: " + currentTile.GetComponent<TileScript>().id);
+                Debug.Log("Tile not possible to place: discarding and drawing a new one. " + "Tile id: " +
+                          currentTile.GetComponent<TileScript>().id);
                 Destroy(currentTile);
                 PickupTile();
             }
@@ -623,7 +642,7 @@ public class GameControllerScript : MonoBehaviourPun
         }
         else
         {
-            AudioSource deniedSound = gameObject.GetComponent<AudioSource>();
+            var deniedSound = gameObject.GetComponent<AudioSource>();
             deniedSound.Play();
         }
     }
@@ -642,17 +661,13 @@ public class GameControllerScript : MonoBehaviourPun
     public void ChangeCurrentTileOwnership()
     {
         if (currentTile.GetComponent<PhotonView>().Owner.NickName != (currentPlayer.getID() + 1).ToString())
-        {
             currentTile.GetComponent<TileScript>().transferTileOwnership(currentPlayer.getID());
-        }
     }
 
     public void ConfirmPlacementRPC()
     {
         if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-        {
             photonView.RPC("ConfirmPlacement", RpcTarget.All);
-        }
     }
 
     [PunRPC]
@@ -661,7 +676,6 @@ public class GameControllerScript : MonoBehaviourPun
         CurrentTileRaycastPosition();
         if (state == GameStates.TileDrawn)
         {
-
             if (placedTiles.TilePlacementIsValid(currentTile, iTileAimX, iTileAimZ))
             {
                 PlaceTile(currentTile, iTileAimX, iTileAimZ, false);
@@ -669,7 +683,6 @@ public class GameControllerScript : MonoBehaviourPun
                 confirmButton.SetActive(false);
                 //rotateButton.SetActive(false);
                 state = GameStates.TileDown;
-
             }
             else if (!placedTiles.TilePlacementIsValid(currentTile, iTileAimX, iTileAimZ))
             {
@@ -680,21 +693,17 @@ public class GameControllerScript : MonoBehaviourPun
         {
             if (currentMeeple != null)
             {
-                if(canConfirm)
+                if (canConfirm)
                 {
-                    if (meepleGeography == TileScript.geography.City || meepleGeography == TileScript.geography.Cloister || meepleGeography == TileScript.geography.Road)
-                    {
-
-                       
-
+                    if (meepleGeography == TileScript.geography.City ||
+                        meepleGeography == TileScript.geography.Cloister ||
+                        meepleGeography == TileScript.geography.Road)
                         PlaceMeeple(currentMeeple, iMeepleAimX, iMeepleAimZ, direction, meepleGeography);
-                    }
                 }
                 else
                 {
                     FreeMeeple(currentMeeple);
                 }
-                
             }
         }
     }
@@ -705,7 +714,7 @@ public class GameControllerScript : MonoBehaviourPun
     {
         if (state == GameStates.TileDown || state == GameStates.MeepleDrawn)
         {
-            placedTiles.removeTile((int)tempX, (int)tempY);
+            placedTiles.removeTile(tempX, tempY);
             currentTile.GetComponentInChildren<MeshRenderer>().enabled = false;
             state = GameStates.TileDrawn;
 
@@ -741,41 +750,32 @@ public class GameControllerScript : MonoBehaviourPun
                 if (playerScript.players.Count > 1)
                 {
                     if (currentPlayer == playerScript.players[0])
-                    {
                         currentPlayer = playerScript.players[1];
-                    }
                     else
-                    {
                         currentPlayer = playerScript.players[0];
-                    }
                 }
 
 
                 Debug.Log("CurrentPlayer = " + currentPlayer.getID());
                 ChangePlayerHud();
 
-                if (firstTurnCounter != 0)
-                {
-                    firstTurnCounter -= 1;
-                }
+                if (firstTurnCounter != 0) firstTurnCounter -= 1;
 
                 state = GameStates.NewTurn;
             }
         }
         else
         {
-            AudioSource deniedAudio = gameObject.GetComponent<AudioSource>();
+            var deniedAudio = gameObject.GetComponent<AudioSource>();
             deniedAudio.Play();
         }
     }
 
     private void ChangePlayerHud()
     {
-
-        for (int i = 0; i < playerScript.players.Count; i++)
-        {
-            playerHuds[i].GetComponentInChildren<TextMeshPro>().text = "Score: " + playerScript.players[i].GetPlayerScore();
-        }
+        for (var i = 0; i < playerScript.players.Count; i++)
+            playerHuds[i].GetComponentInChildren<TextMeshPro>().text =
+                "Score: " + playerScript.players[i].GetPlayerScore();
 
 
         if (currentPlayer.getID() == 0)
@@ -795,7 +795,6 @@ public class GameControllerScript : MonoBehaviourPun
             playerHuds[0].GetComponentInChildren<MeshRenderer>().material = playerMaterials[4];
             playerHuds[2].GetComponentInChildren<MeshRenderer>().material = playerMaterials[6];
             playerHuds[3].GetComponentInChildren<MeshRenderer>().material = playerMaterials[7];
-
         }
         //else if (currentPlayer == 2)
         //{
@@ -819,30 +818,36 @@ public class GameControllerScript : MonoBehaviourPun
 
     public void calculatePoints(bool RealCheck, bool GameEnd)
     {
-        foreach (PlayerScript.Player p in playerScript.GetPlayers())
-        {
-            for (int j = 0; j < p.meeples.Length; j++)
+        foreach (var p in playerScript.GetPlayers())
+            for (var j = 0; j < p.meeples.Length; j++)
             {
-                MeepleScript meeple = p.meeples[j].GetComponent<MeepleScript>();
+                var meeple = p.meeples[j].GetComponent<MeepleScript>();
                 if (!meeple.free)
                 {
-                    int tileID = placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().id;
-                    int finalscore = 0;
+                    var tileID = placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().id;
+                    var finalscore = 0;
                     if (meeple.geography == TileScript.geography.City)
                     {
                         //CITY DIRECTION
-                        if (placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() == TileScript.geography.Stream ||
-                            placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() == TileScript.geography.Grass ||
-                            placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() == TileScript.geography.Road ||
-                            placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() == TileScript.geography.Village)
+                        if (placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                            TileScript.geography.Stream ||
+                            placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                            TileScript.geography.Grass ||
+                            placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                            TileScript.geography.Road ||
+                            placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                            TileScript.geography.Village)
                         {
                             if (CityIsFinishedDirection(meeple.x, meeple.z, meeple.direction))
                             {
                                 Debug.Log("CITY IS FINISHED END");
 
-                                finalscore = GetComponent<PointScript>().startDfsDirection(placedTiles.getPlacedTiles(meeple.x, meeple.z).
-                                    GetComponent<TileScript>().vIndex, meeple.geography, meeple.direction, GameEnd);
+                                finalscore = GetComponent<PointScript>()
+                                    .startDfsDirection(
+                                        placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>()
+                                            .vIndex, meeple.geography, meeple.direction, GameEnd);
                             }
+
                             //else
                             //{
                             //    GetComponent<PointScript>().startDfsDirection(placedTiles.getPlacedTiles(meeple.x, meeple.z).
@@ -851,56 +856,67 @@ public class GameControllerScript : MonoBehaviourPun
                             if (GameEnd)
                             {
                                 Debug.Log("GAME END");
-                                finalscore = GetComponent<PointScript>().startDfsDirection(placedTiles.getPlacedTiles(meeple.x, meeple.z).
-                                    GetComponent<TileScript>().vIndex, meeple.geography, meeple.direction, GameEnd);
+                                finalscore = GetComponent<PointScript>()
+                                    .startDfsDirection(
+                                        placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>()
+                                            .vIndex, meeple.geography, meeple.direction, GameEnd);
                             }
                         }
                         else
                         {
                             //CITY NO DIRECTION
                             if (CityIsFinished(meeple.x, meeple.z))
-                            {
-                                finalscore = GetComponent<PointScript>().startDfs(placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().vIndex, meeple.geography, GameEnd);
-                            }
+                                finalscore = GetComponent<PointScript>()
+                                    .startDfs(
+                                        placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>()
+                                            .vIndex, meeple.geography, GameEnd);
                             if (GameEnd)
                             {
                                 Debug.Log("GAME END I ELSE");
-                                finalscore = GetComponent<PointScript>().startDfsDirection(placedTiles.getPlacedTiles(meeple.x, meeple.z).
-                                    GetComponent<TileScript>().vIndex, meeple.geography, meeple.direction, GameEnd);
+                                finalscore = GetComponent<PointScript>()
+                                    .startDfsDirection(
+                                        placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>()
+                                            .vIndex, meeple.geography, meeple.direction, GameEnd);
                             }
                         }
                     }
                     else
                     {
-
                         ///ROAD
-                        if (placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() == TileScript.geography.Village ||
-                            placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() == TileScript.geography.Grass)
+                        if (placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                            TileScript.geography.Village ||
+                            placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                            TileScript.geography.Grass)
                         {
-                            finalscore = GetComponent<PointScript>().startDfsDirection(placedTiles.getPlacedTiles(meeple.x, meeple.z)
+                            finalscore = GetComponent<PointScript>().startDfsDirection(placedTiles
+                                .getPlacedTiles(meeple.x, meeple.z)
                                 .GetComponent<TileScript>().vIndex, meeple.geography, meeple.direction, GameEnd);
                             if (GameEnd)
                                 finalscore--;
                         }
                         else
                         {
-                            finalscore = GetComponent<PointScript>().startDfs(placedTiles.getPlacedTiles(meeple.x, meeple.z).
-                                GetComponent<TileScript>().vIndex, meeple.geography, GameEnd);
+                            finalscore = GetComponent<PointScript>()
+                                .startDfs(
+                                    placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().vIndex,
+                                    meeple.geography, GameEnd);
                             if (GameEnd)
                                 finalscore--;
                         }
 
                         //CLOISTER
-                        if (placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() == TileScript.geography.Cloister && meeple.direction == PointScript.Direction.CENTER)
-                        {
+                        if (placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                            TileScript.geography.Cloister &&
+                            meeple.direction == PointScript.Direction.CENTER)
                             finalscore = placedTiles.CheckSurroundedCloister(meeple.x, meeple.z, GameEnd);
-                        }
                     }
 
                     if (finalscore > 0 && RealCheck)
                     {
-                        Debug.Log(currentPlayer.getID() + " recieved " + finalscore + " points. MEEPLEGEO: " + meepleGeography);
-                        meeple.playerScriptPlayer.SetPlayerScore(meeple.playerScriptPlayer.GetPlayerScore() + finalscore);
+                        Debug.Log(currentPlayer.getID() + " recieved " + finalscore + " points. MEEPLEGEO: " +
+                                  meepleGeography);
+                        meeple.playerScriptPlayer.SetPlayerScore(
+                            meeple.playerScriptPlayer.GetPlayerScore() + finalscore);
 
                         meeple.free = true;
                         meeple.transform.position = new Vector3(20, 20, 20);
@@ -910,7 +926,6 @@ public class GameControllerScript : MonoBehaviourPun
                     }
                 }
             }
-        }
     }
 
     public void FreeMeeple(GameObject meeple)
@@ -926,9 +941,7 @@ public class GameControllerScript : MonoBehaviourPun
     public void DrawMeepleRPC()
     {
         if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-        {
             photonView.RPC("DrawMeeple", RpcTarget.All);
-        }
     }
 
     [PunRPC]
@@ -936,10 +949,7 @@ public class GameControllerScript : MonoBehaviourPun
     {
         if (state == GameStates.TileDown)
         {
-
             foreach (var meeple in playerScript.players[currentPlayer.getID()].meeples)
-            {
-
                 if (meeple.GetComponent<MeepleScript>().free)
                 {
                     meeple.GetComponentInChildren<Rigidbody>().useGravity = true;
@@ -956,21 +966,14 @@ public class GameControllerScript : MonoBehaviourPun
                     state = GameStates.MeepleDrawn;
                     break;
                 }
-
-            }
-
         }
         else
         {
-            AudioSource deniedSound = gameObject.GetComponent<AudioSource>();
+            var deniedSound = gameObject.GetComponent<AudioSource>();
             deniedSound.Play();
         }
     }
 
-    void Start()
-    {
-
-    }
     public void ToggleBoundsOnOff()
     {
         table.GetComponent<BoundsControl>().enabled ^= true;
@@ -980,9 +983,7 @@ public class GameControllerScript : MonoBehaviourPun
     public void RotateTileRPC()
     {
         if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-        {
             photonView.RPC("RotateTile", RpcTarget.All);
-        }
     }
 
 
@@ -992,16 +993,10 @@ public class GameControllerScript : MonoBehaviourPun
         if (state == GameStates.TileDrawn)
         {
             NewTileRotation++;
-            if (NewTileRotation > 3)
-            {
-                NewTileRotation = 0;
-            }
+            if (NewTileRotation > 3) NewTileRotation = 0;
             currentTile.GetComponent<TileScript>().Rotate();
 
-            if (pcRotate)
-            {
-                currentTile.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
-            }
+            if (pcRotate) currentTile.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
         }
     }
 
@@ -1011,7 +1006,7 @@ public class GameControllerScript : MonoBehaviourPun
         currentTile.GetComponent<TileScript>().rotation = 0;
     }
 
-    void GameOver()
+    private void GameOver()
     {
         calculatePoints(true, true);
         ChangePlayerHud();
@@ -1051,6 +1046,7 @@ public class GameControllerScript : MonoBehaviourPun
     {
         photonView.RPC("RotateDegrees", RpcTarget.All);
     }
+
     public void SaveEulersOnManipRPC()
     {
         photonView.RPC("SaveEulersOnManip", RpcTarget.All);
@@ -1061,52 +1057,43 @@ public class GameControllerScript : MonoBehaviourPun
     {
         if (!pcRotate)
         {
-            float startRotationValue = currentTileEulersOnManip.y;
-            float onRealeaseRotationValue = currentTile.transform.localEulerAngles.y;
+            var startRotationValue = currentTileEulersOnManip.y;
+            var onRealeaseRotationValue = currentTile.transform.localEulerAngles.y;
             float endRotationValue = 0;
 
             if (onRealeaseRotationValue <= 45 || onRealeaseRotationValue >= 315)
-            {
-                currentTile.transform.localEulerAngles = new Vector3(currentTile.transform.localEulerAngles.x, 0, currentTile.transform.localEulerAngles.z);
-            }
+                currentTile.transform.localEulerAngles = new Vector3(currentTile.transform.localEulerAngles.x, 0,
+                    currentTile.transform.localEulerAngles.z);
             else if (onRealeaseRotationValue <= 135 && onRealeaseRotationValue >= 45)
-            {
-                currentTile.transform.localEulerAngles = new Vector3(currentTile.transform.localEulerAngles.x, 90, currentTile.transform.localEulerAngles.z);
-            }
+                currentTile.transform.localEulerAngles = new Vector3(currentTile.transform.localEulerAngles.x, 90,
+                    currentTile.transform.localEulerAngles.z);
             else if (onRealeaseRotationValue <= 225 && onRealeaseRotationValue >= 135)
-            {
-                currentTile.transform.localEulerAngles = new Vector3(currentTile.transform.localEulerAngles.x, 180, currentTile.transform.localEulerAngles.z);
-            }
+                currentTile.transform.localEulerAngles = new Vector3(currentTile.transform.localEulerAngles.x, 180,
+                    currentTile.transform.localEulerAngles.z);
             else if (onRealeaseRotationValue <= 315 && onRealeaseRotationValue >= 225)
-            {
-                currentTile.transform.localEulerAngles = new Vector3(currentTile.transform.localEulerAngles.x, 270, currentTile.transform.localEulerAngles.z);
-            }
+                currentTile.transform.localEulerAngles = new Vector3(currentTile.transform.localEulerAngles.x, 270,
+                    currentTile.transform.localEulerAngles.z);
 
             if (startRotationValue == 270 && onRealeaseRotationValue == 0)
-            {
                 endRotationValue = 1;
-            }
             else
-            {
                 endRotationValue = (onRealeaseRotationValue - startRotationValue) / 90;
-            }
 
-            endRotationValue = (float)Math.Abs(Math.Round(endRotationValue, 0));
+            endRotationValue = (float) Math.Abs(Math.Round(endRotationValue, 0));
 
-            Debug.Log("DET HÄR START: " + startRotationValue + " MINUS DEN HÄR CURRENT EURLERS " + currentTile.transform.localEulerAngles.y + " DELAS PÅ 90! ÄR LIKA MED " + endRotationValue);
+            Debug.Log("DET HÄR START: " + startRotationValue + " MINUS DEN HÄR CURRENT EURLERS " +
+                      currentTile.transform.localEulerAngles.y + " DELAS PÅ 90! ÄR LIKA MED " + endRotationValue);
 
-            if (startRotationValue > (int)onRealeaseRotationValue && endRotationValue == 1 && onRealeaseRotationValue != 0)
+            if (startRotationValue > (int) onRealeaseRotationValue && endRotationValue == 1 &&
+                onRealeaseRotationValue != 0)
             {
                 endRotationValue = 3;
                 Debug.Log("I ifsatsena " + endRotationValue);
             }
 
-            for (int i = 0; i < Math.Abs(endRotationValue); i++)
-            {
-
-                RotateTileRPC();
-            }
+            for (var i = 0; i < Math.Abs(endRotationValue); i++) RotateTileRPC();
         }
+
         pcRotate = false;
         isManipulating = false;
     }
@@ -1119,124 +1106,12 @@ public class GameControllerScript : MonoBehaviourPun
         isManipulating = true;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        if (currentTile != null)
-        {
-            CurrentTileRaycastPosition();
-
-            if (placedTiles.TilePlacementIsValid(currentTile, iTileAimX, iTileAimZ))
-            {
-                ChangeConfirmButtonApperance(true);
-            }
-            else
-            {
-                ChangeConfirmButtonApperance(false);
-            }
-
-            snapPosition = new Vector3
-            (stackScript.basePositionTransform.localPosition.x + ((iTileAimX - 85) * 0.033f), currentTile.transform.localPosition.y,
-              stackScript.basePositionTransform.localPosition.z + ((iTileAimZ - 85) * 0.033f));
-        }
-        if (startGame)
-        {
-            NewGame();
-            startGame = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            EndTurn();
-        }
-        if (Input.GetKeyDown(KeyCode.R) && PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-        {
-            if (!isManipulating)
-            {
-                pcRotate = true;
-                RotateTileRPC();
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            FreeMeeple(currentMeeple);
-
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            GameOver();
-        }
-
-        switch (state)
-        {
-
-            case GameStates.NewTurn:
-                bellSparkleEffect.Stop();
-                drawMeepleEffect.Stop();
-
-                if (firstTurnCounter != 0)
-                {
-                    drawTileEffect.Play();
-                }
-
-                endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[0];
-                drawTile.GetComponent<BoxCollider>().enabled = true;
-
-
-                break;
-            case GameStates.TileDrawn:
-                //drawTile.GetComponent<BoxCollider>().enabled = false;
-                drawTileEffect.Stop();
-
-                break;
-            case GameStates.TileDown:
-
-                if (firstTurnCounter != 0)
-                {
-                    drawMeepleEffect.Play();
-                }
-                currentTile.transform.localPosition = new Vector3
-                (stackScript.basePositionTransform.localPosition.x + ((iTileAimX - 85) * 0.033f), 0.5900002f,
-                stackScript.basePositionTransform.localPosition.z + ((iTileAimZ - 85) * 0.033f));
-                endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[1];
-
-                break;
-            case GameStates.MeepleDrawn:
-
-                //confirmButton.SetActive(true);
-                //confirmButton.transform.position = new Vector3(currentMeeple.transform.position.x + 0.05f, currentMeeple.transform.position.y + 0.05f, currentMeeple.transform.position.z + 0.07f);
-                ////confirmButton.transform.up = table.transform.forward;
-                drawMeepleEffect.Stop();
-                CurrentMeepleRayCast();
-                AimMeeple();
-
-                break;
-            case GameStates.MeepleDown:
-                //currentMeeple.transform.position = snapPosition;
-                endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[2];
-
-                bellSparkleEffect.Play();
-
-                break;
-            case GameStates.GameOver:
-                break;
-            default:
-                break;
-        }
-
-
-
-
-    }
-
 
     private void UpdateDecisionButtons(bool confirm, bool rotate, GameObject tileOrMeeple)
     {
         if (currentPlayer.photonUser.GetComponent<PhotonView>().IsMine)
-        {
             confirmButton.SetActive(confirm);
-            //rotateButton.SetActive(rotate);
-        }
+        //rotateButton.SetActive(rotate);
         decisionButtons.GetComponent<Anchor_Script>().anchor = tileOrMeeple.transform.Find("North").gameObject;
     }
 
@@ -1251,12 +1126,14 @@ public class GameControllerScript : MonoBehaviourPun
         {
             if (placedTiles.getPlacedTiles(iMeepleAimX, iMeepleAimZ) == currentTile)
             {
-                GameObject tile = placedTiles.getPlacedTiles(iMeepleAimX, iMeepleAimZ);
-                TileScript tileScript = tile.GetComponent<TileScript>();
+                var tile = placedTiles.getPlacedTiles(iMeepleAimX, iMeepleAimZ);
+                var tileScript = tile.GetComponent<TileScript>();
 
-                int layerMask = 1 << 9;
-                Physics.Raycast(currentMeeple.transform.position, currentMeeple.transform.TransformDirection(Vector3.down), out meepleHitTileDirection, Mathf.Infinity, layerMask);
-                int id = tile.GetComponent<TileScript>().id;
+                var layerMask = 1 << 9;
+                Physics.Raycast(currentMeeple.transform.position,
+                    currentMeeple.transform.TransformDirection(Vector3.down), out meepleHitTileDirection,
+                    Mathf.Infinity, layerMask);
+                var id = tile.GetComponent<TileScript>().id;
 
                 meepleGeography = TileScript.geography.Grass;
                 direction = PointScript.Direction.CENTER;
@@ -1291,7 +1168,8 @@ public class GameControllerScript : MonoBehaviourPun
 
                     snapPosition = meepleHitTileDirection.collider.transform.position;
 
-                    if (meepleGeography == TileScript.geography.City || meepleGeography == TileScript.geography.Road || meepleGeography == TileScript.geography.Cloister)
+                    if (meepleGeography == TileScript.geography.City || meepleGeography == TileScript.geography.Road ||
+                        meepleGeography == TileScript.geography.Cloister)
                     {
                         ChangeConfirmButtonApperance(true);
                         canConfirm = true;
@@ -1311,7 +1189,6 @@ public class GameControllerScript : MonoBehaviourPun
                 ChangeConfirmButtonApperance(false);
                 canConfirm = false;
             }
-
         }
         catch (IndexOutOfRangeException e)
         {
@@ -1332,29 +1209,25 @@ public class GameControllerScript : MonoBehaviourPun
             confirmButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[0];
             confirmButton.GetComponentInChildren<SpriteRenderer>().sprite = crossIcon;
         }
-
-
     }
 
     public void SetMeepleSnapPos()
     {
         if (meepleHitTileDirection.collider != null)
         {
-            currentMeeple.transform.position = new Vector3(snapPosition.x, currentMeeple.transform.position.y, snapPosition.z);
+            currentMeeple.transform.position =
+                new Vector3(snapPosition.x, currentMeeple.transform.position.y, snapPosition.z);
 
             if (direction == PointScript.Direction.WEST || direction == PointScript.Direction.EAST)
             {
                 if (currentMeeple.transform.rotation.eulerAngles.y != 90)
-                {
                     currentMeeple.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
-                }
             }
-            else if (direction == PointScript.Direction.NORTH || direction == PointScript.Direction.SOUTH || direction == PointScript.Direction.CENTER)
+            else if (direction == PointScript.Direction.NORTH || direction == PointScript.Direction.SOUTH ||
+                     direction == PointScript.Direction.CENTER)
             {
                 if (currentMeeple.transform.rotation.eulerAngles.y == 90)
-                {
                     currentMeeple.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
-                }
             }
         }
         else
@@ -1365,13 +1238,13 @@ public class GameControllerScript : MonoBehaviourPun
 
     private void CurrentMeepleRayCast()
     {
-
         RaycastHit hit;
-        int layerMask = 1 << 8;
+        var layerMask = 1 << 8;
 
-        Physics.Raycast(currentMeeple.transform.position, currentMeeple.transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity, layerMask);
+        Physics.Raycast(currentMeeple.transform.position, currentMeeple.transform.TransformDirection(Vector3.down),
+            out hit, Mathf.Infinity, layerMask);
 
-        Vector3 local = table.transform.InverseTransformPoint(hit.point);
+        var local = table.transform.InverseTransformPoint(hit.point);
 
 
         fMeepleAimX = local.x;
@@ -1380,34 +1253,37 @@ public class GameControllerScript : MonoBehaviourPun
 
         if (fMeepleAimX - stackScript.basePositionTransform.localPosition.x > 0)
         {
-            iMeepleAimX = ((int)(((fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * scale) + 1f) / 2) + 85;
-            float testX = ((((fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * 10f) + 1f) / 2f) + 85f;
+            iMeepleAimX = (int) ((fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * scale + 1f) / 2 +
+                          85;
+            var testX = ((fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * 10f + 1f) / 2f + 85f;
         }
         else
         {
-            iMeepleAimX = ((int)(((fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * scale) - 1f) / 2) + 85;
-            float testX = ((((fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * 10f) - 1f) / 2f) + 85f;
+            iMeepleAimX = (int) ((fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * scale - 1f) / 2 +
+                          85;
+            var testX = ((fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * 10f - 1f) / 2f + 85f;
         }
+
         if (fMeepleAimZ - stackScript.basePositionTransform.localPosition.z > 0)
         {
-            iMeepleAimZ = ((int)(((fMeepleAimZ - stackScript.basePositionTransform.localPosition.z) * scale) + 1f) / 2) + 85;
-            float testZ = ((((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f) + 1f) / 2f) + 85f;
+            iMeepleAimZ = (int) ((fMeepleAimZ - stackScript.basePositionTransform.localPosition.z) * scale + 1f) / 2 +
+                          85;
+            var testZ = ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f + 1f) / 2f + 85f;
         }
         else
         {
-            iMeepleAimZ = ((int)(((fMeepleAimZ - stackScript.basePositionTransform.localPosition.z) * scale) - 1f) / 2) + 85;
+            iMeepleAimZ = (int) ((fMeepleAimZ - stackScript.basePositionTransform.localPosition.z) * scale - 1f) / 2 +
+                          85;
 
-            float testZ = ((((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f) - 1f) / 2f) + 85f;
+            var testZ = ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f - 1f) / 2f + 85f;
         }
-
     }
 
     public void ChangeButtonMaterialOnPress()
     {
-       
     }
+
     public void ChangeButtonMaterialOnRelease()
     {
-
     }
 }
