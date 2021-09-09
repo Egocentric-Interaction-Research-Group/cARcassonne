@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -17,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Maintains a collection of themes that react to state changes and provide sensory feedback
     /// Passes state information and input data on to receivers that detect patterns and does stuff.
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html")]
     [AddComponentMenu("Scripts/MRTK/SDK/Interactable")]
     public class Interactable :
@@ -326,7 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// This list gets initialized on startup, or whenever the profiles for the interactable changes.
         /// The list of active themes inspects this list to determine which themes to use based on current dimension.
         /// </summary>
-        private List<System.Tuple<int, InteractableThemeBase>> allThemeDimensionPairs = new List<System.Tuple<int, InteractableThemeBase>>();
+        private List<Tuple<int, InteractableThemeBase>> allThemeDimensionPairs = new List<Tuple<int, InteractableThemeBase>>();
 
         /// <summary>
         /// How many times this interactable was clicked
@@ -851,7 +852,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         {
                             foreach (var themeDefinition in themeContainer.Definitions)
                             {
-                                allThemeDimensionPairs.Add(new System.Tuple<int, InteractableThemeBase>(
+                                allThemeDimensionPairs.Add(new Tuple<int, InteractableThemeBase>(
                                     i,
                                     InteractableThemeBase.CreateAndInitTheme(themeDefinition, profile.Target)));
                             }
@@ -1639,7 +1640,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Resets input tracking states such as focus or grab that are directly controlled by Interactable
         /// </summary>
-        [System.Obsolete("Use ResetInputTrackingStates property instead")]
+        [Obsolete("Use ResetInputTrackingStates property instead")]
         public void ResetBaseStates()
         {
             ResetInputTrackingStates();
@@ -1648,7 +1649,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// A public way to access the current dimension
         /// </summary>
-        [System.Obsolete("Use CurrentDimension property instead")]
+        [Obsolete("Use CurrentDimension property instead")]
         public int GetDimensionIndex()
         {
             return CurrentDimension;
@@ -1657,7 +1658,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// a public way to set the dimension index
         /// </summary>
-        [System.Obsolete("Use CurrentDimension property instead")]
+        [Obsolete("Use CurrentDimension property instead")]
         public void SetDimensionIndex(int index)
         {
             CurrentDimension = index;
@@ -1666,7 +1667,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Force re-initialization of Interactable from events, themes and state references
         /// </summary>
-        [System.Obsolete("Use RefreshSetup() instead")]
+        [Obsolete("Use RefreshSetup() instead")]
         public void ForceUpdateThemes()
         {
             RefreshSetup();
@@ -1675,19 +1676,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Does this interactable require focus
         /// </summary>
-        [System.Obsolete("Use IsGlobal instead")]
+        [Obsolete("Use IsGlobal instead")]
         public bool FocusEnabled { get { return !IsGlobal; } set { IsGlobal = !value; } }
 
         /// <summary>
         /// True if Selection is "Toggle" (Dimensions == 2)
         /// </summary>
-        [System.Obsolete("Use ButtonMode to test if equal to SelectionModes.Toggle instead")]
+        [Obsolete("Use ButtonMode to test if equal to SelectionModes.Toggle instead")]
         public bool IsToggleButton { get { return NumOfDimensions == 2; } }
 
         /// <summary>
         /// Is the interactable enabled?
         /// </summary>
-        [System.Obsolete("Use IsEnabled instead")]
+        [Obsolete("Use IsEnabled instead")]
         public bool Enabled
         {
             get => IsEnabled;
@@ -1697,7 +1698,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Do voice commands require focus?
         /// </summary>
-        [System.Obsolete("Use VoiceRequiresFocus instead")]
+        [Obsolete("Use VoiceRequiresFocus instead")]
         public bool RequiresFocus
         {
             get => VoiceRequiresFocus;
@@ -1707,7 +1708,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Is disabled
         /// </summary>
-        [System.Obsolete("Use IsEnabled instead")]
+        [Obsolete("Use IsEnabled instead")]
         public bool IsDisabled
         {
             get => !IsEnabled;
@@ -1717,7 +1718,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Returns a list of states assigned to the Interactable
         /// </summary>
-        [System.Obsolete("Use States.StateList instead")]
+        [Obsolete("Use States.StateList instead")]
         public State[] GetStates()
         {
             if (States != null)
@@ -1725,13 +1726,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return States.StateList.ToArray();
             }
 
-            return System.Array.Empty<State>();
+            return Array.Empty<State>();
         }
 
         /// <summary>
         /// Handle focus state changes
         /// </summary>
-        [System.Obsolete("Use Focus property instead")]
+        [Obsolete("Use Focus property instead")]
         public virtual void SetFocus(bool focus)
         {
             HasFocus = focus;
@@ -1740,7 +1741,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the press state
         /// </summary>
-        [System.Obsolete("Use Press property instead")]
+        [Obsolete("Use Press property instead")]
         public virtual void SetPress(bool press)
         {
             HasPress = press;
@@ -1749,7 +1750,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the disabled state, will override the Enabled property
         /// </summary>
-        [System.Obsolete("Use IsEnabled property instead")]
+        [Obsolete("Use IsEnabled property instead")]
         public virtual void SetDisabled(bool disabled)
         {
             IsEnabled = !disabled;
@@ -1758,7 +1759,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the targeted state
         /// </summary>
-        [System.Obsolete("Use IsTargeted property instead")]
+        [Obsolete("Use IsTargeted property instead")]
         public virtual void SetTargeted(bool targeted)
         {
             IsTargeted = targeted;
@@ -1767,7 +1768,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the Interactive state
         /// </summary>
-        [System.Obsolete("Use IsInteractive property instead")]
+        [Obsolete("Use IsInteractive property instead")]
         public virtual void SetInteractive(bool interactive)
         {
             IsInteractive = interactive;
@@ -1776,7 +1777,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the observation targeted state
         /// </summary>
-        [System.Obsolete("Use HasObservationTargeted property instead")]
+        [Obsolete("Use HasObservationTargeted property instead")]
         public virtual void SetObservationTargeted(bool targeted)
         {
             HasObservationTargeted = targeted;
@@ -1785,7 +1786,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the observation state
         /// </summary>
-        [System.Obsolete("Use HasObservation property instead")]
+        [Obsolete("Use HasObservation property instead")]
         public virtual void SetObservation(bool observation)
         {
             HasObservation = observation;
@@ -1794,7 +1795,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the visited state
         /// </summary>
-        [System.Obsolete("Use IsVisited property instead")]
+        [Obsolete("Use IsVisited property instead")]
         public virtual void SetVisited(bool visited)
         {
             IsVisited = visited;
@@ -1803,7 +1804,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the toggled state
         /// </summary>
-        [System.Obsolete("Use IsToggled property instead")]
+        [Obsolete("Use IsToggled property instead")]
         public virtual void SetToggled(bool toggled)
         {
             IsToggled = toggled;
@@ -1812,7 +1813,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the gesture state
         /// </summary>
-        [System.Obsolete("Use HasGesture property instead")]
+        [Obsolete("Use HasGesture property instead")]
         public virtual void SetGesture(bool gesture)
         {
             HasGesture = gesture;
@@ -1821,7 +1822,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the gesture max state
         /// </summary>
-        [System.Obsolete("Use HasGestureMax property instead")]
+        [Obsolete("Use HasGestureMax property instead")]
         public virtual void SetGestureMax(bool gesture)
         {
             HasGestureMax = gesture;
@@ -1830,7 +1831,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the collision state
         /// </summary>
-        [System.Obsolete("Use HasCollision property instead")]
+        [Obsolete("Use HasCollision property instead")]
         public virtual void SetCollision(bool collision)
         {
             HasCollision = collision;
@@ -1839,7 +1840,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the custom state
         /// </summary>
-        [System.Obsolete("Use HasCustom property instead")]
+        [Obsolete("Use HasCustom property instead")]
         public virtual void SetCustom(bool custom)
         {
             HasCustom = custom;
@@ -1848,7 +1849,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the voice command state
         /// </summary>
-        [System.Obsolete("Use HasVoiceCommand property instead")]
+        [Obsolete("Use HasVoiceCommand property instead")]
         public virtual void SetVoiceCommand(bool voice)
         {
             HasVoiceCommand = voice;
@@ -1857,7 +1858,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the physical touch state
         /// </summary>
-        [System.Obsolete("Use HasPhysicalTouch property instead")]
+        [Obsolete("Use HasPhysicalTouch property instead")]
         public virtual void SetPhysicalTouch(bool touch)
         {
             HasPhysicalTouch = touch;
@@ -1866,7 +1867,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the grab state
         /// </summary>
-        [System.Obsolete("Use HasGrab property instead")]
+        [Obsolete("Use HasGrab property instead")]
         public virtual void SetGrab(bool grab)
         {
             HasGrab = grab;

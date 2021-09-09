@@ -3,6 +3,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using UnityEngine.XR;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
@@ -28,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             get
             {
-                IntPtr nativePtr = UnityEngine.XR.XRDevice.GetNativePtr();
+                IntPtr nativePtr = XRDevice.GetNativePtr();
                 HolographicFrameNativeData hfd = Marshal.PtrToStructure<HolographicFrameNativeData>(nativePtr);
                 return hfd.IHolographicFramePtr;
             }

@@ -4,16 +4,15 @@
 // </copyright>
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
- 
+
 
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
-
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-
-using Photon.Realtime;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Photon.Pun.Demo.Cockpit
 {
@@ -101,7 +100,7 @@ namespace Photon.Pun.Demo.Cockpit
             }
         }
 
-        public override void OnPlayerPropertiesUpdate(Player target, ExitGames.Client.Photon.Hashtable changedProps)
+        public override void OnPlayerPropertiesUpdate(Player target, Hashtable changedProps)
         {
             if (playerCellList.ContainsKey(target.ActorNumber))
             {

@@ -9,11 +9,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
-
+using Photon.Pun.UtilityScripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-using Photon.Pun.UtilityScripts;
 
 namespace Photon.Pun.Demo.Cockpit
 {

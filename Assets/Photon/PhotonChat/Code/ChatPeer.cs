@@ -4,17 +4,18 @@
 // <copyright company="Exit Games GmbH">Photon Chat Api - Copyright (C) 2014 Exit Games GmbH</copyright>
 // ----------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using ExitGames.Client.Photon;
+
 #if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
 #define SUPPORTED_UNITY
 #endif
 
 namespace Photon.Chat
 {
-    using System;
-    using System.Collections.Generic;
-    using ExitGames.Client.Photon;
-
-    #if SUPPORTED_UNITY || NETFX_CORE
+#if SUPPORTED_UNITY || NETFX_CORE
 
 #endif
 
@@ -46,7 +47,7 @@ namespace Photon.Chat
 
 
         // Sets up the socket implementations to use, depending on platform
-        [System.Diagnostics.Conditional("SUPPORTED_UNITY")]
+        [Conditional("SUPPORTED_UNITY")]
         private void ConfigUnitySockets()
         {
             Type websocketType = null;
@@ -314,7 +315,7 @@ namespace Photon.Chat
         public virtual void AddAuthParameter(string key, string value)
         {
             string ampersand = string.IsNullOrEmpty(this.AuthGetParameters) ? "" : "&";
-            this.AuthGetParameters = string.Format("{0}{1}{2}={3}", this.AuthGetParameters, ampersand, System.Uri.EscapeDataString(key), System.Uri.EscapeDataString(value));
+            this.AuthGetParameters = string.Format("{0}{1}{2}={3}", this.AuthGetParameters, ampersand, Uri.EscapeDataString(key), Uri.EscapeDataString(value));
         }
 
         /// <summary>

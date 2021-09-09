@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -563,10 +563,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         // Show hide, adjust, remove buttons
                         // The rest are hidden
-                        case AppBar.ButtonTypeEnum.Hide:
-                        case AppBar.ButtonTypeEnum.Remove:
-                        case AppBar.ButtonTypeEnum.Adjust:
-                        case AppBar.ButtonTypeEnum.Custom:
+                        case ButtonTypeEnum.Hide:
+                        case ButtonTypeEnum.Remove:
+                        case ButtonTypeEnum.Adjust:
+                        case ButtonTypeEnum.Custom:
                             return true;
 
                         default:
@@ -590,7 +590,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         // Show done button
                         // The rest are hidden
-                        case AppBar.ButtonTypeEnum.Done:
+                        case ButtonTypeEnum.Done:
                             return true;
 
                         default:

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
@@ -8,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// Class specifying targeting event arguments.
     /// </summary>
-    public class TargetEventArgs : System.EventArgs
+    public class TargetEventArgs : EventArgs
     {
         public EyeTrackingTarget HitTarget { get; private set; }
 

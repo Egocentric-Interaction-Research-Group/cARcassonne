@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -14,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     ///     Event if the background changes size, this element will remain 40 pixels smaller.
     /// </summary>
     [ExecuteInEditMode]
-    [System.Obsolete("This component is no longer supported", true)]
+    [Obsolete("This component is no longer supported", true)]
     [AddComponentMenu("Scripts/MRTK/Obsolete/ButtonBackgroundSizeOffset")]
     public class ButtonBackgroundSizeOffset : MonoBehaviour
     {

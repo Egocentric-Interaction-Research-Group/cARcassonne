@@ -20,8 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private TextMesh mesh;
         private Text text;
-        private TMPro.TextMeshPro meshPro;
-        private TMPro.TextMeshProUGUI meshProUGUI;
+        private TextMeshPro meshPro;
+        private TextMeshProUGUI meshProUGUI;
 
         public InteractableStringTheme()
         {

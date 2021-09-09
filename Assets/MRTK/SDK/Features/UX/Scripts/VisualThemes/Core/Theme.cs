@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Helper function to convert States scriptableobject into an array of available State values 
         /// </summary>
         /// <returns>Array of available State values for currently assigned States property in this Theme</returns>
-        [System.Obsolete("Use States.StateList instead")]
+        [Obsolete("Use States.StateList instead")]
         public State[] GetStates()
         {
             if (States != null)

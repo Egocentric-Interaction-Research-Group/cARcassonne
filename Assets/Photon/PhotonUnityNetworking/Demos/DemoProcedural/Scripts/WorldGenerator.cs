@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Simplex;
 using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -187,7 +188,7 @@ namespace Photon.Pun.Demo.Procedural
         {
             Debug.Log(string.Format("<b>Procedural Demo</b>: Creating world using Seed: {0}, World Size: {1}, Cluster Size: {2} and World Type: {3}", Seed, WorldSize, ClusterSize, WorldType));
 
-            Simplex.Noise.Seed = Seed;
+            Noise.Seed = Seed;
 
             int clusterId = 0;
 
@@ -222,7 +223,7 @@ namespace Photon.Pun.Demo.Procedural
                 {
                     for (int z = 0; z < (int) Mathf.Sqrt((int) ClusterSize); ++z)
                     {
-                        float noiseValue = Simplex.Noise.CalcPixel2D((int) clusterPosition.x + x, (int) clusterPosition.z + z, 0.02f);
+                        float noiseValue = Noise.CalcPixel2D((int) clusterPosition.x + x, (int) clusterPosition.z + z, 0.02f);
 
                         int height = (int) noiseValue / (int) (256.0f / (float) WorldType);
                         int materialIndex = (int) noiseValue / (int) (256.0f / WorldMaterials.Length);

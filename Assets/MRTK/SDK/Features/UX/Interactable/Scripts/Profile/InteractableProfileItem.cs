@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// The foundation of profiles that exist on an Interactable
     /// Profiles pair ThemeContainers with the objects they manipulate, based on state changes
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class InteractableProfileItem
     {
         /// <summary>

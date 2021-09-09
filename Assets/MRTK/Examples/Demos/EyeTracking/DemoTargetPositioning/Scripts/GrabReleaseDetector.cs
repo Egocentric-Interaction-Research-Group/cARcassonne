@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
-    [System.Obsolete("This component is no longer supported", true)]
+    [Obsolete("This component is no longer supported", true)]
     [AddComponentMenu("Scripts/MRTK/Obsolete/GrabReleaseDetector")]
     public class GrabReleaseDetector : MonoBehaviour, IMixedRealityPointerHandler
     {

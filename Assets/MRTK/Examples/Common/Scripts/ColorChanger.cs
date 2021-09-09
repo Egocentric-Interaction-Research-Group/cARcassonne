@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void RandomColor()
         {
-            rend.material.color = UnityEngine.Random.ColorHSV();
+            rend.material.color = Random.ColorHSV();
         }
     }
 }

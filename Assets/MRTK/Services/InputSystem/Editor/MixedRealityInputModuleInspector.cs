@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    [UnityEditor.CustomEditor(typeof(MixedRealityInputModule))]
+    [CustomEditor(typeof(MixedRealityInputModule))]
     public class MixedRealityInputModuleEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()

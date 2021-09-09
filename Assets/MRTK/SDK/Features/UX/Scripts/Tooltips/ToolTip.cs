@@ -2,8 +2,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
-using Microsoft.MixedReality.Toolkit.Utilities;
+
+using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using TMPro;
 using UnityEngine;
 
@@ -549,7 +551,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (string.IsNullOrEmpty(textMesh.text))
                 return localScale;
 
-            string[] splitStrings = textMesh.text.Split(new string[] { System.Environment.NewLine, "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+            string[] splitStrings = textMesh.text.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             // Calculate the width of the text using character info
             float widestLine = 0f;

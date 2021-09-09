@@ -8,10 +8,10 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
-
-using Photon.Realtime;
 
 namespace Photon.Pun.Demo.PunBasics
 {
@@ -131,7 +131,7 @@ namespace Photon.Pun.Demo.PunBasics
 			}
 
 			// add new messages as a new line and at the bottom of the log.
-			feedbackText.text += System.Environment.NewLine+message;
+			feedbackText.text += Environment.NewLine+message;
 		}
 
         #endregion

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -59,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (state != ProgressIndicatorState.Closed)
             {
-                throw new System.Exception("Can't open in state " + state);
+                throw new Exception("Can't open in state " + state);
             }
 
             gameObject.SetActive(true);
@@ -78,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (state != ProgressIndicatorState.Open)
             {
-                throw new System.Exception("Can't close in state " + state);
+                throw new Exception("Can't close in state " + state);
             }
 
             state = ProgressIndicatorState.Closing;

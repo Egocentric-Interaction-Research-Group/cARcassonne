@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
@@ -195,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     objIsHit = false;
                 }
             }
-            catch (UnityEngine.Assertions.AssertionException)
+            catch (AssertionException)
             {
                 Debug.LogError(">> AssertionException in PanZoomBase");
             }

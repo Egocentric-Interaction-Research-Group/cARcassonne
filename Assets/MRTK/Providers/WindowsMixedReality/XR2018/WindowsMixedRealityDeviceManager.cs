@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
+using UnityEngine.XR.WSA;
 
 #if UNITY_WSA
 using System.Collections.Generic;
@@ -88,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
             else
             {
-                if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
+                if (!HolographicSettings.IsDisplayOpaque)
                 {
                     // HoloLens supports GGV hands
                     return (capability == MixedRealityCapability.GGVHand);

@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
-    [System.Obsolete("This component is no longer supported", true)]
+    [Obsolete("This component is no longer supported", true)]
     [AddComponentMenu("Scripts/MRTK/Obsolete/StatusText")]
     public class StatusText : MonoBehaviour
     {
@@ -34,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public void Start()
         {
-            StatusText.Instance.Log("...", false);
+            Instance.Log("...", false);
         }
 
         public void Log(string msg, bool add)

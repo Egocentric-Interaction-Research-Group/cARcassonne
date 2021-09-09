@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Unity.Profiling;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -539,13 +540,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Gizmos.color = Color.blue;
                 Gizmos.DrawLine(point, point + centralAxis * (gizmoNearObjectRadius - PullbackDistance));
 
-                UnityEditor.Handles.color = NearObjectCheck ? Color.red : Color.cyan;
+                Handles.color = NearObjectCheck ? Color.red : Color.cyan;
                 float GizmoAngle = NearObjectSectorAngle * 0.5f * Mathf.Deg2Rad;
-                UnityEditor.Handles.DrawWireDisc(point,
+                Handles.DrawWireDisc(point,
                                                  centralAxis,
                                                  PullbackDistance * Mathf.Sin(GizmoAngle));
 
-                UnityEditor.Handles.DrawWireDisc(point + sectorForwardAxis.normalized * (gizmoNearObjectRadius * Mathf.Cos(GizmoAngle) - PullbackDistance),
+                Handles.DrawWireDisc(point + sectorForwardAxis.normalized * (gizmoNearObjectRadius * Mathf.Cos(GizmoAngle) - PullbackDistance),
                                                  centralAxis,
                                                  gizmoNearObjectRadius * Mathf.Sin(GizmoAngle));
             }

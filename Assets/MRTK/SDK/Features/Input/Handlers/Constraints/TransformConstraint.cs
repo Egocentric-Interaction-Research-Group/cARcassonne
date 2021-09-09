@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
@@ -91,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Intended to be called on manipulation started
         /// </summary>
-        [System.Obsolete("Deprecated: Pass MixedRealityTransform instead of MixedRealityPose.")]
+        [Obsolete("Deprecated: Pass MixedRealityTransform instead of MixedRealityPose.")]
         public virtual void Initialize(MixedRealityPose worldPose)
         {
             Initialize(new MixedRealityTransform(worldPose.Position, worldPose.Rotation, Vector3.one));
@@ -100,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>	
         /// Transform that we intend to apply constraints to	
         /// </summary>	
-        [System.Obsolete("Deprecated: Get component transform instead.")]
+        [Obsolete("Deprecated: Get component transform instead.")]
         public Transform TargetTransform { get; set; } = null;
 
         #endregion

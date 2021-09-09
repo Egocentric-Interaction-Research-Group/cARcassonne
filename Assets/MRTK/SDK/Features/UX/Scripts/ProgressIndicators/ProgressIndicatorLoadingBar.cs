@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Threading.Tasks;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -65,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (state != ProgressIndicatorState.Closed)
             {
-                throw new System.Exception("Can't open in state " + state);
+                throw new Exception("Can't open in state " + state);
             }
 
             smoothProgress = 0;
@@ -85,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (state != ProgressIndicatorState.Open)
             {
-                throw new System.Exception("Can't close in state " + state);
+                throw new Exception("Can't close in state " + state);
             }
 
             state = ProgressIndicatorState.Closing;
@@ -142,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
 #if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(this);
+            EditorUtility.SetDirty(this);
 #endif
         }
     }

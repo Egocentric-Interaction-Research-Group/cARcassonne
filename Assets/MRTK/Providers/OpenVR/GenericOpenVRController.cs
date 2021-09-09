@@ -1,14 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
+using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
@@ -292,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             if (failedToObtainControllerModel)
             {
                 Debug.LogWarning("Failed to create controller model from driver, defaulting to BaseController behavior");
-                UnityEngine.Object.Destroy(controllerModelGameObject);
+                Object.Destroy(controllerModelGameObject);
                 return base.TryRenderControllerModel(GetType(), InputSourceType.Controller);
             }
 

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
@@ -12,10 +13,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     {
         [Experimental]
         [SerializeField]
-        private UnityEngine.UI.Button m_PageBck = null;
+        private Button m_PageBck = null;
 
         [SerializeField]
-        private UnityEngine.UI.Button m_PageFwd = null;
+        private Button m_PageFwd = null;
 
         private void Update()
         {

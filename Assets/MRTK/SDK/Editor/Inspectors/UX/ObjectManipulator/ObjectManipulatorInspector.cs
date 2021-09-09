@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Experimental.Editor;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
@@ -183,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.Space();
 
-            Microsoft.MixedReality.Toolkit.Experimental.Editor.ElasticsManagerInspector.DrawElasticsManagerLink(elasticsManager, mh.gameObject);
+            ElasticsManagerInspector.DrawElasticsManagerLink(elasticsManager, mh.gameObject);
 
             EditorGUILayout.Space();
 

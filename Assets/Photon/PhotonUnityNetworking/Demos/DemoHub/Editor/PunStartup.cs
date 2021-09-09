@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
+using Photon.Pun;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEditor;
-
-using Photon.Pun;
 
 [InitializeOnLoad]
 public class PunStartup : MonoBehaviour

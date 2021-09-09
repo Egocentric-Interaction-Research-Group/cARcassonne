@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
@@ -306,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                     }
                 }
             }
-            catch (System.Exception exc)
+            catch (Exception exc)
             {
                 Debug.Log("[CustomVisualizer] Exception: " + exc);
             }

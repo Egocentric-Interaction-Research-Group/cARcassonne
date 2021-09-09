@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -9,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// This component handles pointer clicks from all types of input sources.<para/>
     /// i.e. a primary mouse button click, motion controller selection press, or hand tap.
     /// </summary>
-    [System.Obsolete("Use PointerHandler instead of PointerClickHandler", true)]
+    [Obsolete("Use PointerHandler instead of PointerClickHandler", true)]
     [AddComponentMenu("Scripts/MRTK/Obsolete/PointerClickHandler")]
     public class PointerClickHandler : BaseInputHandler, IMixedRealityPointerHandler
     {

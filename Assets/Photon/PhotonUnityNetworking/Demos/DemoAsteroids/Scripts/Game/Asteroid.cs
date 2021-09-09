@@ -8,10 +8,8 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
-using UnityEngine;
-
-using Random = UnityEngine.Random;
 using Photon.Pun.UtilityScripts;
+using UnityEngine;
 
 namespace Photon.Pun.Demo.Asteroids
 {

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -92,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (prefab == null) { return; }
 
-            if (gameObject == UnityEditor.Selection.activeGameObject)
+            if (gameObject == Selection.activeGameObject)
             {
                 Gizmos.color = Color.cyan;
                 Transform relativeTo = null;

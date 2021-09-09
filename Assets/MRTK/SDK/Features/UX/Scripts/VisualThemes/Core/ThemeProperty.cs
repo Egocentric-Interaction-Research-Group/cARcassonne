@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
+
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
@@ -8,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// The custom settings are used in themes to expose properties needed to enhance theme functionality
     /// </summary>
 
-    [System.Serializable]
+    [Serializable]
     public class ThemeProperty
     {
         /// <summary>

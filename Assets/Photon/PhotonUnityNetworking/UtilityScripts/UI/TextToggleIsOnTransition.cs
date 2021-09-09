@@ -7,7 +7,7 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
-using UnityEngine;  
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 

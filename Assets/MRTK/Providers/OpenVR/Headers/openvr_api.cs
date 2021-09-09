@@ -10,6 +10,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
 {
@@ -157,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetArrayTrackedDeviceProperty GetArrayTrackedDeviceProperty;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetStringTrackedDeviceProperty(uint unDeviceIndex, ETrackedDeviceProperty prop, System.Text.StringBuilder pchValue, uint unBufferSize, ref ETrackedPropertyError pError);
+        internal delegate uint _GetStringTrackedDeviceProperty(uint unDeviceIndex, ETrackedDeviceProperty prop, StringBuilder pchValue, uint unBufferSize, ref ETrackedPropertyError pError);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetStringTrackedDeviceProperty GetStringTrackedDeviceProperty;
 
@@ -232,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _ShouldApplicationReduceRenderingWork ShouldApplicationReduceRenderingWork;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _DriverDebugRequest(uint unDeviceIndex, string pchRequest, System.Text.StringBuilder pchResponseBuffer, uint unResponseBufferSize);
+        internal delegate uint _DriverDebugRequest(uint unDeviceIndex, string pchRequest, StringBuilder pchResponseBuffer, uint unResponseBufferSize);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _DriverDebugRequest DriverDebugRequest;
 
@@ -362,12 +363,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetApplicationCount GetApplicationCount;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate EVRApplicationError _GetApplicationKeyByIndex(uint unApplicationIndex, System.Text.StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen);
+        internal delegate EVRApplicationError _GetApplicationKeyByIndex(uint unApplicationIndex, StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetApplicationKeyByIndex GetApplicationKeyByIndex;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate EVRApplicationError _GetApplicationKeyByProcessId(uint unProcessId, System.Text.StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen);
+        internal delegate EVRApplicationError _GetApplicationKeyByProcessId(uint unProcessId, StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetApplicationKeyByProcessId GetApplicationKeyByProcessId;
 
@@ -412,7 +413,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetApplicationsErrorNameFromEnum GetApplicationsErrorNameFromEnum;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetApplicationPropertyString(string pchAppKey, EVRApplicationProperty eProperty, System.Text.StringBuilder pchPropertyValueBuffer, uint unPropertyValueBufferLen, ref EVRApplicationError peError);
+        internal delegate uint _GetApplicationPropertyString(string pchAppKey, EVRApplicationProperty eProperty, StringBuilder pchPropertyValueBuffer, uint unPropertyValueBufferLen, ref EVRApplicationError peError);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetApplicationPropertyString GetApplicationPropertyString;
 
@@ -442,27 +443,27 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _SetDefaultApplicationForMimeType SetDefaultApplicationForMimeType;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate bool _GetDefaultApplicationForMimeType(string pchMimeType, System.Text.StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen);
+        internal delegate bool _GetDefaultApplicationForMimeType(string pchMimeType, StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetDefaultApplicationForMimeType GetDefaultApplicationForMimeType;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate bool _GetApplicationSupportedMimeTypes(string pchAppKey, System.Text.StringBuilder pchMimeTypesBuffer, uint unMimeTypesBuffer);
+        internal delegate bool _GetApplicationSupportedMimeTypes(string pchAppKey, StringBuilder pchMimeTypesBuffer, uint unMimeTypesBuffer);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetApplicationSupportedMimeTypes GetApplicationSupportedMimeTypes;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetApplicationsThatSupportMimeType(string pchMimeType, System.Text.StringBuilder pchAppKeysThatSupportBuffer, uint unAppKeysThatSupportBuffer);
+        internal delegate uint _GetApplicationsThatSupportMimeType(string pchMimeType, StringBuilder pchAppKeysThatSupportBuffer, uint unAppKeysThatSupportBuffer);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetApplicationsThatSupportMimeType GetApplicationsThatSupportMimeType;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetApplicationLaunchArguments(uint unHandle, System.Text.StringBuilder pchArgs, uint unArgs);
+        internal delegate uint _GetApplicationLaunchArguments(uint unHandle, StringBuilder pchArgs, uint unArgs);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetApplicationLaunchArguments GetApplicationLaunchArguments;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate EVRApplicationError _GetStartingApplication(System.Text.StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen);
+        internal delegate EVRApplicationError _GetStartingApplication(StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetStartingApplication GetStartingApplication;
 
@@ -622,7 +623,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetLiveSeatedZeroPoseToRawTrackingPose GetLiveSeatedZeroPoseToRawTrackingPose;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate bool _ExportLiveToBuffer(System.Text.StringBuilder pBuffer, ref uint pnBufferLength);
+        internal delegate bool _ExportLiveToBuffer(StringBuilder pBuffer, ref uint pnBufferLength);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _ExportLiveToBuffer ExportLiveToBuffer;
 
@@ -842,12 +843,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _UnlockGLSharedTextureForAccess UnlockGLSharedTextureForAccess;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetVulkanInstanceExtensionsRequired(System.Text.StringBuilder pchValue, uint unBufferSize);
+        internal delegate uint _GetVulkanInstanceExtensionsRequired(StringBuilder pchValue, uint unBufferSize);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetVulkanInstanceExtensionsRequired GetVulkanInstanceExtensionsRequired;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetVulkanDeviceExtensionsRequired(IntPtr pPhysicalDevice, System.Text.StringBuilder pchValue, uint unBufferSize);
+        internal delegate uint _GetVulkanDeviceExtensionsRequired(IntPtr pPhysicalDevice, StringBuilder pchValue, uint unBufferSize);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetVulkanDeviceExtensionsRequired GetVulkanDeviceExtensionsRequired;
 
@@ -897,12 +898,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetHighQualityOverlay GetHighQualityOverlay;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetOverlayKey(ulong ulOverlayHandle, System.Text.StringBuilder pchValue, uint unBufferSize, ref EVROverlayError pError);
+        internal delegate uint _GetOverlayKey(ulong ulOverlayHandle, StringBuilder pchValue, uint unBufferSize, ref EVROverlayError pError);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetOverlayKey GetOverlayKey;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetOverlayName(ulong ulOverlayHandle, System.Text.StringBuilder pchValue, uint unBufferSize, ref EVROverlayError pError);
+        internal delegate uint _GetOverlayName(ulong ulOverlayHandle, StringBuilder pchValue, uint unBufferSize, ref EVROverlayError pError);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetOverlayName GetOverlayName;
 
@@ -1022,7 +1023,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetOverlayTextureBounds GetOverlayTextureBounds;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetOverlayRenderModel(ulong ulOverlayHandle, System.Text.StringBuilder pchValue, uint unBufferSize, ref HmdColor_t pColor, ref EVROverlayError pError);
+        internal delegate uint _GetOverlayRenderModel(ulong ulOverlayHandle, StringBuilder pchValue, uint unBufferSize, ref HmdColor_t pColor, ref EVROverlayError pError);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetOverlayRenderModel GetOverlayRenderModel;
 
@@ -1062,7 +1063,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _SetOverlayTransformTrackedDeviceComponent SetOverlayTransformTrackedDeviceComponent;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate EVROverlayError _GetOverlayTransformTrackedDeviceComponent(ulong ulOverlayHandle, ref uint punDeviceIndex, System.Text.StringBuilder pchComponentName, uint unComponentNameSize);
+        internal delegate EVROverlayError _GetOverlayTransformTrackedDeviceComponent(ulong ulOverlayHandle, ref uint punDeviceIndex, StringBuilder pchComponentName, uint unComponentNameSize);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetOverlayTransformTrackedDeviceComponent GetOverlayTransformTrackedDeviceComponent;
 
@@ -1242,7 +1243,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _ShowKeyboardForOverlay ShowKeyboardForOverlay;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetKeyboardText(System.Text.StringBuilder pchText, uint cchText);
+        internal delegate uint _GetKeyboardText(StringBuilder pchText, uint cchText);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetKeyboardText GetKeyboardText;
 
@@ -1322,7 +1323,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _FreeTextureD3D11 FreeTextureD3D11;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetRenderModelName(uint unRenderModelIndex, System.Text.StringBuilder pchRenderModelName, uint unRenderModelNameLen);
+        internal delegate uint _GetRenderModelName(uint unRenderModelIndex, StringBuilder pchRenderModelName, uint unRenderModelNameLen);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetRenderModelName GetRenderModelName;
 
@@ -1337,7 +1338,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetComponentCount GetComponentCount;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetComponentName(string pchRenderModelName, uint unComponentIndex, System.Text.StringBuilder pchComponentName, uint unComponentNameLen);
+        internal delegate uint _GetComponentName(string pchRenderModelName, uint unComponentIndex, StringBuilder pchComponentName, uint unComponentNameLen);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetComponentName GetComponentName;
 
@@ -1347,7 +1348,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetComponentButtonMask GetComponentButtonMask;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetComponentRenderModelName(string pchRenderModelName, string pchComponentName, System.Text.StringBuilder pchComponentRenderModelName, uint unComponentRenderModelNameLen);
+        internal delegate uint _GetComponentRenderModelName(string pchRenderModelName, string pchComponentName, StringBuilder pchComponentRenderModelName, uint unComponentRenderModelNameLen);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetComponentRenderModelName GetComponentRenderModelName;
 
@@ -1367,12 +1368,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _RenderModelHasComponent RenderModelHasComponent;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetRenderModelThumbnailURL(string pchRenderModelName, System.Text.StringBuilder pchThumbnailURL, uint unThumbnailURLLen, ref EVRRenderModelError peError);
+        internal delegate uint _GetRenderModelThumbnailURL(string pchRenderModelName, StringBuilder pchThumbnailURL, uint unThumbnailURLLen, ref EVRRenderModelError peError);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetRenderModelThumbnailURL GetRenderModelThumbnailURL;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetRenderModelOriginalPath(string pchRenderModelName, System.Text.StringBuilder pchOriginalPath, uint unOriginalPathLen, ref EVRRenderModelError peError);
+        internal delegate uint _GetRenderModelOriginalPath(string pchRenderModelName, StringBuilder pchOriginalPath, uint unOriginalPathLen, ref EVRRenderModelError peError);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetRenderModelOriginalPath GetRenderModelOriginalPath;
 
@@ -1447,7 +1448,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetFloat GetFloat;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate void _GetString(string pchSection, string pchSettingsKey, System.Text.StringBuilder pchValue, uint unValueLen, ref EVRSettingsError peError);
+        internal delegate void _GetString(string pchSection, string pchSettingsKey, StringBuilder pchValue, uint unValueLen, ref EVRSettingsError peError);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetString GetString;
 
@@ -1482,7 +1483,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetScreenshotPropertyType GetScreenshotPropertyType;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetScreenshotPropertyFilename(uint screenshotHandle, EVRScreenshotPropertyFilenames filenameType, System.Text.StringBuilder pchFilename, uint cchFilename, ref EVRScreenshotError pError);
+        internal delegate uint _GetScreenshotPropertyFilename(uint screenshotHandle, EVRScreenshotPropertyFilenames filenameType, StringBuilder pchFilename, uint cchFilename, ref EVRScreenshotError pError);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetScreenshotPropertyFilename GetScreenshotPropertyFilename;
 
@@ -1512,7 +1513,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _LoadSharedResource LoadSharedResource;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetResourceFullPath(string pchResourceName, string pchResourceTypeDirectory, System.Text.StringBuilder pchPathBuffer, uint unBufferLen);
+        internal delegate uint _GetResourceFullPath(string pchResourceName, string pchResourceTypeDirectory, StringBuilder pchPathBuffer, uint unBufferLen);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetResourceFullPath GetResourceFullPath;
 
@@ -1527,7 +1528,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetDriverCount GetDriverCount;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate uint _GetDriverName(uint nDriver, System.Text.StringBuilder pchValue, uint unBufferSize);
+        internal delegate uint _GetDriverName(uint nDriver, StringBuilder pchValue, uint unBufferSize);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetDriverName GetDriverName;
 
@@ -1597,7 +1598,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetBoneHierarchy GetBoneHierarchy;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate EVRInputError _GetBoneName(ulong action, int nBoneIndex, System.Text.StringBuilder pchBoneName, uint unNameBufferSize);
+        internal delegate EVRInputError _GetBoneName(ulong action, int nBoneIndex, StringBuilder pchBoneName, uint unNameBufferSize);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetBoneName GetBoneName;
 
@@ -1642,7 +1643,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetActionOrigins GetActionOrigins;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate EVRInputError _GetOriginLocalizedName(ulong origin, System.Text.StringBuilder pchNameArray, uint unNameArraySize, int unStringSectionsToInclude);
+        internal delegate EVRInputError _GetOriginLocalizedName(ulong origin, StringBuilder pchNameArray, uint unNameArraySize, int unStringSectionsToInclude);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetOriginLocalizedName GetOriginLocalizedName;
 
@@ -1712,7 +1713,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         internal _GetSpatialAnchorPose GetSpatialAnchorPose;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        internal delegate EVRSpatialAnchorError _GetSpatialAnchorDescriptor(uint unHandle, System.Text.StringBuilder pchDescriptorOut, ref uint punDescriptorBufferLenInOut);
+        internal delegate EVRSpatialAnchorError _GetSpatialAnchorDescriptor(uint unHandle, StringBuilder pchDescriptorOut, ref uint punDescriptorBufferLenInOut);
         [MarshalAs(UnmanagedType.FunctionPtr)]
         internal _GetSpatialAnchorDescriptor GetSpatialAnchorDescriptor;
 
@@ -1869,7 +1870,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             uint result = FnTable.GetArrayTrackedDeviceProperty(unDeviceIndex, prop, propType, pBuffer, unBufferSize, ref pError);
             return result;
         }
-        public uint GetStringTrackedDeviceProperty(uint unDeviceIndex, ETrackedDeviceProperty prop, System.Text.StringBuilder pchValue, uint unBufferSize, ref ETrackedPropertyError pError)
+        public uint GetStringTrackedDeviceProperty(uint unDeviceIndex, ETrackedDeviceProperty prop, StringBuilder pchValue, uint unBufferSize, ref ETrackedPropertyError pError)
         {
             uint result = FnTable.GetStringTrackedDeviceProperty(unDeviceIndex, prop, pchValue, unBufferSize, ref pError);
             return result;
@@ -1894,14 +1895,14 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public bool PollNextEvent(ref VREvent_t pEvent, uint uncbVREvent)
         {
 #if !UNITY_METRO
-            if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
-                    (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
+            if ((Environment.OSVersion.Platform == PlatformID.MacOSX) ||
+                    (Environment.OSVersion.Platform == PlatformID.Unix))
             {
                 PollNextEventUnion u;
                 VREvent_t_Packed event_packed = new VREvent_t_Packed();
                 u.pPollNextEventPacked = null;
                 u.pPollNextEvent = FnTable.PollNextEvent;
-                bool packed_result = u.pPollNextEventPacked(ref event_packed, (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(VREvent_t_Packed)));
+                bool packed_result = u.pPollNextEventPacked(ref event_packed, (uint)Marshal.SizeOf(typeof(VREvent_t_Packed)));
 
                 event_packed.Unpack(ref pEvent);
                 return packed_result;
@@ -1940,14 +1941,14 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public bool GetControllerState(uint unControllerDeviceIndex, ref VRControllerState_t pControllerState, uint unControllerStateSize)
         {
 #if !UNITY_METRO
-            if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
-                    (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
+            if ((Environment.OSVersion.Platform == PlatformID.MacOSX) ||
+                    (Environment.OSVersion.Platform == PlatformID.Unix))
             {
                 GetControllerStateUnion u;
                 VRControllerState_t_Packed state_packed = new VRControllerState_t_Packed(pControllerState);
                 u.pGetControllerStatePacked = null;
                 u.pGetControllerState = FnTable.GetControllerState;
-                bool packed_result = u.pGetControllerStatePacked(unControllerDeviceIndex, ref state_packed, (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(VRControllerState_t_Packed)));
+                bool packed_result = u.pGetControllerStatePacked(unControllerDeviceIndex, ref state_packed, (uint)Marshal.SizeOf(typeof(VRControllerState_t_Packed)));
 
                 state_packed.Unpack(ref pControllerState);
                 return packed_result;
@@ -1971,14 +1972,14 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public bool GetControllerStateWithPose(ETrackingUniverseOrigin eOrigin, uint unControllerDeviceIndex, ref VRControllerState_t pControllerState, uint unControllerStateSize, ref TrackedDevicePose_t pTrackedDevicePose)
         {
 #if !UNITY_METRO
-            if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
-                    (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
+            if ((Environment.OSVersion.Platform == PlatformID.MacOSX) ||
+                    (Environment.OSVersion.Platform == PlatformID.Unix))
             {
                 GetControllerStateWithPoseUnion u;
                 VRControllerState_t_Packed state_packed = new VRControllerState_t_Packed(pControllerState);
                 u.pGetControllerStateWithPosePacked = null;
                 u.pGetControllerStateWithPose = FnTable.GetControllerStateWithPose;
-                bool packed_result = u.pGetControllerStateWithPosePacked(eOrigin, unControllerDeviceIndex, ref state_packed, (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(VRControllerState_t_Packed)), ref pTrackedDevicePose);
+                bool packed_result = u.pGetControllerStateWithPosePacked(eOrigin, unControllerDeviceIndex, ref state_packed, (uint)Marshal.SizeOf(typeof(VRControllerState_t_Packed)), ref pTrackedDevicePose);
 
                 state_packed.Unpack(ref pControllerState);
                 return packed_result;
@@ -2021,7 +2022,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             bool result = FnTable.ShouldApplicationReduceRenderingWork();
             return result;
         }
-        public uint DriverDebugRequest(uint unDeviceIndex, string pchRequest, System.Text.StringBuilder pchResponseBuffer, uint unResponseBufferSize)
+        public uint DriverDebugRequest(uint unDeviceIndex, string pchRequest, StringBuilder pchResponseBuffer, uint unResponseBufferSize)
         {
             uint result = FnTable.DriverDebugRequest(unDeviceIndex, pchRequest, pchResponseBuffer, unResponseBufferSize);
             return result;
@@ -2179,12 +2180,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             uint result = FnTable.GetApplicationCount();
             return result;
         }
-        public EVRApplicationError GetApplicationKeyByIndex(uint unApplicationIndex, System.Text.StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen)
+        public EVRApplicationError GetApplicationKeyByIndex(uint unApplicationIndex, StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen)
         {
             EVRApplicationError result = FnTable.GetApplicationKeyByIndex(unApplicationIndex, pchAppKeyBuffer, unAppKeyBufferLen);
             return result;
         }
-        public EVRApplicationError GetApplicationKeyByProcessId(uint unProcessId, System.Text.StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen)
+        public EVRApplicationError GetApplicationKeyByProcessId(uint unProcessId, StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen)
         {
             EVRApplicationError result = FnTable.GetApplicationKeyByProcessId(unProcessId, pchAppKeyBuffer, unAppKeyBufferLen);
             return result;
@@ -2229,7 +2230,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             IntPtr result = FnTable.GetApplicationsErrorNameFromEnum(error);
             return Marshal.PtrToStringAnsi(result);
         }
-        public uint GetApplicationPropertyString(string pchAppKey, EVRApplicationProperty eProperty, System.Text.StringBuilder pchPropertyValueBuffer, uint unPropertyValueBufferLen, ref EVRApplicationError peError)
+        public uint GetApplicationPropertyString(string pchAppKey, EVRApplicationProperty eProperty, StringBuilder pchPropertyValueBuffer, uint unPropertyValueBufferLen, ref EVRApplicationError peError)
         {
             uint result = FnTable.GetApplicationPropertyString(pchAppKey, eProperty, pchPropertyValueBuffer, unPropertyValueBufferLen, ref peError);
             return result;
@@ -2259,27 +2260,27 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             EVRApplicationError result = FnTable.SetDefaultApplicationForMimeType(pchAppKey, pchMimeType);
             return result;
         }
-        public bool GetDefaultApplicationForMimeType(string pchMimeType, System.Text.StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen)
+        public bool GetDefaultApplicationForMimeType(string pchMimeType, StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen)
         {
             bool result = FnTable.GetDefaultApplicationForMimeType(pchMimeType, pchAppKeyBuffer, unAppKeyBufferLen);
             return result;
         }
-        public bool GetApplicationSupportedMimeTypes(string pchAppKey, System.Text.StringBuilder pchMimeTypesBuffer, uint unMimeTypesBuffer)
+        public bool GetApplicationSupportedMimeTypes(string pchAppKey, StringBuilder pchMimeTypesBuffer, uint unMimeTypesBuffer)
         {
             bool result = FnTable.GetApplicationSupportedMimeTypes(pchAppKey, pchMimeTypesBuffer, unMimeTypesBuffer);
             return result;
         }
-        public uint GetApplicationsThatSupportMimeType(string pchMimeType, System.Text.StringBuilder pchAppKeysThatSupportBuffer, uint unAppKeysThatSupportBuffer)
+        public uint GetApplicationsThatSupportMimeType(string pchMimeType, StringBuilder pchAppKeysThatSupportBuffer, uint unAppKeysThatSupportBuffer)
         {
             uint result = FnTable.GetApplicationsThatSupportMimeType(pchMimeType, pchAppKeysThatSupportBuffer, unAppKeysThatSupportBuffer);
             return result;
         }
-        public uint GetApplicationLaunchArguments(uint unHandle, System.Text.StringBuilder pchArgs, uint unArgs)
+        public uint GetApplicationLaunchArguments(uint unHandle, StringBuilder pchArgs, uint unArgs)
         {
             uint result = FnTable.GetApplicationLaunchArguments(unHandle, pchArgs, unArgs);
             return result;
         }
-        public EVRApplicationError GetStartingApplication(System.Text.StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen)
+        public EVRApplicationError GetStartingApplication(StringBuilder pchAppKeyBuffer, uint unAppKeyBufferLen)
         {
             EVRApplicationError result = FnTable.GetStartingApplication(pchAppKeyBuffer, unAppKeyBufferLen);
             return result;
@@ -2448,7 +2449,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             bool result = FnTable.GetLiveSeatedZeroPoseToRawTrackingPose(ref pmatSeatedZeroPoseToRawTrackingPose);
             return result;
         }
-        public bool ExportLiveToBuffer(System.Text.StringBuilder pBuffer, ref uint pnBufferLength)
+        public bool ExportLiveToBuffer(StringBuilder pBuffer, ref uint pnBufferLength)
         {
             pnBufferLength = 0;
             bool result = FnTable.ExportLiveToBuffer(pBuffer, ref pnBufferLength);
@@ -2654,12 +2655,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         {
             FnTable.UnlockGLSharedTextureForAccess(glSharedTextureHandle);
         }
-        public uint GetVulkanInstanceExtensionsRequired(System.Text.StringBuilder pchValue, uint unBufferSize)
+        public uint GetVulkanInstanceExtensionsRequired(StringBuilder pchValue, uint unBufferSize)
         {
             uint result = FnTable.GetVulkanInstanceExtensionsRequired(pchValue, unBufferSize);
             return result;
         }
-        public uint GetVulkanDeviceExtensionsRequired(IntPtr pPhysicalDevice, System.Text.StringBuilder pchValue, uint unBufferSize)
+        public uint GetVulkanDeviceExtensionsRequired(IntPtr pPhysicalDevice, StringBuilder pchValue, uint unBufferSize)
         {
             uint result = FnTable.GetVulkanDeviceExtensionsRequired(pPhysicalDevice, pchValue, unBufferSize);
             return result;
@@ -2715,12 +2716,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             ulong result = FnTable.GetHighQualityOverlay();
             return result;
         }
-        public uint GetOverlayKey(ulong ulOverlayHandle, System.Text.StringBuilder pchValue, uint unBufferSize, ref EVROverlayError pError)
+        public uint GetOverlayKey(ulong ulOverlayHandle, StringBuilder pchValue, uint unBufferSize, ref EVROverlayError pError)
         {
             uint result = FnTable.GetOverlayKey(ulOverlayHandle, pchValue, unBufferSize, ref pError);
             return result;
         }
-        public uint GetOverlayName(ulong ulOverlayHandle, System.Text.StringBuilder pchValue, uint unBufferSize, ref EVROverlayError pError)
+        public uint GetOverlayName(ulong ulOverlayHandle, StringBuilder pchValue, uint unBufferSize, ref EVROverlayError pError)
         {
             uint result = FnTable.GetOverlayName(ulOverlayHandle, pchValue, unBufferSize, ref pError);
             return result;
@@ -2852,7 +2853,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             EVROverlayError result = FnTable.GetOverlayTextureBounds(ulOverlayHandle, ref pOverlayTextureBounds);
             return result;
         }
-        public uint GetOverlayRenderModel(ulong ulOverlayHandle, System.Text.StringBuilder pchValue, uint unBufferSize, ref HmdColor_t pColor, ref EVROverlayError pError)
+        public uint GetOverlayRenderModel(ulong ulOverlayHandle, StringBuilder pchValue, uint unBufferSize, ref HmdColor_t pColor, ref EVROverlayError pError)
         {
             uint result = FnTable.GetOverlayRenderModel(ulOverlayHandle, pchValue, unBufferSize, ref pColor, ref pError);
             return result;
@@ -2893,7 +2894,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             EVROverlayError result = FnTable.SetOverlayTransformTrackedDeviceComponent(ulOverlayHandle, unDeviceIndex, pchComponentName);
             return result;
         }
-        public EVROverlayError GetOverlayTransformTrackedDeviceComponent(ulong ulOverlayHandle, ref uint punDeviceIndex, System.Text.StringBuilder pchComponentName, uint unComponentNameSize)
+        public EVROverlayError GetOverlayTransformTrackedDeviceComponent(ulong ulOverlayHandle, ref uint punDeviceIndex, StringBuilder pchComponentName, uint unComponentNameSize)
         {
             punDeviceIndex = 0;
             EVROverlayError result = FnTable.GetOverlayTransformTrackedDeviceComponent(ulOverlayHandle, ref punDeviceIndex, pchComponentName, unComponentNameSize);
@@ -2945,14 +2946,14 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public bool PollNextOverlayEvent(ulong ulOverlayHandle, ref VREvent_t pEvent, uint uncbVREvent)
         {
 #if !UNITY_METRO
-            if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
-                    (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
+            if ((Environment.OSVersion.Platform == PlatformID.MacOSX) ||
+                    (Environment.OSVersion.Platform == PlatformID.Unix))
             {
                 PollNextOverlayEventUnion u;
                 VREvent_t_Packed event_packed = new VREvent_t_Packed();
                 u.pPollNextOverlayEventPacked = null;
                 u.pPollNextOverlayEvent = FnTable.PollNextOverlayEvent;
-                bool packed_result = u.pPollNextOverlayEventPacked(ulOverlayHandle, ref event_packed, (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(VREvent_t_Packed)));
+                bool packed_result = u.pPollNextOverlayEventPacked(ulOverlayHandle, ref event_packed, (uint)Marshal.SizeOf(typeof(VREvent_t_Packed)));
 
                 event_packed.Unpack(ref pEvent);
                 return packed_result;
@@ -3109,7 +3110,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             EVROverlayError result = FnTable.ShowKeyboardForOverlay(ulOverlayHandle, eInputMode, eLineInputMode, pchDescription, unCharMax, pchExistingText, bUseMinimalMode, uUserValue);
             return result;
         }
-        public uint GetKeyboardText(System.Text.StringBuilder pchText, uint cchText)
+        public uint GetKeyboardText(StringBuilder pchText, uint cchText)
         {
             uint result = FnTable.GetKeyboardText(pchText, cchText);
             return result;
@@ -3188,7 +3189,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         {
             FnTable.FreeTextureD3D11(pD3D11Texture2D);
         }
-        public uint GetRenderModelName(uint unRenderModelIndex, System.Text.StringBuilder pchRenderModelName, uint unRenderModelNameLen)
+        public uint GetRenderModelName(uint unRenderModelIndex, StringBuilder pchRenderModelName, uint unRenderModelNameLen)
         {
             uint result = FnTable.GetRenderModelName(unRenderModelIndex, pchRenderModelName, unRenderModelNameLen);
             return result;
@@ -3203,7 +3204,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             uint result = FnTable.GetComponentCount(pchRenderModelName);
             return result;
         }
-        public uint GetComponentName(string pchRenderModelName, uint unComponentIndex, System.Text.StringBuilder pchComponentName, uint unComponentNameLen)
+        public uint GetComponentName(string pchRenderModelName, uint unComponentIndex, StringBuilder pchComponentName, uint unComponentNameLen)
         {
             uint result = FnTable.GetComponentName(pchRenderModelName, unComponentIndex, pchComponentName, unComponentNameLen);
             return result;
@@ -3213,7 +3214,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             ulong result = FnTable.GetComponentButtonMask(pchRenderModelName, pchComponentName);
             return result;
         }
-        public uint GetComponentRenderModelName(string pchRenderModelName, string pchComponentName, System.Text.StringBuilder pchComponentRenderModelName, uint unComponentRenderModelNameLen)
+        public uint GetComponentRenderModelName(string pchRenderModelName, string pchComponentName, StringBuilder pchComponentRenderModelName, uint unComponentRenderModelNameLen)
         {
             uint result = FnTable.GetComponentRenderModelName(pchRenderModelName, pchComponentName, pchComponentRenderModelName, unComponentRenderModelNameLen);
             return result;
@@ -3238,8 +3239,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public bool GetComponentState(string pchRenderModelName, string pchComponentName, ref VRControllerState_t pControllerState, ref RenderModel_ControllerMode_State_t pState, ref RenderModel_ComponentState_t pComponentState)
         {
 #if !UNITY_METRO
-            if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
-                    (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
+            if ((Environment.OSVersion.Platform == PlatformID.MacOSX) ||
+                    (Environment.OSVersion.Platform == PlatformID.Unix))
             {
                 GetComponentStateUnion u;
                 VRControllerState_t_Packed state_packed = new VRControllerState_t_Packed(pControllerState);
@@ -3259,12 +3260,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             bool result = FnTable.RenderModelHasComponent(pchRenderModelName, pchComponentName);
             return result;
         }
-        public uint GetRenderModelThumbnailURL(string pchRenderModelName, System.Text.StringBuilder pchThumbnailURL, uint unThumbnailURLLen, ref EVRRenderModelError peError)
+        public uint GetRenderModelThumbnailURL(string pchRenderModelName, StringBuilder pchThumbnailURL, uint unThumbnailURLLen, ref EVRRenderModelError peError)
         {
             uint result = FnTable.GetRenderModelThumbnailURL(pchRenderModelName, pchThumbnailURL, unThumbnailURLLen, ref peError);
             return result;
         }
-        public uint GetRenderModelOriginalPath(string pchRenderModelName, System.Text.StringBuilder pchOriginalPath, uint unOriginalPathLen, ref EVRRenderModelError peError)
+        public uint GetRenderModelOriginalPath(string pchRenderModelName, StringBuilder pchOriginalPath, uint unOriginalPathLen, ref EVRRenderModelError peError)
         {
             uint result = FnTable.GetRenderModelOriginalPath(pchRenderModelName, pchOriginalPath, unOriginalPathLen, ref peError);
             return result;
@@ -3346,7 +3347,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             float result = FnTable.GetFloat(pchSection, pchSettingsKey, ref peError);
             return result;
         }
-        public void GetString(string pchSection, string pchSettingsKey, System.Text.StringBuilder pchValue, uint unValueLen, ref EVRSettingsError peError)
+        public void GetString(string pchSection, string pchSettingsKey, StringBuilder pchValue, uint unValueLen, ref EVRSettingsError peError)
         {
             FnTable.GetString(pchSection, pchSettingsKey, pchValue, unValueLen, ref peError);
         }
@@ -3384,7 +3385,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             EVRScreenshotType result = FnTable.GetScreenshotPropertyType(screenshotHandle, ref pError);
             return result;
         }
-        public uint GetScreenshotPropertyFilename(uint screenshotHandle, EVRScreenshotPropertyFilenames filenameType, System.Text.StringBuilder pchFilename, uint cchFilename, ref EVRScreenshotError pError)
+        public uint GetScreenshotPropertyFilename(uint screenshotHandle, EVRScreenshotPropertyFilenames filenameType, StringBuilder pchFilename, uint cchFilename, ref EVRScreenshotError pError)
         {
             uint result = FnTable.GetScreenshotPropertyFilename(screenshotHandle, filenameType, pchFilename, cchFilename, ref pError);
             return result;
@@ -3420,7 +3421,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             uint result = FnTable.LoadSharedResource(pchResourceName, pchBuffer, unBufferLen);
             return result;
         }
-        public uint GetResourceFullPath(string pchResourceName, string pchResourceTypeDirectory, System.Text.StringBuilder pchPathBuffer, uint unBufferLen)
+        public uint GetResourceFullPath(string pchResourceName, string pchResourceTypeDirectory, StringBuilder pchPathBuffer, uint unBufferLen)
         {
             uint result = FnTable.GetResourceFullPath(pchResourceName, pchResourceTypeDirectory, pchPathBuffer, unBufferLen);
             return result;
@@ -3440,7 +3441,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             uint result = FnTable.GetDriverCount();
             return result;
         }
-        public uint GetDriverName(uint nDriver, System.Text.StringBuilder pchValue, uint unBufferSize)
+        public uint GetDriverName(uint nDriver, StringBuilder pchValue, uint unBufferSize)
         {
             uint result = FnTable.GetDriverName(nDriver, pchValue, unBufferSize);
             return result;
@@ -3519,7 +3520,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             EVRInputError result = FnTable.GetBoneHierarchy(action, pParentIndices, (uint)pParentIndices.Length);
             return result;
         }
-        public EVRInputError GetBoneName(ulong action, int nBoneIndex, System.Text.StringBuilder pchBoneName, uint unNameBufferSize)
+        public EVRInputError GetBoneName(ulong action, int nBoneIndex, StringBuilder pchBoneName, uint unNameBufferSize)
         {
             EVRInputError result = FnTable.GetBoneName(action, nBoneIndex, pchBoneName, unNameBufferSize);
             return result;
@@ -3565,7 +3566,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             EVRInputError result = FnTable.GetActionOrigins(actionSetHandle, digitalActionHandle, originsOut, (uint)originsOut.Length);
             return result;
         }
-        public EVRInputError GetOriginLocalizedName(ulong origin, System.Text.StringBuilder pchNameArray, uint unNameArraySize, int unStringSectionsToInclude)
+        public EVRInputError GetOriginLocalizedName(ulong origin, StringBuilder pchNameArray, uint unNameArraySize, int unStringSectionsToInclude)
         {
             EVRInputError result = FnTable.GetOriginLocalizedName(origin, pchNameArray, unNameArraySize, unStringSectionsToInclude);
             return result;
@@ -3649,7 +3650,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             EVRSpatialAnchorError result = FnTable.GetSpatialAnchorPose(unHandle, eOrigin, ref pPoseOut);
             return result;
         }
-        public EVRSpatialAnchorError GetSpatialAnchorDescriptor(uint unHandle, System.Text.StringBuilder pchDescriptorOut, ref uint punDescriptorBufferLenInOut)
+        public EVRSpatialAnchorError GetSpatialAnchorDescriptor(uint unHandle, StringBuilder pchDescriptorOut, ref uint punDescriptorBufferLenInOut)
         {
             punDescriptorBufferLenInOut = 0;
             EVRSpatialAnchorError result = FnTable.GetSpatialAnchorDescriptor(unHandle, pchDescriptorOut, ref punDescriptorBufferLenInOut);
@@ -6287,7 +6288,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
                 return null;
             }
 
-            return OpenVR.System;
+            return System;
         }
 
         /** unloads vrclient.dll. Any interface pointers from the interface are

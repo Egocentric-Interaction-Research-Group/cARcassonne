@@ -3,8 +3,8 @@
 // Licensed under the MIT License.
 //
 
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {

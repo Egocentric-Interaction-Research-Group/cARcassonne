@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// When the button is selected, it triggers starting the specified scene.
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
-    [System.Obsolete("This component is no longer supported", true)]
+    [Obsolete("This component is no longer supported", true)]
     [AddComponentMenu("Scripts/MRTK/Obsolete/OnSelectVisualizerInputController")]
     public class OnSelectVisualizerInputController : BaseEyeFocusHandler, IMixedRealityPointerHandler
     {

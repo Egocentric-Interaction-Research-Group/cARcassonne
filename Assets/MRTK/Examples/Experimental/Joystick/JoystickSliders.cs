@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
-using TMPro;
 using Microsoft.MixedReality.Toolkit.UI;
+using TMPro;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
 {

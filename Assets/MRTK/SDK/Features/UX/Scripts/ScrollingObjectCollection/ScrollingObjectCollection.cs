@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -450,7 +450,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// The UnityEvent type the ScrollingObjectCollection sends.
         /// GameObject is the object the fired the scroll.
         /// </summary>
-        [System.Serializable]
+        [Serializable]
         public class ScrollEvent : UnityEvent<GameObject> { }
 
         /// <summary>
@@ -1522,7 +1522,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="curve"><see cref="AnimationCurve"/> representing the easing desired</param>
         /// <param name="time">Time for animation, in seconds</param>
         /// <param name="callback">Optional callback action to be invoked after animation coroutine has finished</param>
-        private IEnumerator AnimateTo(Vector3 initialPos, Vector3 finalPos, AnimationCurve curve = null, float? time = null, System.Action callback = null)
+        private IEnumerator AnimateTo(Vector3 initialPos, Vector3 finalPos, AnimationCurve curve = null, float? time = null, Action callback = null)
         {
             if (curve == null)
             {
@@ -1845,7 +1845,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Moves the scroll container to the position that makes the tier with the tierIndex the first in the viewable area
         /// </summary>
-        private void MoveToTier(int tierIndex, bool animateToPosition = true, System.Action callback = null)
+        private void MoveToTier(int tierIndex, bool animateToPosition = true, Action callback = null)
         {
             if (animateScroller != null)
             {
@@ -1971,7 +1971,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="numberOfPages">Amount of pages to move by</param>
         /// <param name="animate"> If true, scroller will animate to new position</param>
         /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
-        public void MoveByPages(int numberOfPages, bool animate = true, System.Action callback = null)
+        public void MoveByPages(int numberOfPages, bool animate = true, Action callback = null)
         {
             int tierIndex = SafeDivisionInt(FirstVisibleCellIndex, CellsPerTier) + (numberOfPages * TiersPerPage);
 
@@ -1984,7 +1984,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="numberOfTiers">Amount of tiers to move by</param>
         /// <param name="animate">if true, scroller will animate to new position</param>
         /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
-        public void MoveByTiers(int numberOfTiers, bool animate = true, System.Action callback = null)
+        public void MoveByTiers(int numberOfTiers, bool animate = true, Action callback = null)
         {
             int tierIndex = SafeDivisionInt(FirstVisibleCellIndex, CellsPerTier) + numberOfTiers;
 
@@ -1997,7 +1997,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="cellIndex">Index of the cell to move to</param>
         /// <param name="animate">if true, scroller will animate to new position</param>
         /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
-        public void MoveToIndex(int cellIndex, bool animateToPosition = true, System.Action callback = null)
+        public void MoveToIndex(int cellIndex, bool animateToPosition = true, Action callback = null)
         {
             cellIndex = (cellIndex < 0) ? 0 : cellIndex;
             int tierIndex = SafeDivisionInt(cellIndex, CellsPerTier);

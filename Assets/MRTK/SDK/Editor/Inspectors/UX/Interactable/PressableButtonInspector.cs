@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Reflection;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -312,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 else
                 {
                     var movingVisualGameObject = (GameObject)movingButtonVisuals.objectReferenceValue;
-                    var movingGraphic = movingVisualGameObject.GetComponentInChildren<UnityEngine.UI.Graphic>();
+                    var movingGraphic = movingVisualGameObject.GetComponentInChildren<Graphic>();
                     if (movingGraphic == null)
                     {
                         EditorGUILayout.HelpBox($"When used with a NearInteractionTouchableUnityUI, the MovingButtonVisuals must contain an Image, RawImage, or other Graphic element so that it can receive a GraphicsRaycast.", MessageType.Warning);

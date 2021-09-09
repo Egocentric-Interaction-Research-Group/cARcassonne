@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
-using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using System;
 using System.IO;
+using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
+using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using UnityEngine;
 using UnityEngine.Serialization;
 

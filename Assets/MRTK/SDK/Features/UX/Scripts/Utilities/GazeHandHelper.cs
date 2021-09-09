@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Input;
+using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -19,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// the mixedrealitypose - eventdata received on input changed contains the handposition in eventdata.inputdata.position
     /// It also contains useful retrieval functions.
     /// </summary>
-    [System.Obsolete("This component is no longer supported", true)]
+    [Obsolete("This component is no longer supported", true)]
     public class GazeHandHelper
     {
         #region Private Variables

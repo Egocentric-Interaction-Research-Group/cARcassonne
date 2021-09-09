@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -8,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Base values of a theme property, used for serialization
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class ThemePropertyValue
     {
         public string Name;

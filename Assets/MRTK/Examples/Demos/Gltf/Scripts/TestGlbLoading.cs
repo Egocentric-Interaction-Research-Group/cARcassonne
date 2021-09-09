@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
-using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
 
             try
             {
-                response = await Utilities.Rest.GetAsync(uri, readResponseData: true);
+                response = await Rest.GetAsync(uri, readResponseData: true);
             }
             catch (Exception e)
             {

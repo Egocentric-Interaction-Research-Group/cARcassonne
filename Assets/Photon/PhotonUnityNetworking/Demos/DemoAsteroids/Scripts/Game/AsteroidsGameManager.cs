@@ -9,12 +9,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
-
-using UnityEngine;
-using UnityEngine.UI;
-
-using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Photon.Pun.Demo.Asteroids
@@ -115,7 +114,7 @@ namespace Photon.Pun.Demo.Asteroids
 
         public override void OnDisconnected(DisconnectCause cause)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("DemoAsteroids-LobbyScene");
+            SceneManager.LoadScene("DemoAsteroids-LobbyScene");
         }
 
         public override void OnLeftRoom()

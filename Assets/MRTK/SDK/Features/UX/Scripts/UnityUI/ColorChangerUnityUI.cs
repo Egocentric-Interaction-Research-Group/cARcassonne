@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void RandomColor()
         {
-            graphic.color = UnityEngine.Random.ColorHSV();
+            graphic.color = Random.ColorHSV();
         }
     }
 }

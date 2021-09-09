@@ -3,8 +3,9 @@
 // Licensed under the MIT License.
 //
 
-using Microsoft.MixedReality.Toolkit.Input;
 using System;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -300,12 +301,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 TickMarks.transform.localPosition = Vector3.zero;
                 TickMarks.transform.localRotation = Quaternion.identity;
 
-                var grid = TickMarks.GetComponent<Utilities.GridObjectCollection>();
+                var grid = TickMarks.GetComponent<GridObjectCollection>();
                 if (grid)
                 {
                     // Update cellwidth or cellheight depending on what was the previous axis set to
                     var previousAxis = grid.Layout;
-                    if (previousAxis == Utilities.LayoutOrder.Vertical)
+                    if (previousAxis == LayoutOrder.Vertical)
                     {
                         grid.CellWidth = grid.CellHeight;
                     }
@@ -314,7 +315,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         grid.CellHeight = grid.CellWidth;
                     }
 
-                    grid.Layout = (sliderAxis == SliderAxis.YAxis) ? Utilities.LayoutOrder.Vertical : Utilities.LayoutOrder.Horizontal;
+                    grid.Layout = (sliderAxis == SliderAxis.YAxis) ? LayoutOrder.Vertical : LayoutOrder.Horizontal;
                     grid.UpdateCollection();
                 }
 

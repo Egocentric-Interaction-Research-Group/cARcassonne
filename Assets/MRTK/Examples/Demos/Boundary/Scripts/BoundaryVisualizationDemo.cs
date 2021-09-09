@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Boundary;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Boundary;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos

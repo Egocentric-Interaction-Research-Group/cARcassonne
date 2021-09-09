@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => shaderPropertyName = value;
         }
 
-        [System.NonSerialized]
+        [NonSerialized]
         protected int ShaderPropertyID = -1;
 
         private static readonly ThemePropertyTypes[] ShaderTypes =

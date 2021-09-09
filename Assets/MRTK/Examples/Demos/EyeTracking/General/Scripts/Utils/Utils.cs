@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
@@ -85,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             for (int i = 0; i < arr.Length; i++)
             {
                 T temp = arr[i];
-                int randomIndex = UnityEngine.Random.Range(i, arr.Length);
+                int randomIndex = Random.Range(i, arr.Length);
                 arr[i] = arr[randomIndex];
                 arr[randomIndex] = temp;
             }
@@ -171,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     }
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 // Just ignore. Usually happens after the game object already got destroyed, but the update sequence had already been started.
             }
@@ -202,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 // Go through renderers in children objects
                 Renderers_ChangeTransparency(gobj.GetComponentsInChildren<Renderer>(), transparency, ref originalTransparency);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 // Just ignore; Usually happens after the game object already got destroyed, but the update sequence had already be started
             }

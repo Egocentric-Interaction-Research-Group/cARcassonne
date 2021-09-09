@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -110,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             {
                 // remove the keywords already assigned from the registered list
                 var handler = (SpeechInputHandler)target;
-                var availableKeywords = System.Array.Empty<string>();
+                var availableKeywords = Array.Empty<string>();
 
                 if (handler.Keywords != null && distinctRegisteredKeywords != null)
                 {

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -9,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Ease settings and functionality for themes
     /// </summary>
 
-    [System.Serializable]
+    [Serializable]
     public class ThemeEaseSettings
     {
         public enum BasicEaseCurves { Linear, EaseIn, EaseOut, EaseInOut }

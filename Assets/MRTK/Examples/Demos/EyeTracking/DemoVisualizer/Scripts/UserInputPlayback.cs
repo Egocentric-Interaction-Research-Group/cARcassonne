@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
 #if WINDOWS_UWP
@@ -116,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 #if WINDOWS_UWP
                 if (!UnityEngine.Windows.File.Exists(filename))
 #else
-                if (!System.IO.File.Exists(filename))
+                if (!File.Exists(filename))
 #endif
                 {
                     txt_LoadingUpdate.text += "Error: Playback log file does not exist! ->>   " + filename + "   <<";
@@ -291,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 // Now let's populate the visualizer
                 for (int i = 0; i < loggedLines.Count; i++)
                 {
-                    string[] split = loggedLines[i].Split(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray());
+                    string[] split = loggedLines[i].Split(CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray());
                     if (iType == InputSourceType.Eyes)
                         UpdateEyeGazeSignal(split, visualizer);
 
@@ -362,7 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             // Now let's populate the visualizer
             for (int i = 0; i < loggedLines.Count; i++)
             {
-                Ray? currentPointingRay = GetEyeRay(loggedLines[i].Split(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray()));
+                Ray? currentPointingRay = GetEyeRay(loggedLines[i].Split(CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray()));
                 if (currentPointingRay.HasValue)
                 {
                     if (UnityEngine.Physics.Raycast(currentPointingRay.Value, out hit, maxTargetingDistInMeters))
@@ -519,7 +520,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             // Now let's populate the visualizer step by step
             if (replayIndex < loggedLines.Count)
             {
-                string[] split = loggedLines[replayIndex].Split(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray());
+                string[] split = loggedLines[replayIndex].Split(CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray());
                 UpdateEyeGazeSignal(split, _EyeGazeVisualizer);
                 UpdateHeadGazeSignal(split, _HeadGazeVisualizer);
                 UpdateTimestampForNextReplay(split);

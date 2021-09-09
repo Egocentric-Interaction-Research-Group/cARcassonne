@@ -5,7 +5,7 @@ using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-
+using Object = UnityEngine.Object;
 #if !UNITY_2020_1_OR_NEWER
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 #endif // !UNITY_2020_1_OR_NEWER
@@ -222,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public static SerializedObject GetLightmapSettings()
         {
             var getLightmapSettingsMethod = typeof(LightmapEditorSettings).GetMethod("GetLightmapSettings", BindingFlags.Static | BindingFlags.NonPublic);
-            var lightmapSettings = getLightmapSettingsMethod.Invoke(null, null) as UnityEngine.Object;
+            var lightmapSettings = getLightmapSettingsMethod.Invoke(null, null) as Object;
             return new SerializedObject(lightmapSettings);
         }
     }

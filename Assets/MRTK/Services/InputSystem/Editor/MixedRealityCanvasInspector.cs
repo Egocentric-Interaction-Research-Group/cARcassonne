@@ -1,14 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.MixedReality.Toolkit.Input.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 using UEditor = UnityEditor.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -157,11 +158,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return isMRTKCanvas;
         }
 
-        private List<Graphic> GetGraphicsWhichRequireScaleMeshEffect(UnityEngine.Object[] targets)
+        private List<Graphic> GetGraphicsWhichRequireScaleMeshEffect(Object[] targets)
         {
             graphicsWhichRequireScaleMeshEffect.Clear();
 
-            foreach (UnityEngine.Object target in targets)
+            foreach (Object target in targets)
             {
                 Graphic[] graphics = (target as Canvas).GetComponentsInChildren<Graphic>();
 

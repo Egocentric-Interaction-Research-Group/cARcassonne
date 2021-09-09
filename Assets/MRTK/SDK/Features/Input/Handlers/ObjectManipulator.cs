@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Serialization;
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             RotateAboutObjectCenter,
             RotateAboutGrabPoint
         };
-        [System.Flags]
+        [Flags]
         public enum ReleaseBehaviorType
         {
             KeepVelocity = 1 << 0,

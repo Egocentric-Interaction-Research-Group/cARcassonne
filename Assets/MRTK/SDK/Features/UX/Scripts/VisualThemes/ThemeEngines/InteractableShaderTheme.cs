@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Obsolete
 
-        [System.Obsolete("GetFloat is no longer supported. Access the material block directly on the GameObject provided.")]
+        [Obsolete("GetFloat is no longer supported. Access the material block directly on the GameObject provided.")]
         public static float GetFloat(GameObject host, int propId)
         {
             if (host == null)
@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return block.GetFloat(propId);
         }
 
-        [System.Obsolete("GetColor is no longer supported. Access the material block directly on the GameObject provided.")]
+        [Obsolete("GetColor is no longer supported. Access the material block directly on the GameObject provided.")]
         public static Color GetColor(GameObject host, int propId)
         {
             if (host == null)

@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Editor;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Microsoft.MixedReality.Toolkit.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -192,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         {
                             activeInputHandlerProperty.intValue = 2;
                             settings.ApplyModifiedProperties();
-                            typeof(EditorApplication).GetMethod("RestartEditorAndRecompileScripts", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)?.Invoke(null, null);
+                            typeof(EditorApplication).GetMethod("RestartEditorAndRecompileScripts", BindingFlags.NonPublic | BindingFlags.Static)?.Invoke(null, null);
                         }
                     }
                 }}

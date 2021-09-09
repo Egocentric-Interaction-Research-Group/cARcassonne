@@ -10,6 +10,7 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 namespace Photon.Pun.Demo.PunBasics
 {
@@ -106,7 +107,7 @@ namespace Photon.Pun.Demo.PunBasics
 
             #if UNITY_5_4_OR_NEWER
             // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
-			UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+			SceneManager.sceneLoaded += OnSceneLoaded;
             #endif
         }
 
@@ -117,7 +118,7 @@ namespace Photon.Pun.Demo.PunBasics
 			base.OnDisable ();
 
 			#if UNITY_5_4_OR_NEWER
-			UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+			SceneManager.sceneLoaded -= OnSceneLoaded;
 			#endif
 		}
 
@@ -229,7 +230,7 @@ namespace Photon.Pun.Demo.PunBasics
 
 
 		#if UNITY_5_4_OR_NEWER
-		void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode loadingMode)
+		void OnSceneLoaded(Scene scene, LoadSceneMode loadingMode)
 		{
 			this.CalledOnLevelWasLoaded(scene.buildIndex);
 		}

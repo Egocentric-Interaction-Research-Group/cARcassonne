@@ -16,7 +16,7 @@ namespace Photon.Pun.UtilityScripts
     /// Smoothed out movement for network gameobjects
     /// </summary>
     [RequireComponent(typeof(PhotonView))]
-    public class SmoothSyncMovement : Photon.Pun.MonoBehaviourPun, IPunObservable
+    public class SmoothSyncMovement : MonoBehaviourPun, IPunObservable
     {
         public float SmoothingDelay = 5;
         public void Awake()

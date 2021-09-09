@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
@@ -11,12 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
     {
         public virtual string[] GetHeaderColumns()
         {
-            return System.Array.Empty<string>();
+            return Array.Empty<string>();
         }
 
         public virtual object[] GetData(string inputType, string inputStatus, EyeTrackingTarget intTarget)
         {
-            return System.Array.Empty<object>();
+            return Array.Empty<object>();
         }
     }
 }

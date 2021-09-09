@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         settings.Show = InspectorUIUtility.DrawSectionFoldout("Theme Settings (Click to edit)", listSettings[i].Show);
                         if (settings.Show)
                         {
-                            UnityEditor.Editor themeEditor = UnityEditor.Editor.CreateEditor(theme.objectReferenceValue);
+                            UnityEditor.Editor themeEditor = CreateEditor(theme.objectReferenceValue);
                             themeEditor.OnInspectorGUI();
                         }
 

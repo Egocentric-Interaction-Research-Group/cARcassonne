@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -1732,7 +1732,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     Collider[] colliders = corner.gameObject.GetComponents<Collider>();
                     foreach (Collider collider in colliders)
                     {
-                        UnityEngine.Physics.IgnoreCollision(collider, handlesIgnoreCollider);
+                        UnityPhysics.IgnoreCollision(collider, handlesIgnoreCollider);
                     }
                 }
 
@@ -1741,7 +1741,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     Collider[] colliders = ball.gameObject.GetComponents<Collider>();
                     foreach (Collider collider in colliders)
                     {
-                        UnityEngine.Physics.IgnoreCollision(collider, handlesIgnoreCollider);
+                        UnityPhysics.IgnoreCollision(collider, handlesIgnoreCollider);
                     }
                 }
             }

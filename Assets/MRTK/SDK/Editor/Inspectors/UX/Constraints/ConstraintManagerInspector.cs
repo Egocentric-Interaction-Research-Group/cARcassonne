@@ -3,13 +3,13 @@
 // Licensed under the MIT License.
 //
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.UI;
-using System;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.Space();
 
                     EditorGUILayout.HelpBox(autoConstraintSelection.boolValue == true ? autoMsg : manualMsg
-                        , UnityEditor.MessageType.Info);
+                        , MessageType.Info);
                     EditorGUILayout.Space();
 
                     int tab = autoConstraintSelection.boolValue == true ? 0 : 1;

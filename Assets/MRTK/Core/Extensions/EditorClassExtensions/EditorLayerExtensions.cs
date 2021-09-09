@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// The current layers defined in the Tag Manager.
         /// </summary>
-        public static UnityEditor.SerializedProperty TagManagerLayers
+        public static SerializedProperty TagManagerLayers
         {
             get
             {
@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static void InitializeTagManager()
         {
-            Object[] tagAssets = UnityEditor.AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset");
+            Object[] tagAssets = AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset");
 
             if ((tagAssets == null) || (tagAssets.Length == 0))
             {
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            var tagsManager = new UnityEditor.SerializedObject(tagAssets);
+            var tagsManager = new SerializedObject(tagAssets);
             tagManagerLayers = tagsManager.FindProperty("layers");
 
             Debug.Assert(tagManagerLayers != null);

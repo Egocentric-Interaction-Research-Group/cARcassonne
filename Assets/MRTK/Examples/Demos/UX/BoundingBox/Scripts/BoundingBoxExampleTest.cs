@@ -1,13 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections;
+using System.Text;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections;
-using System.Text;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
@@ -239,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
-            if (eventData.Command.Keyword.Equals("Select", System.StringComparison.CurrentCultureIgnoreCase))
+            if (eventData.Command.Keyword.Equals("Select", StringComparison.CurrentCultureIgnoreCase))
             {
                 speechTriggeredFalg = true;
             }

@@ -86,7 +86,7 @@ namespace Simplex
         static Noise()
         {
             perm = new byte[permOriginal.Length];
-            Simplex.Noise.permOriginal.CopyTo(perm, 0);
+            permOriginal.CopyTo(perm, 0);
         }
 
         public static int Seed
@@ -97,7 +97,7 @@ namespace Simplex
                 if (value == 0)
                 {
                     perm = new byte[permOriginal.Length];
-                    Simplex.Noise.permOriginal.CopyTo(perm, 0);
+                    permOriginal.CopyTo(perm, 0);
                 }
                 else
                 {

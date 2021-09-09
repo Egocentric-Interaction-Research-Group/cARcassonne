@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using System;
+using System.Globalization;
 using System.IO;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
@@ -97,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             string strFormat = "";
             for (int i = 0; i < data.Length - 1; i++)
             {
-                strFormat += ("{" + i + "}" + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ");
+                strFormat += ("{" + i + "}" + CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ");
             }
             strFormat += ("{" + (data.Length - 1) + "}");
             return strFormat;
@@ -140,9 +141,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         public override void OnDestroy()
         {
             // Disable listening to user input
-            if (UserInputRecorder.Instance != null)
+            if (Instance != null)
             {
-                UserInputRecorder.Instance.StopLoggingAndSave();
+                Instance.StopLoggingAndSave();
             }
 
             base.OnDestroy();

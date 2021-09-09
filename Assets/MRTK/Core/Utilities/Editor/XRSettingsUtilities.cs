@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using UnityEditor;
-
 #if UNITY_2019_3_OR_NEWER
 using System.Collections.Generic;
 using UnityEngine;

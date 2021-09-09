@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
@@ -206,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 #pragma warning disable 0414
         [SerializeField]
         [HideInInspector]
-        [System.Obsolete("Use the Handedness property instead to get current handedness which is set by Controller attached")]
+        [Obsolete("Use the Handedness property instead to get current handedness which is set by Controller attached")]
         [Tooltip("Use the Handedness property instead to get current handedness which is set by Controller attached")]
         private Handedness handedness = Handedness.Left;
 #pragma warning restore 0414

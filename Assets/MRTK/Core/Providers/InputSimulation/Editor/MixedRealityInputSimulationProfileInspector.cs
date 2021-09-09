@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.﻿
 
-using Microsoft.MixedReality.Toolkit.Editor;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Editor;
 using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Input

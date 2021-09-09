@@ -1,17 +1,21 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Text;
-using Unity.Profiling;
-using UnityEngine;
-
 #if WINDOWS_UWP
 using Windows.Media.Capture;
 using Windows.System;
 #else
 using UnityEngine.Profiling;
 #endif
+using System;
+using System.Diagnostics;
+using System.Text;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Unity.Profiling;
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.XR;
+using Debug = UnityEngine.Debug;
 
 namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
@@ -144,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         [SerializeField, Range(0, 3), Tooltip("How many decimal places to display on numeric strings.")]
         private int displayedDecimalDigits = 1;
 
-        [System.Serializable]
+        [Serializable]
         private struct FrameRateColor
         {
             [Range(0.0f, 1.0f), Tooltip("The percentage of the target frame rate.")]
@@ -196,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private int colorID;
         private int parentMatrixID;
         private int frameCount;
-        private System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+        private Stopwatch stopwatch = new Stopwatch();
         private FrameTiming[] frameTimings = new FrameTiming[maxFrameTimings];
         private string[] cpuFrameRateStrings;
         private string[] gpuFrameRateStrings;
@@ -226,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             {
                 defaultMaterial = new Material(Shader.Find("Hidden/Internal-Colored"));
                 defaultMaterial.SetFloat("_ZWrite", 1.0f);
-                defaultMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Disabled);
+                defaultMaterial.SetFloat("_ZTest", (float)CompareFunction.Disabled);
                 defaultMaterial.renderQueue = 5000;
             }
 
@@ -239,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                     defaultInstancedMaterial = new Material(defaultInstancedShader);
                     defaultInstancedMaterial.enableInstancing = true;
                     defaultInstancedMaterial.SetFloat("_ZWrite", 1.0f);
-                    defaultInstancedMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Disabled);
+                    defaultInstancedMaterial.SetFloat("_ZTest", (float)CompareFunction.Disabled);
                     defaultInstancedMaterial.renderQueue = 5000;
                 }
                 else
@@ -381,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                     if (defaultInstancedMaterial != null && SystemInfo.supportsInstancing)
                     {
                         frameInfoPropertyBlock.SetMatrix(parentMatrixID, parentLocalToWorldMatrix);
-                        Graphics.DrawMeshInstanced(quadMesh, 0, defaultInstancedMaterial, frameInfoMatrices, frameInfoMatrices.Length, frameInfoPropertyBlock, UnityEngine.Rendering.ShadowCastingMode.Off, false);
+                        Graphics.DrawMeshInstanced(quadMesh, 0, defaultInstancedMaterial, frameInfoMatrices, frameInfoMatrices.Length, frameInfoPropertyBlock, ShadowCastingMode.Off, false);
                     }
                     else
                     {
@@ -717,11 +721,11 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private static void OptimizeRenderer(Renderer renderer)
         {
-            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
             renderer.receiveShadows = false;
             renderer.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
-            renderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
-            renderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
+            renderer.lightProbeUsage = LightProbeUsage.Off;
+            renderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
             renderer.allowOcclusionWhenDynamic = false;
         }
 
@@ -794,7 +798,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             get
             {
                 // If the current XR SDK does not report refresh rate information, assume 60Hz.
-                float refreshRate = UnityEngine.XR.XRDevice.refreshRate;
+                float refreshRate = XRDevice.refreshRate;
                 return ((int)refreshRate == 0) ? 60.0f : refreshRate;
             }
         }

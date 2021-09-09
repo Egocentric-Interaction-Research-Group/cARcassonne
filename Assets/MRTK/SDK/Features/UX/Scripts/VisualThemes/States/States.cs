@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             StateModelType = typeof(InteractableStates);
         }
 
-        [System.Obsolete("Use the StateList property instead")]
+        [Obsolete("Use the StateList property instead")]
         public State[] GetStates()
         {
             return StateList.ToArray();

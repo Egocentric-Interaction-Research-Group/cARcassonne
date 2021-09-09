@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                     {
                                         using (new EditorGUI.IndentLevelScope())
                                         {
-                                            UnityEditor.Editor themeEditor = UnityEditor.Editor.CreateEditor(themeItem.objectReferenceValue);
+                                            UnityEditor.Editor themeEditor = CreateEditor(themeItem.objectReferenceValue);
                                             themeEditor.OnInspectorGUI();
                                         }
                                     }
@@ -452,7 +452,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             if (path.Length != 0)
             {
-                Theme newTheme = ScriptableObject.CreateInstance<Theme>();
+                Theme newTheme = CreateInstance<Theme>();
                 newTheme.States = GetDefaultInteractableStatesFile();
                 newTheme.Definitions = new List<ThemeDefinition>();
                 AssetDatabase.CreateAsset(newTheme, path);

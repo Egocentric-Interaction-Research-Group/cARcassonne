@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 #if UNITY_WSA && !UNITY_2020_1_OR_NEWER

@@ -7,11 +7,15 @@
 //
 //=============================================================================
 
-using Microsoft.MixedReality.Toolkit.OpenVR.Headers;
-using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using Microsoft.MixedReality.Toolkit.OpenVR.Headers;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
@@ -61,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 return false;
             }
 
-            var buffer = new System.Text.StringBuilder((int)capacity);
+            var buffer = new StringBuilder((int)capacity);
             system.GetStringTrackedDeviceProperty(index, ETrackedDeviceProperty.Prop_RenderModelName_String, buffer, capacity, ref error);
 
             var s = buffer.ToString();
@@ -103,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                         continue;
                     }
 
-                    var componentNameStringBuilder = new System.Text.StringBuilder((int)capacity);
+                    var componentNameStringBuilder = new StringBuilder((int)capacity);
                     if (renderModels.GetComponentName(newRenderModelName, (uint)componentIndex, componentNameStringBuilder, capacity) == 0)
                     {
                         continue;
@@ -117,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                         continue;
                     }
 
-                    var nameStringBuilder = new System.Text.StringBuilder((int)capacity);
+                    var nameStringBuilder = new StringBuilder((int)capacity);
                     if (renderModels.GetComponentRenderModelName(newRenderModelName, componentName, nameStringBuilder, capacity) == 0)
                     {
                         continue;
@@ -141,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 }
                 else
                 {
-                    renderModelNames = System.Array.Empty<string>();
+                    renderModelNames = Array.Empty<string>();
                 }
             }
 
@@ -156,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                         continue;
                     }
 
-                    var pRenderModel = System.IntPtr.Zero;
+                    var pRenderModel = IntPtr.Zero;
 
                     var error = renderModels.LoadRenderModel_Async(renderModelNames[renderModelNameIndex], ref pRenderModel);
 
@@ -173,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                         var material = materials[renderModel.diffuseTextureId] as Material;
                         if (material == null || material.mainTexture == null)
                         {
-                            var pDiffuseTexture = System.IntPtr.Zero;
+                            var pDiffuseTexture = IntPtr.Zero;
 
                             error = renderModels.LoadTexture_Async(renderModel.diffuseTextureId, ref pDiffuseTexture);
 
@@ -234,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
         private RenderModel LoadRenderModel(CVRRenderModels renderModels, string renderModelName, string baseName)
         {
-            var pRenderModel = System.IntPtr.Zero;
+            var pRenderModel = IntPtr.Zero;
 
             EVRRenderModelError error;
             while (true)
@@ -261,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             var type = typeof(RenderModel_Vertex_t);
             for (int iVert = 0; iVert < renderModel.unVertexCount; iVert++)
             {
-                var ptr = new System.IntPtr(renderModel.rVertexData.ToInt64() + iVert * Marshal.SizeOf(type));
+                var ptr = new IntPtr(renderModel.rVertexData.ToInt64() + iVert * Marshal.SizeOf(type));
                 var vert = (RenderModel_Vertex_t)Marshal.PtrToStructure(ptr, type);
 
                 vertices[iVert] = new Vector3(vert.vPosition.v0, vert.vPosition.v1, -vert.vPosition.v2);
@@ -293,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             var material = materials[renderModel.diffuseTextureId] as Material;
             if (material == null || material.mainTexture == null)
             {
-                var pDiffuseTexture = System.IntPtr.Zero;
+                var pDiffuseTexture = IntPtr.Zero;
 
                 while (true)
                 {
@@ -310,10 +314,10 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 {
                     var diffuseTexture = MarshalRenderModel_TextureMap(pDiffuseTexture);
                     var texture = new Texture2D(diffuseTexture.unWidth, diffuseTexture.unHeight, TextureFormat.RGBA32, false);
-                    if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Direct3D11)
+                    if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Direct3D11)
                     {
                         texture.Apply();
-                        System.IntPtr texturePointer = texture.GetNativeTexturePtr();
+                        IntPtr texturePointer = texture.GetNativeTexturePtr();
                         while (true)
                         {
                             error = renderModels.LoadIntoTextureD3D11_Async(renderModel.diffuseTextureId, texturePointer);
@@ -379,7 +383,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             return new RenderModel(mesh, material);
         }
 
-        private IEnumerator FreeRenderModel(System.IntPtr pRenderModel)
+        private IEnumerator FreeRenderModel(IntPtr pRenderModel)
         {
             yield return new WaitForSeconds(1.0f);
             Headers.OpenVR.RenderModels.FreeRenderModel(pRenderModel);
@@ -403,15 +407,15 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         private static void Sleep()
         {
 #if !UNITY_WSA
-            System.Threading.Thread.Sleep(1);
+            Thread.Sleep(1);
 #endif
         }
 
-        private RenderModel_t MarshalRenderModel(System.IntPtr pRenderModel)
+        private RenderModel_t MarshalRenderModel(IntPtr pRenderModel)
         {
 #if !ENABLE_DOTNET
-            if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
-                (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
+            if ((Environment.OSVersion.Platform == PlatformID.MacOSX) ||
+                (Environment.OSVersion.Platform == PlatformID.Unix))
             {
                 var packedModel = (RenderModel_t_Packed)Marshal.PtrToStructure(pRenderModel, typeof(RenderModel_t_Packed));
                 RenderModel_t model = new RenderModel_t();
@@ -425,11 +429,11 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             }
         }
 
-        private RenderModel_TextureMap_t MarshalRenderModel_TextureMap(System.IntPtr pRenderModel)
+        private RenderModel_TextureMap_t MarshalRenderModel_TextureMap(IntPtr pRenderModel)
         {
 #if !ENABLE_DOTNET
-            if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
-                (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
+            if ((Environment.OSVersion.Platform == PlatformID.MacOSX) ||
+                (Environment.OSVersion.Platform == PlatformID.Unix))
             {
                 var packedModel = (RenderModel_TextureMap_t_Packed)Marshal.PtrToStructure(pRenderModel, typeof(RenderModel_TextureMap_t_Packed));
                 RenderModel_TextureMap_t model = new RenderModel_TextureMap_t();

@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
@@ -344,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 float uvy = (Mathf.Clamp(transfHitPnt.y, -halfsize.y, halfsize.y) + halfsize.y) / (2 * halfsize.y);
                 hitPointUV = new Vector2(uvx, uvy);
             }
-            catch (UnityEngine.Assertions.AssertionException)
+            catch (AssertionException)
             {
                 Debug.LogError(">> AssertionException");
             }

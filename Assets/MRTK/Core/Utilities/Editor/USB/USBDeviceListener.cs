@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         static USBDeviceListener()
         {
-            UnityEditor.Hardware.Usb.DevicesChanged += NotifyUsbDevicesChanged;
+            Usb.DevicesChanged += NotifyUsbDevicesChanged;
         }
 
         private static void NotifyUsbDevicesChanged(UsbDevice[] devices)

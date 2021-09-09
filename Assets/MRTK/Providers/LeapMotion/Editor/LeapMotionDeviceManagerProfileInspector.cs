@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.﻿
 
+using System.Linq;
 using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.LeapMotion.Input;
 using Microsoft.MixedReality.Toolkit.LeapMotion.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 

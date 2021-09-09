@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -18,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// The designer or engineer can take pixel based redlines and create UI at 1:1 scale.
     /// </summary>
     [ExecuteInEditMode]
-    [System.Obsolete("This component is no longer supported", true)]
+    [Obsolete("This component is no longer supported", true)]
     [AddComponentMenu("Scripts/MRTK/Obsolete/ButtonBackgroundSize")]
     public class ButtonBackgroundSize : MonoBehaviour
     {

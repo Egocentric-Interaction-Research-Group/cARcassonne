@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
-using System.Text;
-using System.Collections.Generic;
 using UnityEngine.TextCore;
-using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     charIconLookup.Add(charIcon.Name, charIcon.Character);
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 Debug.LogWarning("There's a null element in your icon set. Icon lookup by name will be disabled until this is resolved.");
             }
@@ -194,7 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public static string ConvertUInt32ToUnicodeCharString(uint unicode)
         {
-            byte[] bytes = System.BitConverter.GetBytes(unicode);
+            byte[] bytes = BitConverter.GetBytes(unicode);
             return Encoding.Unicode.GetString(bytes);
         }
 
@@ -740,7 +740,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             private bool CheckIfHololensIconFontExists()
             {
-                foreach (string guid in AssetDatabase.FindAssets($"t:{typeof(UnityEngine.Font).Name}"))
+                foreach (string guid in AssetDatabase.FindAssets($"t:{typeof(Font).Name}"))
                 {
                     if (AssetDatabase.GUIDToAssetPath(guid).Contains(mdl2IconFontName))
                     {

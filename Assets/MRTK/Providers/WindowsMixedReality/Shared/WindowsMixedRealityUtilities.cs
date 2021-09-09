@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using UnityEngine;
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 using System.Runtime.InteropServices;
@@ -123,13 +124,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
         [Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
-        public static UnityEngine.Vector3 SystemVector3ToUnity(System.Numerics.Vector3 vector)
+        public static Vector3 SystemVector3ToUnity(System.Numerics.Vector3 vector)
         {
             return vector.ToUnityVector3();
         }
 
         [Obsolete("Use the System.Numerics.Quaternion extension method ToUnityQuaternion instead.")]
-        public static UnityEngine.Quaternion SystemQuaternionToUnity(System.Numerics.Quaternion quaternion)
+        public static Quaternion SystemQuaternionToUnity(System.Numerics.Quaternion quaternion)
         {
             return quaternion.ToUnityQuaternion();
         }

@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Unity.Profiling;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -106,9 +107,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.Start();
 
 #if UNITY_EDITOR
-            if (UnityEditor.EditorWindow.focusedWindow != null)
+            if (EditorWindow.focusedWindow != null)
             {
-                UnityEditor.EditorWindow.focusedWindow.ShowNotification(new GUIContent("Press \"ESC\" to regain mouse control"));
+                EditorWindow.focusedWindow.ShowNotification(new GUIContent("Press \"ESC\" to regain mouse control"));
             }
 #endif
 

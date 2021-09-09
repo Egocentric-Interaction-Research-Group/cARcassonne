@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
+
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// State data model, state management and comparison instructions
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class State
     {
         /// <summary>
@@ -39,13 +41,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return Name;
         }
 
-        [System.Obsolete("Use Index property")]
+        [Obsolete("Use Index property")]
         public int ToInt()
         {
             return Index;
         }
 
-        [System.Obsolete("Use Bit property")]
+        [Obsolete("Use Bit property")]
         public int ToBit()
         {
             return Bit;

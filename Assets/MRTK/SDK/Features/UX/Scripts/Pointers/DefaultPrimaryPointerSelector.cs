@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using Unity.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -118,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (value && !isInteractionEnabled)
                     {
                         // We count becoming interaction enabled as a pointer released event
-                        ReleasedTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                        ReleasedTimestamp = Stopwatch.GetTimestamp();
                     }
                     isInteractionEnabled = value;
                 }
@@ -136,11 +137,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (value && !isPressed)
                     {
-                        PressedTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                        PressedTimestamp = Stopwatch.GetTimestamp();
                     }
                     else if (!value && isPressed)
                     {
-                        ReleasedTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                        ReleasedTimestamp = Stopwatch.GetTimestamp();
                     }
 
                     isPressed = value;

@@ -6,10 +6,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-
-using UnityEngine;
-
 using Photon.Realtime;
+using UnityEngine;
 
 namespace Photon.Pun.Demo.Cockpit
 {

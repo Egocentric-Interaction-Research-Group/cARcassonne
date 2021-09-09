@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.﻿
 
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.IO;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.LeapMotion.Utilities
 {

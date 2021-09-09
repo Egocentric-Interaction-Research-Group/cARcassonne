@@ -9,7 +9,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-
 using UnityEngine;
 
 namespace Photon.Pun.UtilityScripts

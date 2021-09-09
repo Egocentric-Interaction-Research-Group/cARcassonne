@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System;
 using System.Collections;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEngine;
+using Object = System.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
 {
@@ -124,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <param name="result">DialogResult class object which contains information such as title and description text</param>
         public static Dialog Open(GameObject dialogPrefab, DialogResult result)
         {
-            GameObject dialogGo = GameObject.Instantiate(dialogPrefab) as GameObject;
+            GameObject dialogGo = Instantiate(dialogPrefab) as GameObject;
             Dialog dialog = dialogGo.GetComponent<Dialog>();
 
             dialog.Launch(result);
@@ -139,9 +140,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <param name="title">Title text of the dialog</param>
         /// <param name="message">Description text of the dialog</param>
         /// <param name="variable">Object with additional variable</param>
-        public static Dialog Open(GameObject dialogPrefab, DialogButtonType buttons, string title, string message, bool placeForNearInteraction, System.Object variable = null)
+        public static Dialog Open(GameObject dialogPrefab, DialogButtonType buttons, string title, string message, bool placeForNearInteraction, Object variable = null)
         {
-            GameObject dialogGameObject = GameObject.Instantiate(dialogPrefab) as GameObject;
+            GameObject dialogGameObject = Instantiate(dialogPrefab) as GameObject;
 
             if (placeForNearInteraction == true)
             {

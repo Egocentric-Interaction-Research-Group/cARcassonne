@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             if (keys.Count != values.Count)
             {
-                throw new System.Exception(string.Format($"Error after deserialization in SerializableDictionary class. There are {keys.Count} keys and {values.Count} values after deserialization. Could not load SerializableDictionary"));
+                throw new Exception(string.Format($"Error after deserialization in SerializableDictionary class. There are {keys.Count} keys and {values.Count} values after deserialization. Could not load SerializableDictionary"));
             }
 
             for (int i = 0; i < keys.Count; i++)

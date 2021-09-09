@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-using PaginationMode = Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.PaginationMode;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -74,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected const string ShowDebugOptionsPrefKey = "ScrollViewInspectorShowDebugOptions";
 
         private bool ShowDebugPagination;
-        private PaginationMode debugPaginationMode;
+        private ScrollingObjectCollection.PaginationMode debugPaginationMode;
 
         private bool animateTransition = true;
         private int paginationMoveNumber = 1;
@@ -296,21 +295,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                                 using (new EditorGUILayout.HorizontalScope())
                                 {
-                                    debugPaginationMode = (PaginationMode)EditorGUILayout.EnumPopup(new GUIContent("Pagination Mode"), debugPaginationMode, GUILayout.Width(400.0f));
+                                    debugPaginationMode = (ScrollingObjectCollection.PaginationMode)EditorGUILayout.EnumPopup(new GUIContent("Pagination Mode"), debugPaginationMode, GUILayout.Width(400.0f));
                                     paginationMoveNumber = EditorGUILayout.IntField(paginationMoveNumber);
 
                                     if (GUILayout.Button("Move"))
                                     {
                                         switch (debugPaginationMode)
                                         {
-                                            case PaginationMode.ByTier:
+                                            case ScrollingObjectCollection.PaginationMode.ByTier:
                                             default:
                                                 scrollView.MoveByTiers(paginationMoveNumber, animateTransition);
                                                 break;
-                                            case PaginationMode.ByPage:
+                                            case ScrollingObjectCollection.PaginationMode.ByPage:
                                                 scrollView.MoveByPages(paginationMoveNumber, animateTransition);
                                                 break;
-                                            case PaginationMode.ToCellIndex:
+                                            case ScrollingObjectCollection.PaginationMode.ToCellIndex:
                                                 scrollView.MoveToIndex(paginationMoveNumber, animateTransition);
                                                 break;
                                         }

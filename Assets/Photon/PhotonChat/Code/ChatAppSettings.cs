@@ -6,6 +6,9 @@
 // <author>developer@photonengine.com</author>
 // ----------------------------------------------------------------------------
 
+using System;
+using ExitGames.Client.Photon;
+
 #if UNITY_4_7 || UNITY_5 || UNITY_5_3_OR_NEWER
 #define SUPPORTED_UNITY
 #endif
@@ -13,9 +16,7 @@
 
 namespace Photon.Chat
 {
-    using System;
-    using ExitGames.Client.Photon;
-    #if SUPPORTED_UNITY
+#if SUPPORTED_UNITY
     using UnityEngine.Serialization;
     #endif
 

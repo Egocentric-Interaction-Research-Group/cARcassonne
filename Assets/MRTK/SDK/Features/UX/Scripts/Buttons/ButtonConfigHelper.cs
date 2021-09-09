@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -263,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="newIconChar">Unicode string for new icon character.</param>
         /// <param name="newIconCharFont">Optional TMPro font asset. If null, the existing font asset will be used.</param>
-        public void SetCharIcon(uint newIconChar, UnityEngine.Object newIconCharFont = null)
+        public void SetCharIcon(uint newIconChar, Object newIconCharFont = null)
         {
             if (newIconChar <= 0)
             {
@@ -514,7 +515,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             ButtonIconSet targetIconSet = iconSet;
             bool createdIconSet = false;
-            string generatedIconSetFolder = System.IO.Path.Combine(customIconsFolder, customIconSetsFolderName);
+            string generatedIconSetFolder = Path.Combine(customIconsFolder, customIconSetsFolderName);
 
             // If this icon set doesn't have our icon in it, we need to either add it or create a new icon set
             if (!iconSet.TryGetQuadIcon(targetQuadIcon.name, out Texture2D quadIcon) && iconSet == defaultIconSet)
@@ -524,7 +525,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     AssetDatabase.CreateFolder(customIconsFolder, customIconSetsFolderName);
                 }
 
-                string generatedIconSetPath = System.IO.Path.Combine(generatedIconSetFolder, generatedIconSetName + ".asset");
+                string generatedIconSetPath = Path.Combine(generatedIconSetFolder, generatedIconSetName + ".asset");
                 targetIconSet = (ButtonIconSet)AssetDatabase.LoadAssetAtPath(generatedIconSetPath, typeof(ButtonIconSet));
 
                 if (targetIconSet == null)

@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.﻿
 
-using Microsoft.MixedReality.Toolkit.SceneSystem;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;

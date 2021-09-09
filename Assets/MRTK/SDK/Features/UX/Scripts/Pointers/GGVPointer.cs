@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections;
 using Unity.Profiling;
 using UnityEngine;
 
@@ -126,8 +127,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public float SphereCastRadius
         {
-            get => throw new System.NotImplementedException();
-            set => throw new System.NotImplementedException();
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         private static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)

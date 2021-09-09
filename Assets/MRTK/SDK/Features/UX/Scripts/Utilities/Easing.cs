@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -9,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// Ease settings and functionality for animation with curves
     /// </summary>
 
-    [System.Serializable]
+    [Serializable]
     public class Easing
     {
         /// <summary>

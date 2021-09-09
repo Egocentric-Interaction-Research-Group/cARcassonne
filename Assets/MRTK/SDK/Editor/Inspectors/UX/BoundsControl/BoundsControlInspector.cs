@@ -3,12 +3,12 @@
 // Licensed under the MIT License.
 //
 
+using Microsoft.MixedReality.Toolkit.Experimental.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Experimental.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -202,12 +202,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (rigidBody != null)
             {
-                MixedRealityInputSystemProfile profile = Microsoft.MixedReality.Toolkit.CoreServices.InputSystem?.InputSystemProfile;
+                MixedRealityInputSystemProfile profile = CoreServices.InputSystem?.InputSystemProfile;
                 if (profile != null && profile.FocusIndividualCompoundCollider == false)
                 {
                     EditorGUILayout.Space();
                     // Show warning and button to reconfigure profile
-                    EditorGUILayout.HelpBox($"When using Bounds Control in combination with Rigidbody 'Focus Individual Compound Collider' must be enabled in Input Profile.", UnityEditor.MessageType.Warning);
+                    EditorGUILayout.HelpBox($"When using Bounds Control in combination with Rigidbody 'Focus Individual Compound Collider' must be enabled in Input Profile.", MessageType.Warning);
                     if (GUILayout.Button($"Enable 'Focus Individual Compound Collider' in Input Profile"))
                     {
                         profile.FocusIndividualCompoundCollider = true;

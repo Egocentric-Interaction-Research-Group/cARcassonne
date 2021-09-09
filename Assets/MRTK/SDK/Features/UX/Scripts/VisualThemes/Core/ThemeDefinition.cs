@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Defines configuration properties and settings to use when initializing a class extending InteractableThemeBase
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public struct ThemeDefinition : ISerializationCallbackReceiver
     {
         /// <summary>

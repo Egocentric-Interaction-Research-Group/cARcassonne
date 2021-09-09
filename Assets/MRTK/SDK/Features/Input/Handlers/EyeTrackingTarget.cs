@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 using UnityEngine.Events;
-using System;
 using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -322,7 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if ((eventData.MixedRealityInputAction == selectAction) && IsLookedAt && ((DateTime.UtcNow - lastTimeClicked).TotalMilliseconds > minTimeoutBetweenClicksInMs))
             {
                 lastTimeClicked = DateTime.UtcNow;
-                EyeTrackingTarget.SelectedTarget = this.gameObject;
+                SelectedTarget = this.gameObject;
                 OnSelected.Invoke();
             }
         }
@@ -337,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         if (eventData.MixedRealityInputAction == voiceSelect[i])
                         {
-                            EyeTrackingTarget.SelectedTarget = this.gameObject;
+                            SelectedTarget = this.gameObject;
                             OnSelected.Invoke();
                         }
                     }
@@ -349,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region Methods to Invoke Events Manually
         public void RaiseSelectEventManually()
         {
-            EyeTrackingTarget.SelectedTarget = this.gameObject;
+            SelectedTarget = this.gameObject;
             OnSelected.Invoke();
         }
         #endregion

@@ -9,7 +9,6 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -132,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 PrefabAssetType prefabType = PrefabUtility.GetPrefabAssetType(selectedObject);
                 if (prefabType == PrefabAssetType.Regular || prefabType == PrefabAssetType.Variant)
                 {
-                    var parent = UnityEditor.PrefabUtility.LoadPrefabContents(objectPath);
+                    var parent = PrefabUtility.LoadPrefabContents(objectPath);
                     canMigrate = CheckIfCanMigrate(type, parent);
                     PrefabUtility.UnloadPrefabContents(parent);
                 }
@@ -357,11 +356,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 return;
             }
-            var parent = UnityEditor.PrefabUtility.LoadPrefabContents(path);
+            var parent = PrefabUtility.LoadPrefabContents(path);
 
             if (MigrateGameObjectHierarchy(parent, status))
             {
-                UnityEditor.PrefabUtility.SaveAsPrefabAsset(parent, path);
+                PrefabUtility.SaveAsPrefabAsset(parent, path);
             }
 
             PrefabUtility.UnloadPrefabContents(parent);
@@ -487,7 +486,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             EditorGUILayout.HelpBox("This component is deprecated. Please migrate object to up to date version", MessageType.Warning);
             if (GUILayout.Button("Migrate Object"))
             {
-                Utilities.MigrationTool migrationTool = new Utilities.MigrationTool();
+                MigrationTool migrationTool = new MigrationTool();
 
                 var component = target;
 

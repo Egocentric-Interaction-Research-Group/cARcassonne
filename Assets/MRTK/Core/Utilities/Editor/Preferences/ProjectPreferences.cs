@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -14,16 +15,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     {
         // Dictionary is not Serializable by default and furthermore System.object is not Serializable
         // Thus, it is difficult to create a generic data bag. Instead we will create instances for each key preference types
-        [System.Serializable]
+        [Serializable]
         private class BoolPreferences : SerializableDictionary<string, bool> { }
 
-        [System.Serializable]
+        [Serializable]
         private class IntPreferences : SerializableDictionary<string, int> { }
 
-        [System.Serializable]
+        [Serializable]
         private class FloatPreferences : SerializableDictionary<string, float> { }
 
-        [System.Serializable]
+        [Serializable]
         private class StringPreferences : SerializableDictionary<string, string> { }
 
         [SerializeField]

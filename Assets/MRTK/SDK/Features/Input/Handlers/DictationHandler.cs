@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -29,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Whether recording should start automatically on start")]
         private bool startRecordingOnStart = false;
 
-        [System.Serializable]
+        [Serializable]
         public class StringUnityEvent : UnityEvent<string> { }
 
         /// <summary>

@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
-
 #if UNITY_2020_2_OR_NEWER
 using UnityEditor.AssetImporters;
 #else
 using UnityEditor.Experimental.AssetImporters;
 #endif // UNITY_2020_2_OR_NEWER
+using System;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
 {
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
             for (int i = 0; i < meshes.Count; i++)
             {
                 string meshName = $"{name}_{i}";
-                GameObject meshObject = new GameObject(meshName, new System.Type[] { typeof(MeshRenderer), typeof(MeshFilter) });
+                GameObject meshObject = new GameObject(meshName, new Type[] { typeof(MeshRenderer), typeof(MeshFilter) });
 
                 meshes[i].name = meshName;
                 meshObject.GetComponent<MeshFilter>().sharedMesh = meshes[i];

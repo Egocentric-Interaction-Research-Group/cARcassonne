@@ -8,10 +8,9 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-using Photon.Realtime;
 
 namespace Photon.Pun.Demo.PunBasics
 {

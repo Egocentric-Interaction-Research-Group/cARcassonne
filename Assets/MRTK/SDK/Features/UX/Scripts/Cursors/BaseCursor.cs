@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -191,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Checks whether the associated pointer is null, and if the pointer is a UnityEngine.Object it also checks whether it has been destroyed.
         /// </summary>
-        protected bool IsPointerValid => (pointer is UnityEngine.Object) ? ((pointer as UnityEngine.Object) != null) : (pointer != null);
+        protected bool IsPointerValid => (pointer is Object) ? ((pointer as Object) != null) : (pointer != null);
 
         /// <inheritdoc />
         public float DefaultCursorDistance

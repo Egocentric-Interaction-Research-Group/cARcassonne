@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections;
 using System.IO;
 using System.Text;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using TMPro;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
@@ -22,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public GridObjectCollection grid;
 
         [Tooltip("Optional text field to output the layout of control.")]
-        public TMPro.TextMeshPro text;
+        public TextMeshPro text;
 
         /// <summary>
         /// Change the grid collection's layout to the next one in order.

@@ -5,6 +5,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -18,11 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Component displaying the left hand icon.
         /// </summary>
-        public UnityEngine.UI.Image imageHandLeft = null;
+        public Image imageHandLeft = null;
         /// <summary>
         /// Component displaying the right hand icon.
         /// </summary>
-        public UnityEngine.UI.Image imageHandRight = null;
+        public Image imageHandRight = null;
 
         /// <summary>
         /// Icon for left hand when under user control.
