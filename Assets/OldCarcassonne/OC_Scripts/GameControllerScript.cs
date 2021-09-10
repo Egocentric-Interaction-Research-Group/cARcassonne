@@ -7,25 +7,6 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 
-public class MeepleControllerScript : MonoBehaviourPun
-{
-    [SerializeField]
-    internal GameControllerScript gameControllerScript;
-    [HideInInspector] public List<MeepleScript> MeeplesInCity;
-    public float fMeepleAimX; //TODO Make Private
-    public float fMeepleAimZ; //TODO Make Private
-
-    public MeepleControllerScript(GameControllerScript gameControllerScript)
-    {
-        this.gameControllerScript = gameControllerScript;
-    }
-
-    public void DrawMeepleRPC()
-    {
-        if (PhotonNetwork.LocalPlayer.NickName == (gameControllerScript.currentPlayer.getID() + 1).ToString()) gameControllerScript.photonView.RPC("DrawMeeple", RpcTarget.All);
-    }
-}
-
 public class GameControllerScript : MonoBehaviourPun
 {
     //Add Meeple Down state functionality
@@ -39,7 +20,6 @@ public class GameControllerScript : MonoBehaviourPun
         GameOver
     }
 
-    public Vector3 currentTileEulersOnManip;
     public bool gravity;
     public bool startGame, pcRotate, isManipulating;
 
@@ -48,18 +28,14 @@ public class GameControllerScript : MonoBehaviourPun
     public GameObject[] playerHuds;
     public GameObject endButtonBackplate, confirmButtonBackplate;
     public GameObject meepleInButton;
-    public ParticleSystem bellSparkleEffect, drawTileEffect, drawMeepleEffect, smokeEffect;
+    public ParticleSystem bellSparkleEffect, drawMeepleEffect, smokeEffect;
 
     public float scale;
 
-    [HideInInspector] public GameObject currentTile, baseTile, table, currentMeeple;
+    [HideInInspector] public GameObject table, currentMeeple;
 
     [HideInInspector] public StackScript stackScript;
 
-    [HideInInspector] public Vector3 tileSnapPosition;
-
-
-    [HideInInspector] public GameObject tileMesh;
 
     [HideInInspector] public GameObject meepleMesh;
 
@@ -72,9 +48,7 @@ public class GameControllerScript : MonoBehaviourPun
 
     public RectTransform mPanelGameOver;
 
-    public GameObject drawTile;
-
-    public GameObject tileSpawnPosition, meepleSpawnPosition;
+    public GameObject meepleSpawnPosition;
 
     public GameStates state;
 
@@ -95,9 +69,6 @@ public class GameControllerScript : MonoBehaviourPun
     private string errorOutput = "";
 
     private int firstTurnCounter;
-
-    private float fTileAimX;
-    private float fTileAimZ;
 
     private int iMeepleAimX, iMeepleAimZ;
 
@@ -149,6 +120,9 @@ public class GameControllerScript : MonoBehaviourPun
 
     [SerializeField]
     internal MeepleControllerScript meepleControllerScript;
+    
+    [SerializeField]
+    internal TileControllerScript tileControllerScript;
 
     private void Start()
     {
@@ -157,18 +131,17 @@ public class GameControllerScript : MonoBehaviourPun
     // Update is called once per frame
     private void FixedUpdate()
     {
-        if (currentTile != null)
+        if (tileControllerScript.currentTile != null)
         {
             CurrentTileRaycastPosition();
 
-            if (placedTiles.TilePlacementIsValid(currentTile, iTileAimX, iTileAimZ))
+            if (placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
                 ChangeConfirmButtonApperance(true);
             else
                 ChangeConfirmButtonApperance(false);
 
             snapPosition = new Vector3
-            (stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f,
-                currentTile.transform.localPosition.y,
+            (stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f, tileControllerScript.currentTile.transform.localPosition.y,
                 stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
         }
 
@@ -187,7 +160,7 @@ public class GameControllerScript : MonoBehaviourPun
             }
 
         if (Input.GetKeyDown(KeyCode.J)) FreeMeeple(currentMeeple); //FIXME: Throws error when no meeple assigned!
-        if (Input.GetKeyDown(KeyCode.B)) GameOver();
+        if (Input.GetKeyDown(KeyCode.B)) GameOver(); //FIXME Doesn't work/no effect
 
         switch (state)
         {
@@ -195,22 +168,22 @@ public class GameControllerScript : MonoBehaviourPun
                 bellSparkleEffect.Stop();
                 drawMeepleEffect.Stop();
 
-                if (firstTurnCounter != 0) drawTileEffect.Play();
+                if (firstTurnCounter != 0) tileControllerScript.drawTileEffect.Play();
 
                 endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[0];
-                drawTile.GetComponent<BoxCollider>().enabled = true;
+                tileControllerScript.drawTile.GetComponent<BoxCollider>().enabled = true;
 
 
                 break;
             case GameStates.TileDrawn:
                 //drawTile.GetComponent<BoxCollider>().enabled = false;
-                drawTileEffect.Stop();
+                tileControllerScript.drawTileEffect.Stop();
 
                 break;
             case GameStates.TileDown:
 
                 if (firstTurnCounter != 0) drawMeepleEffect.Play();
-                currentTile.transform.localPosition = new Vector3
+                tileControllerScript.currentTile.transform.localPosition = new Vector3
                 (stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f, 0.5900002f,
                     stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
                 endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[1];
@@ -280,7 +253,7 @@ public class GameControllerScript : MonoBehaviourPun
         NewTileRotation = 0;
         VertexItterator = 1;
 
-        PlaceTile(currentTile, 85, 85, true);
+        PlaceTile(tileControllerScript.currentTile, 85, 85, true);
 
         currentPlayer = playerScript.players[0];
 
@@ -295,11 +268,11 @@ public class GameControllerScript : MonoBehaviourPun
 
     private void BaseTileCreation()
     {
-        currentTile = stackScript.Pop();
-        currentTile.name = "BaseTile";
-        currentTile.transform.parent = table.transform;
-        currentTile.GetComponent<ObjectManipulator>().enabled = false;
-        currentTile.GetComponent<NearInteractionGrabbable>().enabled = false;
+        tileControllerScript.currentTile = stackScript.Pop();
+        tileControllerScript.currentTile.name = "BaseTile";
+        tileControllerScript.currentTile.transform.parent = table.transform;
+        tileControllerScript.currentTile.GetComponent<ObjectManipulator>().enabled = false;
+        tileControllerScript.currentTile.GetComponent<NearInteractionGrabbable>().enabled = false;
     }
 
 
@@ -512,42 +485,42 @@ public class GameControllerScript : MonoBehaviourPun
         RaycastHit hit;
         var layerMask = 1 << 8;
 
-        Physics.Raycast(currentTile.transform.position, currentTile.transform.TransformDirection(Vector3.down), out hit,
+        Physics.Raycast(tileControllerScript.currentTile.transform.position, tileControllerScript.currentTile.transform.TransformDirection(Vector3.down), out hit,
             Mathf.Infinity, layerMask);
 
 
         var local = table.transform.InverseTransformPoint(hit.point);
 
-        fTileAimX = local.x;
-        fTileAimZ = local.z;
+        tileControllerScript.fTileAimX = local.x;
+        tileControllerScript.fTileAimZ = local.z;
 
 
-        if (fTileAimX - stackScript.basePositionTransform.localPosition.x > 0)
+        if (tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x > 0)
         {
-            iTileAimX = (int) ((fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale + 1f) / 2 + 85;
+            iTileAimX = (int) ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale + 1f) / 2 + 85;
 
-            var testX = ((fTileAimX - stackScript.basePositionTransform.localPosition.x) * 10f + 1f) / 2f + 85f;
+            var testX = ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * 10f + 1f) / 2f + 85f;
             //Debug.Log("Float X: " + Math.Round(testX));
         }
         else
         {
-            iTileAimX = (int) ((fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale - 1f) / 2 + 85;
-            var testX = ((fTileAimX - stackScript.basePositionTransform.localPosition.x) * 10f - 1f) / 2f + 85f;
+            iTileAimX = (int) ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale - 1f) / 2 + 85;
+            var testX = ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * 10f - 1f) / 2f + 85f;
             //Debug.Log("Float X: " + Math.Round(testX));
         }
 
-        if (fTileAimZ - stackScript.basePositionTransform.localPosition.z > 0)
+        if (tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z > 0)
         {
-            iTileAimZ = (int) ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale + 1f) / 2 + 85;
+            iTileAimZ = (int) ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale + 1f) / 2 + 85;
 
-            var testZ = ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f + 1f) / 2f + 85f;
+            var testZ = ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f + 1f) / 2f + 85f;
             //Debug.Log("Float Z: " + Math.Round(testZ));
         }
         else
         {
-            iTileAimZ = (int) ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale - 1f) / 2 + 85;
+            iTileAimZ = (int) ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale - 1f) / 2 + 85;
 
-            var testZ = ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f - 1f) / 2f + 85f;
+            var testZ = ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f - 1f) / 2f + 85f;
             //Debug.Log("Float Z: " + Math.Round(testZ));
         }
     }
@@ -555,7 +528,7 @@ public class GameControllerScript : MonoBehaviourPun
     public void PlaceMeeple(GameObject meeple, int xs, int zs, PointScript.Direction direction,
         TileScript.geography meepleGeography)
     {
-        var currentTileScript = currentTile.GetComponent<TileScript>();
+        var currentTileScript = tileControllerScript.currentTile.GetComponent<TileScript>();
         var currentCenter = currentTileScript.getCenter();
         bool res;
         if (currentCenter == TileScript.geography.Village || currentCenter == TileScript.geography.Grass ||
@@ -601,7 +574,7 @@ public class GameControllerScript : MonoBehaviourPun
         tile.GetComponent<TileScript>().vIndex = VertexItterator;
 
         GetComponent<PointScript>().placeVertex(VertexItterator, placedTiles.GetNeighbors(tempX, tempY),
-            placedTiles.getWeights(tempX, tempY), currentTile.GetComponent<TileScript>().getCenter(),
+            placedTiles.getWeights(tempX, tempY), tileControllerScript.currentTile.GetComponent<TileScript>().getCenter(),
             placedTiles.getCenters(tempX, tempY), placedTiles.getDirections(tempX, tempY));
 
         VertexItterator++;
@@ -616,7 +589,7 @@ public class GameControllerScript : MonoBehaviourPun
             placedTiles.PlaceTile(x, z, tile);
 
 
-            currentTile.transform.localPosition = snapPosition;
+            tileControllerScript.currentTile.transform.localPosition = snapPosition;
         }
         else
         {
@@ -641,14 +614,13 @@ public class GameControllerScript : MonoBehaviourPun
     {
         if (state == GameStates.NewTurn)
         {
-            currentTile = stackScript.Pop();
-            UpdateDecisionButtons(true, true, currentTile);
+            tileControllerScript.currentTile = stackScript.Pop();
+            UpdateDecisionButtons(true, true, tileControllerScript.currentTile);
             ActivateCurrentTile();
-            if (!TileCanBePlaced(currentTile.GetComponent<TileScript>()))
+            if (!TileCanBePlaced(tileControllerScript.currentTile.GetComponent<TileScript>()))
             {
-                Debug.Log("Tile not possible to place: discarding and drawing a new one. " + "Tile id: " +
-                          currentTile.GetComponent<TileScript>().id);
-                Destroy(currentTile);
+                Debug.Log("Tile not possible to place: discarding and drawing a new one. " + "Tile id: " + tileControllerScript.currentTile.GetComponent<TileScript>().id);
+                Destroy(tileControllerScript.currentTile);
                 PickupTile();
             }
             else
@@ -666,19 +638,13 @@ public class GameControllerScript : MonoBehaviourPun
 
     private void ActivateCurrentTile()
     {
-        currentTile.GetComponentInChildren<MeshRenderer>().enabled = true;
-        currentTile.GetComponentInChildren<Collider>().enabled = true;
-        currentTile.GetComponentInChildren<Rigidbody>().useGravity = true;
-        currentTile.transform.parent = table.transform;
-        currentTile.transform.rotation = table.transform.rotation;
-        currentTile.transform.position = tileSpawnPosition.transform.position;
+        tileControllerScript.currentTile.GetComponentInChildren<MeshRenderer>().enabled = true;
+        tileControllerScript.currentTile.GetComponentInChildren<Collider>().enabled = true;
+        tileControllerScript.currentTile.GetComponentInChildren<Rigidbody>().useGravity = true;
+        tileControllerScript.currentTile.transform.parent = table.transform;
+        tileControllerScript.currentTile.transform.rotation = table.transform.rotation;
+        tileControllerScript.currentTile.transform.position = tileControllerScript.tileSpawnPosition.transform.position;
         smokeEffect.Play();
-    }
-
-    public void ChangeCurrentTileOwnership()
-    {
-        if (currentTile.GetComponent<PhotonView>().Owner.NickName != (currentPlayer.getID() + 1).ToString())
-            currentTile.GetComponent<TileScript>().transferTileOwnership(currentPlayer.getID());
     }
 
     public void ConfirmPlacementRPC()
@@ -693,15 +659,15 @@ public class GameControllerScript : MonoBehaviourPun
         CurrentTileRaycastPosition();
         if (state == GameStates.TileDrawn)
         {
-            if (placedTiles.TilePlacementIsValid(currentTile, iTileAimX, iTileAimZ))
+            if (placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
             {
-                PlaceTile(currentTile, iTileAimX, iTileAimZ, false);
+                PlaceTile(tileControllerScript.currentTile, iTileAimX, iTileAimZ, false);
 
                 confirmButton.SetActive(false);
                 //rotateButton.SetActive(false);
                 state = GameStates.TileDown;
             }
-            else if (!placedTiles.TilePlacementIsValid(currentTile, iTileAimX, iTileAimZ))
+            else if (!placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
             {
                 Debug.Log("Tile cant be placed");
             }
@@ -732,7 +698,7 @@ public class GameControllerScript : MonoBehaviourPun
         if (state == GameStates.TileDown || state == GameStates.MeepleDrawn)
         {
             placedTiles.removeTile(tempX, tempY);
-            currentTile.GetComponentInChildren<MeshRenderer>().enabled = false;
+            tileControllerScript.currentTile.GetComponentInChildren<MeshRenderer>().enabled = false;
             state = GameStates.TileDrawn;
 
             VertexItterator--;
@@ -1005,16 +971,16 @@ public class GameControllerScript : MonoBehaviourPun
         {
             NewTileRotation++;
             if (NewTileRotation > 3) NewTileRotation = 0;
-            currentTile.GetComponent<TileScript>().Rotate();
+            tileControllerScript.currentTile.GetComponent<TileScript>().Rotate();
 
-            if (pcRotate) currentTile.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
+            if (pcRotate) tileControllerScript.currentTile.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
         }
     }
 
     public void ResetTileRotation()
     {
         NewTileRotation = 0;
-        currentTile.GetComponent<TileScript>().rotation = 0;
+        tileControllerScript.currentTile.GetComponent<TileScript>().rotation = 0;
     }
 
     private void GameOver()
@@ -1049,7 +1015,7 @@ public class GameControllerScript : MonoBehaviourPun
 
     public void SetCurrentTileSnapPosition()
     {
-        currentTile.transform.localPosition = snapPosition;
+        tileControllerScript.currentTile.transform.localPosition = snapPosition;
     }
 
 
@@ -1068,22 +1034,18 @@ public class GameControllerScript : MonoBehaviourPun
     {
         if (!pcRotate)
         {
-            var startRotationValue = currentTileEulersOnManip.y;
-            var onRealeaseRotationValue = currentTile.transform.localEulerAngles.y;
+            var startRotationValue = tileControllerScript.currentTileEulersOnManip.y;
+            var onRealeaseRotationValue = tileControllerScript.currentTile.transform.localEulerAngles.y;
             float endRotationValue = 0;
 
             if (onRealeaseRotationValue <= 45 || onRealeaseRotationValue >= 315)
-                currentTile.transform.localEulerAngles = new Vector3(currentTile.transform.localEulerAngles.x, 0,
-                    currentTile.transform.localEulerAngles.z);
+                tileControllerScript.currentTile.transform.localEulerAngles = new Vector3(tileControllerScript.currentTile.transform.localEulerAngles.x, 0, tileControllerScript.currentTile.transform.localEulerAngles.z);
             else if (onRealeaseRotationValue <= 135 && onRealeaseRotationValue >= 45)
-                currentTile.transform.localEulerAngles = new Vector3(currentTile.transform.localEulerAngles.x, 90,
-                    currentTile.transform.localEulerAngles.z);
+                tileControllerScript.currentTile.transform.localEulerAngles = new Vector3(tileControllerScript.currentTile.transform.localEulerAngles.x, 90, tileControllerScript.currentTile.transform.localEulerAngles.z);
             else if (onRealeaseRotationValue <= 225 && onRealeaseRotationValue >= 135)
-                currentTile.transform.localEulerAngles = new Vector3(currentTile.transform.localEulerAngles.x, 180,
-                    currentTile.transform.localEulerAngles.z);
+                tileControllerScript.currentTile.transform.localEulerAngles = new Vector3(tileControllerScript.currentTile.transform.localEulerAngles.x, 180, tileControllerScript.currentTile.transform.localEulerAngles.z);
             else if (onRealeaseRotationValue <= 315 && onRealeaseRotationValue >= 225)
-                currentTile.transform.localEulerAngles = new Vector3(currentTile.transform.localEulerAngles.x, 270,
-                    currentTile.transform.localEulerAngles.z);
+                tileControllerScript.currentTile.transform.localEulerAngles = new Vector3(tileControllerScript.currentTile.transform.localEulerAngles.x, 270, tileControllerScript.currentTile.transform.localEulerAngles.z);
 
             if (startRotationValue == 270 && onRealeaseRotationValue == 0)
                 endRotationValue = 1;
@@ -1092,8 +1054,7 @@ public class GameControllerScript : MonoBehaviourPun
 
             endRotationValue = (float) Math.Abs(Math.Round(endRotationValue, 0));
 
-            Debug.Log("DET HÄR START: " + startRotationValue + " MINUS DEN HÄR CURRENT EURLERS " +
-                      currentTile.transform.localEulerAngles.y + " DELAS PÅ 90! ÄR LIKA MED " + endRotationValue);
+            Debug.Log("DET HÄR START: " + startRotationValue + " MINUS DEN HÄR CURRENT EURLERS " + tileControllerScript.currentTile.transform.localEulerAngles.y + " DELAS PÅ 90! ÄR LIKA MED " + endRotationValue);
 
             if (startRotationValue > (int) onRealeaseRotationValue && endRotationValue == 1 &&
                 onRealeaseRotationValue != 0)
@@ -1112,8 +1073,8 @@ public class GameControllerScript : MonoBehaviourPun
     [PunRPC]
     public void SaveEulersOnManip()
     {
-        currentTileEulersOnManip = currentTile.transform.localEulerAngles;
-        Debug.Log(currentTileEulersOnManip);
+        tileControllerScript.currentTileEulersOnManip = tileControllerScript.currentTile.transform.localEulerAngles;
+        Debug.Log(tileControllerScript.currentTileEulersOnManip);
         isManipulating = true;
     }
 
@@ -1135,7 +1096,7 @@ public class GameControllerScript : MonoBehaviourPun
     {
         try
         {
-            if (placedTiles.getPlacedTiles(iMeepleAimX, iMeepleAimZ) == currentTile)
+            if (placedTiles.getPlacedTiles(iMeepleAimX, iMeepleAimZ) == tileControllerScript.currentTile)
             {
                 var tile = placedTiles.getPlacedTiles(iMeepleAimX, iMeepleAimZ);
                 var tileScript = tile.GetComponent<TileScript>();
@@ -1279,14 +1240,14 @@ public class GameControllerScript : MonoBehaviourPun
         {
             iMeepleAimZ = (int) ((meepleControllerScript.fMeepleAimZ - stackScript.basePositionTransform.localPosition.z) * scale + 1f) / 2 +
                           85;
-            var testZ = ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f + 1f) / 2f + 85f;
+            var testZ = ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f + 1f) / 2f + 85f;
         }
         else
         {
             iMeepleAimZ = (int) ((meepleControllerScript.fMeepleAimZ - stackScript.basePositionTransform.localPosition.z) * scale - 1f) / 2 +
                           85;
 
-            var testZ = ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f - 1f) / 2f + 85f;
+            var testZ = ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f - 1f) / 2f + 85f;
         }
     }
 
