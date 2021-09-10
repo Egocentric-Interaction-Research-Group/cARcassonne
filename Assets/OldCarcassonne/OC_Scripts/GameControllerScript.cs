@@ -7,6 +7,25 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 
+public class MeepleControllerScript : MonoBehaviourPun
+{
+    [SerializeField]
+    internal GameControllerScript gameControllerScript;
+    [HideInInspector] public List<MeepleScript> MeeplesInCity;
+    public float fMeepleAimX; //TODO Make Private
+    public float fMeepleAimZ; //TODO Make Private
+
+    public MeepleControllerScript(GameControllerScript gameControllerScript)
+    {
+        this.gameControllerScript = gameControllerScript;
+    }
+
+    public void DrawMeepleRPC()
+    {
+        if (PhotonNetwork.LocalPlayer.NickName == (gameControllerScript.currentPlayer.getID() + 1).ToString()) gameControllerScript.photonView.RPC("DrawMeeple", RpcTarget.All);
+    }
+}
+
 public class GameControllerScript : MonoBehaviourPun
 {
     //Add Meeple Down state functionality
@@ -51,8 +70,6 @@ public class GameControllerScript : MonoBehaviourPun
     public GameObject confirmButton, rotateButton;
     public Sprite crossIcon, checkIcon;
 
-    [HideInInspector] public List<MeepleScript> MeeplesInCity;
-
     public RectTransform mPanelGameOver;
 
     public GameObject drawTile;
@@ -78,9 +95,6 @@ public class GameControllerScript : MonoBehaviourPun
     private string errorOutput = "";
 
     private int firstTurnCounter;
-
-    private float fMeepleAimX;
-    private float fMeepleAimZ;
 
     private float fTileAimX;
     private float fTileAimZ;
@@ -133,6 +147,9 @@ public class GameControllerScript : MonoBehaviourPun
         set => isPunEnabled = value;
     }
 
+    [SerializeField]
+    internal MeepleControllerScript meepleControllerScript;
+
     private void Start()
     {
     }
@@ -169,7 +186,7 @@ public class GameControllerScript : MonoBehaviourPun
                 RotateTileRPC();
             }
 
-        if (Input.GetKeyDown(KeyCode.J)) FreeMeeple(currentMeeple);
+        if (Input.GetKeyDown(KeyCode.J)) FreeMeeple(currentMeeple); //FIXME: Throws error when no meeple assigned!
         if (Input.GetKeyDown(KeyCode.B)) GameOver();
 
         switch (state)
@@ -318,8 +335,8 @@ public class GameControllerScript : MonoBehaviourPun
 
     public bool CityIsFinishedDirection(int x, int y, PointScript.Direction direction)
     {
-        MeeplesInCity = new List<MeepleScript>();
-        MeeplesInCity.Add(FindMeeple(x, y, TileScript.geography.City, direction));
+        meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
+        meepleControllerScript.MeeplesInCity.Add(FindMeeple(x, y, TileScript.geography.City, direction));
 
         cityIsFinished = true;
         visited = new bool[170, 170];
@@ -333,8 +350,8 @@ public class GameControllerScript : MonoBehaviourPun
     //Test City checker
     public bool CityIsFinished(int x, int y)
     {
-        MeeplesInCity = new List<MeepleScript>();
-        MeeplesInCity.Add(FindMeeple(x, y, TileScript.geography.City));
+        meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
+        meepleControllerScript.MeeplesInCity.Add(FindMeeple(x, y, TileScript.geography.City));
 
 
         cityIsFinished = true;
@@ -938,12 +955,6 @@ public class GameControllerScript : MonoBehaviourPun
         state = GameStates.TileDown;
     }
 
-    public void DrawMeepleRPC()
-    {
-        if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-            photonView.RPC("DrawMeeple", RpcTarget.All);
-    }
-
     [PunRPC]
     public void DrawMeeple()
     {
@@ -1247,32 +1258,32 @@ public class GameControllerScript : MonoBehaviourPun
         var local = table.transform.InverseTransformPoint(hit.point);
 
 
-        fMeepleAimX = local.x;
-        fMeepleAimZ = local.z;
+        meepleControllerScript.fMeepleAimX = local.x;
+        meepleControllerScript.fMeepleAimZ = local.z;
 
 
-        if (fMeepleAimX - stackScript.basePositionTransform.localPosition.x > 0)
+        if (meepleControllerScript.fMeepleAimX - stackScript.basePositionTransform.localPosition.x > 0)
         {
-            iMeepleAimX = (int) ((fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * scale + 1f) / 2 +
+            iMeepleAimX = (int) ((meepleControllerScript.fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * scale + 1f) / 2 +
                           85;
-            var testX = ((fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * 10f + 1f) / 2f + 85f;
+            var testX = ((meepleControllerScript.fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * 10f + 1f) / 2f + 85f;
         }
         else
         {
-            iMeepleAimX = (int) ((fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * scale - 1f) / 2 +
+            iMeepleAimX = (int) ((meepleControllerScript.fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * scale - 1f) / 2 +
                           85;
-            var testX = ((fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * 10f - 1f) / 2f + 85f;
+            var testX = ((meepleControllerScript.fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * 10f - 1f) / 2f + 85f;
         }
 
-        if (fMeepleAimZ - stackScript.basePositionTransform.localPosition.z > 0)
+        if (meepleControllerScript.fMeepleAimZ - stackScript.basePositionTransform.localPosition.z > 0)
         {
-            iMeepleAimZ = (int) ((fMeepleAimZ - stackScript.basePositionTransform.localPosition.z) * scale + 1f) / 2 +
+            iMeepleAimZ = (int) ((meepleControllerScript.fMeepleAimZ - stackScript.basePositionTransform.localPosition.z) * scale + 1f) / 2 +
                           85;
             var testZ = ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f + 1f) / 2f + 85f;
         }
         else
         {
-            iMeepleAimZ = (int) ((fMeepleAimZ - stackScript.basePositionTransform.localPosition.z) * scale - 1f) / 2 +
+            iMeepleAimZ = (int) ((meepleControllerScript.fMeepleAimZ - stackScript.basePositionTransform.localPosition.z) * scale - 1f) / 2 +
                           85;
 
             var testZ = ((fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f - 1f) / 2f + 85f;
