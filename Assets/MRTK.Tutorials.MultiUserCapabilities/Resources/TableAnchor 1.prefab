@@ -7470,23 +7470,16 @@ MonoBehaviour:
   confirmButtonBackplate: {fileID: 2418039551976767444}
   meepleInButton: {fileID: 5974206974783104800}
   bellSparkleEffect: {fileID: 6526644388854194902}
-  drawMeepleEffect: {fileID: 7582198625862240890}
   smokeEffect: {fileID: 6179754990168016610}
   scale: 60
   table: {fileID: 0}
-  currentMeeple: {fileID: 0}
   stackScript: {fileID: 0}
-  meepleMesh: {fileID: 919132149155446097, guid: 620031ea53b77544682d175eacfa4607,
-    type: 3}
-  MeeplePrefab: {fileID: 2470780459563121935, guid: 07b37071518c9db4884b780283628e4f,
-    type: 3}
   playerHUD: {fileID: 1798396970156769198}
   confirmButton: {fileID: 2418039551976767261}
   rotateButton: {fileID: 1831334870424103552}
   crossIcon: {fileID: 21300000, guid: 8d0274d8bc6a17844a08b493920d9491, type: 3}
   checkIcon: {fileID: 21300000, guid: b5066c514f7f02f4292cf842f3c8b75f, type: 3}
   mPanelGameOver: {fileID: 0}
-  meepleSpawnPosition: {fileID: 1798396971633816230}
   state: 0
   meepleControllerScript: {fileID: 8220263693249302836}
   tileControllerScript: {fileID: 1811510837220924674}
@@ -7745,8 +7738,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameControllerScript: {fileID: 1798396970961904583}
   MeeplesInCity: []
-  fMeepleAimX: 0
-  fMeepleAimZ: 0
+  drawMeepleEffect: {fileID: 7582198625862240890}
+  currentMeeple: {fileID: 0}
+  meepleMesh: {fileID: 0}
+  MeeplePrefab: {fileID: 0}
+  meepleSpawnPosition: {fileID: 1798396971633816230}
+  meepleGeography: 0
 --- !u!114 &1811510837220924674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33789,6 +33786,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1717325903072353550, guid: 57e46130eb59dfc4d9da26d1308a46d0,
         type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnHandPressTouched
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717325903072353550, guid: 57e46130eb59dfc4d9da26d1308a46d0,
+        type: 3}
       propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -33851,7 +33853,7 @@ PrefabInstance:
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 8220263693249302836}
     - target: {fileID: 8112709446275494834, guid: 57e46130eb59dfc4d9da26d1308a46d0,
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName

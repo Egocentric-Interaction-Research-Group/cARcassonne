@@ -7,6 +7,7 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 
+
 public class GameControllerScript : MonoBehaviourPun
 {
     //Add Meeple Down state functionality
@@ -28,18 +29,14 @@ public class GameControllerScript : MonoBehaviourPun
     public GameObject[] playerHuds;
     public GameObject endButtonBackplate, confirmButtonBackplate;
     public GameObject meepleInButton;
-    public ParticleSystem bellSparkleEffect, drawMeepleEffect, smokeEffect;
+    public ParticleSystem bellSparkleEffect, smokeEffect;
 
     public float scale;
 
-    [HideInInspector] public GameObject table, currentMeeple;
+    [HideInInspector] public GameObject table;
 
     [HideInInspector] public StackScript stackScript;
 
-
-    [HideInInspector] public GameObject meepleMesh;
-
-    [HideInInspector] public GameObject MeeplePrefab;
 
     [HideInInspector] public GameObject playerHUD;
 
@@ -47,8 +44,6 @@ public class GameControllerScript : MonoBehaviourPun
     public Sprite crossIcon, checkIcon;
 
     public RectTransform mPanelGameOver;
-
-    public GameObject meepleSpawnPosition;
 
     public GameStates state;
 
@@ -70,18 +65,12 @@ public class GameControllerScript : MonoBehaviourPun
 
     private int firstTurnCounter;
 
-    private int iMeepleAimX, iMeepleAimZ;
-
     private bool isPunEnabled;
     //float xOffset, zOffset, yOffset;
 
     private int iTileAimX, iTileAimZ;
 
     private PlayerScript.Player lastPlayer;
-
-    private TileScript.geography meepleGeography;
-
-    private RaycastHit meepleHitTileDirection;
 
     private int NewTileRotation;
 
@@ -95,7 +84,7 @@ public class GameControllerScript : MonoBehaviourPun
     //Number of players
     private int players;
 
-    private PlayerScript playerScript;
+    internal PlayerScript playerScript;
 
     private bool renderCurrentTile = false;
 
@@ -116,6 +105,66 @@ public class GameControllerScript : MonoBehaviourPun
     public bool IsPunEnabled
     {
         set => isPunEnabled = value;
+    }
+
+    public PlayerScript PlayerScript
+    {
+        set { playerScript = value; }
+        get { return playerScript; }
+    }
+
+    public PlacedTilesScript PlacedTiles
+    {
+        set { placedTiles = value; }
+        get { return placedTiles; }
+    }
+
+    public TileControllerScript TileControllerScript
+    {
+        set { tileControllerScript = value; }
+        get { return tileControllerScript; }
+    }
+
+    public PointScript.Direction Direction
+    {
+        set { direction = value; }
+        get { return direction; }
+    }
+
+    public Vector3 SnapPosition
+    {
+        set { snapPosition = value; }
+        get { return snapPosition; }
+    }
+
+    public bool CanConfirm
+    {
+        set { canConfirm = value; }
+        get { return canConfirm; }
+    }
+
+    public string ErrorOutput
+    {
+        set { errorOutput = value; }
+        get { return errorOutput; }
+    }
+
+    public PlayerScript PlayerScript1
+    {
+        set { playerScript = value; }
+        get { return playerScript; }
+    }
+
+    public PlayerScript PlayerScript2
+    {
+        set { playerScript = value; }
+        get { return playerScript; }
+    }
+
+    public TileControllerScript TileControllerScript1
+    {
+        set { tileControllerScript = value; }
+        get { return tileControllerScript; }
     }
 
     [SerializeField]
@@ -159,14 +208,14 @@ public class GameControllerScript : MonoBehaviourPun
                 RotateTileRPC();
             }
 
-        if (Input.GetKeyDown(KeyCode.J)) FreeMeeple(currentMeeple); //FIXME: Throws error when no meeple assigned!
+        if (Input.GetKeyDown(KeyCode.J)) meepleControllerScript.FreeMeeple(meepleControllerScript.currentMeeple, this); //FIXME: Throws error when no meeple assigned!
         if (Input.GetKeyDown(KeyCode.B)) GameOver(); //FIXME Doesn't work/no effect
 
         switch (state)
         {
             case GameStates.NewTurn:
                 bellSparkleEffect.Stop();
-                drawMeepleEffect.Stop();
+                meepleControllerScript.drawMeepleEffect.Stop();
 
                 if (firstTurnCounter != 0) tileControllerScript.drawTileEffect.Play();
 
@@ -182,7 +231,7 @@ public class GameControllerScript : MonoBehaviourPun
                 break;
             case GameStates.TileDown:
 
-                if (firstTurnCounter != 0) drawMeepleEffect.Play();
+                if (firstTurnCounter != 0) meepleControllerScript.drawMeepleEffect.Play();
                 tileControllerScript.currentTile.transform.localPosition = new Vector3
                 (stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f, 0.5900002f,
                     stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
@@ -194,9 +243,9 @@ public class GameControllerScript : MonoBehaviourPun
                 //confirmButton.SetActive(true);
                 //confirmButton.transform.position = new Vector3(currentMeeple.transform.position.x + 0.05f, currentMeeple.transform.position.y + 0.05f, currentMeeple.transform.position.z + 0.07f);
                 ////confirmButton.transform.up = table.transform.forward;
-                drawMeepleEffect.Stop();
-                CurrentMeepleRayCast();
-                AimMeeple();
+                meepleControllerScript.drawMeepleEffect.Stop();
+                meepleControllerScript.CurrentMeepleRayCast();
+                meepleControllerScript.AimMeeple(this);
 
                 break;
             case GameStates.MeepleDown:
@@ -276,47 +325,17 @@ public class GameControllerScript : MonoBehaviourPun
     }
 
 
-    private MeepleScript FindMeeple(int x, int y, TileScript.geography geography)
-    {
-        MeepleScript res = null;
-
-        foreach (var p in playerScript.players)
-        foreach (var m in p.meeples)
-        {
-            var tmp = m.GetComponent<MeepleScript>();
-
-            if (tmp.geography == geography && tmp.x == x && tmp.z == y) return tmp;
-        }
-
-        return res;
-    }
-
-    private MeepleScript FindMeeple(int x, int y, TileScript.geography geography, PointScript.Direction direction)
-    {
-        MeepleScript res = null;
-
-        foreach (var p in playerScript.players)
-        foreach (var m in p.meeples)
-        {
-            var tmp = m.GetComponent<MeepleScript>();
-
-            if (tmp.geography == geography && tmp.x == x && tmp.z == y && tmp.direction == direction) return tmp;
-        }
-
-        return res;
-    }
-
     public bool CityIsFinishedDirection(int x, int y, PointScript.Direction direction)
     {
         meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
-        meepleControllerScript.MeeplesInCity.Add(FindMeeple(x, y, TileScript.geography.City, direction));
+        meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, TileScript.geography.City, direction, this));
 
         cityIsFinished = true;
         visited = new bool[170, 170];
         RecursiveCityIsFinishedDirection(x, y, direction);
         Debug.Log(
             "DIRECTION__________________________CITY IS FINISHED EFTER DIRECTION REKURSIV: ___________________________" +
-            cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + FindMeeple(x, y, TileScript.geography.City));
+            cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.geography.City, this));
         return cityIsFinished;
     }
 
@@ -324,15 +343,14 @@ public class GameControllerScript : MonoBehaviourPun
     public bool CityIsFinished(int x, int y)
     {
         meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
-        meepleControllerScript.MeeplesInCity.Add(FindMeeple(x, y, TileScript.geography.City));
+        meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, TileScript.geography.City, this));
 
 
         cityIsFinished = true;
         visited = new bool[170, 170];
         RecursiveCityIsFinished(x, y);
         Debug.Log("__________________________CITY IS FINISHED EFTER REKURSIV: ___________________________" +
-                  cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " +
-                  FindMeeple(x, y, TileScript.geography.City));
+                  cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.geography.City, this));
 
         return cityIsFinished;
     }
@@ -525,47 +543,6 @@ public class GameControllerScript : MonoBehaviourPun
         }
     }
 
-    public void PlaceMeeple(GameObject meeple, int xs, int zs, PointScript.Direction direction,
-        TileScript.geography meepleGeography)
-    {
-        var currentTileScript = tileControllerScript.currentTile.GetComponent<TileScript>();
-        var currentCenter = currentTileScript.getCenter();
-        bool res;
-        if (currentCenter == TileScript.geography.Village || currentCenter == TileScript.geography.Grass ||
-            currentCenter == TileScript.geography.Cloister && direction != PointScript.Direction.CENTER)
-            res = GetComponent<PointScript>()
-                .testIfMeepleCantBePlacedDirection(currentTileScript.vIndex, meepleGeography, direction);
-        else if (currentCenter == TileScript.geography.Cloister && direction == PointScript.Direction.CENTER)
-            res = false;
-        else
-            res = GetComponent<PointScript>().testIfMeepleCantBePlaced(currentTileScript.vIndex, meepleGeography);
-
-        if (meepleGeography == TileScript.geography.City)
-        {
-            if (currentCenter == TileScript.geography.City)
-                res = CityIsFinished(xs, zs) || res;
-            else
-                res = CityIsFinishedDirection(xs, zs, direction) || res;
-        }
-
-        if (!currentTileScript.checkIfOcupied(direction) && !res)
-        {
-            meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
-            meeple.GetComponentInChildren<BoxCollider>().enabled = false;
-            meeple.GetComponent<ObjectManipulator>().enabled = false;
-
-            var geography = currentTileScript.getGeographyAt(direction);
-            currentTileScript.occupy(direction);
-            if (meepleGeography == TileScript.geography.Cityroad) meepleGeography = TileScript.geography.City;
-
-            meeple.GetComponent<MeepleScript>().assignAttributes(xs, zs, direction, meepleGeography);
-            meeple.GetComponent<MeepleScript>().free = false;
-
-
-            state = GameStates.MeepleDown;
-        }
-    }
-
     //Metod för att placera en tile på brädan
     public void PlaceTile(GameObject tile, int x, int z, bool firstTile)
     {
@@ -674,18 +651,15 @@ public class GameControllerScript : MonoBehaviourPun
         }
         else if (state == GameStates.MeepleDrawn)
         {
-            if (currentMeeple != null)
+            if (meepleControllerScript.currentMeeple != null)
             {
                 if (canConfirm)
                 {
-                    if (meepleGeography == TileScript.geography.City ||
-                        meepleGeography == TileScript.geography.Cloister ||
-                        meepleGeography == TileScript.geography.Road)
-                        PlaceMeeple(currentMeeple, iMeepleAimX, iMeepleAimZ, direction, meepleGeography);
+                    if (meepleControllerScript.meepleGeography == TileScript.geography.City || meepleControllerScript.meepleGeography == TileScript.geography.Cloister || meepleControllerScript.meepleGeography == TileScript.geography.Road) meepleControllerScript.PlaceMeeple(meepleControllerScript.currentMeeple, meepleControllerScript.iMeepleAimX, meepleControllerScript.iMeepleAimZ, direction, meepleControllerScript.meepleGeography, this);
                 }
                 else
                 {
-                    FreeMeeple(currentMeeple);
+                    meepleControllerScript.FreeMeeple(meepleControllerScript.currentMeeple, this);
                 }
             }
         }
@@ -896,8 +870,7 @@ public class GameControllerScript : MonoBehaviourPun
 
                     if (finalscore > 0 && RealCheck)
                     {
-                        Debug.Log(currentPlayer.getID() + " recieved " + finalscore + " points. MEEPLEGEO: " +
-                                  meepleGeography);
+                        Debug.Log(currentPlayer.getID() + " recieved " + finalscore + " points. MEEPLEGEO: " + meepleControllerScript.meepleGeography);
                         meeple.playerScriptPlayer.SetPlayerScore(
                             meeple.playerScriptPlayer.GetPlayerScore() + finalscore);
 
@@ -909,46 +882,6 @@ public class GameControllerScript : MonoBehaviourPun
                     }
                 }
             }
-    }
-
-    public void FreeMeeple(GameObject meeple)
-    {
-        meeple.GetComponent<MeepleScript>().free = true;
-        meeple.transform.position = new Vector3(20, 20, 20);
-        meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
-        meeple.GetComponentInChildren<BoxCollider>().enabled = false;
-        meeple.GetComponentInChildren<MeshRenderer>().enabled = false;
-        state = GameStates.TileDown;
-    }
-
-    [PunRPC]
-    public void DrawMeeple()
-    {
-        if (state == GameStates.TileDown)
-        {
-            foreach (var meeple in playerScript.players[currentPlayer.getID()].meeples)
-                if (meeple.GetComponent<MeepleScript>().free)
-                {
-                    meeple.GetComponentInChildren<Rigidbody>().useGravity = true;
-                    meeple.GetComponentInChildren<BoxCollider>().enabled = true;
-                    meeple.GetComponentInChildren<MeshRenderer>().enabled = true;
-                    meeple.GetComponentInChildren<ObjectManipulator>().enabled = true;
-                    meeple.transform.position = meepleSpawnPosition.transform.position;
-                    meeple.transform.parent = table.transform;
-
-                    currentMeeple = meeple;
-                    currentMeeple.transform.rotation = Quaternion.identity;
-
-                    UpdateDecisionButtons(true, false, currentMeeple);
-                    state = GameStates.MeepleDrawn;
-                    break;
-                }
-        }
-        else
-        {
-            var deniedSound = gameObject.GetComponent<AudioSource>();
-            deniedSound.Play();
-        }
     }
 
     public void ToggleBoundsOnOff()
@@ -1079,7 +1012,7 @@ public class GameControllerScript : MonoBehaviourPun
     }
 
 
-    private void UpdateDecisionButtons(bool confirm, bool rotate, GameObject tileOrMeeple)
+    public void UpdateDecisionButtons(bool confirm, bool rotate, GameObject tileOrMeeple)
     {
         if (currentPlayer.photonUser.GetComponent<PhotonView>().IsMine)
             confirmButton.SetActive(confirm);
@@ -1092,84 +1025,7 @@ public class GameControllerScript : MonoBehaviourPun
         state = GameStates.NewTurn;
     }
 
-    public void AimMeeple()
-    {
-        try
-        {
-            if (placedTiles.getPlacedTiles(iMeepleAimX, iMeepleAimZ) == tileControllerScript.currentTile)
-            {
-                var tile = placedTiles.getPlacedTiles(iMeepleAimX, iMeepleAimZ);
-                var tileScript = tile.GetComponent<TileScript>();
-
-                var layerMask = 1 << 9;
-                Physics.Raycast(currentMeeple.transform.position,
-                    currentMeeple.transform.TransformDirection(Vector3.down), out meepleHitTileDirection,
-                    Mathf.Infinity, layerMask);
-                var id = tile.GetComponent<TileScript>().id;
-
-                meepleGeography = TileScript.geography.Grass;
-                direction = PointScript.Direction.CENTER;
-
-                if (meepleHitTileDirection.collider != null)
-                {
-                    if (meepleHitTileDirection.collider.name == "East")
-                    {
-                        direction = PointScript.Direction.EAST;
-                        meepleGeography = tileScript.East;
-                    }
-                    else if (meepleHitTileDirection.collider.name == "West")
-                    {
-                        direction = PointScript.Direction.WEST;
-                        meepleGeography = tileScript.West;
-                    }
-                    else if (meepleHitTileDirection.collider.name == "North")
-                    {
-                        direction = PointScript.Direction.NORTH;
-                        meepleGeography = tileScript.North;
-                    }
-                    else if (meepleHitTileDirection.collider.name == "South")
-                    {
-                        direction = PointScript.Direction.SOUTH;
-                        meepleGeography = tileScript.South;
-                    }
-                    else if (meepleHitTileDirection.collider.name == "Center")
-                    {
-                        direction = PointScript.Direction.CENTER;
-                        meepleGeography = tileScript.getCenter();
-                    }
-
-                    snapPosition = meepleHitTileDirection.collider.transform.position;
-
-                    if (meepleGeography == TileScript.geography.City || meepleGeography == TileScript.geography.Road ||
-                        meepleGeography == TileScript.geography.Cloister)
-                    {
-                        ChangeConfirmButtonApperance(true);
-                        canConfirm = true;
-                    }
-                }
-                else
-                {
-                    snapPosition = currentMeeple.transform.position;
-                    ChangeConfirmButtonApperance(false);
-                    canConfirm = false;
-                }
-            }
-            else
-            {
-                snapPosition = currentMeeple.transform.position;
-                meepleGeography = TileScript.geography.Grass;
-                ChangeConfirmButtonApperance(false);
-                canConfirm = false;
-            }
-        }
-        catch (IndexOutOfRangeException e)
-        {
-            Debug.Log(e);
-            errorOutput = e.ToString();
-        }
-    }
-
-    private void ChangeConfirmButtonApperance(bool confirmed)
+    public void ChangeConfirmButtonApperance(bool confirmed)
     {
         if (confirmed)
         {
@@ -1185,69 +1041,24 @@ public class GameControllerScript : MonoBehaviourPun
 
     public void SetMeepleSnapPos()
     {
-        if (meepleHitTileDirection.collider != null)
+        if (meepleControllerScript.meepleHitTileDirection.collider != null)
         {
-            currentMeeple.transform.position =
-                new Vector3(snapPosition.x, currentMeeple.transform.position.y, snapPosition.z);
+            meepleControllerScript.currentMeeple.transform.position =
+                new Vector3(snapPosition.x, meepleControllerScript.currentMeeple.transform.position.y, snapPosition.z);
 
             if (direction == PointScript.Direction.WEST || direction == PointScript.Direction.EAST)
             {
-                if (currentMeeple.transform.rotation.eulerAngles.y != 90)
-                    currentMeeple.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
+                if (meepleControllerScript.currentMeeple.transform.rotation.eulerAngles.y != 90) meepleControllerScript.currentMeeple.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
             }
             else if (direction == PointScript.Direction.NORTH || direction == PointScript.Direction.SOUTH ||
                      direction == PointScript.Direction.CENTER)
             {
-                if (currentMeeple.transform.rotation.eulerAngles.y == 90)
-                    currentMeeple.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
+                if (meepleControllerScript.currentMeeple.transform.rotation.eulerAngles.y == 90) meepleControllerScript.currentMeeple.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
             }
         }
         else
         {
-            snapPosition = currentMeeple.transform.position;
-        }
-    }
-
-    private void CurrentMeepleRayCast()
-    {
-        RaycastHit hit;
-        var layerMask = 1 << 8;
-
-        Physics.Raycast(currentMeeple.transform.position, currentMeeple.transform.TransformDirection(Vector3.down),
-            out hit, Mathf.Infinity, layerMask);
-
-        var local = table.transform.InverseTransformPoint(hit.point);
-
-
-        meepleControllerScript.fMeepleAimX = local.x;
-        meepleControllerScript.fMeepleAimZ = local.z;
-
-
-        if (meepleControllerScript.fMeepleAimX - stackScript.basePositionTransform.localPosition.x > 0)
-        {
-            iMeepleAimX = (int) ((meepleControllerScript.fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * scale + 1f) / 2 +
-                          85;
-            var testX = ((meepleControllerScript.fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * 10f + 1f) / 2f + 85f;
-        }
-        else
-        {
-            iMeepleAimX = (int) ((meepleControllerScript.fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * scale - 1f) / 2 +
-                          85;
-            var testX = ((meepleControllerScript.fMeepleAimX - stackScript.basePositionTransform.localPosition.x) * 10f - 1f) / 2f + 85f;
-        }
-
-        if (meepleControllerScript.fMeepleAimZ - stackScript.basePositionTransform.localPosition.z > 0)
-        {
-            iMeepleAimZ = (int) ((meepleControllerScript.fMeepleAimZ - stackScript.basePositionTransform.localPosition.z) * scale + 1f) / 2 +
-                          85;
-            var testZ = ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f + 1f) / 2f + 85f;
-        }
-        else
-        {
-            iMeepleAimZ = (int) ((meepleControllerScript.fMeepleAimZ - stackScript.basePositionTransform.localPosition.z) * scale - 1f) / 2 +
-                          85;
-
-            var testZ = ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f - 1f) / 2f + 85f;
+            snapPosition = meepleControllerScript.currentMeeple.transform.position;
         }
     }
 
