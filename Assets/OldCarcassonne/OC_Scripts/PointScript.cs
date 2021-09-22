@@ -20,7 +20,6 @@ public class PointScript : MonoBehaviour
     private Graph g;
     private readonly int nbrOfVertices = 85;
     private int roadBlocks;
-    private int[] tilesList;
     private int vertexIterator;
     private bool[] visited;
 
@@ -160,13 +159,6 @@ public class PointScript : MonoBehaviour
         if (GameEnd) finalScore = counter;
     }
 
-    public void printEverything()
-    {
-        for (var i = 0; i < g.getGraph().Count; i++)
-        for (var j = 0; j < g.getGraph().ElementAt(i).Count; j++)
-            Debug.Log("Vertex: " + i + " " + g.getGraph().ElementAt(i).ElementAt(j).direction);
-    }
-
     public void RemoveVertex(int Vindex)
     {
         if (g.getGraph().ElementAt(Vindex) != null) g.getGraph().ElementAt(Vindex).Clear();
@@ -242,11 +234,6 @@ public class PointScript : MonoBehaviour
                 g.addEdge(Vindex, Vindexes[i], weights[i], startCenter, endCenters[i], directions[i]);
     }
 
-    public Graph getGraph()
-    {
-        return g;
-    }
-
     public class Graph
     {
         private readonly LinkedList<LinkedList<Edge>> graph;
@@ -319,7 +306,6 @@ public class PointScript : MonoBehaviour
 
         public LinkedList<Edge> getNeighbours(int Vindex, TileScript.geography weight, Direction direction)
         {
-            var counter = 0;
             var neighbours = new LinkedList<Edge>();
             if (weight == TileScript.geography.Road || weight == TileScript.geography.City)
                 for (var i = 0; i < graph.ElementAt(Vindex).Count; i++)
@@ -327,7 +313,6 @@ public class PointScript : MonoBehaviour
                         graph.ElementAt(Vindex).ElementAt(i).direction == getReverseDirection(direction))
                     {
                         neighbours.AddLast(graph.ElementAt(Vindex).ElementAt(i));
-                        counter++;
                     }
 
             return neighbours;

@@ -54,27 +54,22 @@ public class MeepleControllerScript : MonoBehaviourPun
         {
             iMeepleAimX = (int) ((fMeepleAimX - gameControllerScript.stackScript.basePositionTransform.localPosition.x) * gameControllerScript.scale + 1f) / 2 +
                           85;
-            var testX = ((fMeepleAimX - gameControllerScript.stackScript.basePositionTransform.localPosition.x) * 10f + 1f) / 2f + 85f;
         }
         else
         {
             iMeepleAimX = (int) ((fMeepleAimX - gameControllerScript.stackScript.basePositionTransform.localPosition.x) * gameControllerScript.scale - 1f) / 2 +
                           85;
-            var testX = ((fMeepleAimX - gameControllerScript.stackScript.basePositionTransform.localPosition.x) * 10f - 1f) / 2f + 85f;
         }
 
         if (fMeepleAimZ - gameControllerScript.stackScript.basePositionTransform.localPosition.z > 0)
         {
             iMeepleAimZ = (int) ((fMeepleAimZ - gameControllerScript.stackScript.basePositionTransform.localPosition.z) * gameControllerScript.scale + 1f) / 2 +
                           85;
-            var testZ = ((gameControllerScript.tileControllerScript.fTileAimZ - gameControllerScript.stackScript.basePositionTransform.localPosition.z) * 10f + 1f) / 2f + 85f;
         }
         else
         {
             iMeepleAimZ = (int) ((fMeepleAimZ - gameControllerScript.stackScript.basePositionTransform.localPosition.z) * gameControllerScript.scale - 1f) / 2 +
                           85;
-
-            var testZ = ((gameControllerScript.tileControllerScript.fTileAimZ - gameControllerScript.stackScript.basePositionTransform.localPosition.z) * 10f - 1f) / 2f + 85f;
         }
     }
     
@@ -118,7 +113,6 @@ public class MeepleControllerScript : MonoBehaviourPun
                 var layerMask = 1 << 9;
                 Physics.Raycast(this.currentMeeple.transform.position, this.currentMeeple.transform.TransformDirection(Vector3.down), out this.meepleHitTileDirection,
                     Mathf.Infinity, layerMask);
-                var id = tile.GetComponent<TileScript>().id;
 
                 this.meepleGeography = TileScript.geography.Grass;
                 gameControllerScript.Direction = PointScript.Direction.CENTER;
@@ -265,7 +259,6 @@ public class MeepleControllerScript : MonoBehaviourPun
             meeple.GetComponentInChildren<BoxCollider>().enabled = false;
             meeple.GetComponent<ObjectManipulator>().enabled = false;
 
-            var geography = currentTileScript.getGeographyAt(direction);
             currentTileScript.occupy(direction);
             if (meepleGeography == TileScript.geography.Cityroad) meepleGeography = TileScript.geography.City;
 

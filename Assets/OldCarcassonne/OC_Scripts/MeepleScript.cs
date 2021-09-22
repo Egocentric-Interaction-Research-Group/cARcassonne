@@ -8,15 +8,9 @@ public class MeepleScript : MonoBehaviourPun
     public PointScript.Direction direction;
     public TileScript.geography geography;
     public bool free;
-    public Material material;
 
     public int x, z;
-    public int vertex = -1;
 
-
-    public int id;
-
-    public int playerId;
     public PlayerScript.Player playerScriptPlayer;
 
     private void Start()
@@ -24,29 +18,7 @@ public class MeepleScript : MonoBehaviourPun
         free = true;
         x = 0;
         z = 0;
-        id = 1;
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-    }
-
-    public void reset()
-    {
-        free = true;
-        x = 0;
-        z = 0;
-        id = 1;
-        GetComponentInChildren<MeshRenderer>().enabled = false;
-    }
-
-    public void create(int player)
-    {
-        free = true;
-        playerId = player;
-        GetComponentInChildren<Renderer>().material = materials[player];
-        GetComponentInChildren<MeshRenderer>().enabled = false;
+        // id = 1;
     }
 
     public void createByPlayer(PlayerScript.Player player)

@@ -96,7 +96,7 @@ public class GameControllerScript : MonoBehaviourPun
     private int tempX;
     private int tempY;
 
-    private TurnScript turnScript;
+    // private TurnScript turnScript;
 
     private int VertexItterator;
 
@@ -109,62 +109,62 @@ public class GameControllerScript : MonoBehaviourPun
 
     public PlayerScript PlayerScript
     {
-        set { playerScript = value; }
-        get { return playerScript; }
+        set => playerScript = value;
+        get => playerScript;
     }
 
     public PlacedTilesScript PlacedTiles
     {
-        set { placedTiles = value; }
-        get { return placedTiles; }
+        set => placedTiles = value;
+        get => placedTiles;
     }
 
     public TileControllerScript TileControllerScript
     {
-        set { tileControllerScript = value; }
-        get { return tileControllerScript; }
+        set => tileControllerScript = value;
+        get => tileControllerScript;
     }
 
     public PointScript.Direction Direction
     {
-        set { direction = value; }
-        get { return direction; }
+        set => direction = value;
+        get => direction;
     }
 
     public Vector3 SnapPosition
     {
-        set { snapPosition = value; }
-        get { return snapPosition; }
+        set => snapPosition = value;
+        get => snapPosition;
     }
 
     public bool CanConfirm
     {
-        set { canConfirm = value; }
-        get { return canConfirm; }
+        set => canConfirm = value;
+        get => canConfirm;
     }
 
     public string ErrorOutput
     {
-        set { errorOutput = value; }
-        get { return errorOutput; }
+        set => errorOutput = value;
+        get => errorOutput;
     }
 
     public PlayerScript PlayerScript1
     {
-        set { playerScript = value; }
-        get { return playerScript; }
+        set => playerScript = value;
+        get => playerScript;
     }
 
     public PlayerScript PlayerScript2
     {
-        set { playerScript = value; }
-        get { return playerScript; }
+        set => playerScript = value;
+        get => playerScript;
     }
 
     public TileControllerScript TileControllerScript1
     {
-        set { tileControllerScript = value; }
-        get { return tileControllerScript; }
+        set => tileControllerScript = value;
+        get => tileControllerScript;
     }
 
     [SerializeField]
@@ -276,7 +276,7 @@ public class GameControllerScript : MonoBehaviourPun
 
         stackScript.PopulateTileArray();
 
-        turnScript = GetComponent<TurnScript>();
+        // turnScript = GetComponent<TurnScript>();
         playerScript = GetComponent<PlayerScript>();
 
         BaseTileCreation();

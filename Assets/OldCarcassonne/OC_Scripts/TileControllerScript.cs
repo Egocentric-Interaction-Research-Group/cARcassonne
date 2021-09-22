@@ -7,9 +7,6 @@ public class TileControllerScript : MonoBehaviourPun
     public Vector3 currentTileEulersOnManip;
     public ParticleSystem drawTileEffect;
     [HideInInspector] public GameObject currentTile;
-    [HideInInspector] public GameObject baseTile;
-    [HideInInspector] public Vector3 tileSnapPosition;
-    [HideInInspector] public GameObject tileMesh;
     public GameObject drawTile;
     public GameObject tileSpawnPosition;
     public float fTileAimX;

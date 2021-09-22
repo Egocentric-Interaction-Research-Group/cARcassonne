@@ -3,6 +3,16 @@ using UnityEngine;
 
 public class TileScript : MonoBehaviourPun
 {
+    
+    /// <summary>
+    ///     Describes the different set of game tiles (used in different versions of gameplay).
+    /// </summary>
+    public enum TileSet
+    {
+        Base,
+        River
+    }
+    
     /// <summary>
     ///     Geography decides what is contained within each direction. If there is a road going out to the right and the
     ///     rotation is 0 then east will become "road"
@@ -42,7 +52,7 @@ public class TileScript : MonoBehaviourPun
 
     public GameObject northCollider, southCollider, westCollider, eastCollider;
 
-    public bool northOcupied, southOcupied, eastOcupied, westOcupied, centerOcupied;
+    public bool northOcupied, southOcupied, eastOcupied, westOcupied, centerOcupied; //TODO Fix Spelling
 
     /// <summary>
     ///     The list of textures. All tile instances have a reference of all the textures so it can assign it to itself
@@ -79,7 +89,7 @@ public class TileScript : MonoBehaviourPun
     }
 
 
-    public bool checkIfOcupied(PointScript.Direction direction)
+    public bool checkIfOcupied(PointScript.Direction direction)  //TODO Fix naming (spelling)
     {
         if (direction == PointScript.Direction.NORTH) return northOcupied;
         if (direction == PointScript.Direction.SOUTH) return southOcupied;
@@ -126,11 +136,11 @@ public class TileScript : MonoBehaviourPun
         return Center;
     }
 
-    public geography[] getGeography()
-    {
-        var geographies = new geography[4] {North, South, East, West};
-        return geographies;
-    }
+    // public geography[] getGeography()
+    // {
+    //     var geographies = new geography[4] {North, South, East, West};
+    //     return geographies;
+    // }
 
     /// <summary>
     ///     Depending on the ID of the tile it recieves different attributes.
@@ -197,10 +207,10 @@ public class TileScript : MonoBehaviourPun
         GetComponentInChildren<Renderer>().material.SetTexture("_MainTex", textures[id - 1]);
     }
 
-    public void resetRotation()
-    {
-        rotation = 0;
-    }
+    // public void resetRotation()
+    // {
+    //     rotation = 0;
+    // }
 
     /// <summary>
     ///     The method used to rotate the tile. In essence it just cycles the rotation between 1 and 3 (and returns to 0 when
@@ -236,10 +246,10 @@ public class TileScript : MonoBehaviourPun
     ///     Returns true if the tile has a shield.
     /// </summary>
     /// <returns>if the tile has a shield</returns>
-    public bool HasShield()
-    {
-        return shield;
-    }
+    // public bool HasShield()
+    // {
+    //     return shield;
+    // }
 
     public void DisableGravity()
     {

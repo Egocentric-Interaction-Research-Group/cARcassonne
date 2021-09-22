@@ -16,8 +16,6 @@ public class StackScript : MonoBehaviourPun
 
     public int[] randomIndexArray;
 
-    public int test;
-
     /// <summary>
     ///     The array of tiles
     /// </summary>
@@ -32,36 +30,6 @@ public class StackScript : MonoBehaviourPun
     ///     An array of ID's.
     /// </summary>
     private int[] tiles;
-
-
-    /// <summary>
-    /// </summary>
-    /// <param name="array"></param>
-    private void Update()
-    {
-    }
-
-    public void setArray(GameObject[] array)
-    {
-        tileArray = array;
-        nextTile = array.Length;
-
-        if (array != null) setAll();
-    }
-
-    /// <summary>
-    ///     Creates a new tile by giving it an ID. The ID corresponds to a category of tiles with distinct attributes that only
-    ///     it is aware of.
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public GameObject createTiles(int id)
-    {
-        var res = Instantiate(tile, new Vector3(2.0f, 0.0f, 0.0f), Quaternion.identity);
-        res.GetComponent<TileScript>().AssignAttributes(id + 1);
-
-        return res;
-    }
 
     /// <summary>
     /// </summary>
@@ -182,15 +150,6 @@ public class StackScript : MonoBehaviourPun
 
     /// <summary>
     /// </summary>
-    /// <param name="gameObj"></param>
-    public void Push(GameObject gameObj)
-    {
-        tileArray[nextTile + 1] = gameObj;
-        nextTile++;
-    }
-
-    /// <summary>
-    /// </summary>
     /// <returns></returns>
     public GameObject Pop()
     {
@@ -221,7 +180,6 @@ public class StackScript : MonoBehaviourPun
         //randomIndex = new int[84];
         tileArray = GameObject.FindGameObjectsWithTag("Tile");
         nextTile = tileArray.Length - 1;
-
 
         if (PhotonNetwork.IsMasterClient)
         {
