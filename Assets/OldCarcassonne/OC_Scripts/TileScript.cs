@@ -17,7 +17,7 @@ public class TileScript : MonoBehaviourPun
     ///     Geography decides what is contained within each direction. If there is a road going out to the right and the
     ///     rotation is 0 then east will become "road"
     /// </summary>
-    public enum geography
+    public enum Geography
     {
         Cloister,
         Village,
@@ -27,7 +27,7 @@ public class TileScript : MonoBehaviourPun
         Stream,
         CityStream,
         RoadStream,
-        Cityroad
+        CityRoad
     }
 
     /// <summary>
@@ -66,37 +66,49 @@ public class TileScript : MonoBehaviourPun
     ///     If Up is road, but the rotation is 1 then East gets the value of Up, since it's rotated 90 degrees clockwise. If
     ///     rotation is 0 then North is equal to Up.
     /// </summary>
-    public geography North, South, West, East, Center;
+    public Geography North, South, West, East, Center;
 
     /// <summary>
-    ///     Decides wether this tile has a shield or not
+    ///     Defines whether the tile is a member of the base set or one of the expansions or alternate tile sets.
+    /// </summary>
+    public TileSet tileSet = TileSet.Base;
+
+    /// <summary>
+    ///     Decides whether this tile has a shield or not
     /// </summary>
     private bool shield;
 
     /// <summary>
     ///     Geography locations set to different local directions.
     /// </summary>
-    private geography Up, Down, Left, Right;
+    private Geography Up, Down, Left, Right;
 
 
     /// <summary>
     ///     Simple getter for the centerGeography
     /// </summary>
     /// <returns>The center geography</returns>
-    public geography getCenter()
+    public Geography getCenter()
     {
         return Center;
     }
 
 
-    public bool checkIfOcupied(PointScript.Direction direction)  //TODO Fix naming (spelling)
+    public bool IsOccupied(PointScript.Direction direction)  //TODO Fix naming (spelling)
     {
-        if (direction == PointScript.Direction.NORTH) return northOcupied;
-        if (direction == PointScript.Direction.SOUTH) return southOcupied;
-        if (direction == PointScript.Direction.EAST) return eastOcupied;
-        if (direction == PointScript.Direction.WEST)
-            return westOcupied;
-        return centerOcupied;
+        switch (direction)
+        {
+            case PointScript.Direction.NORTH:
+                return northOcupied;
+            case PointScript.Direction.SOUTH:
+                return southOcupied;
+            case PointScript.Direction.EAST:
+                return eastOcupied;
+            case PointScript.Direction.WEST:
+                return westOcupied;
+            default:
+                return centerOcupied;
+        }
     }
 
 
@@ -108,7 +120,7 @@ public class TileScript : MonoBehaviourPun
         if (direction == PointScript.Direction.WEST) westOcupied = true;
         if (direction == PointScript.Direction.CENTER) centerOcupied = true;
         if (Center == getGeographyAt(direction) && direction != PointScript.Direction.CENTER ||
-            Center == geography.City)
+            Center == Geography.City)
         {
             if (getGeographyAt(PointScript.Direction.NORTH) == getGeographyAt(direction)) northOcupied = true;
             if (getGeographyAt(PointScript.Direction.EAST) == getGeographyAt(direction)) eastOcupied = true;
@@ -116,9 +128,9 @@ public class TileScript : MonoBehaviourPun
             if (getGeographyAt(PointScript.Direction.WEST) == getGeographyAt(direction)) westOcupied = true;
         }
 
-        if (Center == geography.City && getGeographyAt(direction) == geography.City)
+        if (Center == Geography.City && getGeographyAt(direction) == Geography.City)
             centerOcupied = true;
-        else if (Center == geography.Road && getGeographyAt(direction) == geography.Road) centerOcupied = true;
+        else if (Center == Geography.Road && getGeographyAt(direction) == Geography.Road) centerOcupied = true;
     }
 
     /// <summary>
@@ -126,7 +138,7 @@ public class TileScript : MonoBehaviourPun
     /// </summary>
     /// <param name="direction"></param>
     /// <returns></returns>
-    public geography getGeographyAt(PointScript.Direction direction)
+    public Geography getGeographyAt(PointScript.Direction direction)
     {
         if (direction == PointScript.Direction.NORTH) return North;
         if (direction == PointScript.Direction.SOUTH) return South;
@@ -152,37 +164,37 @@ public class TileScript : MonoBehaviourPun
         rotation = 0;
         this.id = id;
         if (id == 1 || id == 2 || id == 3 || id == 4 || id == 5 || id == 6 || id == 12 || id == 17 || id == 25 ||
-            id == 26 || id == 27 || id == 28) Up = geography.Grass;
+            id == 26 || id == 27 || id == 28) Up = Geography.Grass;
         if (id == 1 || id == 2 || id == 4 || id == 7 || id == 9 || id == 14 || id == 25 || id == 27)
-            Right = geography.Grass;
+            Right = Geography.Grass;
         if (id == 1 || id == 3 || id == 7 || id == 8 || id == 12 || id == 13 || id == 15 || id == 17 || id == 18 ||
-            id == 20 || id == 22 || id == 26) Down = geography.Grass;
+            id == 20 || id == 22 || id == 26) Down = Geography.Grass;
         if (id == 1 || id == 2 || id == 7 || id == 10 || id == 13 || id == 14 || id == 15 || id == 18 || id == 25)
-            Left = geography.Grass;
-        if (id == 6 || id == 29 || id == 30) Up = geography.Road;
-        if (id == 3 || id == 5 || id == 6 || id == 8 || id == 10 || id == 11 || id == 30) Right = geography.Road;
+            Left = Geography.Grass;
+        if (id == 6 || id == 29 || id == 30) Up = Geography.Road;
+        if (id == 3 || id == 5 || id == 6 || id == 8 || id == 10 || id == 11 || id == 30) Right = Geography.Road;
         if (id == 2 || id == 4 || id == 5 || id == 6 || id == 9 || id == 10 || id == 11 || id == 16 || id == 19 ||
-            id == 21 || id == 23 || id == 28 || id == 29 || id == 31) Down = geography.Road;
+            id == 21 || id == 23 || id == 28 || id == 29 || id == 31) Down = Geography.Road;
         if (id == 3 || id == 4 || id == 5 || id == 6 || id == 8 || id == 9 || id == 11 || id == 16 || id == 19)
-            Left = geography.Road;
+            Left = Geography.Road;
         if (id == 7 || id == 8 || id == 9 || id == 10 || id == 11 || id == 13 || id == 14 || id == 15 || id == 16 ||
             id == 18 || id == 19 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 || id == 31 || id == 32 ||
-            id == 33) Up = geography.City;
+            id == 33) Up = Geography.City;
         if (id == 12 || id == 13 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 20 || id == 21 ||
-            id == 22 || id == 23 || id == 24 || id == 33) Right = geography.City;
-        if (id == 14 || id == 24 || id == 32) Down = geography.City;
-        if (id == 12 || id == 17 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24) Left = geography.City;
-        if (id == 26 || id == 28 || id == 29 || id == 31 || id == 32) Right = geography.Stream;
-        if (id == 25 || id == 27 || id == 30 || id == 33) Down = geography.Stream;
-        if (id == 26 || id == 27 || id == 28 || id == 29 || id == 30 || id == 31 || id == 33) Left = geography.Stream;
-        if (id == 1 || id == 2 || id == 28) Center = geography.Cloister;
-        if (id == 3 || id == 4 || id == 8 || id == 9 || id == 10 || id == 29 || id == 30) Center = geography.Road;
-        if (id == 5 || id == 6 || id == 11) Center = geography.Village;
-        if (id == 7 || id == 14 || id == 15 || id == 32) Center = geography.Grass;
+            id == 22 || id == 23 || id == 24 || id == 33) Right = Geography.City;
+        if (id == 14 || id == 24 || id == 32) Down = Geography.City;
+        if (id == 12 || id == 17 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24) Left = Geography.City;
+        if (id == 26 || id == 28 || id == 29 || id == 31 || id == 32) Right = Geography.Stream;
+        if (id == 25 || id == 27 || id == 30 || id == 33) Down = Geography.Stream;
+        if (id == 26 || id == 27 || id == 28 || id == 29 || id == 30 || id == 31 || id == 33) Left = Geography.Stream;
+        if (id == 1 || id == 2 || id == 28) Center = Geography.Cloister;
+        if (id == 3 || id == 4 || id == 8 || id == 9 || id == 10 || id == 29 || id == 30) Center = Geography.Road;
+        if (id == 5 || id == 6 || id == 11) Center = Geography.Village;
+        if (id == 7 || id == 14 || id == 15 || id == 32) Center = Geography.Grass;
         if (id == 12 || id == 13 || id == 17 || id == 18 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 ||
-            id == 31) Center = geography.City;
-        if (id == 33) Center = geography.CityStream;
-        if (id == 16 || id == 19) Center = geography.Cityroad;
+            id == 31) Center = Geography.City;
+        if (id == 33) Center = Geography.CityStream;
+        if (id == 16 || id == 19) Center = Geography.CityRoad;
         if (id == 17 || id == 18 || id == 19 || id == 22 || id == 23 || id == 24)
             shield = true;
         else

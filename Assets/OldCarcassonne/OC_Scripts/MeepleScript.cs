@@ -6,7 +6,7 @@ public class MeepleScript : MonoBehaviourPun
     // Start is called before the first frame update
     public Material[] materials = new Material[5];
     public PointScript.Direction direction;
-    public TileScript.geography geography;
+    public TileScript.Geography geography;
     public bool free;
 
     public int x, z;
@@ -38,7 +38,7 @@ public class MeepleScript : MonoBehaviourPun
         GameObject.Find("GameController").GetComponent<GameControllerScript>().SetMeepleSnapPos();
     }
 
-    public void assignAttributes(int x, int z, PointScript.Direction direction, TileScript.geography geography)
+    public void assignAttributes(int x, int z, PointScript.Direction direction, TileScript.Geography geography)
     {
         this.direction = direction;
         this.geography = geography;

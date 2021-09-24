@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Class encapsulating information about tiles that have been played on the board.
+/// </summary>
 public class PlacedTilesScript : MonoBehaviour
 {
     public Vector3 BasePosition;
+    
 
     private GameObject[,] placedTiles;
 
@@ -53,7 +57,7 @@ public class PlacedTilesScript : MonoBehaviour
         return false;
     }
 
-    public bool MatchGeographyOrNull(int x, int y, PointScript.Direction dir, TileScript.geography geography)
+    public bool MatchGeographyOrNull(int x, int y, PointScript.Direction dir, TileScript.Geography geography)
     {
         if (placedTiles[x, y] == null)
             return true;
@@ -64,14 +68,14 @@ public class PlacedTilesScript : MonoBehaviour
 
     public bool CityTileHasCityCenter(int x, int y)
     {
-        return placedTiles[x, y].GetComponent<TileScript>().getCenter() == TileScript.geography.City ||
-               placedTiles[x, y].GetComponent<TileScript>().getCenter() == TileScript.geography.Cityroad;
+        return placedTiles[x, y].GetComponent<TileScript>().getCenter() == TileScript.Geography.City ||
+               placedTiles[x, y].GetComponent<TileScript>().getCenter() == TileScript.Geography.CityRoad;
     }
 
     public bool CityTileHasGrassOrStreamCenter(int x, int y)
     {
-        return placedTiles[x, y].GetComponent<TileScript>().getCenter() == TileScript.geography.Grass ||
-               placedTiles[x, y].GetComponent<TileScript>().getCenter() == TileScript.geography.Stream;
+        return placedTiles[x, y].GetComponent<TileScript>().getCenter() == TileScript.Geography.Grass ||
+               placedTiles[x, y].GetComponent<TileScript>().getCenter() == TileScript.Geography.Stream;
     }
 
     //Hämtar grannarna till en specifik tile
@@ -103,9 +107,9 @@ public class PlacedTilesScript : MonoBehaviour
         return Neighbors;
     }
 
-    public TileScript.geography[] getWeights(int x, int y)
+    public TileScript.Geography[] getWeights(int x, int y)
     {
-        var weights = new TileScript.geography[4];
+        var weights = new TileScript.Geography[4];
         var itt = 0;
         if (placedTiles[x + 1, y] != null)
         {
@@ -129,9 +133,9 @@ public class PlacedTilesScript : MonoBehaviour
         return weights;
     }
 
-    public TileScript.geography[] getCenters(int x, int y)
+    public TileScript.Geography[] getCenters(int x, int y)
     {
-        var centers = new TileScript.geography[4];
+        var centers = new TileScript.Geography[4];
         var itt = 0;
         if (placedTiles[x + 1, y] != null)
         {

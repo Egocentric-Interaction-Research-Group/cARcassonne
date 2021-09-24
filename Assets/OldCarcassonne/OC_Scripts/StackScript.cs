@@ -2,6 +2,10 @@
 using UnityEngine;
 using Random = System.Random;
 
+// TODO: Why not use an actual Stack object? Or two lists?
+
+// Game State requires a count of remaining tiles, and a list of remaining tiles. Possible search by criteria?
+
 /// <summary>
 ///     The Stack of tiles.
 /// </summary>

@@ -11,8 +11,8 @@ public class StartBellAnimation : MonoBehaviourPun
 
     public void StartAniRPC()
     {
-        if(gameController.GetComponent<GameControllerScript>().state == GameControllerScript.GameStates.TileDown || 
-            gameController.GetComponent<GameControllerScript>().state == GameControllerScript.GameStates.MeepleDown)
+        if(gameController.GetComponent<GameControllerScript>().phase == GameControllerScript.Phases.TileDown || 
+            gameController.GetComponent<GameControllerScript>().phase == GameControllerScript.Phases.MeepleDown)
         {
             if(PhotonNetwork.LocalPlayer.NickName == (gameController.GetComponent<GameControllerScript>().currentPlayer.getID() + 1).ToString())
             {
