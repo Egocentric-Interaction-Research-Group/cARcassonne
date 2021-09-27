@@ -680,3 +680,13 @@ $RECYCLE.BIN/
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,unity,visualstudio,osx,windows
+
+Documentation/articles/gameplayAI.pdf
+
+Documentation/articles/gameplayAI.tex
+
+Documentation/articles/situationRecognition.pdf
+
+Documentation/articles/situationRecognition.tex
+
+Documentation/articles/.texpadtmp/
