@@ -10,11 +10,8 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
-using UnityEngine;
-
-using Photon.Pun;
-using Photon.Realtime;
 using ExitGames.Client.Photon;
+using UnityEngine;
 
 namespace Photon.Pun.UtilityScripts
 {

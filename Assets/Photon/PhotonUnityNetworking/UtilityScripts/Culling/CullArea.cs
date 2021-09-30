@@ -9,6 +9,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Photon.Pun.UtilityScripts
@@ -385,7 +386,7 @@ namespace Photon.Pun.UtilityScripts
         Gizmos.color = new Color((this.NodeType == ENodeType.Root) ? 1 : 0, (this.NodeType == ENodeType.Node) ? 1 : 0, (this.NodeType == ENodeType.Leaf) ? 1 : 0);
         Gizmos.DrawWireCube(this.Center, this.Size);
 
-        UnityEditor.Handles.Label(this.Center, this.Id.ToString(), new GUIStyle() { fontStyle = FontStyle.Bold });
+        Handles.Label(this.Center, this.Id.ToString(), new GUIStyle() { fontStyle = FontStyle.Bold });
 #endif
         }
 

@@ -8,13 +8,11 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-
 using System.Collections.Generic;
-
 using Photon.Pun.Demo.Cockpit;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Photon.Pun.Demo.Hub
 {

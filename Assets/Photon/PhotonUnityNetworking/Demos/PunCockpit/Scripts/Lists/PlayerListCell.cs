@@ -9,12 +9,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
-
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
-
-using Photon.Realtime;
-using Photon.Pun.UtilityScripts;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Photon.Pun.Demo.Cockpit
 {
@@ -43,7 +42,7 @@ namespace Photon.Pun.Demo.Cockpit
 
 
 
-        public void RefreshInfo(ExitGames.Client.Photon.Hashtable changedProps)
+        public void RefreshInfo(Hashtable changedProps)
         {
             UpdateInfo();
         }

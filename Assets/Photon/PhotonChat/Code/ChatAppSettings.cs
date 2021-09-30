@@ -10,12 +10,13 @@
 #define SUPPORTED_UNITY
 #endif
 
+using System;
+using ExitGames.Client.Photon;
+
 
 namespace Photon.Chat
 {
-    using System;
-    using ExitGames.Client.Photon;
-    #if SUPPORTED_UNITY
+#if SUPPORTED_UNITY
     using UnityEngine.Serialization;
     #endif
 

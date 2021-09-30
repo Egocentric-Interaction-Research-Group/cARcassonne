@@ -9,9 +9,8 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
-using UnityEngine;
-
 using System;
+using UnityEngine;
 
 namespace Photon.Pun.Demo.SlotRacer.Utils
 {

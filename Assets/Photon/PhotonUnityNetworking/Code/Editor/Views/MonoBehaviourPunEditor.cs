@@ -11,7 +11,6 @@
 namespace Photon.Pun
 {
     using UnityEditor;
-    using UnityEngine;
 
     [CustomEditor(typeof(MonoBehaviourPun))]
     public abstract class MonoBehaviourPunEditor : Editor

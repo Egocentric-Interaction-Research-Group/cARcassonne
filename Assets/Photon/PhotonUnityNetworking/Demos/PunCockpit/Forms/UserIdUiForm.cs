@@ -5,9 +5,10 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Photon.Pun.Demo.Cockpit.Forms
 {
@@ -20,7 +21,7 @@ namespace Photon.Pun.Demo.Cockpit.Forms
 
         public InputField idInput;
 
-        [System.Serializable]
+        [Serializable]
         public class OnSubmitEvent : UnityEvent<string> { }
 
         public OnSubmitEvent OnSubmit;
@@ -28,7 +29,7 @@ namespace Photon.Pun.Demo.Cockpit.Forms
         public void Start()
         {
 
-            string prefsName = PlayerPrefs.GetString(UserIdUiForm.UserIdPlayerPref);
+            string prefsName = PlayerPrefs.GetString(UserIdPlayerPref);
             if (!string.IsNullOrEmpty(prefsName))
             {
                 this.idInput.text = prefsName;
@@ -47,7 +48,7 @@ namespace Photon.Pun.Demo.Cockpit.Forms
 
         public void SubmitForm()
         {
-            PlayerPrefs.SetString(UserIdUiForm.UserIdPlayerPref, idInput.text);
+            PlayerPrefs.SetString(UserIdPlayerPref, idInput.text);
             OnSubmit.Invoke(idInput.text);
         }
     }

@@ -9,10 +9,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
-
-using UnityEngine;
-
 using Photon.Pun.UtilityScripts;
+using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Photon.Pun.Demo.Asteroids

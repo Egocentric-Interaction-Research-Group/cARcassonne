@@ -1,0 +1,14 @@
+﻿using UnityEngine;
+
+public class ChangeMaterial : MonoBehaviour
+{
+    public Material pressMat, releaseMat;
+    public void ChangeMaterialOnPress()
+    {
+        GetComponent<MeshRenderer>().material = pressMat;
+    }
+    public void ChangeMaterialOnRelease()
+    {
+        GetComponent<MeshRenderer>().material = releaseMat;
+    }
+}

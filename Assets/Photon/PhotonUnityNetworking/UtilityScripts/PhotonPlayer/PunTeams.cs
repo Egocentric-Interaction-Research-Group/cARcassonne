@@ -14,13 +14,9 @@
 
 using System;
 using System.Collections.Generic;
-
-using UnityEngine;
-
-using Photon.Pun;
-using Photon.Realtime;
 using ExitGames.Client.Photon;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Photon.Realtime;
+using UnityEngine;
 
 namespace Photon.Pun.UtilityScripts
 {

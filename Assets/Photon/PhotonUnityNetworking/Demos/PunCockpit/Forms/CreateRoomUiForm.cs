@@ -6,14 +6,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections;
 using System.Linq;
-
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Events;
-
 using Photon.Realtime;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Photon.Pun.Demo.Cockpit.Forms
 {
@@ -27,7 +24,7 @@ namespace Photon.Pun.Demo.Cockpit.Forms
         public InputField ExpectedUsersInput;
         public Dropdown LobbyTypeInput;
 
-        [System.Serializable]
+        [Serializable]
         public class OnSubmitEvent : UnityEvent<string, string, LobbyType, string[]> { }
 
         public OnSubmitEvent OnSubmit;

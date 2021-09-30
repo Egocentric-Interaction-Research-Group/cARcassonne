@@ -8,12 +8,11 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
+using ExitGames.Client.Photon;
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
-
-using ExitGames.Client.Photon;
-using Photon.Realtime;
-using Photon.Pun.UtilityScripts;
 
 namespace Photon.Pun.Demo.Asteroids
 {

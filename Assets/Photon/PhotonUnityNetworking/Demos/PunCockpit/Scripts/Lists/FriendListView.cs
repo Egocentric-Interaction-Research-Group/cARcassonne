@@ -7,14 +7,12 @@
 
 using System;
 using System.Collections;
-using System.Linq;
-
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Events;
 using System.Collections.Generic;
-
+using System.Linq;
 using Photon.Realtime;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Photon.Pun.Demo.Cockpit
 {
@@ -47,7 +45,7 @@ namespace Photon.Pun.Demo.Cockpit
 
         public Text UpdateStatusText;
 
-        [System.Serializable]
+        [Serializable]
         public class OnJoinRoomEvent : UnityEvent<string> { }
 
         public OnJoinRoomEvent OnJoinRoom;

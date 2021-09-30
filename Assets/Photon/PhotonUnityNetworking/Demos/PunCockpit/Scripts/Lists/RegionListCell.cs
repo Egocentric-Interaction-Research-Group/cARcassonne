@@ -6,11 +6,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
-
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
-
-using Photon.Realtime;
 
 namespace Photon.Pun.Demo.Cockpit
 {

@@ -8,16 +8,15 @@
 #define SUPPORTED_UNITY
 #endif
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using ExitGames.Client.Photon;
+
 namespace Photon.Chat
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using ExitGames.Client.Photon;
-
-    #if SUPPORTED_UNITY || NETFX_CORE
-    using Hashtable = ExitGames.Client.Photon.Hashtable;
-    using SupportClass = ExitGames.Client.Photon.SupportClass;
+#if SUPPORTED_UNITY || NETFX_CORE
+    using SupportClass = SupportClass;
     #endif
 
 
@@ -1095,7 +1094,7 @@ namespace Photon.Chat
                             // unexpected disconnect, we log warning and stacktrace
                             string stacktrace = string.Empty;
                             #if DEBUG && !NETFX_CORE
-                            stacktrace = new System.Diagnostics.StackTrace(true).ToString();
+                            stacktrace = new StackTrace(true).ToString();
                             #endif
                             this.listener.DebugReturn(DebugLevel.WARNING, string.Format("Got a unexpected Disconnect in ChatState: {0}. Server: {1} Trace: {2}", this.State, this.chatPeer.ServerAddress, stacktrace));
                             break;

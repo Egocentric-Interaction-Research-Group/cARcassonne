@@ -15,10 +15,8 @@
 //using UnityEditor;
 //#endif
 
-using UnityEngine;
-
-//using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine; //using Photon.Pun;
 
 namespace Photon.Pun.UtilityScripts
 {

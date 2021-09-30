@@ -10,12 +10,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-
-using UnityEngine;
-
-using Photon.Pun;
+using ExitGames.Client.Photon;
 using Photon.Realtime;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
+using UnityEngine;
 
 namespace Photon.Pun.UtilityScripts
 {
@@ -69,7 +66,7 @@ namespace Photon.Pun.UtilityScripts
 
             if (instance != null && instance != this && instance.gameObject != null)
             {
-                GameObject.DestroyImmediate(instance.gameObject);
+                DestroyImmediate(instance.gameObject);
             }
 
             instance = this;
@@ -93,7 +90,7 @@ namespace Photon.Pun.UtilityScripts
 
         public override void OnLeftRoom()
         {
-            PhotonNetwork.LocalPlayer.CustomProperties.Remove(PlayerNumbering.RoomPlayerIndexedProp);
+            PhotonNetwork.LocalPlayer.CustomProperties.Remove(RoomPlayerIndexedProp);
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -108,7 +105,7 @@ namespace Photon.Pun.UtilityScripts
 
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
         {
-            if (changedProps != null && changedProps.ContainsKey(PlayerNumbering.RoomPlayerIndexedProp))
+            if (changedProps != null && changedProps.ContainsKey(RoomPlayerIndexedProp))
             {
                 this.RefreshData();
             }

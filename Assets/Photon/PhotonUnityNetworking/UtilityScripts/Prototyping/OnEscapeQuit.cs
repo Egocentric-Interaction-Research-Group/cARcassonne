@@ -8,9 +8,8 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
-using UnityEngine;
-using System.Collections;
 using System.Diagnostics;
+using UnityEngine;
 
 namespace Photon.Pun.UtilityScripts
 {

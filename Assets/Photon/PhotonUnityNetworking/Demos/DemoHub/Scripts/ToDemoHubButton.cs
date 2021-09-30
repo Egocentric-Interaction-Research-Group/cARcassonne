@@ -10,7 +10,6 @@
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.EventSystems;
 
 namespace Photon.Pun.Demo.Hub
 {

@@ -5,11 +5,10 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections;
-
+using System;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Photon.Pun.Demo.Cockpit.Forms
 {
@@ -20,7 +19,7 @@ namespace Photon.Pun.Demo.Cockpit.Forms
     {
         public InputField PropertyValueInput;
 
-        [System.Serializable]
+        [Serializable]
         public class OnSubmitEvent : UnityEvent<string> { }
 
         public OnSubmitEvent OnSubmit;

@@ -7,12 +7,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using UnityEngine;
+using UnityEngine.EventSystems;
+
 namespace Photon.Pun.UtilityScripts
 {
-    using UnityEngine;
-    using UnityEngine.EventSystems;
-
-
     /// <summary>
     /// Instantiates a networked GameObject on click.
     /// </summary>

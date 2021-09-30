@@ -8,15 +8,10 @@
 // <author>developer@exitgames.com</author>
 // ----------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
-
-using UnityEngine;
-
-using Photon.Realtime;
-
 using ExitGames.Client.Photon;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Photon.Realtime;
+using UnityEngine;
 
 namespace Photon.Pun.UtilityScripts
 {
@@ -168,7 +163,7 @@ namespace Photon.Pun.UtilityScripts
         {
             if (IsFinishedByMe)
             {
-                UnityEngine.Debug.LogWarning("Can't SendMove. Turn is finished by this player.");
+                Debug.LogWarning("Can't SendMove. Turn is finished by this player.");
                 return;
             }
 

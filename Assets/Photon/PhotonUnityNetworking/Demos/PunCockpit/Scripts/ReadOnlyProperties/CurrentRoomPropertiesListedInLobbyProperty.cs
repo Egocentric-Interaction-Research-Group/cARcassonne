@@ -5,9 +5,8 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
-using UnityEngine.UI;
-
 using System.Linq;
+using UnityEngine.UI;
 
 namespace Photon.Pun.Demo.Cockpit
 {

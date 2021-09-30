@@ -9,13 +9,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
-using UnityEngine;
-using UnityEngine.UI;
-
 using Photon.Pun.Demo.Cockpit.Forms;
 using Photon.Pun.Demo.Shared;
 using Photon.Realtime;
+using UnityEngine;
+using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Photon.Pun.Demo.Cockpit
@@ -359,7 +357,7 @@ namespace Photon.Pun.Demo.Cockpit
 			{
 				if (this.ModalWindow.gameObject.activeInHierarchy) {
 
-					if (PunCockpit.Instance.debug)	Debug.Log("PunCockpit:OnRegionsPinged");
+					if (Instance.debug)	Debug.Log("PunCockpit:OnRegionsPinged");
 
 					this.RegionListView.OnRegionListUpdate (RegionsList);
 				}
@@ -386,7 +384,7 @@ namespace Photon.Pun.Demo.Cockpit
 
         public override void OnRegionListReceived(RegionHandler regionHandler)
 		{
-			if (PunCockpit.Instance.debug)
+			if (Instance.debug)
 				Debug.Log ("PunCockpit:OnRegionListReceived: " + regionHandler);
 
 			if (_regionPingProcessActive)
@@ -797,7 +795,7 @@ namespace Photon.Pun.Demo.Cockpit
             _roomOptions.CleanupCacheOnLeave = this.CleanupCacheOnLeave;
             _roomOptions.DeleteNullProperties = this.DeleteNullProperties;
 
-            _roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "C0", "Hello" } };
+            _roomOptions.CustomRoomProperties = new Hashtable() { { "C0", "Hello" } };
             _roomOptions.CustomRoomPropertiesForLobby = new string[] { "C0" };
 
 

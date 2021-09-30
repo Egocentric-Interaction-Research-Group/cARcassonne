@@ -7,14 +7,8 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-
-using Photon.Pun;
-using Photon.Realtime;
 
 namespace Photon.Pun.UtilityScripts
 {

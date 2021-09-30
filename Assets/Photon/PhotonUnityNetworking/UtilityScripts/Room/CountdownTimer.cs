@@ -165,7 +165,7 @@ namespace Photon.Pun.UtilityScripts
 
             Hashtable props = new Hashtable
             {
-                {CountdownTimer.CountdownStartTime, (int)PhotonNetwork.ServerTimestamp}
+                {CountdownStartTime, (int)PhotonNetwork.ServerTimestamp}
             };
             PhotonNetwork.CurrentRoom.SetCustomProperties(props);
 

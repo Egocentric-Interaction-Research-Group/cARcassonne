@@ -4,15 +4,13 @@
 // </copyright>
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
- 
+
 using System.Collections;
 using System.Collections.Generic;
-
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
-
-using Photon.Realtime;
-using Photon.Pun.UtilityScripts;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Photon.Pun.Demo.Cockpit
@@ -147,7 +145,7 @@ namespace Photon.Pun.Demo.Cockpit
             MasterClientToolBar.SetActive(_player == newMasterClient);
         }
 
-        public override void OnPlayerPropertiesUpdate(Player target, ExitGames.Client.Photon.Hashtable changedProps)
+        public override void OnPlayerPropertiesUpdate(Player target, Hashtable changedProps)
         {
             //Debug.Log("OnPlayerPropertiesUpdate " + target.ActorNumber + " " + target.ToStringFull() + " " + changedProps.ToStringFull());
 

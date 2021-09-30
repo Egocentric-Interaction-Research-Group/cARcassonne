@@ -5,9 +5,10 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Photon.Pun.Demo.Cockpit.Forms
 {
@@ -19,7 +20,7 @@ namespace Photon.Pun.Demo.Cockpit.Forms
 		public InputField RegionInput;
 		public Dropdown RegionListInput;
 
-		[System.Serializable]
+		[Serializable]
 		public class OnSubmitEvent : UnityEvent<string>{}
 
 		public OnSubmitEvent OnSubmit;
