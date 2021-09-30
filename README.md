@@ -1,13 +1,22 @@
 # cARcassonne
 Augmented Reality Carcassonne using the HoloLens2 and MRTK in Unity
 
+## Dependencies
+
+cARcassonne has recently moved to the Unity OpenXR Plugin system and Microsoft's Mixed Reality OpenXR plugin.
+
+* Unity OpenXR plugin: version 1.2 or later
+* Mixed Reality OpenXR plugin: version 1.0.0 or later
+* MRTK: version 2.7.2 or later
+* AR Foundation: version 4.1.1 or later
+* Universal Render Pipeline (URP): version 10.5.1 or later
+* Azure Spatial Anchors: version 2.10 or later
+* Azure Remote Rendering: version 1.0.15 or later
+
 ## Installation
 
-1. Install Unity 2019.4.28f1 from Unity Hub
+1. Install Unity 20.3.19f1 from Unity Hub (v2.4.5)
 1. Pull and check out the project.
-1. Download Azure Spatial Anchors (version 2.8.1)
-   1. Core: https://dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging?_a=package&feed=Unity-packages&package=com.microsoft.azure.spatial-anchors-sdk.core&version=2.8.1&protocolType=Npm
-   1. Windows: https://dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging?_a=package&feed=Unity-packages&package=com.microsoft.azure.spatial-anchors-sdk.windows&protocolType=Npm&version=2.10.0-preview.1&view=versions
 1. Add the project to Unity Hub
 1. Start the project
 1. Bypass the error message (`An error has occurred while resolving packages...`) by pressing continue.
