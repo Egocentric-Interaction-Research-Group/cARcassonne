@@ -33,3 +33,8 @@ Change the settings of the inspector panel
     1. Check "Don't process"
     1. Uncheck “Select platforms for plugin->Any Platform”, and Check ALL platforms below
     1. P.S. I'm not sure which step took effect. For steps 2.1 to 2.3, I did it together. According to experience, I think step 2.1 is the key, but I still did 2.2 and 2.3 to ensure that it is correct.
+
+#### Unity crashes while loading, "Importing Assets: Compiling Assembly Definition Files scripts"
+
+1. Delete Library and Temp folders
+1. Try again
