@@ -32,3 +32,7 @@ A modified version of his data representation is detailed at the [State Represen
 ### AI in Unity
 
 Machine learning integration in Unity is often done using [ML-Agents](https://unity.com/products/machine-learning-agents). Detailed documentation for ML-Agents is [here](https://github.com/Unity-Technologies/ml-agents/blob/release_18_docs/docs/Readme.md)
+
+### MRTK Input Simulation
+
+* https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/input-simulation/input-simulation-service?view=mrtkunity-2021-05
