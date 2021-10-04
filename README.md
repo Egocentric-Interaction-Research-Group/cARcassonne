@@ -1,9 +1,9 @@
 # cARcassonne
 Augmented Reality Carcassonne using the HoloLens2 and MRTK in Unity
 
-## Dependencies
+### Dependencies
 
-cARcassonne has recently moved to the Unity OpenXR Plugin system and Microsoft's Mixed Reality OpenXR plugin.
+cARcassonne has recently moved to the Unity OpenXR Plugin system and Microsoft's Mixed Reality OpenXR plugin. *These should be installed automatically, but they are listed here for reference.*
 
 * Unity OpenXR plugin: version 1.2 or later
 * Mixed Reality OpenXR plugin: version 1.0.0 or later
