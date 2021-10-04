@@ -684,5 +684,6 @@ $RECYCLE.BIN/
 Documentation/articles/*.pdf
 Documentation/articles/*.tex
 Documentation/articles/.texpadtmp/
+Documentation/site/
 
 Packages/docfx.console.2.58.4/

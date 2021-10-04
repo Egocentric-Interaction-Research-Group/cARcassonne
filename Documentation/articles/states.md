@@ -24,11 +24,11 @@ Each tile is a 3x3 matrix and each feature is one of **R**oad, **C**ity, or **Ch
 
 The alternative representation is as a graph of features with ports on the **N**orth, **S**outh, **E**ast, and **W**est of each tile (these cardinal directions are fixed for a tile and if the tile is rotated, **N** might face down or to the side).
 
-![!](representations/tile_representations.jpeg)
+![!](./representations/tile_representations.jpeg)
 
 These two representations expand from the tile into the whole board, creating a board-wide matrix of roads and cities, or a board-wide graph of the same.
 
-![!](representations/board_representations.jpeg)
+![!](./representations/board_representations.jpeg)
 
 
 ## Useful Data

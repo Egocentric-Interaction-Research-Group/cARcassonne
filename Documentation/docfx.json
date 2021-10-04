@@ -3,67 +3,79 @@
     {
       "src": [
         {
+          "src": "..",
           "files": [
-            "*.csproj"
+            "Assets/**/*.cs"
           ],
-          "cwd": ".",
           "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ],
-          "src": "../Assets"
+            "Assets/Plugins/**"
+          ]
         }
       ],
-      "dest": "obj/api"
+      "globalNamespaceId": "Global",
+      "filter": "filterConfig.yml",
+      "dest": "api"
     }
   ],
   "build": {
+    "globalMetadata": {
+      "_appTitle": "cARcassonne documentation",
+      "_appFooter": "cARcassonne documentation",
+      "_enableSearch": true
+    },
     "content": [
       {
         "files": [
-          "api/**.yml"
-        ],
-        "cwd": "obj"
+          "toc.yml",
+          "index.md"
+        ]
       },
       {
+        "src": "api",
         "files": [
-          "api/*.md",
-          "articles/**.md",
+          "*.yml"
+        ],
+        "dest": "api"
+      },
+      {
+        "src": "articles",
+        "files": [
           "toc.yml",
           "*.md"
         ],
-        "exclude": [
-          "obj/**",
-          "_site/**"
+        "dest": "articles"
+      }
+    ],
+    "overwrite": [
+      {
+        "src": "..",
+        "files": [
+          "Assets/Scripts/**/*.md"
         ]
       }
     ],
     "resource": [
       {
         "files": [
-          "images/**"
-        ],
-        "exclude": [
-          "obj/**",
-          "_site/**"
+          "resources/**/*"
         ]
       }
     ],
-    "overwrite": [
-      {
-        "files": [
-          "apidoc/**.md"
-        ],
-        "exclude": [
-          "obj/**",
-          "_site/**"
-        ]
+    "sitemap": {
+      "baseUrl": "https://normanderwan.github.io/DocFxForUnity",
+      "changefreq": "weekly",
+      "fileOptions": {
+        "api/*": {
+          "changefreq": "daily"
+        }
       }
+    },
+    "xref": [
+      "https://normanderwan.github.io/UnityXrefMaps/xrefmap.yml"
     ],
-    "dest": "_site",
-    "template": [
-      "default"
-    ]
+    "xrefService": [
+      "https://xref.docs.microsoft.com/query?uid={uid}"
+    ],
+    "dest": "site"
   }
 }
