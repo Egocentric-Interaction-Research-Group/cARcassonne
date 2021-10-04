@@ -1,5 +1,9 @@
 
-# This is the **HOMEPAGE**.
-Refer to [Markdown](http://daringfireball.net/projects/markdown/) for how to write markdown files.
-## Quick Start Notes:
-1. Add images to *images* folder if the file is referencing an image.
+# cARcassonne Documentation
+
+## Building the Documentation
+The documentation is built using [docfx](https://dotnet.github.io/docfx/)a
+nd the structure is based on
+[DocFxForUnity](https://github.com/NormandErwan/DocFxForUnity).
+
+To build,run `docfx docfx.json` and then `docfx serve site`.
