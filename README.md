@@ -15,13 +15,38 @@ cARcassonne has recently moved to the Unity OpenXR Plugin system and Microsoft's
 
 ## Installation
 
+Installation lists software versions that have been tested with the setup. Other versions may or may not work!
+
+### Prerequisites
+
+1. Windows 10 Education (21H1)
+1. Unity Hub (v2.4.5)
+1. Microsoft Visual Studio Community 2019 (16.11.3) OR JetBrains Rider (2021.1+)
+2. Github Client
+    * Terminal Client (any one will do)
+    * Github Desktop (https://desktop.github.com/)
+    * Gitkraken (https://www.gitkraken.com/)
+
+### Installing
+
 1. Install Unity 20.3.19f1 from Unity Hub (v2.4.5)
-1. Pull and check out the project.
-1. Add the project to Unity Hub
-1. Start the project
-1. Bypass the error message (`An error has occurred while resolving packages...`) by pressing continue.
-1. Once inside the project add the downloaded packages to the project using https://docs.unity3d.com/Manual/upm-ui-tarball.html
-1. Press play and the project should run!
+    * Make sure `Universal Windows Platform Build Support` is checked.
+3. Clone the project from Github.
+    * Check out the `develop` branch and fork from there.
+    * Actually, I'd suggest each team make a main feature branch (e.g. `feature/gameplayai` and `feature/situationrecognition` that you all share and fork individial work branches from there.
+5. Add the project to Unity Hub (`Projects > Add`)
+6. Make sure the project has the right Unity version and open it.
+    * This could take a while as Unity finds and downloads packages, etc.
+1. The MRTK Project Configurator should pop up. `Apply` the default settings. The click `Next` and then `Done`
+2. Add the missing Scenes to the Project Hierarchy:
+    1. Select `GameScene` and `StartmenuScene` from `Assets > Scenes`
+    2. Drag them to the Hierarchy window
+    3. `Remove` the default Untitled Scene
+    1. `Unload` the `StartmenuScene` so that it is in the Hierarchy, but greyed out
+11. Press play and the project should run!
+
+### Building the documentation (windows only)
+See [Documentation index](Documentation/index.md)
 
 ### Troubleshooting
 
