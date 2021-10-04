@@ -1,28 +1,31 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ErrorPlaneScript : MonoBehaviour
+namespace Carcassonne
 {
-    private Material mat;
-
-    private bool ready = true;
-
-    // Start is called before the first frame update
-    private void Start()
+    public class ErrorPlaneScript : MonoBehaviour
     {
-        mat = GetComponent<MeshRenderer>().material;
-        mat.color = new Color(1, 0, 0, 0);
-    }
+        private Material mat;
 
-    private IEnumerator FadeImage(int red, int green)
-    {
-        ready = false;
-        for (float i = 1; i >= 0; i -= Time.deltaTime * 2)
+        private bool ready = true;
+
+        // Start is called before the first frame update
+        private void Start()
         {
-            mat.color = new Color(red, green, 0, i);
-            yield return null;
+            mat = GetComponent<MeshRenderer>().material;
+            mat.color = new Color(1, 0, 0, 0);
         }
 
-        ready = true;
+        private IEnumerator FadeImage(int red, int green)
+        {
+            ready = false;
+            for (float i = 1; i >= 0; i -= Time.deltaTime * 2)
+            {
+                mat.color = new Color(red, green, 0, i);
+                yield return null;
+            }
+
+            ready = true;
+        }
     }
 }

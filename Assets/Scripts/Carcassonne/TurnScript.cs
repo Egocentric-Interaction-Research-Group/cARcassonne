@@ -1,31 +1,34 @@
 ﻿using UnityEngine;
 
-public class TurnScript : MonoBehaviour
+namespace Carcassonne
 {
-    private int iterator;
-    private int nbrOfplayers;
-    private int turns;
-
-    private void Start()
+    public class TurnScript : MonoBehaviour
     {
-    }
+        private int iterator;
+        private int nbrOfplayers;
+        private int turns;
 
-    public int currentPlayer(int playersInRoom)
-    {
-        nbrOfplayers = playersInRoom;
-        return iterator;
-    }
-
-
-    public int newTurn()
-    {
-        Debug.Log("PlayerCount i Room " + nbrOfplayers);
-        if (iterator + 1 == nbrOfplayers)
+        private void Start()
         {
-            return iterator = 0;
         }
 
-        iterator += 1;
-        return iterator;
+        public int currentPlayer(int playersInRoom)
+        {
+            nbrOfplayers = playersInRoom;
+            return iterator;
+        }
+
+
+        public int newTurn()
+        {
+            Debug.Log("PlayerCount i Room " + nbrOfplayers);
+            if (iterator + 1 == nbrOfplayers)
+            {
+                return iterator = 0;
+            }
+
+            iterator += 1;
+            return iterator;
+        }
     }
 }

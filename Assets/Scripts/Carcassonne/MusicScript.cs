@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 
-public class MusicScript : MonoBehaviour
+namespace Carcassonne
 {
-    private void Awake()
+    public class MusicScript : MonoBehaviour
     {
-        DontDestroyOnLoad(transform.gameObject);
+        private void Awake()
+        {
+            DontDestroyOnLoad(transform.gameObject);
+        }
     }
 }

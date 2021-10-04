@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 
-public class UndoButtonScript : MonoBehaviour
+namespace Carcassonne
 {
-    private void OnMouseUp()
+    public class UndoButtonScript : MonoBehaviour
     {
-        Debug.Log("Test");
+        private void OnMouseUp()
+        {
+            Debug.Log("Test");
+        }
     }
 }

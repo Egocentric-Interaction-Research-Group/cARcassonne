@@ -1,27 +1,30 @@
 ﻿using UnityEngine;
 
-public class CardSlideScript : MonoBehaviour
+namespace Carcassonne
 {
-    private Animator anim;
-
-    // Start is called before the first frame update
-    private void Start()
+    public class CardSlideScript : MonoBehaviour
     {
-        anim = GetComponent<Animator>();
-    }
+        private Animator anim;
 
-    // Update is called once per frame
-    private void Update()
-    {
-    }
+        // Start is called before the first frame update
+        private void Start()
+        {
+            anim = GetComponent<Animator>();
+        }
 
-    public void InvalidTile(bool toggle)
-    {
-        anim.SetBool("TileNotValid", toggle);
-    }
+        // Update is called once per frame
+        private void Update()
+        {
+        }
 
-    public void InvalidMeeple(bool toggle)
-    {
-        anim.SetBool("InvalidMeeple", toggle);
+        public void InvalidTile(bool toggle)
+        {
+            anim.SetBool("TileNotValid", toggle);
+        }
+
+        public void InvalidMeeple(bool toggle)
+        {
+            anim.SetBool("InvalidMeeple", toggle);
+        }
     }
 }
