@@ -20,9 +20,11 @@ Installation lists software versions that have been tested with the setup. Other
 ### Prerequisites
 
 1. Windows 10 Education (21H1)
-1. Unity Hub (v2.4.5)
-1. Microsoft Visual Studio Community 2019 (16.11.3) OR JetBrains Rider (2021.1+)
-2. Github Client
+   * *Tested on this particular build. Should work on many others as well.*
+   * > **OS X**: This also seems to work on OS X 11.6 Big Sur, tested on a Mac M1.
+3. Unity Hub (v2.4.5)
+4. Microsoft Visual Studio Community 2019 (16.11.3) OR JetBrains Rider (2021.1+)
+5. Github Client
     * Terminal Client (any one will do)
     * Github Desktop (https://desktop.github.com/)
     * Gitkraken (https://www.gitkraken.com/)
@@ -31,6 +33,7 @@ Installation lists software versions that have been tested with the setup. Other
 
 1. Install Unity 20.3.19f1 from Unity Hub (v2.4.5)
     * Make sure `Universal Windows Platform Build Support` is checked.
+    * > **OS X**: UWP isn't an option, so I've just installed Mac and Windows build support
 3. Clone the project from Github.
     * Check out the `develop` branch and fork from there.
     * Actually, I'd suggest each team make a main feature branch (e.g. `feature/gameplayai` and `feature/situationrecognition` that you all share and fork individial work branches from there.
