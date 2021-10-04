@@ -78,8 +78,6 @@ StyleCopReport.xml
 *_p.c
 *_h.h
 *.ilk
-*.meta
-*.obj
 *.iobj
 *.pch
 *.pdb
@@ -202,7 +200,8 @@ PublishScripts/
 # NuGet Symbol Packages
 *.snupkg
 # The packages folder can be ignored because of Package Restore
-**/[Pp]ackages/*
+# Not everyone is using VS, so can't count on Package Restore. 
+# **/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
@@ -685,3 +684,7 @@ $RECYCLE.BIN/
 Documentation/articles/*.pdf
 Documentation/articles/*.tex
 Documentation/articles/.texpadtmp/
+Documentation/site/
+Documentation/api/
+
+Packages/docfx.console.2.58.4/

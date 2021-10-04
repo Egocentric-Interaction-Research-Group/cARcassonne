@@ -1,9 +1,9 @@
 # cARcassonne
 Augmented Reality Carcassonne using the HoloLens2 and MRTK in Unity
 
-## Dependencies
+### Dependencies
 
-cARcassonne has recently moved to the Unity OpenXR Plugin system and Microsoft's Mixed Reality OpenXR plugin.
+cARcassonne has recently moved to the Unity OpenXR Plugin system and Microsoft's Mixed Reality OpenXR plugin. *These should be installed automatically, but they are listed here for reference.*
 
 * Unity OpenXR plugin: version 1.2 or later
 * Mixed Reality OpenXR plugin: version 1.0.0 or later
@@ -15,13 +15,41 @@ cARcassonne has recently moved to the Unity OpenXR Plugin system and Microsoft's
 
 ## Installation
 
+Installation lists software versions that have been tested with the setup. Other versions may or may not work!
+
+### Prerequisites
+
+1. Windows 10 Education (21H1)
+   * *Tested on this particular build. Should work on many others as well.*
+   * > **OS X**: This also seems to work on OS X 11.6 Big Sur, tested on a Mac M1.
+3. Unity Hub (v2.4.5)
+4. Microsoft Visual Studio Community 2019 (16.11.3) OR JetBrains Rider (2021.1+)
+5. Github Client
+    * Terminal Client (any one will do)
+    * Github Desktop (https://desktop.github.com/)
+    * Gitkraken (https://www.gitkraken.com/)
+
+### Installing
+
 1. Install Unity 20.3.19f1 from Unity Hub (v2.4.5)
-1. Pull and check out the project.
-1. Add the project to Unity Hub
-1. Start the project
-1. Bypass the error message (`An error has occurred while resolving packages...`) by pressing continue.
-1. Once inside the project add the downloaded packages to the project using https://docs.unity3d.com/Manual/upm-ui-tarball.html
-1. Press play and the project should run!
+    * Make sure `Universal Windows Platform Build Support` is checked.
+    * > **OS X**: UWP isn't an option, so I've just installed Mac and Windows build support
+3. Clone the project from Github.
+    * Check out the `develop` branch and fork from there.
+    * Actually, I'd suggest each team make a main feature branch (e.g. `feature/gameplayai` and `feature/situationrecognition` that you all share and fork individial work branches from there.
+5. Add the project to Unity Hub (`Projects > Add`)
+6. Make sure the project has the right Unity version and open it.
+    * This could take a while as Unity finds and downloads packages, etc.
+1. The MRTK Project Configurator should pop up. `Apply` the default settings. The click `Next` and then `Done`
+2. Add the missing Scenes to the Project Hierarchy:
+    1. Select `GameScene` and `StartmenuScene` from `Assets > Scenes`
+    2. Drag them to the Hierarchy window
+    3. `Remove` the default Untitled Scene
+    1. `Unload` the `StartmenuScene` so that it is in the Hierarchy, but greyed out
+11. Press play and the project should run!
+
+### Building the documentation (windows only)
+See [Documentation index](Documentation/index.md)
 
 ### Troubleshooting
 
@@ -33,3 +61,8 @@ Change the settings of the inspector panel
     1. Check "Don't process"
     1. Uncheck “Select platforms for plugin->Any Platform”, and Check ALL platforms below
     1. P.S. I'm not sure which step took effect. For steps 2.1 to 2.3, I did it together. According to experience, I think step 2.1 is the key, but I still did 2.2 and 2.3 to ensure that it is correct.
+
+#### Unity crashes while loading, "Importing Assets: Compiling Assembly Definition Files scripts"
+
+1. Delete Library and Temp folders
+1. Try again

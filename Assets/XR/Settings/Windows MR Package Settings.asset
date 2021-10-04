@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed912223f7b3af74d8e196b2a4e662b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DepthBufferFormat: 1
+  DepthBufferFormat: 0
   UseSharedDepthBuffer: 0
 --- !u!114 &11400000
 MonoBehaviour:
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a6c5bd16b42a1542ad52d1d47746bdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UsePrimaryWindowForDisplay: 1
+  UsePrimaryWindowForDisplay: 0
   HolographicRemoting: 1
 --- !u!114 &6255479751927923345
 MonoBehaviour:
