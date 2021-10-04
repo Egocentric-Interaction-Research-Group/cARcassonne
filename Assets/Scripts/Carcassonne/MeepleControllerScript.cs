@@ -184,13 +184,13 @@ namespace Carcassonne
             meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
             meeple.GetComponentInChildren<BoxCollider>().enabled = false;
             meeple.GetComponentInChildren<MeshRenderer>().enabled = false;
-            gameControllerScript.phase = GameControllerScript.Phases.TileDown;
+            gameControllerScript.gameState.phase = GameControllerScript.Phases.TileDown;
         }
 
         [PunRPC]
         public void DrawMeeple()
         {
-            if (gameControllerScript.phase == GameControllerScript.Phases.TileDown)
+            if (gameControllerScript.gameState.phase == GameControllerScript.Phases.TileDown)
             {
                 foreach (var meeple in gameControllerScript.PlayerScript1.players[gameControllerScript.currentPlayer.getID()].meeples)
                     if (meeple.GetComponent<MeepleScript>().free)
@@ -206,7 +206,7 @@ namespace Carcassonne
                         this.currentMeeple.transform.rotation = Quaternion.identity;
 
                         gameControllerScript.UpdateDecisionButtons(true, false, this.currentMeeple);
-                        gameControllerScript.phase = GameControllerScript.Phases.MeepleDrawn;
+                        gameControllerScript.gameState.phase = GameControllerScript.Phases.MeepleDrawn;
                         break;
                     }
             }
@@ -268,7 +268,7 @@ namespace Carcassonne
                 meeple.GetComponent<MeepleScript>().free = false;
 
 
-                gameControllerScript.phase = GameControllerScript.Phases.MeepleDown;
+                gameControllerScript.gameState.phase = GameControllerScript.Phases.MeepleDown;
             }
         }
     }

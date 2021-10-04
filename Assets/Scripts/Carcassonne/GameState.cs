@@ -44,6 +44,10 @@ namespace Carcassonne
     public class GameState : ScriptableObject
     {
         public GameRules rules;
+        
+        /// <summary>
+        /// Describes what is happening currently in the game.
+        /// </summary>
         public GameControllerScript.Phases phase;
         public TileState tiles;
         public MeepleState meeples;
