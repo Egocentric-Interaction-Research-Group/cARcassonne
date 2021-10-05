@@ -18,18 +18,6 @@ namespace Carcassonne
         public GameState gameState;
 
         // Add Meeple Down state functionality
-        /// <summary>
-        /// Describes different phases of gameplay.
-        /// </summary>
-        public enum Phases
-        {
-            NewTurn,
-            TileDrawn,
-            TileDown,
-            MeepleDrawn,
-            MeepleDown,
-            GameOver
-        }
 
         public bool gravity;
         public bool startGame, pcRotate, isManipulating;
@@ -221,7 +209,7 @@ namespace Carcassonne
 
             switch (gameState.phase)
             {
-                case Phases.NewTurn:
+                case Phase.NewTurn:
                     bellSparkleEffect.Stop();
                     meepleControllerScript.drawMeepleEffect.Stop();
 
@@ -232,12 +220,12 @@ namespace Carcassonne
 
 
                     break;
-                case Phases.TileDrawn:
+                case Phase.TileDrawn:
                     //drawTile.GetComponent<BoxCollider>().enabled = false;
                     tileControllerScript.drawTileEffect.Stop();
 
                     break;
-                case Phases.TileDown:
+                case Phase.TileDown:
 
                     if (firstTurnCounter != 0) meepleControllerScript.drawMeepleEffect.Play();
                     tileControllerScript.currentTile.transform.localPosition = new Vector3
@@ -246,7 +234,7 @@ namespace Carcassonne
                     endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[1];
 
                     break;
-                case Phases.MeepleDrawn:
+                case Phase.MeepleDrawn:
 
                     //confirmButton.SetActive(true);
                     //confirmButton.transform.position = new Vector3(currentMeeple.transform.position.x + 0.05f, currentMeeple.transform.position.y + 0.05f, currentMeeple.transform.position.z + 0.07f);
@@ -256,14 +244,14 @@ namespace Carcassonne
                     meepleControllerScript.AimMeeple(this);
 
                     break;
-                case Phases.MeepleDown:
+                case Phase.MeepleDown:
                     //currentMeeple.transform.position = snapPosition;
                     endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[2];
 
                     bellSparkleEffect.Play();
 
                     break;
-                case Phases.GameOver:
+                case Phase.GameOver:
                     break;
             }
         }
@@ -320,7 +308,7 @@ namespace Carcassonne
             playerHuds[0].GetComponentInChildren<MeshRenderer>().material = playerMaterials[0];
             meepleInButton.GetComponent<MeshRenderer>().material = buttonMaterials[3];
 
-            gameState.phase = Phases.NewTurn;
+            gameState.phase = Phase.NewTurn;
         }
 
         private void BaseTileCreation()
@@ -597,7 +585,7 @@ namespace Carcassonne
         [PunRPC]
         public void PickupTile()
         {
-            if (gameState.phase == Phases.NewTurn)
+            if (gameState.phase == Phase.NewTurn)
             {
                 tileControllerScript.currentTile = stackScript.Pop();
                 UpdateDecisionButtons(true, true, tileControllerScript.currentTile);
@@ -611,7 +599,7 @@ namespace Carcassonne
                 else
                 {
                     ResetTileRotation();
-                    gameState.phase = Phases.TileDrawn;
+                    gameState.phase = Phase.TileDrawn;
                 }
             }
             else
@@ -631,7 +619,7 @@ namespace Carcassonne
         public void ConfirmPlacement()
         {
             CurrentTileRaycastPosition();
-            if (gameState.phase == Phases.TileDrawn)
+            if (gameState.phase == Phase.TileDrawn)
             {
                 if (placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
                 {
@@ -639,14 +627,14 @@ namespace Carcassonne
 
                     confirmButton.SetActive(false);
                     //rotateButton.SetActive(false);
-                    gameState.phase = Phases.TileDown;
+                    gameState.phase = Phase.TileDown;
                 }
                 else if (!placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
                 {
                     Debug.Log("Tile cant be placed");
                 }
             }
-            else if (gameState.phase == Phases.MeepleDrawn)
+            else if (gameState.phase == Phase.MeepleDrawn)
             {
                 if (meepleControllerScript.currentMeeple != null)
                 {
@@ -666,11 +654,11 @@ namespace Carcassonne
         //Funktion för undo
         public void UndoAction()
         {
-            if (gameState.phase == Phases.TileDown || gameState.phase == Phases.MeepleDrawn)
+            if (gameState.phase == Phase.TileDown || gameState.phase == Phase.MeepleDrawn)
             {
                 placedTiles.removeTile(tempX, tempY);
                 tileControllerScript.currentTile.GetComponentInChildren<MeshRenderer>().enabled = false;
-                gameState.phase = Phases.TileDrawn;
+                gameState.phase = Phase.TileDrawn;
 
                 VertexItterator--;
                 GetComponent<PointScript>().RemoveVertex(VertexItterator);
@@ -691,7 +679,7 @@ namespace Carcassonne
         [PunRPC]
         public void EndTurn()
         {
-            if (gameState.phase == Phases.TileDown || gameState.phase == Phases.MeepleDown)
+            if (gameState.phase == Phase.TileDown || gameState.phase == Phase.MeepleDown)
             {
                 calculatePoints(true, false);
                 NewTileRotation = 0;
@@ -715,7 +703,7 @@ namespace Carcassonne
 
                     if (firstTurnCounter != 0) firstTurnCounter -= 1;
 
-                    gameState.phase = Phases.NewTurn;
+                    gameState.phase = Phase.NewTurn;
                 }
             }
             else
@@ -897,7 +885,7 @@ namespace Carcassonne
         [PunRPC]
         public void RotateTile()
         {
-            if (gameState.phase == Phases.TileDrawn)
+            if (gameState.phase == Phase.TileDrawn)
             {
                 NewTileRotation++;
                 if (NewTileRotation > 3) NewTileRotation = 0;
@@ -917,7 +905,7 @@ namespace Carcassonne
         {
             calculatePoints(true, true);
             ChangePlayerHud();
-            gameState.phase = Phases.GameOver;
+            gameState.phase = Phase.GameOver;
         }
 
         [PunRPC]
@@ -1019,7 +1007,7 @@ namespace Carcassonne
 
         public void ChangeStateToNewTurn()
         {
-            gameState.phase = Phases.NewTurn;
+            gameState.phase = Phase.NewTurn;
         }
 
         public void ChangeConfirmButtonApperance(bool confirmed)

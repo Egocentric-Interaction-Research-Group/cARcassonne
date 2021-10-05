@@ -5,6 +5,20 @@ using UnityEngine;
 
 namespace Carcassonne
 {
+
+    /// <summary>
+    /// Describes different phases of gameplay.
+    /// </summary>
+    public enum Phase
+    {
+        NewTurn,
+        TileDrawn,
+        TileDown,
+        MeepleDrawn,
+        MeepleDown,
+        GameOver
+    }
+
     public struct GameRules
     {
         public bool abbots;
@@ -38,17 +52,18 @@ namespace Carcassonne
         // public List<Road> roads;
         // public List<Chapel> chapels;
     }
-    
-    [CreateAssetMenu(fileName="GameState", menuName="States/GameState")]
+
+    [CreateAssetMenu(fileName = "GameState", menuName = "States/GameState")]
     [Serializable]
     public class GameState : ScriptableObject
     {
         public GameRules rules;
-        
+
         /// <summary>
         /// Describes what is happening currently in the game.
         /// </summary>
-        public GameControllerScript.Phases phase;
+        public Phase phase;
+
         public TileState tiles;
         public MeepleState meeples;
         public FeatureState features;
@@ -58,8 +73,6 @@ namespace Carcassonne
         private void Awake()
         {
             rules = new GameRules(); // Defaults all to false which is correct.
-            
-            
         }
     }
 }
