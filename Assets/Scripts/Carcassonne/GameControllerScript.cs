@@ -313,8 +313,8 @@ namespace Carcassonne
 
         private void BaseTileCreation()
         {
-            tileControllerScript.currentTile = stackScript.Pop();
-            tileControllerScript.currentTile.name = "BaseTile";
+            tileControllerScript.currentTile = stackScript.firstTile;
+            // tileControllerScript.currentTile.name = "BaseTile";
             tileControllerScript.currentTile.transform.parent = table.transform;
             tileControllerScript.currentTile.GetComponent<ObjectManipulator>().enabled = false;
             tileControllerScript.currentTile.GetComponent<NearInteractionGrabbable>().enabled = false;
@@ -683,7 +683,7 @@ namespace Carcassonne
             {
                 calculatePoints(true, false);
                 NewTileRotation = 0;
-                if (stackScript.GetTileCount() == -1)
+                if (stackScript.isEmpty())
                 {
                     GameOver();
                 }

@@ -1,4 +1,7 @@
-﻿using Photon.Pun;
+﻿using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
+using Photon.Pun;
 using UnityEngine;
 using Random = System.Random;
 
@@ -25,54 +28,36 @@ namespace Carcassonne
         /// <summary>
         ///     The array of tiles
         /// </summary>
-        public GameObject[] tileArray;
+        public List<GameObject> tileArray;
 
-        /// <summary>
-        ///     The next tile
-        /// </summary>
-        private int nextTile;
-
-        /// <summary>
-        ///     An array of ID's.
-        /// </summary>
-        private int[] tiles;
-
-
-        /// <summary>
-        ///     Shuffles the array of tiles.
-        /// </summary>
-        /// <returns></returns>
-        private void Shuffle(int[] randomIndex)
-        {
-            //System.Random rand = new System.Random();
-
-            for (var i = tileArray.Length - 2; i > 0; i--)
-            {
-                //int randomIndex = rand.Next(0, i + 1);
-                var temp = tileArray[i];
-                tileArray[i] = tileArray[randomIndex[i]];
-                tileArray[randomIndex[i]] = temp;
-            }
-
-            // return this.tiles;
-        }
-
+        public GameObject firstTile;
+        public List<TileScript> remaining;
+        [CanBeNull] public TileScript current;
+        public TileScript[,] played;
+        
         /// <summary>
         /// </summary>
         /// <returns></returns>
         public GameObject Pop()
         {
-            var tile = tileArray[nextTile];
-
-
-            nextTile--;
-
-            return tile;
+            var rand = new Random();
+            var idx = rand.Next(remaining.Count);
+            
+            photonView.RPC("PopRPC", RpcTarget.All, idx);
+            
+            return current.gameObject;
+        }
+        
+        [PunRPC]
+        public void PopRPC(int idx)
+        {
+            current = remaining[idx];
+            remaining.Remove(current);
         }
 
-        public int GetTileCount()
+        public bool isEmpty()
         {
-            return nextTile;
+            return remaining.Count == 0;
         }
 
         /// <summary>
@@ -83,28 +68,25 @@ namespace Carcassonne
             //setAll();
             return this;
         }
-
+        
+        /// <summary>
+        /// Populates the array of tiles. Finds all game objects tagged tile. The Master client sets 
+        /// </summary>
         public void PopulateTileArray()
         {
             //randomIndex = new int[84];
-            tileArray = GameObject.FindGameObjectsWithTag("Tile");
-            nextTile = tileArray.Length - 1;
-
-            if (PhotonNetwork.IsMasterClient)
+            tileArray = new List<GameObject>(GameObject.FindGameObjectsWithTag("Tile"));
+            // Filter out tiles not in set. TODO: This should reference the game rules and pick relevant sets.
+            tileArray = tileArray.Where(t => t.GetComponent<TileScript>().tileSet == TileScript.TileSet.Base && t != firstTile ).ToList();
+            
+            foreach (var t in tileArray)
             {
-                var tmpRandomIndexArray = new int[84];
-                var rand = new Random();
-                for (var i = tileArray.Length - 2; i > 0; i--) tmpRandomIndexArray[i] = rand.Next(0, i + 1);
-                photonView.RPC("GetRandomIndexRPC", RpcTarget.All, tmpRandomIndexArray);
+                remaining.Add(t.GetComponent<TileScript>());
             }
+            
+            Debug.Log($"Tile array is populated. {remaining.Count} items remain in the stack.");
 
-            if (randomIndexArray != null) Shuffle(randomIndexArray);
         }
 
-        [PunRPC]
-        public void GetRandomIndexRPC(int[] random)
-        {
-            randomIndexArray = random;
-        }
     }
 }

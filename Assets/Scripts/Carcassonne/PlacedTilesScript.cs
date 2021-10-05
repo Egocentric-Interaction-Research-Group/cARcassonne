@@ -10,7 +10,7 @@ namespace Carcassonne
         public Vector3 BasePosition;
     
 
-        private GameObject[,] placedTiles;
+        public GameObject[,] placedTiles;
 
         private void Start()
         {
