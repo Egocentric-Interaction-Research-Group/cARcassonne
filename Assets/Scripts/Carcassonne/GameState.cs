@@ -21,29 +21,36 @@ namespace Carcassonne
 
     public struct GameRules
     {
-        public bool abbots;
-        public bool river;
-        public bool farmer;
+        public bool Abbots;
+        public bool River;
+        public bool Farmer;
     }
 
     public class TileState
     {
-        public Stack<TileScript> remaining;
-        [CanBeNull] public TileScript current;
-        public TileScript[,] played;
+        public List<TileScript> Remaining => stack.remaining;
+        [CanBeNull] public TileScript Current => stack.current;
+        public TileScript[,] Played;
+
+        private StackScript stack;
+
+        public TileState(StackScript stack)
+        {
+            this.stack = stack;
+        }
     }
 
     public class MeepleState
     {
-        public Dictionary<PlayerScript.Player, int> remaining;
-        [CanBeNull] public MeepleScript current;
-        public MeepleScript[,] played;
+        public Dictionary<PlayerScript.Player, int> Remaining;
+        [CanBeNull] public MeepleScript Current;
+        public MeepleScript[,] Played;
     }
 
     public class PlayerState
     {
-        public List<PlayerScript.Player> players;
-        public PlayerScript.Player current;
+        public List<PlayerScript.Player> Players;
+        public PlayerScript.Player Current;
     }
 
     public class FeatureState
@@ -57,22 +64,22 @@ namespace Carcassonne
     [Serializable]
     public class GameState : ScriptableObject
     {
-        public GameRules rules;
+        public GameRules Rules;
 
         /// <summary>
         /// Describes what is happening currently in the game.
         /// </summary>
         public Phase phase;
 
-        public TileState tiles;
-        public MeepleState meeples;
-        public FeatureState features;
-        public PlayerState players;
-        public GameLog log;
+        public TileState Tiles;
+        public MeepleState Meeples;
+        public FeatureState Features;
+        public PlayerState Players;
+        public GameLog Log;
 
         private void Awake()
         {
-            rules = new GameRules(); // Defaults all to false which is correct.
+            Rules = new GameRules(); // Defaults all to false which is correct.
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Carcassonne
         public GameObject firstTile;
         public List<TileScript> remaining;
         [CanBeNull] public TileScript current;
-        public TileScript[,] played;
+        public TileScript[,] played; // Currently unused
         
         /// <summary>
         /// </summary>
