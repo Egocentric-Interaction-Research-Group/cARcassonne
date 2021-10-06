@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Carcassonne.State;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
@@ -12,10 +13,15 @@ namespace Carcassonne
 {
     public class GameControllerScript : MonoBehaviourPun
     {
+        // private void OnEnable()
+        // {
+        //     gameState.game = this;
+        // }
+
         /// <summary>
         /// Stores the full state of the game for processing.
         /// </summary>
-        public GameState gameState;
+        public GameState gameState; 
 
         // Add Meeple Down state functionality
 

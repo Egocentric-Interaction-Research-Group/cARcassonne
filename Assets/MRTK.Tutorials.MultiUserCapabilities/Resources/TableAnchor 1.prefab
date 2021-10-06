@@ -7543,6 +7543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: {fileID: 11400000, guid: 484eca7d253584fb2bc2132eea5905f4, type: 2}
+  tileState: {fileID: 11400000, guid: 862d7903a58864b2b8c5a0c4ba131f7d, type: 2}
   gravity: 0
   startGame: 0
   pcRotate: 0
@@ -7600,8 +7601,7 @@ MonoBehaviour:
   randomIndexArray: 
   tileArray: []
   firstTile: {fileID: 161181942658901977}
-  remaining: []
-  current: {fileID: 0}
+  Tiles: {fileID: 11400000, guid: 862d7903a58864b2b8c5a0c4ba131f7d, type: 2}
 --- !u!114 &1798396970961904584
 MonoBehaviour:
   m_ObjectHideFlags: 0

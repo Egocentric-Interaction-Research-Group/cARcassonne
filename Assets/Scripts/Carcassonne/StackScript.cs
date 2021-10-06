@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Carcassonne.State;
 using JetBrains.Annotations;
 using Photon.Pun;
 using UnityEngine;
@@ -7,7 +8,7 @@ using Random = System.Random;
 
 // TODO: Why not use an actual Stack object? Or two lists?
 
-// Game State requires a count of remaining tiles, and a list of remaining tiles. Possible search by criteria?
+// Game State requires a count of Tiles.Remaining tiles, and a list of Tiles.Remaining tiles. Possible search by criteria?
 
 namespace Carcassonne
 {
@@ -31,8 +32,8 @@ namespace Carcassonne
         public List<GameObject> tileArray;
 
         public GameObject firstTile;
-        public List<TileScript> remaining;
-        [CanBeNull] public TileScript current;
+        
+        public TileState Tiles;
         public TileScript[,] played; // Currently unused
         
         /// <summary>
@@ -41,23 +42,23 @@ namespace Carcassonne
         public GameObject Pop()
         {
             var rand = new Random();
-            var idx = rand.Next(remaining.Count);
+            var idx = rand.Next(Tiles.Remaining.Count);
             
             photonView.RPC("PopRPC", RpcTarget.All, idx);
             
-            return current.gameObject;
+            return Tiles.Current.gameObject;
         }
         
         [PunRPC]
         public void PopRPC(int idx)
         {
-            current = remaining[idx];
-            remaining.Remove(current);
+            Tiles.Current = Tiles.Remaining[idx];
+            Tiles.Remaining.Remove(Tiles.Current);
         }
 
         public bool isEmpty()
         {
-            return remaining.Count == 0;
+            return Tiles.Remaining.Count == 0;
         }
 
         /// <summary>
@@ -81,10 +82,10 @@ namespace Carcassonne
             
             foreach (var t in tileArray)
             {
-                remaining.Add(t.GetComponent<TileScript>());
+                Tiles.Remaining.Add(t.GetComponent<TileScript>());
             }
             
-            Debug.Log($"Tile array is populated. {remaining.Count} items remain in the stack.");
+            Debug.Log($"Tile array is populated. {Tiles.Remaining.Count} items remain in the stack.");
 
         }
 

@@ -75,6 +75,7 @@ namespace Carcassonne
         */
         }
 
+        //TODO Looks like this could be problematic for more than 2 users. Does this ownership mean meeple possession?
         public void SetMeepleOwner()
         {
             if (PhotonNetwork.CurrentRoom.PlayerCount > 1)

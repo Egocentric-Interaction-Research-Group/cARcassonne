@@ -9,8 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2537e24168594e0dabf93da86c6138b5, type: 3}
-  m_Name: GameState
+  m_Script: {fileID: 11500000, guid: e2eee725a24e4c838866e904db3caf6b, type: 3}
+  m_Name: TileState
   m_EditorClassIdentifier: 
-  phase: 1
-  Tiles: {fileID: 11400000, guid: 862d7903a58864b2b8c5a0c4ba131f7d, type: 2}
