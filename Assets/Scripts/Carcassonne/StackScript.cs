@@ -33,8 +33,7 @@ namespace Carcassonne
 
         public GameObject firstTile;
         
-        public TileState Tiles;
-        public TileScript[,] played; // Currently unused
+        public TileState tiles;
         
         /// <summary>
         /// </summary>
@@ -42,23 +41,23 @@ namespace Carcassonne
         public GameObject Pop()
         {
             var rand = new Random();
-            var idx = rand.Next(Tiles.Remaining.Count);
+            var idx = rand.Next(tiles.Remaining.Count);
             
             photonView.RPC("PopRPC", RpcTarget.All, idx);
             
-            return Tiles.Current.gameObject;
+            return tiles.Current.gameObject;
         }
         
         [PunRPC]
         public void PopRPC(int idx)
         {
-            Tiles.Current = Tiles.Remaining[idx];
-            Tiles.Remaining.Remove(Tiles.Current);
+            tiles.Current = tiles.Remaining[idx];
+            tiles.Remaining.Remove(tiles.Current);
         }
 
         public bool isEmpty()
         {
-            return Tiles.Remaining.Count == 0;
+            return tiles.Remaining.Count == 0;
         }
 
         /// <summary>
@@ -80,12 +79,15 @@ namespace Carcassonne
             // Filter out tiles not in set. TODO: This should reference the game rules and pick relevant sets.
             tileArray = tileArray.Where(t => t.GetComponent<TileScript>().tileSet == TileScript.TileSet.Base && t != firstTile ).ToList();
             
+            // This probably indicates that I've coded something incorrectly.
+            tiles.Remaining.Clear(); // Remove all remaining tiles from old games so that they do not persist.
+
             foreach (var t in tileArray)
             {
-                Tiles.Remaining.Add(t.GetComponent<TileScript>());
+                tiles.Remaining.Add(t.GetComponent<TileScript>());
             }
             
-            Debug.Log($"Tile array is populated. {Tiles.Remaining.Count} items remain in the stack.");
+            Debug.Log($"Tile array is populated. {tiles.Remaining.Count} items remain in the stack.");
 
         }
 

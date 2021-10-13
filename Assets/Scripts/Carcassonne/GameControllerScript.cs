@@ -51,17 +51,16 @@ namespace Carcassonne
 
         private float aimX = 0, aimZ = 0;
 
-        private bool canConfirm;
-
         private bool cityIsFinished;
 
-        [HideInInspector] public PlayerScript.Player currentPlayer;
+        [Obsolete("Points to gameState.Players.Current for backwards compatibility. Please use gameState.Players.Current directly instead.")]
+        public PlayerScript currentPlayer
+        {
+            get => gameState.Players.Current;
+            set => gameState.Players.Current = value;
+        }
 
         private GameObject decisionButtons;
-
-        private PointScript.Direction direction;
-
-        private string errorOutput = "";
 
         private int firstTurnCounter;
 
@@ -71,8 +70,6 @@ namespace Carcassonne
         private int iTileAimX, iTileAimZ;
 
         private int NewTileRotation;
-
-        private Vector3 snapPosition;
 
         //public ErrorPlaneScript ErrorPlane;
 
@@ -94,19 +91,11 @@ namespace Carcassonne
         //private GameObject[,] placedTiles;
         private PlacedTilesScript placedTiles;
 
-        internal PlayerScript playerScript;
-
         [HideInInspector] public StackScript stackScript;
 
         public bool IsPunEnabled
         {
             set => isPunEnabled = value;
-        }
-
-        public PlayerScript PlayerScript
-        {
-            set => playerScript = value;
-            get => playerScript;
         }
 
         public PlacedTilesScript PlacedTiles
@@ -121,42 +110,15 @@ namespace Carcassonne
             get => tileControllerScript;
         }
 
-        public PointScript.Direction Direction
-        {
-            set => direction = value;
-            get => direction;
-        }
+        public PointScript.Direction Direction;
 
-        public Vector3 SnapPosition
-        {
-            set => snapPosition = value;
-            get => snapPosition;
-        }
+        public Vector3 SnapPosition;
 
-        public bool CanConfirm
-        {
-            set => canConfirm = value;
-            get => canConfirm;
-        }
+        public bool CanConfirm;
 
-        public string ErrorOutput
-        {
-            set => errorOutput = value;
-            get => errorOutput;
-        }
+        public string ErrorOutput { set; get; } = "";
 
-        public PlayerScript PlayerScript1
-        {
-            set => playerScript = value;
-            get => playerScript;
-        }
-
-        public PlayerScript PlayerScript2
-        {
-            set => playerScript = value;
-            get => playerScript;
-        }
-
+        //FIXME: I don't understand what the point of these two properties is.
         public TileControllerScript TileControllerScript1
         {
             set => tileControllerScript = value;
@@ -182,7 +144,8 @@ namespace Carcassonne
         // Update is called once per frame
         private void FixedUpdate()
         {
-            if (tileControllerScript.currentTile != null)
+            // I think this creates problems for meeples. This is the wrong check. 
+            if (gameState.Tiles.Current != null)
             {
                 CurrentTileRaycastPosition();
 
@@ -191,7 +154,7 @@ namespace Carcassonne
                 else
                     ChangeConfirmButtonApperance(false);
 
-                snapPosition = new Vector3
+                SnapPosition = new Vector3
                 (stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f, tileControllerScript.currentTile.transform.localPosition.y,
                     stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
             }
@@ -210,7 +173,7 @@ namespace Carcassonne
                     RotateTileRPC();
                 }
 
-            if (Input.GetKeyDown(KeyCode.J)) meepleControllerScript.FreeMeeple(meepleControllerScript.currentMeeple, this); //FIXME: Throws error when no meeple assigned!
+            if (Input.GetKeyDown(KeyCode.J)) meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject, this); //FIXME: Throws error when no meeple assigned!
             if (Input.GetKeyDown(KeyCode.B)) GameOver(); //FIXME Doesn't work/no effect
 
             switch (gameState.phase)
@@ -251,7 +214,7 @@ namespace Carcassonne
 
                     break;
                 case Phase.MeepleDown:
-                    //currentMeeple.transform.position = snapPosition;
+                    //currentMeeple.transform.position = SnapPosition;
                     endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[2];
 
                     bellSparkleEffect.Play();
@@ -278,22 +241,23 @@ namespace Carcassonne
 
             stackScript.PopulateTileArray();
 
-            // turnScript = GetComponent<TurnScript>();
-            playerScript = GetComponent<PlayerScript>();
-
             BaseTileCreation();
 
             for (var i = 0; i < players; i++)
             {
-                playerScript.CreatePlayer(i, "player " + i, playerMaterials[i], GameObject.Find("User" + (i + 1)));
+                // var newPlayer = Instantiate(PlayerScript);
+                var newPhotonUser = GameObject.Find("User" + (i + 1));
+                var newPlayer = newPhotonUser.GetComponent<PlayerScript>();
+                newPlayer.Setup(i, "player " + i, playerMaterials[i]);
+                gameState.Players.All.Add(newPlayer);
+                
                 playerHuds[i].SetActive(true);
                 playerHuds[i].GetComponentInChildren<TextMeshPro>().text = "Score: 0";
-                playerScript.players[i].meeples = GameObject.FindGameObjectsWithTag("Meeple " + i);
-                foreach (var meeple in playerScript.players[i].meeples)
-                {
-                    meeple.GetComponent<MeepleScript>().createByPlayer(playerScript.players[i]);
-                    meeple.GetComponent<MeepleScript>().SetMeepleOwner();
-                }
+                // newPlayer.meeples = GameObject.FindGameObjectsWithTag("Meeple " + i);
+                // foreach (var meeple in newPlayer.meeples)
+                // {
+                //     meeple.GetComponent<MeepleScript>().player = newPlayer;
+                // }
             }
 
             if (PhotonNetwork.IsMasterClient)
@@ -306,7 +270,7 @@ namespace Carcassonne
 
             PlaceTile(tileControllerScript.currentTile, 85, 85, true);
 
-            currentPlayer = playerScript.players[0];
+            currentPlayer = gameState.Players.All[0];
 
             Debug.Log("Denna spelarese namn: " + PhotonNetwork.LocalPlayer.NickName);
             Debug.Log("Current " + (currentPlayer.getID() + 1));
@@ -568,7 +532,7 @@ namespace Carcassonne
                 placedTiles.PlaceTile(x, z, tile);
 
 
-                tileControllerScript.currentTile.transform.localPosition = snapPosition;
+                tileControllerScript.currentTile.transform.localPosition = SnapPosition;
             }
             else
             {
@@ -593,10 +557,10 @@ namespace Carcassonne
         {
             if (gameState.phase == Phase.NewTurn)
             {
-                tileControllerScript.currentTile = stackScript.Pop();
+                stackScript.Pop();
                 UpdateDecisionButtons(true, true, tileControllerScript.currentTile);
                 TileControllerScript.ActivateCurrentTile(this);
-                if (!TileCanBePlaced(tileControllerScript.currentTile.GetComponent<TileScript>()))
+                if (!TileCanBePlaced(gameState.Tiles.Current))
                 {
                     Debug.Log("Tile not possible to place: discarding and drawing a new one. " + "Tile id: " + tileControllerScript.currentTile.GetComponent<TileScript>().id);
                     Destroy(tileControllerScript.currentTile);
@@ -642,15 +606,22 @@ namespace Carcassonne
             }
             else if (gameState.phase == Phase.MeepleDrawn)
             {
-                if (meepleControllerScript.currentMeeple != null)
+                if (gameState.Meeples.Current != null)
                 {
-                    if (canConfirm)
+                    if (CanConfirm)
                     {
-                        if (meepleControllerScript.meepleGeography == TileScript.Geography.City || meepleControllerScript.meepleGeography == TileScript.Geography.Cloister || meepleControllerScript.meepleGeography == TileScript.Geography.Road) meepleControllerScript.PlaceMeeple(meepleControllerScript.currentMeeple, meepleControllerScript.iMeepleAimX, meepleControllerScript.iMeepleAimZ, direction, meepleControllerScript.meepleGeography, this);
+                        if (meepleControllerScript.meepleGeography == TileScript.Geography.City ||
+                            meepleControllerScript.meepleGeography == TileScript.Geography.Cloister ||
+                            meepleControllerScript.meepleGeography == TileScript.Geography.Road)
+                        {
+                            meepleControllerScript.PlaceMeeple(gameState.Meeples.Current.gameObject,
+                                meepleControllerScript.iMeepleAimX, meepleControllerScript.iMeepleAimZ,
+                                Direction, meepleControllerScript.meepleGeography, this);
+                        }
                     }
                     else
                     {
-                        meepleControllerScript.FreeMeeple(meepleControllerScript.currentMeeple, this);
+                        meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject, this);
                     }
                 }
             }
@@ -695,12 +666,12 @@ namespace Carcassonne
                 }
                 else
                 {
-                    if (playerScript.players.Count > 1)
+                    if (gameState.Players.All.Count > 1)
                     {
-                        if (currentPlayer == playerScript.players[0])
-                            currentPlayer = playerScript.players[1];
+                        if (currentPlayer == gameState.Players.All[0])
+                            currentPlayer = gameState.Players.All[1];
                         else
-                            currentPlayer = playerScript.players[0];
+                            currentPlayer = gameState.Players.All[0];
                     }
 
 
@@ -721,9 +692,9 @@ namespace Carcassonne
 
         private void ChangePlayerHud()
         {
-            for (var i = 0; i < playerScript.players.Count; i++)
+            for (var i = 0; i < gameState.Players.All.Count; i++)
                 playerHuds[i].GetComponentInChildren<TextMeshPro>().text =
-                    "Score: " + playerScript.players[i].GetPlayerScore();
+                    "Score: " + gameState.Players.All[i].GetPlayerScore();
 
 
             if (currentPlayer.getID() == 0)
@@ -766,10 +737,10 @@ namespace Carcassonne
 
         public void calculatePoints(bool RealCheck, bool GameEnd)
         {
-            foreach (var p in playerScript.GetPlayers())
-                for (var j = 0; j < p.meeples.Length; j++)
+            foreach (var p in gameState.Players.All)
+                for (var j = 0; j < p.meeples.Count; j++)
                 {
-                    var meeple = p.meeples[j].GetComponent<MeepleScript>();
+                    var meeple = p.meeples[j];
                     if (!meeple.free)
                     {
                         var tileID = placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().id;
@@ -862,8 +833,8 @@ namespace Carcassonne
                         if (finalscore > 0 && RealCheck)
                         {
                             Debug.Log(currentPlayer.getID() + " recieved " + finalscore + " points. MEEPLEGEO: " + meepleControllerScript.meepleGeography);
-                            meeple.playerScriptPlayer.SetPlayerScore(
-                                meeple.playerScriptPlayer.GetPlayerScore() + finalscore);
+                            meeple.player.SetPlayerScore(
+                                meeple.player.GetPlayerScore() + finalscore);
 
                             meeple.free = true;
                             meeple.transform.position = new Vector3(20, 20, 20);
@@ -895,7 +866,7 @@ namespace Carcassonne
             {
                 NewTileRotation++;
                 if (NewTileRotation > 3) NewTileRotation = 0;
-                tileControllerScript.currentTile.GetComponent<TileScript>().Rotate();
+                gameState.Tiles.Current.Rotate();
 
                 if (pcRotate) tileControllerScript.currentTile.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
             }
@@ -904,7 +875,7 @@ namespace Carcassonne
         public void ResetTileRotation()
         {
             NewTileRotation = 0;
-            tileControllerScript.currentTile.GetComponent<TileScript>().rotation = 0;
+            gameState.Tiles.Current.rotation = 0;
         }
 
         private void GameOver()
@@ -939,7 +910,7 @@ namespace Carcassonne
 
         public void SetCurrentTileSnapPosition()
         {
-            tileControllerScript.currentTile.transform.localPosition = snapPosition;
+            tileControllerScript.currentTile.transform.localPosition = SnapPosition;
         }
 
 
@@ -1034,22 +1005,22 @@ namespace Carcassonne
         {
             if (meepleControllerScript.meepleHitTileDirection.collider != null)
             {
-                meepleControllerScript.currentMeeple.transform.position =
-                    new Vector3(snapPosition.x, meepleControllerScript.currentMeeple.transform.position.y, snapPosition.z);
+                gameState.Meeples.Current.transform.position =
+                    new Vector3(SnapPosition.x, gameState.Meeples.Current.transform.position.y, SnapPosition.z);
 
-                if (direction == PointScript.Direction.WEST || direction == PointScript.Direction.EAST)
+                if (Direction == PointScript.Direction.WEST || Direction == PointScript.Direction.EAST)
                 {
-                    if (meepleControllerScript.currentMeeple.transform.rotation.eulerAngles.y != 90) meepleControllerScript.currentMeeple.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
+                    if (gameState.Meeples.Current.transform.rotation.eulerAngles.y != 90) gameState.Meeples.Current.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
                 }
-                else if (direction == PointScript.Direction.NORTH || direction == PointScript.Direction.SOUTH ||
-                         direction == PointScript.Direction.CENTER)
+                else if (Direction == PointScript.Direction.NORTH || Direction == PointScript.Direction.SOUTH ||
+                         Direction == PointScript.Direction.CENTER)
                 {
-                    if (meepleControllerScript.currentMeeple.transform.rotation.eulerAngles.y == 90) meepleControllerScript.currentMeeple.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
+                    if (gameState.Meeples.Current.transform.rotation.eulerAngles.y == 90) gameState.Meeples.Current.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
                 }
             }
             else
             {
-                snapPosition = meepleControllerScript.currentMeeple.transform.position;
+                SnapPosition = gameState.Meeples.Current.transform.position;
             }
         }
 

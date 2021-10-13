@@ -4,7 +4,7 @@ namespace Carcassonne
 {
     public struct Turn
     {
-        public PlayerScript.Player player;
+        public PlayerScript player;
         public TileScript tile;
         public int[] location;
         public PointScript.Direction meeplePlacement;

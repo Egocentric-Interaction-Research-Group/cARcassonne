@@ -16,20 +16,44 @@ namespace Carcassonne
         internal float fMeepleAimX; //TODO Make Private
         internal float fMeepleAimZ; //TODO Make Private
 
+        private int meepleCount = 0;
+
+        public MeepleState meeples;
+        public PlayerState players;
+
         public MeepleControllerScript(GameControllerScript gameControllerScript)
         {
             this.gameControllerScript = gameControllerScript;
         }
+        
+        // Instantiation Stuff
+        public GameObject prefab;
+        public GameObject parent;
+        
+        /// <summary>
+        /// Instantiate a new Meeple with the chosen prefab and parent object in the hierarchy.
+        /// </summary>
+        /// <returns>GameObject : An instance of MeepleScript.prefab.</returns>
+        public MeepleScript GetNewInstance()
+        {
+            // return Instantiate(prefab, meepleSpawnPosition.transform.position, Quaternion.identity, GameObject.Find("Table").transform).GetComponent<MeepleScript>();
+            meepleCount++;
+            GameObject newMeeple = PhotonNetwork.Instantiate(prefab.name, parent.transform.position, Quaternion.identity);//, GameObject.Find("Table").transform);
+            newMeeple.gameObject.transform.parent = parent.transform;
+            newMeeple.gameObject.name = $"Meeple {meepleCount}";
+            newMeeple.SetActive(false);
+
+            return newMeeple.GetComponent<MeepleScript>();
+        }
 
         public void DrawMeepleRPC()
         {
-            if (PhotonNetwork.LocalPlayer.NickName == (gameControllerScript.currentPlayer.getID() + 1).ToString())
+            if (PhotonNetwork.LocalPlayer.NickName == (players.Current.getID() + 1).ToString())
                 this.photonView.RPC("DrawMeeple",
                     RpcTarget.All);
         }
     
         public ParticleSystem drawMeepleEffect;
-        [HideInInspector] public GameObject currentMeeple;
         [HideInInspector] public GameObject meepleMesh;
         [HideInInspector] public GameObject MeeplePrefab;
         public GameObject meepleSpawnPosition;
@@ -38,12 +62,16 @@ namespace Carcassonne
         public TileScript.Geography meepleGeography;
         public RaycastHit meepleHitTileDirection;
 
+        /// <summary>
+        /// Determines which tile space the currently moving Meeple is over.
+        /// </summary>
         internal void CurrentMeepleRayCast() //TODO Should be private
         {
             RaycastHit hit;
             var layerMask = 1 << 8;
+            var basePositionTransform = gameControllerScript.stackScript.basePositionTransform;
 
-            Physics.Raycast(currentMeeple.transform.position, currentMeeple.transform.TransformDirection(Vector3.down),
+            Physics.Raycast(meeples.Current.gameObject.transform.position, meeples.Current.gameObject.transform.TransformDirection(Vector3.down),
                 out hit, Mathf.Infinity, layerMask);
 
             var local = gameControllerScript.table.transform.InverseTransformPoint(hit.point);
@@ -53,25 +81,25 @@ namespace Carcassonne
             fMeepleAimZ = local.z;
 
 
-            if (fMeepleAimX - gameControllerScript.stackScript.basePositionTransform.localPosition.x > 0)
+            if (fMeepleAimX - basePositionTransform.localPosition.x > 0)
             {
-                iMeepleAimX = (int) ((fMeepleAimX - gameControllerScript.stackScript.basePositionTransform.localPosition.x) * gameControllerScript.scale + 1f) / 2 +
+                iMeepleAimX = (int) ((fMeepleAimX - basePositionTransform.localPosition.x) * gameControllerScript.scale + 1f) / 2 +
                               85;
             }
             else
             {
-                iMeepleAimX = (int) ((fMeepleAimX - gameControllerScript.stackScript.basePositionTransform.localPosition.x) * gameControllerScript.scale - 1f) / 2 +
+                iMeepleAimX = (int) ((fMeepleAimX - basePositionTransform.localPosition.x) * gameControllerScript.scale - 1f) / 2 +
                               85;
             }
 
-            if (fMeepleAimZ - gameControllerScript.stackScript.basePositionTransform.localPosition.z > 0)
+            if (fMeepleAimZ - basePositionTransform.localPosition.z > 0)
             {
-                iMeepleAimZ = (int) ((fMeepleAimZ - gameControllerScript.stackScript.basePositionTransform.localPosition.z) * gameControllerScript.scale + 1f) / 2 +
+                iMeepleAimZ = (int) ((fMeepleAimZ - basePositionTransform.localPosition.z) * gameControllerScript.scale + 1f) / 2 +
                               85;
             }
             else
             {
-                iMeepleAimZ = (int) ((fMeepleAimZ - gameControllerScript.stackScript.basePositionTransform.localPosition.z) * gameControllerScript.scale - 1f) / 2 +
+                iMeepleAimZ = (int) ((fMeepleAimZ - basePositionTransform.localPosition.z) * gameControllerScript.scale - 1f) / 2 +
                               85;
             }
         }
@@ -93,8 +121,7 @@ namespace Carcassonne
         {
             MeepleScript res = null;
 
-            foreach (var p in gameControllerScript.PlayerScript.players)
-            foreach (var m in p.meeples)
+            foreach (var m in meeples.All)
             {
                 var tmp = m.GetComponent<MeepleScript>();
 
@@ -114,7 +141,7 @@ namespace Carcassonne
                     var tileScript = tile.GetComponent<TileScript>();
 
                     var layerMask = 1 << 9;
-                    Physics.Raycast(this.currentMeeple.transform.position, this.currentMeeple.transform.TransformDirection(Vector3.down), out this.meepleHitTileDirection,
+                    Physics.Raycast(meeples.Current.gameObject.transform.position, meeples.Current.gameObject.transform.TransformDirection(Vector3.down), out this.meepleHitTileDirection,
                         Mathf.Infinity, layerMask);
 
                     this.meepleGeography = TileScript.Geography.Grass;
@@ -158,14 +185,14 @@ namespace Carcassonne
                     }
                     else
                     {
-                        gameControllerScript.SnapPosition = this.currentMeeple.transform.position;
+                        gameControllerScript.SnapPosition = meeples.Current.gameObject.transform.position;
                         gameControllerScript.ChangeConfirmButtonApperance(false);
                         gameControllerScript.CanConfirm = false;
                     }
                 }
                 else
                 {
-                    gameControllerScript.SnapPosition = this.currentMeeple.transform.position;
+                    gameControllerScript.SnapPosition = meeples.Current.gameObject.transform.position;
                     this.meepleGeography = TileScript.Geography.Grass;
                     gameControllerScript.ChangeConfirmButtonApperance(false);
                     gameControllerScript.CanConfirm = false;
@@ -193,23 +220,30 @@ namespace Carcassonne
         {
             if (gameControllerScript.gameState.phase == Phase.TileDown)
             {
-                foreach (var meeple in gameControllerScript.PlayerScript1.players[gameControllerScript.currentPlayer.getID()].meeples)
-                    if (meeple.GetComponent<MeepleScript>().free)
+                foreach (MeepleScript meeple in players.Current.meeples) //TODO Inefficient. Just want the first free meeple.
+                {
+                    GameObject meepleGameObject = meeple.gameObject;
+                    if (meeple.free)
                     {
-                        meeple.GetComponentInChildren<Rigidbody>().useGravity = true;
-                        meeple.GetComponentInChildren<BoxCollider>().enabled = true;
-                        meeple.GetComponentInChildren<MeshRenderer>().enabled = true;
-                        meeple.GetComponentInChildren<ObjectManipulator>().enabled = true;
-                        meeple.transform.position = this.meepleSpawnPosition.transform.position;
-                        meeple.transform.parent = gameControllerScript.table.transform;
+                        meepleGameObject.SetActive(true);
+                        meepleGameObject.GetComponentInChildren<Rigidbody>().useGravity = true;
+                        meepleGameObject.GetComponentInChildren<BoxCollider>().enabled = true;
+                        meepleGameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+                        meepleGameObject.GetComponentInChildren<ObjectManipulator>().enabled = true;
+                        meepleGameObject.transform.parent = gameControllerScript.table.transform;
+                        meepleGameObject.transform.position = meepleSpawnPosition.transform.position;
+                            // meepleGameObject.transform.parent = GameObject.Find("MeepleDrawPosition").transform.parent;
+                            // meepleGameObject.transform.localPosition = new Vector3(0,0,0);
+                            // meepleGameObject.transform.SetParent(GameObject.Find("Table").transform, true);
+                        
+                        meeples.Current = meepleGameObject.GetComponent<MeepleScript>();
+                        // meepleGameObject.transform.rotation = Quaternion.identity;
 
-                        this.currentMeeple = meeple;
-                        this.currentMeeple.transform.rotation = Quaternion.identity;
-
-                        gameControllerScript.UpdateDecisionButtons(true, false, this.currentMeeple);
+                        gameControllerScript.UpdateDecisionButtons(true, false, meepleGameObject);
                         gameControllerScript.gameState.phase = Phase.MeepleDrawn;
                         break;
                     }
+                }
             }
             else
             {
@@ -222,8 +256,7 @@ namespace Carcassonne
         {
             MeepleScript res = null;
 
-            foreach (var p in gameControllerScript.PlayerScript2.players)
-            foreach (var m in p.meeples)
+            foreach (var m in meeples.All)
             {
                 var tmp = m.GetComponent<MeepleScript>();
 

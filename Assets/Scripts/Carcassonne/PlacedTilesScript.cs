@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Carcassonne.State;
+using UnityEngine;
 
 namespace Carcassonne
 {
@@ -8,9 +9,10 @@ namespace Carcassonne
     public class PlacedTilesScript : MonoBehaviour
     {
         public Vector3 BasePosition;
-    
 
-        public GameObject[,] placedTiles;
+        public TileState tiles;
+
+        // public GameObject[,] tiles.Played;
 
         private void Start()
         {
@@ -18,66 +20,73 @@ namespace Carcassonne
 
         public void InstansiatePlacedTilesArray()
         {
-            placedTiles = new GameObject[170, 170];
+            tiles.Played = new TileScript[170, 170];
         }
 
         public void PlaceTile(int x, int z, GameObject tile)
         {
-            placedTiles[x, z] = tile;
+            tiles.Played[x, z] = tile.GetComponent<TileScript>();
         }
 
         public void removeTile(int x, int z)
         {
-            placedTiles[x, z] = null;
+            tiles.Played[x, z] = null;
         }
 
+        //FIXME This should be changable to a TileScript return type
         public GameObject getPlacedTiles(int x, int z)
         {
-            return placedTiles[x, z];
+            var t = tiles.Played[x, z];
+            if (t is null)
+            {
+                return null;
+            }
+
+            return t.gameObject;
         }
 
 
         public int GetLength(int dimension)
         {
-            return placedTiles.GetLength(dimension);
+            return tiles.Played.GetLength(dimension);
         }
 
         public bool HasNeighbor(int x, int z)
         {
-            if (x + 1 < placedTiles.GetLength(0))
-                if (placedTiles[x + 1, z] != null)
+            if (x + 1 < tiles.Played.GetLength(0))
+                if (tiles.Played[x + 1, z] != null)
                     return true;
             if (x - 1 >= 0)
-                if (placedTiles[x - 1, z] != null)
+                if (tiles.Played[x - 1, z] != null)
                     return true;
-            if (z + 1 < placedTiles.GetLength(1))
-                if (placedTiles[x, z + 1] != null)
+            if (z + 1 < tiles.Played.GetLength(1))
+                if (tiles.Played[x, z + 1] != null)
                     return true;
             if (z - 1 >= 0)
-                if (placedTiles[x, z - 1] != null)
+                if (tiles.Played[x, z - 1] != null)
                     return true;
             return false;
         }
 
         public bool MatchGeographyOrNull(int x, int y, PointScript.Direction dir, TileScript.Geography geography)
         {
-            if (placedTiles[x, y] == null)
+            if (tiles.Played[x, y] == null)
                 return true;
-            if (placedTiles[x, y].GetComponent<TileScript>().getGeographyAt(dir) == geography)
+            if (tiles.Played[x, y].getGeographyAt(dir) == geography)
                 return true;
             return false;
         }
 
         public bool CityTileHasCityCenter(int x, int y)
         {
-            return placedTiles[x, y].GetComponent<TileScript>().getCenter() == TileScript.Geography.City ||
-                   placedTiles[x, y].GetComponent<TileScript>().getCenter() == TileScript.Geography.CityRoad;
+            return tiles.Played[x, y].getCenter() == TileScript.Geography.City ||
+                   tiles.Played[x, y].getCenter() == TileScript.Geography.CityRoad;
         }
 
         public bool CityTileHasGrassOrStreamCenter(int x, int y)
         {
-            return placedTiles[x, y].GetComponent<TileScript>().getCenter() == TileScript.Geography.Grass ||
-                   placedTiles[x, y].GetComponent<TileScript>().getCenter() == TileScript.Geography.Stream;
+            return tiles.Played[x, y].getCenter() == TileScript.Geography.Grass ||
+                   tiles.Played[x, y].getCenter() == TileScript.Geography.Stream;
         }
 
         //Hämtar grannarna till en specifik tile
@@ -87,25 +96,25 @@ namespace Carcassonne
             var itt = 0;
 
 
-            if (placedTiles[x + 1, y] != null)
+            if (tiles.Played[x + 1, y] != null)
             {
-                Neighbors[itt] = placedTiles[x + 1, y].GetComponent<TileScript>().vIndex;
+                Neighbors[itt] = tiles.Played[x + 1, y].vIndex;
                 itt++;
             }
 
-            if (placedTiles[x - 1, y] != null)
+            if (tiles.Played[x - 1, y] != null)
             {
-                Neighbors[itt] = placedTiles[x - 1, y].GetComponent<TileScript>().vIndex;
+                Neighbors[itt] = tiles.Played[x - 1, y].vIndex;
                 itt++;
             }
 
-            if (placedTiles[x, y + 1] != null)
+            if (tiles.Played[x, y + 1] != null)
             {
-                Neighbors[itt] = placedTiles[x, y + 1].GetComponent<TileScript>().vIndex;
+                Neighbors[itt] = tiles.Played[x, y + 1].vIndex;
                 itt++;
             }
 
-            if (placedTiles[x, y - 1] != null) Neighbors[itt] = placedTiles[x, y - 1].GetComponent<TileScript>().vIndex;
+            if (tiles.Played[x, y - 1] != null) Neighbors[itt] = tiles.Played[x, y - 1].vIndex;
             return Neighbors;
         }
 
@@ -113,25 +122,25 @@ namespace Carcassonne
         {
             var weights = new TileScript.Geography[4];
             var itt = 0;
-            if (placedTiles[x + 1, y] != null)
+            if (tiles.Played[x + 1, y] != null)
             {
-                weights[itt] = placedTiles[x + 1, y].GetComponent<TileScript>().West;
+                weights[itt] = tiles.Played[x + 1, y].West;
                 itt++;
             }
 
-            if (placedTiles[x - 1, y] != null)
+            if (tiles.Played[x - 1, y] != null)
             {
-                weights[itt] = placedTiles[x - 1, y].GetComponent<TileScript>().East;
+                weights[itt] = tiles.Played[x - 1, y].East;
                 itt++;
             }
 
-            if (placedTiles[x, y + 1] != null)
+            if (tiles.Played[x, y + 1] != null)
             {
-                weights[itt] = placedTiles[x, y + 1].GetComponent<TileScript>().South;
+                weights[itt] = tiles.Played[x, y + 1].South;
                 itt++;
             }
 
-            if (placedTiles[x, y - 1] != null) weights[itt] = placedTiles[x, y - 1].GetComponent<TileScript>().North;
+            if (tiles.Played[x, y - 1] != null) weights[itt] = tiles.Played[x, y - 1].North;
             return weights;
         }
 
@@ -139,25 +148,25 @@ namespace Carcassonne
         {
             var centers = new TileScript.Geography[4];
             var itt = 0;
-            if (placedTiles[x + 1, y] != null)
+            if (tiles.Played[x + 1, y] != null)
             {
-                centers[itt] = placedTiles[x + 1, y].GetComponent<TileScript>().getCenter();
+                centers[itt] = tiles.Played[x + 1, y].getCenter();
                 itt++;
             }
 
-            if (placedTiles[x - 1, y] != null)
+            if (tiles.Played[x - 1, y] != null)
             {
-                centers[itt] = placedTiles[x - 1, y].GetComponent<TileScript>().getCenter();
+                centers[itt] = tiles.Played[x - 1, y].getCenter();
                 itt++;
             }
 
-            if (placedTiles[x, y + 1] != null)
+            if (tiles.Played[x, y + 1] != null)
             {
-                centers[itt] = placedTiles[x, y + 1].GetComponent<TileScript>().getCenter();
+                centers[itt] = tiles.Played[x, y + 1].getCenter();
                 itt++;
             }
 
-            if (placedTiles[x, y - 1] != null) centers[itt] = placedTiles[x, y - 1].GetComponent<TileScript>().getCenter();
+            if (tiles.Played[x, y - 1] != null) centers[itt] = tiles.Played[x, y - 1].getCenter();
             return centers;
         }
 
@@ -165,39 +174,39 @@ namespace Carcassonne
         {
             var directions = new PointScript.Direction[4];
             var itt = 0;
-            if (placedTiles[x + 1, y] != null)
+            if (tiles.Played[x + 1, y] != null)
             {
                 directions[itt] = PointScript.Direction.EAST;
                 itt++;
             }
 
-            if (placedTiles[x - 1, y] != null)
+            if (tiles.Played[x - 1, y] != null)
             {
                 directions[itt] = PointScript.Direction.WEST;
                 itt++;
             }
 
-            if (placedTiles[x, y + 1] != null)
+            if (tiles.Played[x, y + 1] != null)
             {
                 directions[itt] = PointScript.Direction.NORTH;
                 itt++;
             }
 
-            if (placedTiles[x, y - 1] != null) directions[itt] = PointScript.Direction.SOUTH;
+            if (tiles.Played[x, y - 1] != null) directions[itt] = PointScript.Direction.SOUTH;
             return directions;
         }
 
         public int CheckSurroundedCloister(int x, int z, bool endTurn)
         {
             var pts = 1;
-            if (placedTiles[x - 1, z - 1] != null) pts++;
-            if (placedTiles[x - 1, z] != null) pts++;
-            if (placedTiles[x - 1, z + 1] != null) pts++;
-            if (placedTiles[x, z - 1] != null) pts++;
-            if (placedTiles[x, z + 1] != null) pts++;
-            if (placedTiles[x + 1, z - 1] != null) pts++;
-            if (placedTiles[x + 1, z] != null) pts++;
-            if (placedTiles[x + 1, z + 1] != null) pts++;
+            if (tiles.Played[x - 1, z - 1] != null) pts++;
+            if (tiles.Played[x - 1, z] != null) pts++;
+            if (tiles.Played[x - 1, z + 1] != null) pts++;
+            if (tiles.Played[x, z - 1] != null) pts++;
+            if (tiles.Played[x, z + 1] != null) pts++;
+            if (tiles.Played[x + 1, z - 1] != null) pts++;
+            if (tiles.Played[x + 1, z] != null) pts++;
+            if (tiles.Played[x + 1, z + 1] != null) pts++;
             if (pts == 9 || endTurn)
                 return pts;
             return 0;
@@ -208,28 +217,28 @@ namespace Carcassonne
             var script = tile.GetComponent<TileScript>();
             var isNotAlone2 = false;
 
-            if (placedTiles[x - 1, y] != null)
+            if (tiles.Played[x - 1, y] != null)
             {
                 isNotAlone2 = true;
-                if (script.West == placedTiles[x - 1, y].GetComponent<TileScript>().East) return false;
+                if (script.West == tiles.Played[x - 1, y].East) return false;
             }
 
-            if (placedTiles[x + 1, y] != null)
+            if (tiles.Played[x + 1, y] != null)
             {
                 isNotAlone2 = true;
-                if (script.East == placedTiles[x + 1, y].GetComponent<TileScript>().West) return false;
+                if (script.East == tiles.Played[x + 1, y].West) return false;
             }
 
-            if (placedTiles[x, y - 1] != null)
+            if (tiles.Played[x, y - 1] != null)
             {
                 isNotAlone2 = true;
-                if (script.South == placedTiles[x, y - 1].GetComponent<TileScript>().North) return false;
+                if (script.South == tiles.Played[x, y - 1].North) return false;
             }
 
-            if (placedTiles[x, y + 1] != null)
+            if (tiles.Played[x, y + 1] != null)
             {
                 isNotAlone2 = true;
-                if (script.North == placedTiles[x, y + 1].GetComponent<TileScript>().South) return false;
+                if (script.North == tiles.Played[x, y + 1].South) return false;
             }
 
             return isNotAlone2;
@@ -241,33 +250,33 @@ namespace Carcassonne
             var script = tile.GetComponent<TileScript>();
             var isNotAlone = false;
 
-            //Debug.Log(placedTiles[x - 1, z]);
+            //Debug.Log(tiles.Played[x - 1, z]);
 
-            if (placedTiles[x - 1, z] != null)
+            if (tiles.Played[x - 1, z] != null)
             {
                 isNotAlone = true;
-                if (script.West != placedTiles[x - 1, z].GetComponent<TileScript>().East) return false;
+                if (script.West != tiles.Played[x - 1, z].East) return false;
             }
 
-            if (placedTiles[x + 1, z] != null)
+            if (tiles.Played[x + 1, z] != null)
             {
                 isNotAlone = true;
-                if (script.East != placedTiles[x + 1, z].GetComponent<TileScript>().West) return false;
+                if (script.East != tiles.Played[x + 1, z].West) return false;
             }
 
-            if (placedTiles[x, z - 1] != null)
+            if (tiles.Played[x, z - 1] != null)
             {
                 isNotAlone = true;
-                if (script.South != placedTiles[x, z - 1].GetComponent<TileScript>().North) return false;
+                if (script.South != tiles.Played[x, z - 1].North) return false;
             }
 
-            if (placedTiles[x, z + 1] != null)
+            if (tiles.Played[x, z + 1] != null)
             {
                 isNotAlone = true;
-                if (script.North != placedTiles[x, z + 1].GetComponent<TileScript>().South) return false;
+                if (script.North != tiles.Played[x, z + 1].South) return false;
             }
 
-            if (placedTiles[x, z] != null) return false;
+            if (tiles.Played[x, z] != null) return false;
             return isNotAlone;
         }
     }

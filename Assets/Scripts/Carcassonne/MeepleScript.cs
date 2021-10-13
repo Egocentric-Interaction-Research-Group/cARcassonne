@@ -12,8 +12,14 @@ namespace Carcassonne
         public bool free;
 
         public int x, z;
+        
 
-        public PlayerScript.Player playerScriptPlayer;
+        private PlayerScript _player;
+        public PlayerScript player
+        {
+            get => _player;
+            set => _player = SetPlayer(value);
+        }
 
         private void Start()
         {
@@ -21,18 +27,6 @@ namespace Carcassonne
             x = 0;
             z = 0;
             // id = 1;
-        }
-
-        public void createByPlayer(PlayerScript.Player player)
-        {
-            //free = true;
-            playerScriptPlayer = player;
-            //playerId = player.getID();
-            //GetComponentInChildren<MeshRenderer>().material = player.GetMaterial();
-            //GetComponentInChildren<Rigidbody>().useGravity = false;
-            //GetComponentInChildren<BoxCollider>().enabled = false;
-            //GetComponentInChildren<MeshRenderer>().enabled = false;
-            //material = GetComponentInChildren<Renderer>().material;
         }
 
         public void OnSnapMeeple()
@@ -76,16 +70,18 @@ namespace Carcassonne
         }
 
         //TODO Looks like this could be problematic for more than 2 users. Does this ownership mean meeple possession?
-        public void SetMeepleOwner()
+        private PlayerScript SetPlayer(PlayerScript p)
         {
             if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
                 if (tag == "Meeple 1")
                 {
-                    Debug.Log("PLATER: " + playerScriptPlayer.photonUser.name);
+                    Debug.Log("PLATER: " + p.photonUser.name);
                     // Debug.Log("ÄGARE INNAN: " + photonView.Owner.NickName);
                     photonView.TransferOwnership(PhotonNetwork.PlayerList[1]);
                     // Debug.Log("ÄGARE EFTER: " + photonView.Owner.NickName);
                 }
+
+            return p;
         }
     }
 }

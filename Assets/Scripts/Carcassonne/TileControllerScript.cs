@@ -1,3 +1,5 @@
+using Carcassonne.State;
+using JetBrains.Annotations;
 using Photon.Pun;
 using UnityEngine;
 
@@ -8,7 +10,20 @@ namespace Carcassonne
         private GameControllerScript gameControllerScript;
         public Vector3 currentTileEulersOnManip;
         public ParticleSystem drawTileEffect;
-        [HideInInspector] public GameObject currentTile;
+        public TileState tiles;
+        
+        [CanBeNull]
+        public GameObject currentTile
+        {
+            get
+            {
+                if (tiles.Current is null)
+                    return null;
+                return tiles.Current.gameObject;
+            }
+            set => tiles.Current = value.GetComponent<TileScript>();
+        }
+
         public GameObject drawTile;
         public GameObject tileSpawnPosition;
         public float fTileAimX;
