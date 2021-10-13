@@ -21,3 +21,5 @@ In other words, we need to redo a lot of UI in order to provide a list of *selec
 for the option of creating a new room. As an alternative we might, instead of a separate button for a new room,
 always have a *New Room* list item at the bottom of the list, which would reduce the workload somewhat, and is
 perhaps even preferrable.
+
+> This is obviously not ideal in the long term, but for now, I'm wondering if it's possible to do this through the Unity Inspector Interface. Basically, have a public field that you can edit in the inspector that has the name (or ID) of a room to join and can also be set to a value that creates a new, empty room. That way, if we need to test multiplayer things, we can just agree on a room name to enter in Unity. This won't work so well for the Hololens, but we can set a room name that the Hololens uses and then anyone who wants to play with the Hololens, just loads that room...
