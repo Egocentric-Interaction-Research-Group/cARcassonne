@@ -73,7 +73,7 @@ namespace Carcassonne
         /// <summary>
         ///     Defines whether the tile is a member of the base set or one of the expansions or alternate tile sets.
         /// </summary>
-        public TileSet tileSet = TileSet.Base;
+        public TileSet tileSet;
 
         /// <summary>
         ///     Decides whether this tile has a shield or not
@@ -85,6 +85,14 @@ namespace Carcassonne
         /// </summary>
         private Geography Up, Down, Left, Right;
 
+
+        public void Awake()
+        {
+            if (id >= 25 && id <= 33)
+            {
+                tileSet = TileSet.River;
+            }
+        }
 
         /// <summary>
         ///     Simple getter for the centerGeography
