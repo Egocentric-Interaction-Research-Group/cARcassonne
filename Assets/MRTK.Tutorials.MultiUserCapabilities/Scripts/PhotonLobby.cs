@@ -77,7 +77,9 @@ namespace MRTK.Tutorials.MultiUserCapabilities
 
         private void StartNetwork()
         {
-            PhotonNetwork.ConnectUsingSettings();
+            //PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.OfflineMode = true;
+            OnJoinedLobby();
             Lobby = this;
         }
 
