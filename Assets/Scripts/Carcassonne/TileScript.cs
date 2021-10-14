@@ -1,5 +1,7 @@
-﻿using Photon.Pun;
+﻿using System;
+using Photon.Pun;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace Carcassonne
 {
@@ -95,6 +97,60 @@ namespace Carcassonne
             return Center;
         }
 
+        private Geography[,] matrix = new Geography[3, 3];
+        /// <summary>
+        /// The matrix representation of this tile. The bottom corner (Left-Down) is 0,0 and the top (Right, Top is (2,2).
+        /// This is done to match the representation used in the game. I don't know if it lines up with other image representations.
+        /// Coordinates are represented [Horiz, Vert]
+        /// </summary>
+        public Geography[,] Matrix
+        {
+            get => matrix;
+            // private set => matrix = value;
+        }
+
+        private void UpdateMatrix()
+        {
+            matrix[1, 0] = South;
+            matrix[0, 1] = West;
+            matrix[2, 1] = East;
+            matrix[1, 2] = North;
+            
+            // Set corners and middle. This is not a great way of doing this, but it avoids repeating a bunch of work...
+            switch (Center)
+            {
+                // If the middle is a simple geography, set that, and set the corners to grass.
+                // TODO Check the logic here.
+                case Geography.City:
+                case Geography.Cloister:
+                case Geography.Grass:
+                case Geography.Road:
+                case Geography.Stream:
+                case Geography.Village:
+                    matrix[1, 1] = Center;
+                    matrix[0, 0] = Geography.Grass; // NB: Grass here doesn't necessarily mean grass IF you were playing with Farmers. But because we are not considering farmers, it is an easy shortcut.
+                    matrix[2, 0] = Geography.Grass;
+                    matrix[0, 2] = Geography.Grass;
+                    matrix[2, 2] = Geography.Grass;
+                    break;
+                case Geography.CityRoad:
+                case Geography.CityStream:
+                case Geography.RoadStream:
+                    matrix[1, 1] = Geography.Grass;
+                    matrix[0, 0] = matrix[0, 1] == matrix[1, 0] ? matrix[0, 1] : Geography.Grass;
+                    matrix[2, 0] = matrix[2, 1] == matrix[1, 0] ? matrix[2, 1] : Geography.Grass;
+                    matrix[0, 2] = matrix[0, 1] == matrix[1, 2] ? matrix[0, 1] : Geography.Grass;
+                    matrix[2, 2] = matrix[2, 1] == matrix[1, 2] ? matrix[2, 1] : Geography.Grass;
+                    break;
+            }
+            
+            // Log debug statement here.
+        }
+
+        private void Awake()
+        {
+            UpdateMatrix();
+        }
 
         public bool IsOccupied(PointScript.Direction direction)  //TODO Fix naming (spelling)
         {
@@ -247,6 +303,9 @@ namespace Carcassonne
             westCollider.transform.position = southCollider.transform.position;
             southCollider.transform.position = eastCollider.transform.position;
             eastCollider.transform.position = temp;
+            
+            // TODO rotate matrix view as well
+            UpdateMatrix();
         }
 
 

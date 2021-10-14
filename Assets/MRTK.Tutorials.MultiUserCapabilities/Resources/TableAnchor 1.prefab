@@ -6006,7 +6006,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1798396970194499377
 Transform:
   m_ObjectHideFlags: 0
@@ -7948,7 +7948,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1798396971197577553}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.59, z: 0}
+  m_LocalPosition: {x: -0.07, y: 0.59, z: 0.148}
   m_LocalScale: {x: 0.33333334, y: 4.474474, z: 0.33333334}
   m_Children: []
   m_Father: {fileID: 1798396971561824973}
@@ -27929,6 +27929,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 302082364410295660, guid: 97af5ae76ebd5da4f85465c2a32e1a39,
+        type: 3}
+      propertyPath: tileSet
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 717444022009310209, guid: 97af5ae76ebd5da4f85465c2a32e1a39,
         type: 3}
       propertyPath: m_Name
@@ -40135,6 +40140,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8518393893424334921}
     m_Modifications:
+    - target: {fileID: 6781295139338165716, guid: b3c1b8fe8b50a5e4cbab3ef817c6a6c5,
+        type: 3}
+      propertyPath: tileSet
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6938697743905177141, guid: b3c1b8fe8b50a5e4cbab3ef817c6a6c5,
         type: 3}
       propertyPath: constraintsManager
@@ -42900,6 +42910,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8518393893424334921}
     m_Modifications:
+    - target: {fileID: 1116131546135459423, guid: e3d2dc31674b03149a0207ace7a455d1,
+        type: 3}
+      propertyPath: tileSet
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6571770221299430940, guid: e3d2dc31674b03149a0207ace7a455d1,
         type: 3}
       propertyPath: m_Name
@@ -46805,6 +46820,11 @@ PrefabInstance:
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 5766512700973024605, guid: a65df3c57656c264e8e558037b1f068a,
+        type: 3}
+      propertyPath: tileSet
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7233622833261522295, guid: a65df3c57656c264e8e558037b1f068a,
         type: 3}
       propertyPath: m_Name
@@ -47265,6 +47285,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 2635246536782129739, guid: 3a51388052f5a8c49887355242b87947,
+        type: 3}
+      propertyPath: tileSet
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5055466844220678835, guid: 3a51388052f5a8c49887355242b87947,
         type: 3}
       propertyPath: constraintsManager
@@ -54865,6 +54890,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TileTemplate(Clone) 79
       objectReference: {fileID: 0}
+    - target: {fileID: 1376713582266511884, guid: 3b03db4b3fc76c44bb5eed3d96b636e8,
+        type: 3}
+      propertyPath: tileSet
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1739774942727793967, guid: 3b03db4b3fc76c44bb5eed3d96b636e8,
         type: 3}
       propertyPath: m_RootOrder
@@ -55074,6 +55104,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8531145881468269773, guid: 7cdf280871f34dc4a95b89891ce08e5f,
+        type: 3}
+      propertyPath: tileSet
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cdf280871f34dc4a95b89891ce08e5f, type: 3}
@@ -56140,6 +56175,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 828802450638331133, guid: ae2a1d21302f70c45bd2393c13395a1d,
+        type: 3}
+      propertyPath: tileSet
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4788280381788465034, guid: ae2a1d21302f70c45bd2393c13395a1d,
         type: 3}
       propertyPath: m_Name
@@ -56289,6 +56329,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389484709632036701, guid: 61414777fd38ad942b5078ea6df47c65,
+        type: 3}
+      propertyPath: tileSet
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9127102858586640983, guid: 61414777fd38ad942b5078ea6df47c65,
         type: 3}
@@ -57934,6 +57979,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5394412208715666395, guid: 9626fe7e80181044eb113b3c19d38cc2,
+        type: 3}
+      propertyPath: tileSet
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6922945292116711076, guid: 9626fe7e80181044eb113b3c19d38cc2,
         type: 3}
@@ -60992,6 +61042,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7301025341401647540, guid: 3d6270662bc5353419ed1db5b9a695f5,
+        type: 3}
+      propertyPath: tileSet
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d6270662bc5353419ed1db5b9a695f5, type: 3}
