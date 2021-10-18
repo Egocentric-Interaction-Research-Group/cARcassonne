@@ -6,85 +6,132 @@ namespace MRTK.Tutorials.MultiUserCapabilities
 {
     public class PhotonLobby : MonoBehaviourPunCallbacks
     {
-        public static PhotonLobby Lobby;
+        /// <summary>
+        /// This version string is used to connect to Photon with.
+        /// Clients that have different versions shouldn't be able to join the same room.
+        /// </summary>
+        [HideInInspector]
+        public const string photonGameVersion = "0.0.0";
+        
+        //---- Exposed to Inspector --------------------------------------------------------------//
 
-        private int roomNumber = 1;
-        private int userIdCount;
+        [Tooltip("This must be set before playing.")]
+        public bool offlineMode = false;
+
+        [Header("Room Options")]
+
+        [Tooltip("The name of the room to either join, or create if it doesn't exist. A room is "+
+            "joined/created as soon as you start playing. Hitting the in-game start button only "+
+            "takes you to the game table.")]
+        public string roomName = "DevRoom";
+
+        [Tooltip("If you create the room, it's the maximum number of players allowed in the room. " +
+            "Otherwise, you can ignore it.")]
+        public int maxPlayers = 5;
+
+        //----------------------------------------------------------------------------------------//
 
         private void Awake()
         {
-            if (Lobby == null)
-            {
-                Lobby = this;
-            }
-            else
-            {
-                if (Lobby != this)
-                {
-                    Destroy(Lobby.gameObject);
-                    Lobby = this;
-                }
-            }
-
             DontDestroyOnLoad(gameObject);
 
             GenericNetworkManager.OnReadyToStartNetwork += StartNetwork;
         }
 
+        //---- Photon Callbacks ------------------------------------------------------------------//
+
         public override void OnConnectedToMaster()
         {
-            var randomUserId = Random.Range(0, 999999);
-            PhotonNetwork.AutomaticallySyncScene = true;
-            PhotonNetwork.AuthValues = new AuthenticationValues();
-            PhotonNetwork.AuthValues.UserId = randomUserId.ToString();
-            userIdCount++;
-            PhotonNetwork.NickName = PhotonNetwork.AuthValues.UserId;
-            PhotonNetwork.JoinRandomRoom();
+            if (PhotonNetwork.OfflineMode)
+                PhotonNetwork.JoinRoom(roomName); // Just join a room directly if in offline mode.
+            else
+                PhotonNetwork.JoinLobby(TypedLobby.Default);
+        }
+
+        public override void OnJoinedLobby()
+        {
+            PhotonNetwork.JoinRoom(roomName);
         }
 
         public override void OnJoinedRoom()
         {
-            base.OnJoinedRoom();
-
-            Debug.Log("\nPhotonLobby.OnJoinedRoom()");
-            Debug.Log("Current room name: " + PhotonNetwork.CurrentRoom.Name);
-            Debug.Log("Other players in room: " + PhotonNetwork.CountOfPlayersInRooms);
-            Debug.Log("Total players in room: " + (PhotonNetwork.CountOfPlayersInRooms + 1));
+            Room room = PhotonNetwork.CurrentRoom;
+            Debug.Log($"Current number of players in \"{room.Name}\": {room.PlayerCount}");
         }
 
-        public override void OnJoinRandomFailed(short returnCode, string message)
+        public override void OnJoinRoomFailed(short returnCode, string message)
         {
+            Debug.Log($"Failed to join room \"{roomName}\": [{returnCode}] {message}");
+
             CreateRoom();
         }
 
         public override void OnCreateRoomFailed(short returnCode, string message)
         {
-            Debug.Log("\nPhotonLobby.OnCreateRoomFailed()");
-            Debug.LogError("Creating Room Failed");
-            CreateRoom();
+            Debug.LogWarning($"Failed to create room \"{roomName}\": [{returnCode}] {message}");
         }
 
-        public override void OnCreatedRoom()
-        {
-            base.OnCreatedRoom();
-            roomNumber++;
-        }
+        //---- Private Methods -------------------------------------------------------------------//
 
-        public void OnCancelButtonClicked()
-        {
-            PhotonNetwork.LeaveRoom();
-        }
-
+        /// <summary>
+        /// Establishes a connection to Photon.
+        /// </summary>
         private void StartNetwork()
         {
-            PhotonNetwork.ConnectUsingSettings();
-            Lobby = this;
+            string randomUserId = GenerateRandomID(length: 8);
+            PhotonNetwork.AutomaticallySyncScene = true;
+            PhotonNetwork.AuthValues = new AuthenticationValues();
+            PhotonNetwork.AuthValues.UserId = randomUserId;
+            PhotonNetwork.GameVersion = photonGameVersion;
+            PhotonNetwork.OfflineMode = offlineMode;
+
+            if (offlineMode)
+            {
+                Debug.Log($"Starting in offline mode with game version {PhotonNetwork.GameVersion}, " +
+                    $"and UserId \"{PhotonNetwork.AuthValues.UserId}\".");
+            }
+            else
+            {
+                Debug.Log($"Connecting to Photon with game version {PhotonNetwork.GameVersion}, "+
+                    $"and UserId \"{PhotonNetwork.AuthValues.UserId}\".");
+                PhotonNetwork.ConnectUsingSettings();
+            }
         }
 
+        /// <summary>
+        /// Creates and joins a new Photon room.
+        /// </summary>
         private void CreateRoom()
         {
-            var roomOptions = new RoomOptions {IsVisible = true, IsOpen = true, MaxPlayers = 10};
-            PhotonNetwork.CreateRoom("Room" + Random.Range(1, 3000), roomOptions);
+            Debug.Log($"Creating room \"{roomName}\".");
+
+            if (maxPlayers < 1 || maxPlayers > byte.MaxValue)
+            {
+                Debug.LogError("Invalid maxPlayers.");
+                return;
+            }
+
+            var roomOptions = new RoomOptions {IsVisible = true, IsOpen = true, MaxPlayers = (byte)maxPlayers};
+            PhotonNetwork.CreateRoom(roomName, roomOptions);
+        }
+
+        /// <summary>
+        /// Generates a string of random alpha-numerical characters.
+        /// </summary>
+        /// <param name="length">How long the resulting string will be.</param>
+        /// <returns>A randomly generated string ID.</returns>
+        private string GenerateRandomID(int length)
+        {
+            string validIDChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            int validCount = validIDChars.Length;
+            char[] id = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                id[i] = validIDChars[Random.Range(0, validCount)];
+            }
+
+            return new string(id);
         }
     }
 }
