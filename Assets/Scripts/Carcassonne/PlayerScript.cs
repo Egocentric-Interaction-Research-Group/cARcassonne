@@ -31,6 +31,7 @@ namespace Carcassonne
         private Color32 playerColor;
         private string playerName;
         private int score;
+        public GameObject ai;
 
         public MeepleState meepleState;
 
@@ -59,6 +60,9 @@ namespace Carcassonne
                 meeple.player = this;
                 meepleState.All.Add(meeple);
             }
+            GameObject aiObj = GameObject.Instantiate(ai);
+            aiObj.SetActive(true);
+            aiObj.GetComponent<AIPlayer>().thisPlayer = this;
         }
 
         private void Awake()
@@ -80,6 +84,16 @@ namespace Carcassonne
         public void SetPlayerScore(int playerScore)
         {
             score = playerScore;
+        }
+
+        public int AmountOfFreeMeeples()
+        {
+            int count = 0;
+            foreach (MeepleScript meeple in meeples)
+            {
+                if (meeple.free) { count++; }
+            }
+            return count;
         }
     }
 }
