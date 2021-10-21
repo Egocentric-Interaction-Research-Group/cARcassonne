@@ -53,18 +53,30 @@ namespace Carcassonne
 
         public bool HasNeighbor(int x, int z)
         {
-            if (x + 1 < tiles.Played.GetLength(0))
-                if (tiles.Played[x + 1, z] != null)
-                    return true;
-            if (x - 1 >= 0)
-                if (tiles.Played[x - 1, z] != null)
-                    return true;
-            if (z + 1 < tiles.Played.GetLength(1))
-                if (tiles.Played[x, z + 1] != null)
-                    return true;
-            if (z - 1 >= 0)
-                if (tiles.Played[x, z - 1] != null)
-                    return true;
+            int length = tiles.Played.GetLength(0);
+            if (x >= 0 && x < length && z >= 0 && z < length)
+            {
+                if (x + 1 < length)
+                {
+                    if (tiles.Played[x + 1, z] != null)
+                        return true;
+                }
+                if (x - 1 >= 0)
+                {
+                    if (tiles.Played[x - 1, z] != null)
+                        return true;
+                }
+                if (z + 1 < length)
+                {
+                    if (tiles.Played[x, z + 1] != null)
+                        return true;
+                }
+                if (z - 1 >= 0)
+                {
+                    if (tiles.Played[x, z - 1] != null)
+                        return true;
+                }
+            }
             return false;
         }
 
@@ -247,30 +259,34 @@ namespace Carcassonne
         //Kontrollerar att tilen får placeras på angivna koordinater
         public bool TilePlacementIsValid(GameObject tile, int x, int z)
         {
+            if (x < 0 || x > tiles.Played.GetLength(0) || z < 0 || z > tiles.Played.GetLength(1))
+            {
+                return false;
+            }
             var script = tile.GetComponent<TileScript>();
             var isNotAlone = false;
 
             //Debug.Log(tiles.Played[x - 1, z]);
 
-            if (tiles.Played[x - 1, z] != null)
+            if (x > 0 && tiles.Played[x - 1, z] != null)
             {
                 isNotAlone = true;
                 if (script.West != tiles.Played[x - 1, z].East) return false;
             }
 
-            if (tiles.Played[x + 1, z] != null)
+            if (x + 1 < tiles.Played.GetLength(0) && tiles.Played[x + 1, z] != null)
             {
                 isNotAlone = true;
                 if (script.East != tiles.Played[x + 1, z].West) return false;
             }
 
-            if (tiles.Played[x, z - 1] != null)
+            if (z > 0 && tiles.Played[x, z - 1] != null)
             {
                 isNotAlone = true;
                 if (script.South != tiles.Played[x, z - 1].North) return false;
             }
 
-            if (tiles.Played[x, z + 1] != null)
+            if (z + 1 < tiles.Played.GetLength(1) && tiles.Played[x, z + 1] != null)
             {
                 isNotAlone = true;
                 if (script.North != tiles.Played[x, z + 1].South) return false;

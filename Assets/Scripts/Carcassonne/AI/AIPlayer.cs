@@ -18,8 +18,9 @@ public class AIPlayer :  Agent
     public GameState gameState; //Contains TileState, MeepleState, FeatureState, PlayerState and a GameLog.
     public GameControllerScript gc;
     private const int maxBranchSize = 6;
-    public int x =85, z=85 , y=1, realRot;
-    public float realX, realY, realZ;
+    public int x =85, z=85 , y=1, rot=0;
+    public float realX, realY, realZ, realRot;
+    public Phase phase;
 
 
     /// <summary>
@@ -34,32 +35,30 @@ public class AIPlayer :  Agent
 
 
     /// <summary>
-    /// Perform actions based on a vector of numbers.
+    /// Perform actions based on a vector of numbers. Which actions are made depend on the current game phase.
     /// </summary>
     /// <param name="actionBuffers">The struct of actions to take</param>
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        Debug.Log("Action in AI player");
+        phase = gameState.phase;
         switch (gameState.phase)
         {
             case Phase.TileDrawn:
                 TileDrawnAction(actionBuffers);
                 break;
             case Phase.TileDown:
-                //Reset values saved for tile placement.
-                if (actionBuffers.DiscreteActions[0] > 0)
+                if (actionBuffers.DiscreteActions[0] == 0f)
                 {
+                    Debug.LogError("Meeple drawn");
                     gc.meepleControllerScript.DrawMeepleRPC(); //Take meeple
-                    Debug.Log("Meeple drawn");
                 }
                 else
                 {
-                    Debug.Log("No meeple drawn, ending turn");
+                    Debug.LogError("No meeple drawn, ending turn");
                     gc.EndTurnRPC(); //End turn without taking meeple
                 }
                 break;
             case Phase.MeepleDrawn:
-                //Kolla om nåt med meeple behöver resettas?
                 MeepleDrawnAction(actionBuffers);
                 break;
         }
@@ -67,118 +66,135 @@ public class AIPlayer :  Agent
 
     private void TileDrawnAction(ActionBuffers actionBuffers)
     {
-        AddReward(-0.01f); //Each call to this method comes with a very minor penalty to promote performing quick actions.
-                           //Ge negativ feedback om den stegar utanför där brädet är byggt (har inga neighbours)
-                           //Positiv om den lägger den nånstans där det går att lägga (med rätt rotation). Mer positivt får komma sen.
-
-        Vector3 tilePosition = gameState.Tiles.Current.transform.position;
+        AddReward(-0.001f); //Each call to this method comes with a very minor penalty to promote performing quick actions.
         if (actionBuffers.DiscreteActions[0] == 0f)
         {
-            x -= 1; //Left
-            //gc.tileControllerScript.fTileAimX = x;
-            gameState.Tiles.Current.transform.localPosition = new Vector3((x - 85)*0.033f, y, (z - 85)*0.033f);
+            Debug.Log("Up");
+            z += 1; //Up
         }
         else if (actionBuffers.DiscreteActions[0] == 1f)
         {
-            x += 1; //Right
-            //gc.tileControllerScript.fTileAimX = x;
-            gameState.Tiles.Current.transform.localPosition = new Vector3((x - 85) * 0.033f, y, (z - 85) * 0.033f);
+            Debug.Log("Down");
+            z -= 1; //Down
         }
         else if (actionBuffers.DiscreteActions[0] == 2f)
         {
-            z -= 1; //Down
-            //gc.tileControllerScript.fTileAimZ = z;
-            gameState.Tiles.Current.transform.localPosition = new Vector3((x - 85) * 0.033f, y, (z - 85) * 0.033f);
+            Debug.Log("Left");
+            x -= 1; //Left
         }
         else if (actionBuffers.DiscreteActions[0] == 3f)
         {
-            z += 1; //Up
-            //gc.tileControllerScript.fTileAimZ = z;
-            gameState.Tiles.Current.transform.localPosition = new Vector3((x - 85) * 0.033f, y, (z - 85) * 0.033f);
+            Debug.Log("Right");
+            x += 1; //Right
         }
         else if (actionBuffers.DiscreteActions[0] == 4f)
         {
-            gc.pcRotate = true; //Makes a rotation call rotate the tile 90 degrees.
+            //Makes a rotation call to rotate the tile 90 degrees.
+            gc.pcRotate = true;
             gc.RotateTileRPC();
-            if (gameState.Tiles.Current.rotation == 0)
+            rot++;
+            if (rot == 4)
             {
-                AddReward(-0.1f); //Punishment for rotating more than needed, i.e. returning back to default rotation state.
+                rot = 0;
+                //AddReward(-0.01f); //Punishment for rotating more than needed, i.e. returning back to default rotation state.
             }
         }
         else if (actionBuffers.DiscreteActions[0] == 5f)
         {
             //Values are loaded into tileControllerScript by the other actions in this method. THe are used during the ConfirmPlacementRPC call.
-            gc.SetCurrentTileSnapPosition();
+            gc.iTileAimX = x;
+            gc.iTileAimZ = z;
             gc.ConfirmPlacementRPC();
             if (gameState.phase == Phase.TileDown)
             {
+                Debug.LogError("Tile placed: " + gameState.Tiles.Current.transform.localPosition.x + ", Y: " + gameState.Tiles.Current.transform.localPosition.y + ", Z: " + gameState.Tiles.Current.transform.localPosition.z + ", Rotation: " + gameState.Tiles.Current.transform.rotation.eulerAngles.y);
                 AddReward(1f);
             }
         }
 
-        if (x < 0 || x > 170 || z < 0 || z > 170)
+
+        //After choice checks.
+        if (x < 0 || x >= gameState.Tiles.Played.GetLength(0) || z < 0 || z >= gameState.Tiles.Played.GetLength(1))
         {
-            //Outside table area, reset values and add punishment.
-            x = 85;
-            z = 85;
+            //Outside table area, reset values and add significant punishment.
+            SetTileStartPosition();
             AddReward(-1f);
             Debug.LogError("AI outside table area. Retteing position.");
-        } else if (!gc.PlacedTiles.HasNeighbor(x, z))
+        } else if (gc.PlacedTiles.HasNeighbor(x, z) && gameState.Tiles.Played[x, z] != null)
         {
-            AddReward(-1f); //Significant punishment for walking outside the edge of the built area, to avoid the AI looking through the entire grid each time.
+            AddReward(0.01f);
+        } else
+        {
+            AddReward(-0.01f); //Punishment for walking outside the edge of the built area, to avoid the AI looking through the entire grid each time.
         }
 
         realX = gameState.Tiles.Current.transform.localPosition.x;
         realY = gameState.Tiles.Current.transform.localPosition.y;
         realZ = gameState.Tiles.Current.transform.localPosition.z;
-        realRot = gameState.Tiles.Current.rotation;
+        realRot = gameState.Tiles.Current.transform.rotation.eulerAngles.y;
     }
 
+    /// <summary>
+    /// Places the meeple on one of the 5 places available on the tile (Uses the tile to find the positions).
+    /// </summary>
+    /// <param name="actionBuffers"></param>
     private void MeepleDrawnAction(ActionBuffers actionBuffers)
     {
-        var meeplePos = gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition;
-
         AddReward(-0.1f); //Each call (each change of position) gets a negative reward to avoid getting stuck in this stage.
-
+        string placement = "";
         if (actionBuffers.DiscreteActions[0] == 0f)
         {
             //North
-            meeplePos = new Vector3(0, 0, 0.011f);
+            placement = "North";
+            gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(0, y, 0.011f);
         }
         else if (actionBuffers.DiscreteActions[0] == 1f)
         {
-            //West
-            meeplePos = new Vector3(-0.011f , 0, 0);
+            //South
+            placement = "South";
+            gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(0, y, -0.011f);
         }
         else if (actionBuffers.DiscreteActions[0] == 2f)
         {
-            //East
-            meeplePos = new Vector3(0.011f, 0, 0);
+            //West
+            placement = "West";
+            gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(-0.011f, y, 0);
         }
         else if (actionBuffers.DiscreteActions[0] == 3f)
         {
-            //South
-            meeplePos = new Vector3(0, 0, -0.011f);
+            //East
+            placement = "East";
+            gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(0.011f, y, 0);
         }
         else if (actionBuffers.DiscreteActions[0] == 4f)
         {
             //Center
-            meeplePos = new Vector3(0, 0, 0);
+            placement = "Center";
+            gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(0, y, 0);
         }
         else if (actionBuffers.DiscreteActions[0] == 5f)
         {
             gc.SetMeepleSnapPos();
             gc.ConfirmPlacementRPC(); //Either confirms and places meeple, or returns meeple and goes back to phase TileDown.
+
+            //Workaround to get the meeples to actually be on top of the board instead of below (don't know why they end up there).
+            //ToDo: This workaround does not help with the problem.
+            Vector3 meeplePos = gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition;
+            meeplePos.y = 0.86f;
+            gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition = meeplePos;
+
             if (gameState.phase == Phase.MeepleDown)
             {
                 AddReward(1f); //Rewards successfully placing a meeple
+                MeepleScript meeple = gc.meepleControllerScript.meeples.Current;
+                Debug.LogError("Meeple placed successfully in place " + placement + ". Its actual position is direction '" + meeple.direction + "' and geography '" + meeple.geography + "', ending turn");
                 gc.EndTurnRPC();
-                Debug.Log("Meeple placed successfully, ending turn");
+                
             }
             else if (gameState.phase == Phase.TileDown)
             {
                 AddReward(-1f); //Punishes returning a meeple & going back a phase (note: no punishment for never drawing a meeple).
-                Debug.Log("Tried to place meeple in inaccessible place. Reset meeple and return to TileDown phase.");
+                Debug.LogError("Tried to place meeple in inaccessible place. Reset meeple and return to TileDown phase. X: " + gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition.x + ", Z: " + gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition.z);
             }
         }
     }
@@ -201,7 +217,8 @@ public class AIPlayer :  Agent
     public override void OnEpisodeBegin()
     {
         //This needs to reset the game for another playthrough.
-        Debug.Log("Ending episode");
+        Debug.LogError("New Episode");
+        SetTileStartPosition();
     }
 
 
@@ -223,13 +240,16 @@ public class AIPlayer :  Agent
         sensor.AddObservation(z);
 
         //Is there an easier way to add this information? This becomes a huge amount of data, may need to be analyzed in a different way, e.g. matrix representation.
-        /*foreach (TileScript tile in gameState.Tiles.Played) //Does this allow tile to be null?
+        foreach (TileScript tile in gameState.Tiles.Played) //Does this allow tile to be null?
         {
-            sensor.AddObservation(tile.id);
-            sensor.AddObservation(tile.rotation);
-            sensor.AddObservation(tile.transform.position.x);
-            sensor.AddObservation(tile.transform.position.y);
-        }*/
+            if (tile != null)
+            {
+                sensor.AddObservation(tile.id);
+                sensor.AddObservation(tile.rotation);
+                sensor.AddObservation(tile.transform.position.x);
+                sensor.AddObservation(tile.transform.position.y);
+            }
+        }
 
         //Possibly relevant for multiplayer.
         //sensor.AddObservation(thisPlayer.GetPlayerScore()); 
@@ -276,6 +296,6 @@ public class AIPlayer :  Agent
         x = 85;
         z = 85;
         y = 1;
-        gc.tileControllerScript.currentTile.transform.position = new Vector3(x, y, z);
+        rot = 0;
     }
 }

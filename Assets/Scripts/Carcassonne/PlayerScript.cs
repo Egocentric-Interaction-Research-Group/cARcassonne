@@ -32,6 +32,7 @@ namespace Carcassonne
         private string playerName;
         private int score;
         public GameObject ai;
+        private bool controlledByAI = true;
 
         public MeepleState meepleState;
 
@@ -60,9 +61,13 @@ namespace Carcassonne
                 meeple.player = this;
                 meepleState.All.Add(meeple);
             }
-            GameObject aiObj = GameObject.Instantiate(ai);
-            aiObj.SetActive(true);
-            aiObj.GetComponent<AIPlayer>().thisPlayer = this;
+
+            if (controlledByAI)
+            {
+                GameObject aiObj = GameObject.Instantiate(ai);
+                aiObj.SetActive(true);
+                aiObj.GetComponent<AIPlayer>().thisPlayer = this;
+            }
         }
 
         private void Awake()

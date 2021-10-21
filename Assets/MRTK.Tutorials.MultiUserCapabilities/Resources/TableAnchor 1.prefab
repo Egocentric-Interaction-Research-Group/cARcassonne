@@ -7579,6 +7579,8 @@ MonoBehaviour:
   crossIcon: {fileID: 21300000, guid: 8d0274d8bc6a17844a08b493920d9491, type: 3}
   checkIcon: {fileID: 21300000, guid: b5066c514f7f02f4292cf842f3c8b75f, type: 3}
   mPanelGameOver: {fileID: 0}
+  iTileAimX: 0
+  iTileAimZ: 0
   stackScript: {fileID: 0}
   Direction: 0
   SnapPosition: {x: 0, y: 0, z: 0}
@@ -36930,6 +36932,16 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 3794437892148416211, guid: fa0424d159571e94e8450b54cd31498b,
+        type: 3}
+      propertyPath: IsBoundsHandles
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 3794437892148416211, guid: fa0424d159571e94e8450b54cd31498b,
+        type: 3}
+      propertyPath: ShowTetherWhenManipulating
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 8297609832315257797, guid: fa0424d159571e94e8450b54cd31498b,
         type: 3}
       propertyPath: constraintsManager

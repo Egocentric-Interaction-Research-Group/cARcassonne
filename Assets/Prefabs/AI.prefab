@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 6
+    VectorObservationSize: 300
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -78,17 +78,19 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 10000
+  MaxStep: 3000
   thisPlayer: {fileID: 0}
   gameState: {fileID: 0}
   gc: {fileID: 0}
   x: 85
   z: 85
   y: 1
-  realRot: 0
+  rot: 0
   realX: 0
   realY: 0
   realZ: 0
+  realRot: 0
+  phase: 0
 --- !u!114 &3647413094652461654
 MonoBehaviour:
   m_ObjectHideFlags: 0

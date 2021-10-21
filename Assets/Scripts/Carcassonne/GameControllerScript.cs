@@ -67,7 +67,7 @@ namespace Carcassonne
         private bool isPunEnabled;
         //float xOffset, zOffset, yOffset;
 
-        private int iTileAimX, iTileAimZ;
+        public int iTileAimX, iTileAimZ;
 
         private int NewTileRotation;
 
@@ -532,7 +532,8 @@ namespace Carcassonne
                 placedTiles.PlaceTile(x, z, tile);
 
 
-                tileControllerScript.currentTile.transform.localPosition = SnapPosition;
+                tileControllerScript.currentTile.transform.localPosition = new Vector3 (stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f, 
+                    tileControllerScript.currentTile.transform.localPosition.y, stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
             }
             else
             {
@@ -588,7 +589,7 @@ namespace Carcassonne
         [PunRPC]
         public void ConfirmPlacement()
         {
-            CurrentTileRaycastPosition();
+            //CurrentTileRaycastPosition();
             if (gameState.phase == Phase.TileDrawn)
             {
                 if (placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
