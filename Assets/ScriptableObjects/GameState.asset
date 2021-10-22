@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2537e24168594e0dabf93da86c6138b5, type: 3}
   m_Name: GameState
   m_EditorClassIdentifier: 
-  phase: 1
+  phase: 4
   Tiles: {fileID: 11400000, guid: 862d7903a58864b2b8c5a0c4ba131f7d, type: 2}
   Meeples: {fileID: 11400000, guid: a97cad862442a428da06ca3536ae1163, type: 2}
   Players: {fileID: 11400000, guid: 1c6802aa43de843b58471e24535c8a94, type: 2}
+  Log: {fileID: 11400000, guid: d46d37c1bd7474108af9e038aa2adb61, type: 2}

@@ -12,6 +12,7 @@ namespace Carcassonne
 
         public TileState tiles;
 
+
         // public GameObject[,] tiles.Played;
 
         private void Start()
@@ -26,6 +27,7 @@ namespace Carcassonne
         public void PlaceTile(int x, int z, GameObject tile)
         {
             tiles.Played[x, z] = tile.GetComponent<TileScript>();
+            tiles.lastPlayedPosition = new Vector2(x, z);
         }
 
         public void removeTile(int x, int z)
