@@ -34,11 +34,13 @@ public class AIDecisionRequester : MonoBehaviour
             //Picks a new tile automatically
             ai.gc.PickupTileRPC();
             ai.SetTileStartPosition();
-        } else if (ai.gameState.phase == Phase.MeepleDown)
+        }
+        else if (ai.gameState.phase == Phase.MeepleDown)
         {
             //Ends turn automatically and resets AI for next move.
             ai.gc.EndTurnRPC();
-        } else if (ai.gameState.phase == Phase.GameOver)
+        }
+        else if (ai.gameState.phase == Phase.GameOver)
         {
             //Add reinforcement based on score here.
             ai.EndEpisode();
@@ -47,7 +49,6 @@ public class AIDecisionRequester : MonoBehaviour
         {
             startPhase = ai.gameState.phase;
             ai.RequestDecision();
-            Debug.Log("Decision made. Current state: " + ai.gameState.phase);
             if (ai.gameState.phase != startPhase)
             {
                 Debug.Log("AI is done with this phase:" + ai.gameState.phase);

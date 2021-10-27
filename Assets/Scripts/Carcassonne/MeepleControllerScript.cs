@@ -61,6 +61,7 @@ namespace Carcassonne
         internal int iMeepleAimZ;
         public TileScript.Geography meepleGeography;
         public RaycastHit meepleHitTileDirection;
+        public string tileDirection;
 
         /// <summary>
         /// Determines which tile space the currently moving Meeple is over.
@@ -143,39 +144,41 @@ namespace Carcassonne
                     var layerMask = 1 << 9;
                     Physics.Raycast(meeples.Current.gameObject.transform.position, meeples.Current.gameObject.transform.TransformDirection(Vector3.down), out this.meepleHitTileDirection,
                         Mathf.Infinity, layerMask);
+                    tileDirection = this.meepleHitTileDirection.collider.name;
 
                     this.meepleGeography = TileScript.Geography.Grass;
                     gameControllerScript.Direction = PointScript.Direction.CENTER;
 
                     if (this.meepleHitTileDirection.collider != null)
                     {
-                        if (this.meepleHitTileDirection.collider.name == "East")
+                        if (tileDirection == "East")
                         {
                             gameControllerScript.Direction = PointScript.Direction.EAST;
                             this.meepleGeography = tileScript.East;
                         }
-                        else if (this.meepleHitTileDirection.collider.name == "West")
+                        else if (tileDirection == "West")
                         {
                             gameControllerScript.Direction = PointScript.Direction.WEST;
                             this.meepleGeography = tileScript.West;
                         }
-                        else if (this.meepleHitTileDirection.collider.name == "North")
+                        else if (tileDirection == "North")
                         {
                             gameControllerScript.Direction = PointScript.Direction.NORTH;
                             this.meepleGeography = tileScript.North;
                         }
-                        else if (this.meepleHitTileDirection.collider.name == "South")
+                        else if (tileDirection == "South")
                         {
                             gameControllerScript.Direction = PointScript.Direction.SOUTH;
                             this.meepleGeography = tileScript.South;
                         }
-                        else if (this.meepleHitTileDirection.collider.name == "Center")
+                        else if (tileDirection == "Center")
                         {
                             gameControllerScript.Direction = PointScript.Direction.CENTER;
                             this.meepleGeography = tileScript.getCenter();
                         }
 
                         gameControllerScript.SnapPosition = this.meepleHitTileDirection.collider.transform.position;
+
 
                         if (this.meepleGeography == TileScript.Geography.City || this.meepleGeography == TileScript.Geography.Road || this.meepleGeography == TileScript.Geography.Cloister)
                         {

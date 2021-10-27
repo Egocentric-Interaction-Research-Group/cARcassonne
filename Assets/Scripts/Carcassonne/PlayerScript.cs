@@ -32,7 +32,7 @@ namespace Carcassonne
         private string playerName;
         private int score;
         public GameObject ai;
-        private bool controlledByAI = true;
+        public bool controlledByAI = true;
 
         public MeepleState meepleState;
 

@@ -7826,6 +7826,7 @@ MonoBehaviour:
   MeeplePrefab: {fileID: 0}
   meepleSpawnPosition: {fileID: 1798396971633816230}
   meepleGeography: 0
+  tileDirection: 
 --- !u!114 &1811510837220924674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36307,6 +36308,16 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 8544896286729466531, guid: efce5c27fd99148428d2e227ed3f9dcb,
+        type: 3}
+      propertyPath: autoConstraintSelection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8544896286729466531, guid: efce5c27fd99148428d2e227ed3f9dcb,
+        type: 3}
+      propertyPath: selectedConstraints.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efce5c27fd99148428d2e227ed3f9dcb, type: 3}
 --- !u!4 &278751294093921433 stripped
@@ -47856,7 +47867,7 @@ PrefabInstance:
         type: 3}
       propertyPath: spawnPos
       value: 
-      objectReference: {fileID: 1798396971500894291}
+      objectReference: {fileID: 0}
     - target: {fileID: 2048386492397398668, guid: 52048f88947b20a42b61af98d068377b,
         type: 3}
       propertyPath: m_Name

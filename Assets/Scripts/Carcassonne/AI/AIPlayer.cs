@@ -19,8 +19,10 @@ public class AIPlayer :  Agent
     public GameControllerScript gc;
     private const int maxBranchSize = 6;
     public int x =85, z=85 , y=1, rot=0;
+    public float meepleX, meepleZ;
     public float realX, realY, realZ, realRot;
     public Phase phase;
+    private string placement = "";
 
 
     /// <summary>
@@ -89,9 +91,7 @@ public class AIPlayer :  Agent
         }
         else if (actionBuffers.DiscreteActions[0] == 4f)
         {
-            //Makes a rotation call to rotate the tile 90 degrees.
-            gc.pcRotate = true;
-            gc.RotateTileRPC();
+            //Each step in rot represents a 90 degree rotation of the tile.
             rot++;
             if (rot == 4)
             {
@@ -101,11 +101,19 @@ public class AIPlayer :  Agent
         }
         else if (actionBuffers.DiscreteActions[0] == 5f)
         {
-            //Values are loaded into tileControllerScript by the other actions in this method. THe are used during the ConfirmPlacementRPC call.
+            //Rotates the tile the amount of times AI has chosen (0-3).
+            for (int i = 0; i < rot; i++)
+            {
+                gc.pcRotate = true;
+                gc.RotateTileRPC();
+            }
+
+            //Values are loaded into GameController that are used in the ConfirmPlacementRPC call.
             gc.iTileAimX = x;
             gc.iTileAimZ = z;
             gc.ConfirmPlacementRPC();
-            if (gameState.phase == Phase.TileDown)
+            
+            if (gameState.phase == Phase.TileDown) //If the placement was successful, the phase changes to TileDown.
             {
                 Debug.LogError("Tile placed: " + gameState.Tiles.Current.transform.localPosition.x + ", Y: " + gameState.Tiles.Current.transform.localPosition.y + ", Z: " + gameState.Tiles.Current.transform.localPosition.z + ", Rotation: " + gameState.Tiles.Current.transform.rotation.eulerAngles.y);
                 AddReward(1f);
@@ -120,14 +128,15 @@ public class AIPlayer :  Agent
             SetTileStartPosition();
             AddReward(-1f);
             Debug.LogError("AI outside table area. Retteing position.");
-        } else if (gc.PlacedTiles.HasNeighbor(x, z) && gameState.Tiles.Played[x, z] != null)
+        } /*else if (gc.PlacedTiles.HasNeighbor(x, z) && gameState.Tiles.Played[x, z] != null)
         {
             AddReward(0.01f);
         } else
         {
             AddReward(-0.01f); //Punishment for walking outside the edge of the built area, to avoid the AI looking through the entire grid each time.
-        }
+        }*/
 
+        //These are useless, only to monitor the ai (shown on the AI gameobject in the scene while it plays).
         realX = gameState.Tiles.Current.transform.localPosition.x;
         realY = gameState.Tiles.Current.transform.localPosition.y;
         realZ = gameState.Tiles.Current.transform.localPosition.z;
@@ -141,60 +150,74 @@ public class AIPlayer :  Agent
     private void MeepleDrawnAction(ActionBuffers actionBuffers)
     {
         AddReward(-0.1f); //Each call (each change of position) gets a negative reward to avoid getting stuck in this stage.
-        string placement = "";
         if (actionBuffers.DiscreteActions[0] == 0f)
         {
-            //North
             placement = "North";
-            gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(0, y, 0.011f);
+            meepleX = 0.000f;
+            meepleZ = 0.011f;
         }
         else if (actionBuffers.DiscreteActions[0] == 1f)
         {
-            //South
             placement = "South";
-            gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(0, y, -0.011f);
+            meepleX = 0.000f;
+            meepleZ = -0.011f;
         }
         else if (actionBuffers.DiscreteActions[0] == 2f)
         {
-            //West
             placement = "West";
-            gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(-0.011f, y, 0);
+            meepleX = -0.011f;
+            meepleZ = 0.000f;
         }
         else if (actionBuffers.DiscreteActions[0] == 3f)
         {
-            //East
             placement = "East";
-            gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(0.011f, y, 0);
+            meepleX = 0.011f;
+            meepleZ = 0.000f;
         }
         else if (actionBuffers.DiscreteActions[0] == 4f)
         {
-            //Center
             placement = "Center";
-            gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(0, y, 0);
+            meepleX = 0.000f;
+            meepleZ = 0.000f;
         }
         else if (actionBuffers.DiscreteActions[0] == 5f)
         {
-            gc.SetMeepleSnapPos();
-            gc.ConfirmPlacementRPC(); //Either confirms and places meeple, or returns meeple and goes back to phase TileDown.
+            if (!String.IsNullOrEmpty(placement)) //Checks so that a choice has been made since meeple was drawn.
+            {
+                Debug.LogError("Trying to place meeple");
+                gameState.Meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(meepleX, 0.86f, meepleZ);
+                gc.meepleControllerScript.CurrentMeepleRayCast();
+                gc.meepleControllerScript.AimMeeple(gc);
+                gc.SetMeepleSnapPos();
+                gc.ConfirmPlacementRPC(); //Either confirms and places the meeple if possible, or returns meeple and goes back to phase TileDown.
+                
+                //The two rows below are just a workaround to get meeples to stay on top of the table and not have a seemingly random Y coordinate.
+                gameState.Meeples.Current.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
+                gameState.Meeples.Current.gameObject.transform.localPosition = new Vector3(gameState.Meeples.Current.gameObject.transform.localPosition.x, 0.86f, gameState.Meeples.Current.gameObject.transform.localPosition.z);
+            }
+            else
+            {
+                Debug.LogError("Tried to place meeple, placement is empty");
+            }
+           
 
-            //Workaround to get the meeples to actually be on top of the board instead of below (don't know why they end up there).
-            //ToDo: This workaround does not help with the problem.
-            Vector3 meeplePos = gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition;
-            meeplePos.y = 0.86f;
-            gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition = meeplePos;
-
-            if (gameState.phase == Phase.MeepleDown)
+            if (gameState.phase == Phase.MeepleDown) //If meeple is placed.
             {
                 AddReward(1f); //Rewards successfully placing a meeple
-                MeepleScript meeple = gc.meepleControllerScript.meeples.Current;
-                Debug.LogError("Meeple placed successfully in place " + placement + ". Its actual position is direction '" + meeple.direction + "' and geography '" + meeple.geography + "', ending turn");
-                gc.EndTurnRPC();
-                
+                Debug.LogError("Meeple placed successfully in place " + placement + ". Its actual position is direction '" 
+                    + gc.meepleControllerScript.meeples.Current.direction + "' and geography '" + gc.meepleControllerScript.meeples.Current.geography + "', ending turn");
+                Debug.LogError("X: " + gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition.x + ",Y: " + gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition.y + ", Z: " + gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition.z);
+                placement = "";
             }
-            else if (gameState.phase == Phase.TileDown)
+            else if (gameState.phase == Phase.TileDown) //If meeple gets returned.
             {
                 AddReward(-1f); //Punishes returning a meeple & going back a phase (note: no punishment for never drawing a meeple).
                 Debug.LogError("Tried to place meeple in inaccessible place. Reset meeple and return to TileDown phase. X: " + gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition.x + ", Z: " + gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition.z);
+                placement = "";
+            }
+            else //Workaround for a bug where you can draw an unplacable meeple and never be able to change state.
+            {
+                gc.meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject, gc);
             }
         }
     }
@@ -216,7 +239,7 @@ public class AIPlayer :  Agent
     /// </summary>
     public override void OnEpisodeBegin()
     {
-        //This needs to reset the game for another playthrough.
+        //This occurs every X steps (Max Steps). It only serves to reset tile position if AI is stuck, and for AI to process current learning
         Debug.LogError("New Episode");
         SetTileStartPosition();
     }
@@ -231,28 +254,26 @@ public class AIPlayer :  Agent
         sensor.AddObservation((int)gameState.phase);
         sensor.AddObservation(thisPlayer.AmountOfFreeMeeples());
         sensor.AddObservation(gameState.Tiles.Current.id);
-        sensor.AddObservation(gameState.Tiles.Current.rotation);
-        if (gameState.phase == Phase.MeepleDrawn)
-        {
-            sensor.AddObservation(gc.meepleControllerScript.meeples.Current.gameObject.transform.position);
-        }
+        sensor.AddObservation(rot);
         sensor.AddObservation(x);
         sensor.AddObservation(z);
+        sensor.AddObservation(meepleX);
+        sensor.AddObservation(meepleZ);
+
 
         //Is there an easier way to add this information? This becomes a huge amount of data, may need to be analyzed in a different way, e.g. matrix representation.
-        foreach (TileScript tile in gameState.Tiles.Played) //Does this allow tile to be null?
+        foreach (TileScript tile in gameState.Tiles.Played)
         {
             if (tile != null)
             {
                 sensor.AddObservation(tile.id);
                 sensor.AddObservation(tile.rotation);
                 sensor.AddObservation(tile.transform.position.x);
-                sensor.AddObservation(tile.transform.position.y);
+                sensor.AddObservation(tile.transform.position.z);
             }
         }
 
-        //Possibly relevant for multiplayer.
-        //sensor.AddObservation(thisPlayer.GetPlayerScore()); 
+        //Possibly relevant to add player scores for multiplayer, so AI knows if it is losing or not
     }
 
     /// <summary>
@@ -289,7 +310,7 @@ public class AIPlayer :  Agent
     }
 
     /// <summary>
-    /// Resets tile position to base position before next tile placement.
+    /// Resets tile position and placement (meeple position) to base position before next action.
     /// </summary>
     internal void SetTileStartPosition()
     {
@@ -297,5 +318,6 @@ public class AIPlayer :  Agent
         z = 85;
         y = 1;
         rot = 0;
+        placement = "";
     }
 }
