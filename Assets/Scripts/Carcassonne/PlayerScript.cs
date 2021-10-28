@@ -66,7 +66,7 @@ namespace Carcassonne
             {
                 GameObject aiObj = GameObject.Instantiate(ai);
                 aiObj.SetActive(true);
-                aiObj.GetComponent<AIPlayer>().thisPlayer = this;
+                aiObj.GetComponent<AIPlayer>().wrapper.player = this;
             }
         }
 

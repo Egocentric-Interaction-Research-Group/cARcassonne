@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Carcassonne.State;
 
@@ -9,8 +7,6 @@ using Carcassonne.State;
 public class AIDecisionRequester : MonoBehaviour
 {
     public AIPlayer ai;
-    public int maxSteps; //Currently not used
-    public int currentSteps = 0; //Currently not used
     public float reward = 0; //Used for displaying the reward in the Unity editor.
     private Phase startPhase;
 
@@ -20,47 +16,33 @@ public class AIDecisionRequester : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks if its the AI players turn. If so, it acts on its own or by requesting actions from the actual AI depending the game phase.
+    /// Acts on its own or repeatedly requests actions from the actual AI depending the game phase and state.
     /// </summary>
     void FixedUpdate()
     {
-        if (ai == null | ai.gameState == null || ai.thisPlayer.getID() != ai.gameState.Players.Current.getID())
+        if (ai == null || !ai.wrapper.IsAITurn())
         {
             return;
         }
 
-        if (ai.gameState.phase == Phase.NewTurn)
+        switch (ai.wrapper.GetGamePhase())
         {
-            //Picks a new tile automatically
-            ai.gc.PickupTileRPC();
-            ai.SetTileStartPosition();
+            case Phase.NewTurn: // Picks a new tile automatically
+                ai.ResetAttributes();
+                ai.wrapper.PickUpTile();
+                break;
+            case Phase.MeepleDown: //Ends turn automatically and resets AI for next move.
+                ai.wrapper.EndTurn();
+                break;
+            case Phase.GameOver: //ToDo: Add reinforcement based on score
+                ai.EndEpisode();
+                break;
+            default: //Calls for one AI action repeatedly with each FixedUpdate until the phase changes.
+                ai.RequestDecision();
+                break;
         }
-        else if (ai.gameState.phase == Phase.MeepleDown)
-        {
-            //Ends turn automatically and resets AI for next move.
-            ai.gc.EndTurnRPC();
-        }
-        else if (ai.gameState.phase == Phase.GameOver)
-        {
-            //Add reinforcement based on score here.
-            ai.EndEpisode();
-        }
-        else
-        {
-            startPhase = ai.gameState.phase;
-            ai.RequestDecision();
-            if (ai.gameState.phase != startPhase)
-            {
-                Debug.Log("AI is done with this phase:" + ai.gameState.phase);
-            }
-        }
-        currentSteps++;
-        DisplayCurrentReward();
-    }
 
-    public void DisplayCurrentReward()
-    {
-        //ToDo: Add this as some form of GUI-display to show many agents seperate values?
+        //ToDo: Add this info to some form of GUI-display instead to visualize many separate agents values concurrently.
         reward = ai.GetCumulativeReward();
     }
 }

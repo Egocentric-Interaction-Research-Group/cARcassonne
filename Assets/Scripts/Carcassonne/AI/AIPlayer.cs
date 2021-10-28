@@ -1,12 +1,10 @@
-using Carcassonne;
 using Carcassonne.State;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using System;
+using Assets.Scripts.Carcassonne.AI;
 
 /// <summary>
 /// The AI for the player. An AI user contains both a regular PlayerScript and this AI script to observe and take actions.
@@ -14,16 +12,53 @@ using System;
 
 public class AIPlayer :  Agent
 {
-    public PlayerScript thisPlayer;
-    public GameState gameState; //Contains TileState, MeepleState, FeatureState, PlayerState and a GameLog.
-    public GameControllerScript gc;
+    //Observations from real game (use getter properties, don't call these directly)
+    public int meeplesLeft;
+    public int boardGridSize;
+    public Phase phase;
+    public int id;
+
+    //AI Specific
+    public AIWrapper wrapper;
     private const int maxBranchSize = 6;
     public int x =85, z=85 , y=1, rot=0;
     public float meepleX, meepleZ;
+
+    //Monitoring
     public float realX, realY, realZ, realRot;
-    public Phase phase;
     private string placement = "";
 
+    public Phase Phase
+    {
+        get
+        {
+            return wrapper.GetGamePhase();
+        }
+    }
+
+    public int MeeplesLeft
+    {
+        get
+        {
+            return wrapper.GetMeeplesLeft();
+        }
+    }
+
+    public int BoardGridSize
+    {
+        get
+        {
+            return wrapper.GetBoardSize();
+        }
+    }
+
+    public int Id
+    {
+        get
+        {
+            return wrapper.GetCurrentTileId();
+        }
+    }
 
     /// <summary>
     /// Initial setup which gets the scripts needed to AI calls and observations, called only once when the agent is enabled.
@@ -31,8 +66,7 @@ public class AIPlayer :  Agent
     public override void Initialize()
     {
         base.Initialize();
-        gc = GameObject.Find("GameController").GetComponent<GameControllerScript>();
-        gameState = gc.gameState;
+        wrapper = new AIWrapper();
     }
 
 
@@ -42,8 +76,7 @@ public class AIPlayer :  Agent
     /// <param name="actionBuffers">The struct of actions to take</param>
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        phase = gameState.phase;
-        switch (gameState.phase)
+        switch (Phase)
         {
             case Phase.TileDrawn:
                 TileDrawnAction(actionBuffers);
@@ -52,12 +85,12 @@ public class AIPlayer :  Agent
                 if (actionBuffers.DiscreteActions[0] == 0f)
                 {
                     Debug.LogError("Meeple drawn");
-                    gc.meepleControllerScript.DrawMeepleRPC(); //Take meeple
+                    wrapper.DrawMeeple(); //Take meeple
                 }
                 else
                 {
                     Debug.LogError("No meeple drawn, ending turn");
-                    gc.EndTurnRPC(); //End turn without taking meeple
+                    wrapper.EndTurn(); //End turn without taking meeple
                 }
                 break;
             case Phase.MeepleDrawn:
@@ -96,7 +129,9 @@ public class AIPlayer :  Agent
             if (rot == 4)
             {
                 rot = 0;
-                //AddReward(-0.01f); //Punishment for rotating more than needed, i.e. returning back to default rotation state.
+
+                //Punishment for rotating more than needed, i.e. returning back to default rotation state.
+                //AddReward(-0.01f); 
             }
         }
         else if (actionBuffers.DiscreteActions[0] == 5f)
@@ -104,43 +139,37 @@ public class AIPlayer :  Agent
             //Rotates the tile the amount of times AI has chosen (0-3).
             for (int i = 0; i < rot; i++)
             {
-                gc.pcRotate = true;
-                gc.RotateTileRPC();
+                wrapper.RotateTile();
             }
 
             //Values are loaded into GameController that are used in the ConfirmPlacementRPC call.
-            gc.iTileAimX = x;
-            gc.iTileAimZ = z;
-            gc.ConfirmPlacementRPC();
+            wrapper.PlaceTile(x, z);
             
-            if (gameState.phase == Phase.TileDown) //If the placement was successful, the phase changes to TileDown.
+            if (Phase == Phase.TileDown) //If the placement was successful, the phase changes to TileDown.
             {
-                Debug.LogError("Tile placed: " + gameState.Tiles.Current.transform.localPosition.x + ", Y: " + gameState.Tiles.Current.transform.localPosition.y + ", Z: " + gameState.Tiles.Current.transform.localPosition.z + ", Rotation: " + gameState.Tiles.Current.transform.rotation.eulerAngles.y);
                 AddReward(1f);
+
+                //Line below is only used for debugging. Ignore it.
+                //Debug.LogError("Tile placed: " + wrapper.GetCurrentTile().transform.localPosition.x + ", Y: " + wrapper.GetCurrentTile().transform.localPosition.y + ", Z: " + wrapper.GetCurrentTile().transform.localPosition.z + ", Rotation: " + wrapper.GetCurrentTile().transform.rotation.eulerAngles.y);
             }
         }
 
 
         //After choice checks.
-        if (x < 0 || x >= gameState.Tiles.Played.GetLength(0) || z < 0 || z >= gameState.Tiles.Played.GetLength(1))
+        if (x < 0 || x >= BoardGridSize || z < 0 || z >= BoardGridSize)
         {
             //Outside table area, reset values and add significant punishment.
-            SetTileStartPosition();
+            ResetAttributes();
             AddReward(-1f);
             Debug.LogError("AI outside table area. Retteing position.");
-        } /*else if (gc.PlacedTiles.HasNeighbor(x, z) && gameState.Tiles.Played[x, z] != null)
-        {
-            AddReward(0.01f);
-        } else
-        {
-            AddReward(-0.01f); //Punishment for walking outside the edge of the built area, to avoid the AI looking through the entire grid each time.
-        }*/
+        } 
 
-        //These are useless, only to monitor the ai (shown on the AI gameobject in the scene while it plays).
-        realX = gameState.Tiles.Current.transform.localPosition.x;
-        realY = gameState.Tiles.Current.transform.localPosition.y;
-        realZ = gameState.Tiles.Current.transform.localPosition.z;
-        realRot = gameState.Tiles.Current.transform.rotation.eulerAngles.y;
+        //These are only used to monitor the ai (shown on the AI gameobject in the scene while it plays). Ignore them.
+
+        /*realX = wrapper.GetCurrentTile().transform.localPosition.x;
+        realY = wrapper.GetCurrentTile().transform.localPosition.y;
+        realZ = wrapper.GetCurrentTile().transform.localPosition.z;
+        realRot = wrapper.GetCurrentTile().transform.rotation.eulerAngles.y;*/
     }
 
     /// <summary>
@@ -185,15 +214,7 @@ public class AIPlayer :  Agent
             if (!String.IsNullOrEmpty(placement)) //Checks so that a choice has been made since meeple was drawn.
             {
                 Debug.LogError("Trying to place meeple");
-                gameState.Meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(meepleX, 0.86f, meepleZ);
-                gc.meepleControllerScript.CurrentMeepleRayCast();
-                gc.meepleControllerScript.AimMeeple(gc);
-                gc.SetMeepleSnapPos();
-                gc.ConfirmPlacementRPC(); //Either confirms and places the meeple if possible, or returns meeple and goes back to phase TileDown.
-                
-                //The two rows below are just a workaround to get meeples to stay on top of the table and not have a seemingly random Y coordinate.
-                gameState.Meeples.Current.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
-                gameState.Meeples.Current.gameObject.transform.localPosition = new Vector3(gameState.Meeples.Current.gameObject.transform.localPosition.x, 0.86f, gameState.Meeples.Current.gameObject.transform.localPosition.z);
+                wrapper.PlaceMeeple(meepleX, meepleZ);  //Either confirms and places the meeple if possible, or returns meeple and goes back to phase TileDown.
             }
             else
             {
@@ -201,23 +222,30 @@ public class AIPlayer :  Agent
             }
            
 
-            if (gameState.phase == Phase.MeepleDown) //If meeple is placed.
+            if (Phase == Phase.MeepleDown) //If meeple is placed.
             {
                 AddReward(1f); //Rewards successfully placing a meeple
-                Debug.LogError("Meeple placed successfully in place " + placement + ". Its actual position is direction '" 
-                    + gc.meepleControllerScript.meeples.Current.direction + "' and geography '" + gc.meepleControllerScript.meeples.Current.geography + "', ending turn");
-                Debug.LogError("X: " + gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition.x + ",Y: " + gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition.y + ", Z: " + gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition.z);
-                placement = "";
+
+                //Below are printouts used for debugging. Ignore them.
+
+                /*Debug.LogError("Meeple placed successfully in place " + placement + ". Its actual position is direction '" 
+                    + wrapper.GetCurrentMeeple().direction + "' and geography '" + wrapper.GetCurrentMeeple().geography + "', ending turn");
+                Debug.LogError("X: " + wrapper.GetCurrentMeeple().gameObject.transform.localPosition.x + ",Y: " + wrapper.GetCurrentMeeple().gameObject.transform.localPosition.y + ", Z: " + wrapper.GetCurrentMeeple().gameObject.transform.localPosition.z);
+                placement = "";*/
             }
-            else if (gameState.phase == Phase.TileDown) //If meeple gets returned.
+            else if (Phase == Phase.TileDown) //If meeple gets returned.
             {
                 AddReward(-1f); //Punishes returning a meeple & going back a phase (note: no punishment for never drawing a meeple).
-                Debug.LogError("Tried to place meeple in inaccessible place. Reset meeple and return to TileDown phase. X: " + gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition.x + ", Z: " + gc.meepleControllerScript.meeples.Current.gameObject.transform.localPosition.z);
-                placement = "";
+                
+                //Below are printouts used for debugging. Ignore them.
+                
+                /*Debug.LogError("Tried to place meeple in inaccessible place. Reset meeple and return to TileDown phase. X: "
+                    + wrapper.GetCurrentMeeple().gameObject.transform.localPosition.x + ", Z: " + wrapper.GetCurrentMeeple().gameObject.transform.localPosition.z); ;
+                placement = "";*/
             }
-            else //Workaround for a bug where you can draw an unplacable meeple and never be able to change state.
+            else //Workaround for a bug where you can draw an unconfirmable meeple and never be able to change phase.
             {
-                gc.meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject, gc);
+                wrapper.FreeCurrentMeeple();
             }
         }
     }
@@ -241,7 +269,7 @@ public class AIPlayer :  Agent
     {
         //This occurs every X steps (Max Steps). It only serves to reset tile position if AI is stuck, and for AI to process current learning
         Debug.LogError("New Episode");
-        SetTileStartPosition();
+        ResetAttributes();
     }
 
 
@@ -251,9 +279,12 @@ public class AIPlayer :  Agent
     /// <param name="sensor">The vector sensor to add observations to</param>
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation((int)gameState.phase);
-        sensor.AddObservation(thisPlayer.AmountOfFreeMeeples());
-        sensor.AddObservation(gameState.Tiles.Current.id);
+        //ToDo: All these should be Normalized for optimal learning. Read up on Normalization
+
+        
+        sensor.AddObservation((int)Phase); //This one might need to be changed, read up on One-Hot observation
+        sensor.AddObservation(MeeplesLeft);
+        sensor.AddObservation(Id);
         sensor.AddObservation(rot);
         sensor.AddObservation(x);
         sensor.AddObservation(z);
@@ -261,8 +292,15 @@ public class AIPlayer :  Agent
         sensor.AddObservation(meepleZ);
 
 
-        //Is there an easier way to add this information? This becomes a huge amount of data, may need to be analyzed in a different way, e.g. matrix representation.
-        foreach (TileScript tile in gameState.Tiles.Played)
+        
+        //Code below handles the input of the entire board, which is really ineffective in its current implemenetation.
+
+        //This could be handled with BufferSensor component. Read up on Variable Length Observations.
+        //Tiles = Entities. The attributes added = floats (observation size)
+        //In the code below we would add the BufferSensorComponent.AppendObservation() instead.
+        //Add a float array of size 'Observation Size' as argument, with normalized values.
+        
+        /*foreach (TileScript tile in gameState.Tiles.Played)
         {
             if (tile != null)
             {
@@ -271,9 +309,9 @@ public class AIPlayer :  Agent
                 sensor.AddObservation(tile.transform.position.x);
                 sensor.AddObservation(tile.transform.position.z);
             }
-        }
+        }*/
 
-        //Possibly relevant to add player scores for multiplayer, so AI knows if it is losing or not
+        //Possibly relevant to add each player's scores for multiplayer as well, so AI knows if it is losing or not.
     }
 
     /// <summary>
@@ -283,11 +321,10 @@ public class AIPlayer :  Agent
     public override void WriteDiscreteActionMask(IDiscreteActionMask actionMask)
     {
         int allowedActions = 0;
-        switch (gameState.phase)
+        switch (Phase)
         {
             case Phase.TileDrawn:
                 //AI can choose to step one tile place in either of the 4 directions (-X, X, -Z, Z), rotate 90 degrees, or confirm place.
-                //Note that this step calls for many decisions until the AI is happy and confirms placement. The other do not.
                 allowedActions = 6;
                 break;
             case Phase.TileDown:
@@ -296,7 +333,6 @@ public class AIPlayer :  Agent
                 break;
             case Phase.MeepleDrawn:
                 //AI can choose to place a drawn meeple in 5 different places (N, S, W, E, C) or confirm/deny current placement.
-                //This step is called many times, allowing the AI to replace the meeple, remove it, grab it again etc.
                 allowedActions = 6;
                 break;
         }
@@ -312,7 +348,7 @@ public class AIPlayer :  Agent
     /// <summary>
     /// Resets tile position and placement (meeple position) to base position before next action.
     /// </summary>
-    internal void SetTileStartPosition()
+    internal void ResetAttributes()
     {
         x = 85;
         z = 85;
