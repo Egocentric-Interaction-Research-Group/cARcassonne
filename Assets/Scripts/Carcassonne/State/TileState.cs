@@ -22,6 +22,8 @@ namespace Carcassonne.State
         public List<TileScript> Remaining;
         [CanBeNull] public TileScript Current;
         public TileScript[,] Played;
+        
+        public Vector2 lastPlayedPosition;
 
         public TileScript.Geography?[,] Matrix => CalculateMatrix();
 

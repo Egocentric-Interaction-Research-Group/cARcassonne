@@ -22,7 +22,7 @@ namespace Carcassonne
         /// Stores the full state of the game for processing.
         /// </summary>
         public GameState gameState; 
-
+        
         // Add Meeple Down state functionality
 
         public bool gravity;
@@ -656,6 +656,8 @@ namespace Carcassonne
         [PunRPC]
         public void EndTurn()
         {
+            gameState.Log.LogTurn();
+            
             if (gameState.phase == Phase.TileDown || gameState.phase == Phase.MeepleDown)
             {
                 calculatePoints(true, false);
