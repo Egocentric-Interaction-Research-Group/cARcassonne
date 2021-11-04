@@ -682,6 +682,11 @@ namespace Carcassonne
 
                     gameState.phase = Phase.NewTurn;
                 }
+                
+                Debug.Log($"Board Matrix Dims: {gameState.Tiles.Matrix.GetLength(0)}" +
+                          $"x{gameState.Tiles.Matrix.GetLength(1)}" +
+                          $" ({gameState.Tiles.Matrix.Length})");
+                Debug.Log($"Board Matrix:\n{gameState.Tiles}");
             }
             else
             {
