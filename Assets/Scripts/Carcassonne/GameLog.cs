@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Carcassonne.State;
+using Photon.Realtime;
 using UnityEngine;
 
 namespace Carcassonne
@@ -42,6 +43,8 @@ namespace Carcassonne
             };
 
             Turns.Push(t);
+            
+            Debug.Log($"Turn {Turns.Count}: Player {t.Player.name} | Tile ID {t.Tile.id}, Rotation ({t.Tile.rotation}), Position: {t.Location.x},{t.Location.y} | Meeple: {t.MeeplePlacement}");
         }
         
         private void OnEnable()
