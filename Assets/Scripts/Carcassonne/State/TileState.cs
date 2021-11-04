@@ -93,14 +93,13 @@ namespace Carcassonne.State
 
         public override string ToString()
         {
-            var s = "";
-            for (var i = 0; i < Matrix.GetLength(0); i++)
+            var s = ""; 
+            for (var j = Matrix.GetLength((1)) - 1; j >= 0; j--) // Prints from the top-left, so y coordinate needs to start from the top.
             {
-                for (var j = 0; j < Matrix.GetLength((1)); j++)
+                for (var i = 0; i < Matrix.GetLength(0); i++)
                 {
                     s += $" | {Matrix[i,j], 8}";
                 }
-
                 s += $" |\n";
             }
             return s;
