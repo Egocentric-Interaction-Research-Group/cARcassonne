@@ -8,12 +8,6 @@ public class AIDecisionRequester : MonoBehaviour
 {
     public AIPlayer ai;
     public float reward = 0; //Used for displaying the reward in the Unity editor.
-    private Phase startPhase;
-
-    public void Awake()
-    {
-        //ai = GetComponent<AIPlayer>();
-    }
 
     /// <summary>
     /// Acts on its own or repeatedly requests actions from the actual AI depending the game phase and state.

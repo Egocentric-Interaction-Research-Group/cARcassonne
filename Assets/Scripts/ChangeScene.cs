@@ -16,7 +16,7 @@ public class ChangeScene : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        
+        LoadSceneRPC();
     }
 
     // Update is called once per frame

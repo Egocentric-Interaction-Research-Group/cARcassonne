@@ -55,7 +55,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: d4d8cfbfdcd1d834dac76ef854dbe767, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: CarcassonneTest
@@ -79,18 +79,20 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 3000
-  thisPlayer: {fileID: 0}
-  gameState: {fileID: 0}
-  gc: {fileID: 0}
+  meeplesLeft: 0
+  boardGridSize: 0
+  phase: 0
+  id: 0
   x: 85
   z: 85
   y: 1
   rot: 0
+  meepleX: 0
+  meepleZ: 0
   realX: 0
   realY: 0
   realZ: 0
   realRot: 0
-  phase: 0
 --- !u!114 &3647413094652461654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,6 +106,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ai: {fileID: 3647413094652461649}
-  maxSteps: 0
-  currentSteps: 0
   reward: 0

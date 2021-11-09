@@ -21,7 +21,7 @@ public class AIPlayer :  Agent
     //AI Specific
     public AIWrapper wrapper;
     private const int maxBranchSize = 6;
-    public int x =85, z=85 , y=1, rot=0;
+    public int x=85, z=85 , y=1, rot=0;
     public float meepleX, meepleZ;
 
     //Monitoring
@@ -84,12 +84,12 @@ public class AIPlayer :  Agent
             case Phase.TileDown:
                 if (actionBuffers.DiscreteActions[0] == 0f)
                 {
-                    Debug.LogError("Meeple drawn");
+                    Debug.Log("AI: Meeple drawn");
                     wrapper.DrawMeeple(); //Take meeple
                 }
                 else
                 {
-                    Debug.LogError("No meeple drawn, ending turn");
+                    Debug.Log("AI: No meeple drawn, ending turn");
                     wrapper.EndTurn(); //End turn without taking meeple
                 }
                 break;
@@ -104,22 +104,18 @@ public class AIPlayer :  Agent
         AddReward(-0.001f); //Each call to this method comes with a very minor penalty to promote performing quick actions.
         if (actionBuffers.DiscreteActions[0] == 0f)
         {
-            Debug.Log("Up");
             z += 1; //Up
         }
         else if (actionBuffers.DiscreteActions[0] == 1f)
         {
-            Debug.Log("Down");
             z -= 1; //Down
         }
         else if (actionBuffers.DiscreteActions[0] == 2f)
         {
-            Debug.Log("Left");
             x -= 1; //Left
         }
         else if (actionBuffers.DiscreteActions[0] == 3f)
         {
-            Debug.Log("Right");
             x += 1; //Right
         }
         else if (actionBuffers.DiscreteActions[0] == 4f)
@@ -134,10 +130,10 @@ public class AIPlayer :  Agent
                 //AddReward(-0.01f); 
             }
         }
-        else if (actionBuffers.DiscreteActions[0] == 5f)
+        else if (actionBuffers.DiscreteActions[0] == 5f) //Place tile
         {
             //Rotates the tile the amount of times AI has chosen (0-3).
-            for (int i = 0; i < rot; i++)
+            for (int i = 0; i <= rot; i++)
             {
                 wrapper.RotateTile();
             }
@@ -160,8 +156,8 @@ public class AIPlayer :  Agent
         {
             //Outside table area, reset values and add significant punishment.
             ResetAttributes();
-            AddReward(-1f);
-            Debug.LogError("AI outside table area. Retteing position.");
+            AddReward(-0.1f);
+            Debug.Log("AI: outside table area. Resetteing position.");
         } 
 
         //These are only used to monitor the ai (shown on the AI gameobject in the scene while it plays). Ignore them.
@@ -213,12 +209,12 @@ public class AIPlayer :  Agent
         {
             if (!String.IsNullOrEmpty(placement)) //Checks so that a choice has been made since meeple was drawn.
             {
-                Debug.LogError("Trying to place meeple");
+                Debug.Log("AI: Trying to place meeple");
                 wrapper.PlaceMeeple(meepleX, meepleZ);  //Either confirms and places the meeple if possible, or returns meeple and goes back to phase TileDown.
             }
             else
             {
-                Debug.LogError("Tried to place meeple, placement is empty");
+                Debug.Log("AI: Tried to place meeple, placement is empty");
             }
            
 
@@ -268,7 +264,7 @@ public class AIPlayer :  Agent
     public override void OnEpisodeBegin()
     {
         //This occurs every X steps (Max Steps). It only serves to reset tile position if AI is stuck, and for AI to process current learning
-        Debug.LogError("New Episode");
+        Debug.Log("AI: New Episode");
         ResetAttributes();
     }
 
@@ -342,7 +338,6 @@ public class AIPlayer :  Agent
         {
             actionMask.SetActionEnabled(0, i, false); //The rest are enabled by default, as it resets to all enabled after a decision.
         }
-        Debug.Log("Allowed actions: " + allowedActions + "/" + maxBranchSize);
     }
 
     /// <summary>
