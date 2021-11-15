@@ -13,7 +13,7 @@ namespace Assets.Scripts.Carcassonne.AI
 
         public int GetCurrentTileId();
         
-        public int GetBoardSize();
+        public int GetBoardMaxSize();
 
         public void EndTurn();
 

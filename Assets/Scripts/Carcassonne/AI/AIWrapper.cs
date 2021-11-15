@@ -1,6 +1,7 @@
 ﻿using Carcassonne.State;
 using Carcassonne;
 using UnityEngine;
+using System;
 
 namespace Assets.Scripts.Carcassonne.AI
 {
@@ -20,11 +21,6 @@ namespace Assets.Scripts.Carcassonne.AI
         public bool IsAITurn()
         {
             return player.getID() == gs.Players.Current.getID();
-        }
-
-        public int GetBoardSize()
-        {
-            return gs.Tiles.Played.GetLength(0);
         }
 
         public void PickUpTile()
@@ -89,6 +85,20 @@ namespace Assets.Scripts.Carcassonne.AI
             gc.meepleControllerScript.FreeMeeple(gs.Meeples.Current.gameObject, gc);
         }
 
+        public int GetMaxMeeples()
+        {
+            return player.meeples.Count;
+        }
+
+        public int GetMaxTileId()
+        {
+            //This needs a better solution for expansions.
+            return 23;
+        }
+        public int GetBoardMaxSize()
+        {
+            return gs.Tiles.Played.GetLength(0);
+        }
         #endregion
 
         //The methods below are only use for printing out information, used for test purposes.
