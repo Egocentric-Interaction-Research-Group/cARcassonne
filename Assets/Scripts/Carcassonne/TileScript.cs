@@ -83,6 +83,11 @@ namespace Carcassonne
         private bool shield;
 
         /// <summary>
+        /// Public property detailing whether this tile has a shield
+        /// </summary>
+        public bool Shield => shield;
+
+        /// <summary>
         ///     Geography locations set to different local directions.
         /// </summary>
         private Geography Up, Down, Left, Right;

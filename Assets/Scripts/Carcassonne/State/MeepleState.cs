@@ -12,7 +12,7 @@ namespace Carcassonne.State
     [CreateAssetMenu(fileName = "MeepleState", menuName = "States/MeepleState")]
     public class MeepleState : ScriptableObject
     {
-        public List<MeepleScript> All= new List<MeepleScript>();
+        public List<MeepleScript> All = new List<MeepleScript>();
         public Dictionary<PlayerScript, MeepleScript> Free => null;
         [CanBeNull] public MeepleScript Current;
         // public MeepleScript[,] Played; //TODO Implement
@@ -41,6 +41,12 @@ namespace Carcassonne.State
         public List<MeepleScript> MeeplesForPlayer(PlayerScript p)
         {
             return (from meeple in All where meeple.player == p select meeple).ToList();
+        }
+
+        [CanBeNull]
+        public MeepleScript MeepleAt(Vector2Int xy)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
