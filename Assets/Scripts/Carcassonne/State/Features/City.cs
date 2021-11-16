@@ -1,20 +1,56 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
+using QuikGraph;
 
 namespace Carcassonne.State.Features
 {
+    public class CarcassonneVertex : IComparable<CarcassonneVertex>
+    {
+        public Vector2Int location;
+        public TileScript tile; // What if we allow null tiles where there is an open edge?
+        [CanBeNull] public MeepleScript meeple;
+
+        public CarcassonneVertex(Vector2Int location, TileScript tile, [CanBeNull] MeepleScript meeple = null)
+        {
+            this.location = location;
+            this.tile = tile;
+            this.meeple = meeple;
+        }
+
+        public int CompareTo(CarcassonneVertex other)
+        {
+            // Check to see if these are the same vertices
+            if (location == other.location)
+            {
+                if(tile == other.tile && meeple == other.meeple) return 0;
+                
+                throw new ArgumentException(
+                    $"Vertices have the same location ({location}), but are the same tile/meeple. Different tiles/meeples cannot be at the same location.",
+                    tile == other.tile ? "CarcassonneVertex.meeple" : "CarcassonneVertex.tile");
+            }
+            
+            // If they are different, sort by distance from origin
+            return (location.magnitude - other.location.magnitude) > 0 ? 1 : -1;
+        }
+    }
+    
     public class City : IFeature
     {
-        public Dictionary<Vector2Int, TileScript> segments; // TODO Rename
-        public Dictionary<Vector2Int, MeepleScript> meeples; // TODO Rename
+        // Does it make more sense just to have one graph for the whole board and have parts disconnected from each other?
+        public UndirectedGraph<CarcassonneVertex, UndirectedEdge<CarcassonneVertex>> positions =
+            new UndirectedGraph<CarcassonneVertex, UndirectedEdge<CarcassonneVertex>>();
 
-        public int Segments => segments.Count;
-        public int OpenSides => ComputeOpenSides();
-        public int Shields => segments.Values.Count(t => t.Shield);
+        public int Segments => positions.VertexCount;
+        public int OpenSides => Complete ? 0 : ComputeOpenSides();
+        public int Shields => positions.Vertices.Count(v => v.tile.Shield);
         public bool Complete => complete;
-        public bool Completable => IsCompletable();
+        // public bool Completable => IsCompletable();
         public Dictionary<PlayerScript, int> Meeples => CountMeeplesForPlayers();
+        
+        public RectInt BoundingBox => CalculateBounds();
 
         private bool complete = false;
 
@@ -22,44 +58,94 @@ namespace Carcassonne.State.Features
         {
             var openSides = 0;
 
-            //TODO Calculate open sides here.
-            foreach (KeyValuePair<Vector2Int,TileScript> segment in segments)
+            foreach (var position in positions.Vertices)
             {
-                
+                // Calculate the number of sides of the tile that are city
+                var citySides = position.tile.Sides.Count(s => s == TileScript.Geography.City);
+                // Subtract the number of connected sides from the number of city sides and add to overall open side count.
+                openSides += citySides - positions.AdjacentDegree(position);
             }
-
+            
             if (openSides == 0)
             {
                 complete = true;
             }
-            
-            throw new System.NotImplementedException();
+
+            return openSides;
         }
 
-        private bool IsCompletable()
-        {
-            if (Complete) return true;
-            throw new System.NotImplementedException();
-        }
+        // private bool IsCompletable()
+        // {
+        //     if (Complete) return true;
+        //     throw new System.NotImplementedException();
+        // }
 
         private Dictionary<PlayerScript, int> CountMeeplesForPlayers()
         {
-            throw new System.NotImplementedException();
+            var meeplesForPlayer = new Dictionary<PlayerScript, int>();
+
+            foreach (var position in positions.Vertices.Where(v => v.meeple))
+            {
+                var player = position.meeple.player;
+                if (!meeplesForPlayer.ContainsKey(player))
+                {
+                    meeplesForPlayer.Add(player, 0);
+                }
+
+                meeplesForPlayer[player] += 1;
+            }
+
+            return meeplesForPlayer;
         }
 
         public void Add(Vector2Int xy, TileScript t)
         {
-            segments.Add(xy, t);
+            Add(xy, t, null);
         }
 
-        public void Add(Vector2Int xy, TileScript t, MeepleScript m)
+        public void Add(Vector2Int xy, TileScript t, [CanBeNull] MeepleScript m)
         {
-            segments.Add(xy, t);
-            meeples.Add(xy, m);
+            var position = new CarcassonneVertex(xy, t, m);
+            
+            // Add the vertex
+            positions.AddVertex(position);
+
+            var clockwiseTiles = new[] { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
+            for (var i = 0; i < clockwiseTiles.Length; i++) // For each side
+            {
+                // Check if (the side is a city) and (there is a tile on that side)
+                if( (t.Sides[i] == TileScript.Geography.City) && (positions.Vertices.Any(p => p.location == (position.location + clockwiseTiles[i]))) )
+                {
+                    UndirectedEdge<CarcassonneVertex> e = new UndirectedEdge<CarcassonneVertex>(position, positions.Vertices.Single(p => p.location == (position.location + clockwiseTiles[i])));
+                    positions.AddEdge(e);
+                }
+            }
         }
-        
+
+        private RectInt CalculateBounds()
+        {
+            RectInt b = new RectInt();
+
+            foreach (var position in positions.Vertices)
+            {
+                if (b.size == Vector2Int.zero)
+                {
+                    b.position = position.location;
+                    b.size = Vector2Int.one;
+                }
+
+                if (position.location.x <  b.xMin){ b.xMin = position.location.x;}
+                if (position.location.x >= b.xMax){ b.xMax = position.location.x + 1;}
+                if (position.location.y <  b.yMin){ b.yMin = position.location.y;}
+                if (position.location.y >= b.yMax){ b.yMax = position.location.y + 1;}
+            }
+            
+            return b;
+        }
+
         /// <summary>
         /// Overload the plus operator to allow merge of two cities.
+        /// The two cities should already contain a common CarcassonneVertex when they are merged.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -72,13 +158,14 @@ namespace Carcassonne.State.Features
         /// </example>
         public static City operator +(City a, City b)
         {   
-            // Merge Tile Lists
-            b.segments.ToList().ForEach(pair => a.segments[pair.Key] = pair.Value);
+            var c = new City();
+            c.positions.AddVerticesAndEdgeRange(a.positions.Edges);
+            c.positions.AddVerticesAndEdgeRange(b.positions.Edges);
             
-            //Merge meeple lists
-            b.meeples.ToList().ForEach(pair => a.meeples[pair.Key] = pair.Value);
+            // update Complete status
+            c.ComputeOpenSides();
             
-            return a;
+            return c;
         }
     }
 }

@@ -73,6 +73,11 @@ namespace Carcassonne
         public Geography North, South, West, East, Center;
 
         /// <summary>
+        ///     A list of the sides in clockwise order, starting from North.
+        /// </summary>
+        public Geography[] Sides => new[] { North, East, South, West };
+
+        /// <summary>
         ///     Defines whether the tile is a member of the base set or one of the expansions or alternate tile sets.
         /// </summary>
         public TileSet tileSet = TileSet.Base;

@@ -304,25 +304,25 @@ namespace Carcassonne
                 cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, this));
             
             // Test code to print the bounding boxes of a completed city.
-            if (cityIsFinished)
-            {
-                var limits = new Limits();
-                for (var i = 0; i < visited.GetLength(0); i++)
-                {
-                    for (var j = 0; j < visited.GetLength(1); j++)
-                    {
-                        if (visited[i, j])
-                        {
-                            if (i < limits.min.x) limits.min.x = i;
-                            if (i >= limits.max.x) limits.max.x = i + 1;
-                            if (j < limits.min.y) limits.min.y = j;
-                            if (j >= limits.max.y) limits.max.y = j + 1;
-                        }
-                    }
-                }
-
-                Debug.Log($"Bounding box is: ({limits.min.x},{limits.min.y}) - ({limits.max.x},{limits.max.y}");
-            }
+            // if (cityIsFinished)
+            // {
+            //     var limits = new Limits();
+            //     for (var i = 0; i < visited.GetLength(0); i++)
+            //     {
+            //         for (var j = 0; j < visited.GetLength(1); j++)
+            //         {
+            //             if (visited[i, j])
+            //             {
+            //                 if (i < limits.min.x) limits.min.x = i;
+            //                 if (i >= limits.max.x) limits.max.x = i + 1;
+            //                 if (j < limits.min.y) limits.min.y = j;
+            //                 if (j >= limits.max.y) limits.max.y = j + 1;
+            //             }
+            //         }
+            //     }
+            //
+            //     Debug.Log($"Bounding box is: ({limits.min.x},{limits.min.y}) - ({limits.max.x},{limits.max.y}");
+            // }
             
             return cityIsFinished;
         }
