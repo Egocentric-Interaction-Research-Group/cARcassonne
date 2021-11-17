@@ -284,7 +284,7 @@ namespace Carcassonne
             if (meepleGeography == TileScript.Geography.City)
             {
                 if (currentCenter == TileScript.Geography.City)
-                    res = gameControllerScript.CityIsFinished(xs, zs) || res;
+                    res = gameControllerScript.CityIsNotFinishedIfEmptyTileBesideCity(xs, zs) || res;
                 else
                     res = gameControllerScript.CityIsFinishedDirection(xs, zs, direction) || res;
             }

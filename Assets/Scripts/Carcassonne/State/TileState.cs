@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace Carcassonne.State
 {
-    public class Limits
-    {
-        public Limits()
-        {
-            this.min = new Vector2Int(int.MaxValue, int.MaxValue);
-            this.max = new Vector2Int(int.MinValue, int.MinValue);
-        }
-
-        public Vector2Int min;
-        public Vector2Int max;
-    }
+    // public class Limits
+    // {
+    //     public Limits()
+    //     {
+    //         this.min = new Vector2Int(int.MaxValue, int.MaxValue);
+    //         this.max = new Vector2Int(int.MinValue, int.MinValue);
+    //     }
+    //
+    //     public Vector2Int min;
+    //     public Vector2Int max;
+    // }
     
     [CreateAssetMenu(fileName = "TileState", menuName = "States/TileState")]
     public class TileState : ScriptableObject
@@ -31,8 +31,8 @@ namespace Carcassonne.State
         {
             // Find min and max indices for x and 
             // Are these things that TileScript could be tracking? BoardLimits? or something?
-            Limits l = CalculateLimits();
-            int xmin = l.min.x, xmax = l.max.x, ymin = l.min.y, ymax = l.max.y; //FIXME this is a placeholder
+            var l = CalculateLimits();
+            int xmin = l.xMin, xmax = l.xMax, ymin = l.yMin, ymax = l.yMax;
             
             Debug.Log($"Found Limits. Tiles found from ({xmin},{ymin}) to ({xmax},{ymax})");
             
@@ -63,28 +63,30 @@ namespace Carcassonne.State
             return GeographyMatrix;
         }
 
-        private Limits CalculateLimits()
+        private RectInt CalculateLimits()
         {
-            Limits l = new Limits();
+            RectInt lim = new RectInt();
             for (var i = 0; i < Played.GetLength(0); i++)
             {
                 for (var j = 0; j < Played.GetLength(1); j++)
                 {
                     if (Played[i, j] != null)
                     {
-                        if (i < l.min.x)
-                            l.min.x = i;
-                        if (i >= l.max.x)
-                            l.max.x = i+1;
-                        if (j < l.min.y)
-                            l.min.y = j;
-                        if (j >= l.max.y)
-                            l.max.y = j+1;
+                        if (lim.size == Vector2Int.zero)
+                        {
+                            lim = new RectInt(i, j, 1, 1);
+                        } else
+                        {
+                            if (i <  lim.xMin){ lim.xMin = i;}
+                            if (i >= lim.xMax){ lim.xMax = i + 1;}
+                            if (j <  lim.yMin){ lim.yMin = j;}
+                            if (j >= lim.yMax){ lim.yMax = j + 1;}
+                        }
                     }
                 }
             }
 
-            return l;
+            return lim;
         }
 
         private void Awake()

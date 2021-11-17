@@ -1,4 +1,8 @@
-﻿using Carcassonne.State;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Carcassonne.State;
+using Carcassonne.State.Features;
 using UnityEngine;
 
 namespace Carcassonne
@@ -11,7 +15,7 @@ namespace Carcassonne
         public Vector3 BasePosition;
 
         public TileState tiles;
-
+        public FeatureState features;
 
         // public GameObject[,] tiles.Played;
 
@@ -26,13 +30,54 @@ namespace Carcassonne
 
         public void PlaceTile(int x, int z, GameObject tile)
         {
-            tiles.Played[x, z] = tile.GetComponent<TileScript>();
+            var ts = tile.GetComponent<TileScript>();
+            var pos = new Vector2Int(x, z);
+            // Update the Tile State
+            tiles.Played[x, z] = ts;
             tiles.lastPlayedPosition = new Vector2(x, z);
-        }
+            
+            // Update Feature States
+            
+            // Cities
+            var cities = new List<City>();
+            foreach (var side in ts.Sides)
+            {
+                var dir = pos + side.Key;
+                var geo = side.Value;
+                
+                // If there's a city linked to an existing tile, add this tile to that city.
+                if (geo == TileScript.Geography.City && tiles.Played[dir.x, dir.y] != null)
+                {
+                    try
+                    {
+                        var c = features.Cities.Single(c => c.Contains(dir));
+                        if (!c.Contains(pos)) // As long as the current tile has not already been added to the city.
+                        {
+                            c.Add(pos, ts);
+                            cities.Add(c);
+                        }
+                    }
+                    catch (ArgumentNullException e) {}
+                }
+            }
 
-        public void removeTile(int x, int z)
-        {
-            tiles.Played[x, z] = null;
+            // If the tile has linked multiple cities.
+            if (cities.Count > 1)
+            {
+                var c = new City();
+                // Add all of the newly connected cities together, remove them from the list, and add the newly created city.
+                foreach (var city in cities)
+                {
+                    c += city;
+                    features.Cities.Remove(city);
+                }
+                features.Cities.Add(c);
+            } else if (cities.Count == 0 && ts.Sides.Any(s => s.Value == TileScript.Geography.City))
+            { // If there are city parts to the tile, but no cities have been linked, create a new city
+                var c = new City();
+                c.Add(pos, ts);
+                features.Cities.Add(c);
+            }
         }
 
         //FIXME This should be changable to a TileScript return type

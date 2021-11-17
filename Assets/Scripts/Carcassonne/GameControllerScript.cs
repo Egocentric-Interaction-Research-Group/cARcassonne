@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Carcassonne.State;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
@@ -290,7 +291,7 @@ namespace Carcassonne
             tileControllerScript.currentTile.GetComponent<NearInteractionGrabbable>().enabled = false;
         }
 
-
+        //TODO Replace this
         public bool CityIsFinishedDirection(int x, int y, PointScript.Direction direction)
         {
             meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
@@ -302,22 +303,42 @@ namespace Carcassonne
             Debug.Log(
                 "DIRECTION__________________________CITY IS FINISHED EFTER DIRECTION REKURSIV: ___________________________" +
                 cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, this));
+            
+            // Test code to print the bounding boxes of a completed city.
+            if (cityIsFinished)
+            {
+                var city = gameState.Features.Cities.Single(c => c.Contains(new Vector2Int(x, y)));
+                var limits = city.BoundingBox;
+                Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
+            }
+            
             return cityIsFinished;
         }
 
         //Test City checker
-        public bool CityIsFinished(int x, int y)
-        {
+        //FIXME: Only called in MeepleControllerScript. Is this still used?
+        public bool CityIsNotFinishedIfEmptyTileBesideCity(int x, int y)
+        { 
+            // Create a list of meeples in the city
             meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
             meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, this));
 
-
+            // Set up variables
             cityIsFinished = true;
             visited = new bool[170, 170];
-            RecursiveCityIsFinished(x, y);
+            
+            // Check to see if city is not finished due to empty tiles
+            RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y);
             Debug.Log("__________________________CITY IS FINISHED EFTER REKURSIV: ___________________________" +
                       cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, this));
-
+            
+            if (cityIsFinished)
+            {
+                var city = gameState.Features.Cities.Single(c => c.Contains(new Vector2Int(x, y)));
+                var limits = city.BoundingBox;
+                Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
+            }
+            
             return cityIsFinished;
         }
 
@@ -329,7 +350,7 @@ namespace Carcassonne
                 {
                     if (placedTiles.getPlacedTiles(x, y + 1) != null)
                     {
-                        if (!visited[x, y + 1]) RecursiveCityIsFinished(x, y + 1);
+                        if (!visited[x, y + 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y + 1);
                     }
                     else
                     {
@@ -342,7 +363,7 @@ namespace Carcassonne
                 {
                     if (placedTiles.getPlacedTiles(x + 1, y) != null)
                     {
-                        if (!visited[x + 1, y]) RecursiveCityIsFinished(x + 1, y);
+                        if (!visited[x + 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x + 1, y);
                     }
                     else
                     {
@@ -355,7 +376,7 @@ namespace Carcassonne
                 {
                     if (placedTiles.getPlacedTiles(x, y - 1) != null)
                     {
-                        if (!visited[x, y - 1]) RecursiveCityIsFinished(x, y - 1);
+                        if (!visited[x, y - 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y - 1);
                     }
                     else
                     {
@@ -368,7 +389,7 @@ namespace Carcassonne
                 {
                     if (placedTiles.getPlacedTiles(x - 1, y) != null)
                     {
-                        if (!visited[x - 1, y]) RecursiveCityIsFinished(x - 1, y);
+                        if (!visited[x - 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x - 1, y);
                     }
                     else
                     {
@@ -400,13 +421,20 @@ namespace Carcassonne
             ResetTileRotation();
             return false;
         }
-
-        public void RecursiveCityIsFinished(int x, int y)
+        
+        
+        /// <summary>
+        /// This tells you if a city is NOT finished due to there being an empty square on the city side of a tile.
+        /// It does not return anything, just sets cityIsFinished as false.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(int x, int y)
         {
             visited[x, y] = true;
 
 
-            if (placedTiles.getPlacedTiles(x, y) != null)
+            if (placedTiles.getPlacedTiles(x, y) != null) // If there is a tile here
             {
                 if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().North == TileScript.Geography.City)
                     if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
@@ -414,7 +442,7 @@ namespace Carcassonne
                         if (placedTiles.getPlacedTiles(x, y + 1) != null)
 
                         {
-                            if (!visited[x, y + 1]) RecursiveCityIsFinished(x, y + 1);
+                            if (!visited[x, y + 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y + 1);
                         }
                         else
                         {
@@ -427,7 +455,7 @@ namespace Carcassonne
                     {
                         if (placedTiles.getPlacedTiles(x + 1, y) != null)
                         {
-                            if (!visited[x + 1, y]) RecursiveCityIsFinished(x + 1, y);
+                            if (!visited[x + 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x + 1, y);
                         }
                         else
                         {
@@ -440,7 +468,7 @@ namespace Carcassonne
                     {
                         if (placedTiles.getPlacedTiles(x, y - 1) != null)
                         {
-                            if (!visited[x, y - 1]) RecursiveCityIsFinished(x, y - 1);
+                            if (!visited[x, y - 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y - 1);
                         }
                         else
                         {
@@ -453,7 +481,7 @@ namespace Carcassonne
                     {
                         if (placedTiles.getPlacedTiles(x - 1, y) != null)
                         {
-                            if (!visited[x - 1, y]) RecursiveCityIsFinished(x - 1, y);
+                            if (!visited[x - 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x - 1, y);
                         }
                         else
                         {
@@ -627,22 +655,6 @@ namespace Carcassonne
             }
         }
 
-
-        //Funktion för undo
-        public void UndoAction()
-        {
-            if (gameState.phase == Phase.TileDown || gameState.phase == Phase.MeepleDrawn)
-            {
-                placedTiles.removeTile(tempX, tempY);
-                tileControllerScript.currentTile.GetComponentInChildren<MeshRenderer>().enabled = false;
-                gameState.phase = Phase.TileDrawn;
-
-                VertexItterator--;
-                GetComponent<PointScript>().RemoveVertex(VertexItterator);
-            }
-        }
-
-
         public void EndTurnRPC()
         {
             if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
@@ -762,7 +774,7 @@ namespace Carcassonne
                                 placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
                                 TileScript.Geography.Road ||
                                 placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                TileScript.Geography.Village)
+                                TileScript.Geography.Village) // If it's a Stream, Grass, Road, Village
                             {
                                 if (CityIsFinishedDirection(meeple.x, meeple.z, meeple.direction))
                                 {
@@ -791,7 +803,7 @@ namespace Carcassonne
                             else
                             {
                                 //CITY NO DIRECTION
-                                if (CityIsFinished(meeple.x, meeple.z))
+                                if (CityIsNotFinishedIfEmptyTileBesideCity(meeple.x, meeple.z))
                                     finalscore = GetComponent<PointScript>()
                                         .startDfs(
                                             placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>()
