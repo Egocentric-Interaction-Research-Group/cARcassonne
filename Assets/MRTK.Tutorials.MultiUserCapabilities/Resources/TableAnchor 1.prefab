@@ -7641,6 +7641,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BasePosition: {x: 0, y: 0, z: 0}
   tiles: {fileID: 11400000, guid: 862d7903a58864b2b8c5a0c4ba131f7d, type: 2}
+  features: {fileID: 11400000, guid: f2934e4a8bc9a4bfe836af99ed2ab461, type: 2}
 --- !u!114 &1798396970961904588
 MonoBehaviour:
   m_ObjectHideFlags: 0

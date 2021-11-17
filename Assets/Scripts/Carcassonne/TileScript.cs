@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -75,7 +76,14 @@ namespace Carcassonne
         /// <summary>
         ///     A list of the sides in clockwise order, starting from North.
         /// </summary>
-        public Geography[] Sides => new[] { North, East, South, West };
+        // public Geography[] Sides => new[] { North, East, South, West };
+        public Dictionary<Vector2Int, Geography> Sides => new Dictionary<Vector2Int, Geography>
+        {
+            {Vector2Int.up, North},
+            {Vector2Int.right, East},
+            {Vector2Int.down, South},
+            {Vector2Int.left, West} 
+        };
 
         /// <summary>
         ///     Defines whether the tile is a member of the base set or one of the expansions or alternate tile sets.

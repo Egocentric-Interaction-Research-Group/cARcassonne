@@ -52,6 +52,8 @@ namespace Carcassonne.State.Features
         
         public RectInt BoundingBox => CalculateBounds();
 
+        public bool Contains(Vector2Int xy) => positions.Vertices.Any(v => v.location == xy);
+
         private bool complete = false;
 
         private int ComputeOpenSides()
@@ -61,7 +63,7 @@ namespace Carcassonne.State.Features
             foreach (var position in positions.Vertices)
             {
                 // Calculate the number of sides of the tile that are city
-                var citySides = position.tile.Sides.Count(s => s == TileScript.Geography.City);
+                var citySides = position.tile.Sides.Count(s => s.Value == TileScript.Geography.City);
                 // Subtract the number of connected sides from the number of city sides and add to overall open side count.
                 openSides += citySides - positions.AdjacentDegree(position);
             }
@@ -110,13 +112,27 @@ namespace Carcassonne.State.Features
             // Add the vertex
             positions.AddVertex(position);
 
-            var clockwiseTiles = new[] { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
-            for (var i = 0; i < clockwiseTiles.Length; i++) // For each side
+            // var clockwiseTiles = new[] { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
+            // for (var i = 0; i < clockwiseTiles.Length; i++) // For each side
+            // {
+            //     // Check if (the side is a city) and (there is a tile on that side)
+            //     if( (t.Sides[i] == TileScript.Geography.City) && (positions.Vertices.Any(p => p.location == (position.location + clockwiseTiles[i]))) )
+            //     {
+            //         UndirectedEdge<CarcassonneVertex> e = new UndirectedEdge<CarcassonneVertex>(position, positions.Vertices.Single(p => p.location == (position.location + clockwiseTiles[i])));
+            //         positions.AddEdge(e);
+            //     }
+            // }
+
+            foreach (var side in t.Sides)
             {
-                // Check if (the side is a city) and (there is a tile on that side)
-                if( (t.Sides[i] == TileScript.Geography.City) && (positions.Vertices.Any(p => p.location == (position.location + clockwiseTiles[i]))) )
+                var dir = side.Key;
+                var geo = side.Value;
+
+                if (geo == TileScript.Geography.City &&
+                    positions.Vertices.Any(p => p.location == (position.location + dir)))
                 {
-                    UndirectedEdge<CarcassonneVertex> e = new UndirectedEdge<CarcassonneVertex>(position, positions.Vertices.Single(p => p.location == (position.location + clockwiseTiles[i])));
+                    UndirectedEdge<CarcassonneVertex> e = City.EdgeBetween(position,
+                        positions.Vertices.Single(p => p.location == (position.location + dir)));
                     positions.AddEdge(e);
                 }
             }
@@ -166,6 +182,24 @@ namespace Carcassonne.State.Features
             c.ComputeOpenSides();
             
             return c;
+        }
+
+        /// <summary>
+        /// Automates the creation of undirected edges between two verticies.
+        /// Undirected edges need to go from a lesser vertex to a greater one (via CompareTo), so this sorts the
+        /// vertices and returns a valid edge. 
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        private static UndirectedEdge<CarcassonneVertex> EdgeBetween(CarcassonneVertex a, CarcassonneVertex b)
+        {
+            if (a.CompareTo(b) > 0)
+            {
+                return new UndirectedEdge<CarcassonneVertex>(b, a);
+            }
+
+            return new UndirectedEdge<CarcassonneVertex>(a, b);
         }
     }
 }

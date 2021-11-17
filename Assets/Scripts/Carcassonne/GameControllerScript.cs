@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Carcassonne.State;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
@@ -290,7 +291,7 @@ namespace Carcassonne
             tileControllerScript.currentTile.GetComponent<NearInteractionGrabbable>().enabled = false;
         }
 
-
+        //TODO Replace this
         public bool CityIsFinishedDirection(int x, int y, PointScript.Direction direction)
         {
             meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
@@ -304,25 +305,12 @@ namespace Carcassonne
                 cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, this));
             
             // Test code to print the bounding boxes of a completed city.
-            // if (cityIsFinished)
-            // {
-            //     var limits = new Limits();
-            //     for (var i = 0; i < visited.GetLength(0); i++)
-            //     {
-            //         for (var j = 0; j < visited.GetLength(1); j++)
-            //         {
-            //             if (visited[i, j])
-            //             {
-            //                 if (i < limits.min.x) limits.min.x = i;
-            //                 if (i >= limits.max.x) limits.max.x = i + 1;
-            //                 if (j < limits.min.y) limits.min.y = j;
-            //                 if (j >= limits.max.y) limits.max.y = j + 1;
-            //             }
-            //         }
-            //     }
-            //
-            //     Debug.Log($"Bounding box is: ({limits.min.x},{limits.min.y}) - ({limits.max.x},{limits.max.y}");
-            // }
+            if (cityIsFinished)
+            {
+                var city = gameState.Features.Cities.Single(c => c.Contains(new Vector2Int(x, y)));
+                var limits = city.BoundingBox;
+                Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
+            }
             
             return cityIsFinished;
         }
@@ -342,7 +330,15 @@ namespace Carcassonne
             // Check to see if city is not finished due to empty tiles
             RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y);
             Debug.Log("__________________________CITY IS FINISHED EFTER REKURSIV: ___________________________" +
-                      cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, this)); 
+                      cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, this));
+            
+            if (cityIsFinished)
+            {
+                var city = gameState.Features.Cities.Single(c => c.Contains(new Vector2Int(x, y)));
+                var limits = city.BoundingBox;
+                Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
+            }
+            
             return cityIsFinished;
         }
 
@@ -658,22 +654,6 @@ namespace Carcassonne
                 }
             }
         }
-
-
-        //Funktion för undo
-        public void UndoAction()
-        {
-            if (gameState.phase == Phase.TileDown || gameState.phase == Phase.MeepleDrawn)
-            {
-                placedTiles.removeTile(tempX, tempY);
-                tileControllerScript.currentTile.GetComponentInChildren<MeshRenderer>().enabled = false;
-                gameState.phase = Phase.TileDrawn;
-
-                VertexItterator--;
-                GetComponent<PointScript>().RemoveVertex(VertexItterator);
-            }
-        }
-
 
         public void EndTurnRPC()
         {
