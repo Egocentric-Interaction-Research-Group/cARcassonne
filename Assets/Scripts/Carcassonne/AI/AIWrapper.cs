@@ -95,20 +95,26 @@ namespace Assets.Scripts.Carcassonne.AI
             //This needs a better solution for expansions.
             return 23;
         }
-        public int GetBoardMaxSize()
+        public int GetMaxBoardSize()
         {
             return gs.Tiles.Played.GetLength(0);
         }
+
+        public float[,] GetPlacedTiles()
+        {
+            return null;
+        }
+
         #endregion
 
         //The methods below are only use for printing out information, used for test purposes.
         #region "Real game specific"
-        public TileScript GetCurrentTile44()
+        public TileScript GetCurrentTile()
         {
             return gs.Tiles.Current;
         }
 
-        public MeepleScript GetCurrentMeeple333()
+        public MeepleScript GetCurrentMeeple()
         {
             return gs.Meeples.Current;
         }

@@ -266,8 +266,6 @@ namespace Carcassonne
             var script = tile.GetComponent<TileScript>();
             var isNotAlone = false;
 
-            //Debug.Log(tiles.Played[x - 1, z]);
-
             if (x > 0 && tiles.Played[x - 1, z] != null)
             {
                 isNotAlone = true;

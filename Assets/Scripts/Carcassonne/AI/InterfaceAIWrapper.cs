@@ -5,15 +5,16 @@ namespace Assets.Scripts.Carcassonne.AI
     interface InterfaceAIWrapper
     {
         //Further methods may be needed to handle the observation of placed tiles.
-        public Phase GetGamePhase();
 
-        public int GetMeeplesLeft();
+        public bool IsAITurn();
 
         public void PickUpTile();
 
         public int GetCurrentTileId();
-        
-        public int GetBoardMaxSize();
+
+        public Phase GetGamePhase();
+
+        public int GetMeeplesLeft();
 
         public void EndTurn();
 
@@ -27,6 +28,12 @@ namespace Assets.Scripts.Carcassonne.AI
 
         public void FreeCurrentMeeple();
 
-        public bool IsAITurn();
+        public int GetMaxMeeples();
+
+        public int GetMaxTileId();
+
+        public int GetMaxBoardSize();
+
+        public float[,] GetPlacedTiles();
     }
 }

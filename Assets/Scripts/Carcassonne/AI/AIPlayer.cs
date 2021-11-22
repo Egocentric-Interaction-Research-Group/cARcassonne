@@ -29,7 +29,6 @@ public class AIPlayer :  Agent
     public AIWrapper wrapper;
     private const int maxBranchSize = 6;
     public int x=85, z=85 , y=1, rot=0;
-    public float meepleX, meepleZ;
 
     //Monitoring
     public float realX, realY, realZ, realRot;
@@ -66,7 +65,7 @@ public class AIPlayer :  Agent
         base.Initialize();
         wrapper = new AIWrapper();
         wrapper.player = gameObject.GetComponentInParent<PlayerScript>();
-        boardMaxSize = wrapper.GetBoardMaxSize();
+        boardMaxSize = wrapper.GetMaxBoardSize();
         meeplesMax = wrapper.GetMaxMeeples();
         tileIdMax = wrapper.GetMaxTileId();
     }
@@ -209,6 +208,8 @@ public class AIPlayer :  Agent
         {
             if (meepleDirection != Direction.SELF) //Checks so that a choice has been made since meeple was drawn.
             {
+                float meepleX = 0;
+                float meepleZ = 0;
                 if (meepleDirection == Direction.NORTH || meepleDirection == Direction.SOUTH || meepleDirection == Direction.CENTER)
                 {
                     meepleX = 0.000f;
