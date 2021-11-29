@@ -1,4 +1,5 @@
 ﻿using Carcassonne.State;
+using static Carcassonne.PointScript;
 
 namespace Assets.Scripts.Carcassonne.AI
 {
@@ -24,7 +25,7 @@ namespace Assets.Scripts.Carcassonne.AI
 
         public void PlaceTile(int x, int z);
 
-        public void PlaceMeeple(float x, float z);
+        public void PlaceMeeple(Direction meepleDirection);
 
         public void FreeCurrentMeeple();
 

@@ -2,25 +2,28 @@
 using Carcassonne;
 using UnityEngine;
 using System;
+using static Carcassonne.PointScript;
 
 namespace Assets.Scripts.Carcassonne.AI
 {
     public class AIWrapper : InterfaceAIWrapper
     {
         public GameControllerScript gc;
-        public GameState gs; //Contains TileState, MeepleState, FeatureState, PlayerState and a GameLog.
+        public GameState state; //Contains TileState, MeepleState, FeatureState, PlayerState and a GameLog.
         public PlayerScript player;
+        public int totalTiles;
 
         #region "Interface methods"
         public AIWrapper()
         {
             gc = GameObject.Find("GameController").GetComponent<GameControllerScript>();
-            gs = gc.gameState;
+            state = gc.gameState;
+            totalTiles = state.Tiles.Remaining.Count;
         }
 
         public bool IsAITurn()
         {
-            return player.getID() == gs.Players.Current.getID();
+            return player.getID() == state.Players.Current.getID();
         }
 
         public void PickUpTile()
@@ -30,12 +33,12 @@ namespace Assets.Scripts.Carcassonne.AI
 
         public int GetCurrentTileId()
         {
-            return gs.Tiles.Current.id;
+            return state.Tiles.Current.id;
         }
 
         public Phase GetGamePhase()
         {
-            return gs.phase;
+            return state.phase;
         }
 
         public int GetMeeplesLeft()
@@ -66,23 +69,50 @@ namespace Assets.Scripts.Carcassonne.AI
             gc.ConfirmPlacementRPC();
         }
 
-        public void PlaceMeeple(float x, float z)
+        public void PlaceMeeple(Direction meepleDirection)
         {
-            gs.Meeples.Current.gameObject.transform.localPosition = gs.Tiles.Current.transform.localPosition + new Vector3(x, 0.86f, z);
+            float meepleX = 0;
+            float meepleZ = 0;
+            if (meepleDirection == Direction.NORTH || meepleDirection == Direction.SOUTH || meepleDirection == Direction.CENTER)
+            {
+                meepleX = 0.000f;
+            }
+            else if (meepleDirection == Direction.EAST)
+            {
+                meepleX = 0.011f;
+            }
+            else if (meepleDirection == Direction.WEST)
+            {
+                meepleX = -0.011f;
+            }
+
+            if (meepleDirection == Direction.WEST || meepleDirection == Direction.EAST || meepleDirection == Direction.CENTER)
+            {
+                meepleZ = 0.000f;
+            }
+            else if (meepleDirection == Direction.NORTH)
+            {
+                meepleZ = 0.011f;
+            }
+            else if (meepleDirection == Direction.SOUTH)
+            {
+                meepleZ = -0.011f;
+            }
+            state.Meeples.Current.gameObject.transform.localPosition = state.Tiles.Current.transform.localPosition + new Vector3(meepleX, 0.86f, meepleZ);
             gc.meepleControllerScript.CurrentMeepleRayCast();
             gc.meepleControllerScript.AimMeeple(gc);
             gc.SetMeepleSnapPos();
             gc.ConfirmPlacementRPC();
 
             //The two rows below are just a workaround to get meeples to stay on top of the table and not have a seemingly random Y coordinate.
-            gs.Meeples.Current.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
-            gs.Meeples.Current.gameObject.transform.localPosition = new Vector3(gs.Meeples.Current.gameObject.transform.localPosition.x, 0.86f, gs.Meeples.Current.gameObject.transform.localPosition.z);
+            state.Meeples.Current.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
+            state.Meeples.Current.gameObject.transform.localPosition = new Vector3(state.Meeples.Current.gameObject.transform.localPosition.x, 0.86f, state.Meeples.Current.gameObject.transform.localPosition.z);
 
         }
 
         public void FreeCurrentMeeple()
         {
-            gc.meepleControllerScript.FreeMeeple(gs.Meeples.Current.gameObject, gc);
+            gc.meepleControllerScript.FreeMeeple(state.Meeples.Current.gameObject, gc);
         }
 
         public int GetMaxMeeples()
@@ -97,12 +127,32 @@ namespace Assets.Scripts.Carcassonne.AI
         }
         public int GetMaxBoardSize()
         {
-            return gs.Tiles.Played.GetLength(0);
+            return state.Tiles.Played.GetLength(0);
         }
 
         public float[,] GetPlacedTiles()
         {
             return null;
+        }
+
+        public TileScript[,] GetTiles()
+        {
+            return state.Tiles.Played;
+        }
+
+        public int GetNumberOfPlacedTiles()
+        {
+            return totalTiles - state.Tiles.Remaining.Count;
+        }
+
+        public int GetTotalTiles()
+        {
+            return totalTiles;
+        }
+
+        public void Reset()
+        {
+            //Reset everything and start a new game. Should this even exist in real game?
         }
 
         #endregion
@@ -111,12 +161,12 @@ namespace Assets.Scripts.Carcassonne.AI
         #region "Real game specific"
         public TileScript GetCurrentTile()
         {
-            return gs.Tiles.Current;
+            return state.Tiles.Current;
         }
 
         public MeepleScript GetCurrentMeeple()
         {
-            return gs.Meeples.Current;
+            return state.Meeples.Current;
         }
         #endregion
     }
