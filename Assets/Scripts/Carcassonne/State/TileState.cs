@@ -34,7 +34,7 @@ namespace Carcassonne.State
             var l = CalculateLimits();
             int xmin = l.xMin, xmax = l.xMax, ymin = l.yMin, ymax = l.yMax;
             
-            Debug.Log($"Found Limits. Tiles found from ({xmin},{ymin}) to ({xmax},{ymax})");
+            //Debug.Log($"Found Limits. Tiles found from ({xmin},{ymin}) to ({xmax},{ymax})");
             
             // Create a new matrix that is 3 * (xmax-xmin) x 3 * (ymax - ymin);
             var GeographyMatrix = new TileScript.Geography?[3 * (xmax - xmin), 3 * (ymax - ymin)];

@@ -68,7 +68,8 @@ namespace Carcassonne
         private bool isPunEnabled;
         //float xOffset, zOffset, yOffset;
 
-        private int iTileAimX, iTileAimZ;
+        [HideInInspector]
+        public int iTileAimX, iTileAimZ;
 
         private int NewTileRotation;
 
@@ -559,8 +560,15 @@ namespace Carcassonne
             {
                 placedTiles.PlaceTile(x, z, tile);
 
-
-                tileControllerScript.currentTile.transform.localPosition = SnapPosition;
+                if (gameState.Players.Current.controlledByAI) //The snapposition cannot be used for the AI as it does not move the tile. It uses iTileAim instead.
+                {
+                    tileControllerScript.currentTile.transform.localPosition = new Vector3(stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f,
+                        tileControllerScript.currentTile.transform.localPosition.y, stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
+                }
+                else
+                {
+                    tileControllerScript.currentTile.transform.localPosition = SnapPosition;
+                }
             }
             else
             {
@@ -616,7 +624,10 @@ namespace Carcassonne
         [PunRPC]
         public void ConfirmPlacement()
         {
-            CurrentTileRaycastPosition();
+            if (currentPlayer == null || !currentPlayer.controlledByAI) //This should only happen for base tile and human players. AI does not move the tile.
+            {
+                CurrentTileRaycastPosition();
+            }
             if (gameState.phase == Phase.TileDrawn)
             {
                 if (placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
@@ -626,10 +637,12 @@ namespace Carcassonne
                     confirmButton.SetActive(false);
                     //rotateButton.SetActive(false);
                     gameState.phase = Phase.TileDown;
+
+                    Debug.Log("Tile placed in (" + iTileAimX + ", " + iTileAimZ + ")");
                 }
                 else if (!placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
                 {
-                    Debug.Log("Tile cant be placed");
+                    //Debug.Log("Tile cant be placed in (" + iTileAimX + ", " + iTileAimZ + ")");
                 }
             }
             else if (gameState.phase == Phase.MeepleDrawn)

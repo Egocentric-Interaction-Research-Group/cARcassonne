@@ -306,12 +306,12 @@ namespace Carcassonne
         //Kontrollerar att tilen får placeras på angivna koordinater
         public bool TilePlacementIsValid(GameObject tile, int x, int z)
         {
-            if (x < 0 || x > tiles.Played.GetLength(0) || z < 0 || z > tiles.Played.GetLength(1))
+            if (x < 0 || x >= tiles.Played.GetLength(0) || z < 0 || z >= tiles.Played.GetLength(1) || tiles.Played[x, z] != null)
             {
                 return false;
             }
-            var script = tile.GetComponent<TileScript>();
             var isNotAlone = false;
+            var script = tile.GetComponent<TileScript>();
 
             if (x > 0 && tiles.Played[x - 1, z] != null)
             {
@@ -337,7 +337,6 @@ namespace Carcassonne
                 if (script.North != tiles.Played[x, z + 1].South) return false;
             }
 
-            if (tiles.Played[x, z] != null) return false;
             return isNotAlone;
         }
     }
