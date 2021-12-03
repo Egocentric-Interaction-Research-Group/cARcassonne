@@ -7603,6 +7603,7 @@ MonoBehaviour:
   tileArray: []
   firstTile: {fileID: 161181942658901977}
   tiles: {fileID: 11400000, guid: 862d7903a58864b2b8c5a0c4ba131f7d, type: 2}
+  fixedTileOrder: []
 --- !u!114 &1798396970961904584
 MonoBehaviour:
   m_ObjectHideFlags: 0

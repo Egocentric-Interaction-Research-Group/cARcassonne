@@ -33,15 +33,30 @@ namespace Carcassonne
 
         public GameObject firstTile;
         
-        public TileState tiles;
+        [SerializeField] public TileState tiles;
+
+        /// <summary>
+        /// A field where you can add tiles in a fixed order for testing purposes.
+        /// </summary>
+        public List<GameObject> fixedTileOrder = new List<GameObject>();
         
         /// <summary>
         /// </summary>
         /// <returns></returns>
         public GameObject Pop()
         {
-            var rand = new Random();
-            var idx = rand.Next(tiles.Remaining.Count);
+            var idx = 0;
+            if (fixedTileOrder.Count != 0)
+            {
+                var tile = fixedTileOrder[0];
+                fixedTileOrder.RemoveAt(0);
+                idx = tiles.Remaining.IndexOf(tile.GetComponent<TileScript>());
+            }
+            else
+            {
+                var rand = new Random();
+                idx = rand.Next(tiles.Remaining.Count);
+            }
             
             photonView.RPC("PopRPC", RpcTarget.All, idx);
             
@@ -74,12 +89,10 @@ namespace Carcassonne
         /// </summary>
         public void PopulateTileArray()
         {
-            //randomIndex = new int[84];
             tileArray = new List<GameObject>(GameObject.FindGameObjectsWithTag("Tile"));
             // Filter out tiles not in set. TODO: This should reference the game rules and pick relevant sets.
             tileArray = tileArray.Where(t => t.GetComponent<TileScript>().tileSet == TileScript.TileSet.Base && t != firstTile ).ToList();
             
-            // This probably indicates that I've coded something incorrectly.
             tiles.Remaining.Clear(); // Remove all remaining tiles from old games so that they do not persist.
 
             foreach (var t in tileArray)

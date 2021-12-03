@@ -135,9 +135,9 @@ namespace Carcassonne
         {
             try
             {
-                if (gameControllerScript.PlacedTiles.getPlacedTiles(this.iMeepleAimX, this.iMeepleAimZ) == gameControllerScript.TileControllerScript.currentTile)
+                if (gameControllerScript.PlacedTiles.GetPlacedTile(this.iMeepleAimX, this.iMeepleAimZ) == gameControllerScript.TileControllerScript.currentTile)
                 {
-                    var tile = gameControllerScript.PlacedTiles.getPlacedTiles(this.iMeepleAimX, this.iMeepleAimZ);
+                    var tile = gameControllerScript.PlacedTiles.GetPlacedTile(this.iMeepleAimX, this.iMeepleAimZ);
                     var tileScript = tile.GetComponent<TileScript>();
 
                     var layerMask = 1 << 9;

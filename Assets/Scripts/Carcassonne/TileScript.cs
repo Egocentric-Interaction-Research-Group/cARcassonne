@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.PlayerLoop;
 
 namespace Carcassonne
@@ -324,6 +325,16 @@ namespace Carcassonne
             
             // TODO rotate matrix view as well
             UpdateMatrix();
+        }
+
+        public void Rotate(int position)
+        {
+            Debug.Assert(position < 4);
+
+            while (rotation != position)
+            {
+                Rotate();
+            }
         }
 
 

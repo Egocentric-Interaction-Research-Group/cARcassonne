@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.State;
@@ -70,7 +70,6 @@ namespace Carcassonne
 
         private int iTileAimX, iTileAimZ;
 
-        private int NewTileRotation;
 
         //public ErrorPlaneScript ErrorPlane;
 
@@ -266,7 +265,6 @@ namespace Carcassonne
             else
                 playerHuds[1].transform.GetChild(3).gameObject.GetComponent<TextMeshPro>().text = "Player 2    (You)";
 
-            NewTileRotation = 0;
             VertexItterator = 1;
 
             PlaceTile(tileControllerScript.currentTile, 85, 85, true);
@@ -346,9 +344,9 @@ namespace Carcassonne
         {
             visited[x, y] = true;
             if (direction == PointScript.Direction.NORTH)
-                if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().North == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().North == TileScript.Geography.City)
                 {
-                    if (placedTiles.getPlacedTiles(x, y + 1) != null)
+                    if (placedTiles.GetPlacedTile(x, y + 1) != null)
                     {
                         if (!visited[x, y + 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y + 1);
                     }
@@ -359,9 +357,9 @@ namespace Carcassonne
                 }
 
             if (direction == PointScript.Direction.EAST)
-                if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().East == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().East == TileScript.Geography.City)
                 {
-                    if (placedTiles.getPlacedTiles(x + 1, y) != null)
+                    if (placedTiles.GetPlacedTile(x + 1, y) != null)
                     {
                         if (!visited[x + 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x + 1, y);
                     }
@@ -372,9 +370,9 @@ namespace Carcassonne
                 }
 
             if (direction == PointScript.Direction.SOUTH)
-                if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().South == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().South == TileScript.Geography.City)
                 {
-                    if (placedTiles.getPlacedTiles(x, y - 1) != null)
+                    if (placedTiles.GetPlacedTile(x, y - 1) != null)
                     {
                         if (!visited[x, y - 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y - 1);
                     }
@@ -385,9 +383,9 @@ namespace Carcassonne
                 }
 
             if (direction == PointScript.Direction.WEST)
-                if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().West == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().West == TileScript.Geography.City)
                 {
-                    if (placedTiles.getPlacedTiles(x - 1, y) != null)
+                    if (placedTiles.GetPlacedTile(x - 1, y) != null)
                     {
                         if (!visited[x - 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x - 1, y);
                     }
@@ -398,31 +396,7 @@ namespace Carcassonne
                 }
         }
 
-        public bool TileCanBePlaced(TileScript script)
-        {
-            for (var i = 0; i < placedTiles.GetLength(0); i++)
-            for (var j = 0; j < placedTiles.GetLength(1); j++)
-                if (placedTiles.HasNeighbor(i, j) && placedTiles.getPlacedTiles(i, j) == null)
-                    for (var k = 0; k < 4; k++)
-                    {
-                        if (placedTiles.MatchGeographyOrNull(i - 1, j, PointScript.Direction.EAST, script.West))
-                            if (placedTiles.MatchGeographyOrNull(i + 1, j, PointScript.Direction.WEST, script.East))
-                                if (placedTiles.MatchGeographyOrNull(i, j - 1, PointScript.Direction.NORTH, script.South))
-                                    if (placedTiles.MatchGeographyOrNull(i, j + 1, PointScript.Direction.SOUTH,
-                                        script.North))
-                                    {
-                                        ResetTileRotation();
-                                        return true;
-                                    }
 
-                        RotateTile();
-                    }
-
-            ResetTileRotation();
-            return false;
-        }
-        
-        
         /// <summary>
         /// This tells you if a city is NOT finished due to there being an empty square on the city side of a tile.
         /// It does not return anything, just sets cityIsFinished as false.
@@ -434,12 +408,12 @@ namespace Carcassonne
             visited[x, y] = true;
 
 
-            if (placedTiles.getPlacedTiles(x, y) != null) // If there is a tile here
+            if (placedTiles.GetPlacedTile(x, y) != null) // If there is a tile here
             {
-                if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().North == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().North == TileScript.Geography.City)
                     if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
                     {
-                        if (placedTiles.getPlacedTiles(x, y + 1) != null)
+                        if (placedTiles.GetPlacedTile(x, y + 1) != null)
 
                         {
                             if (!visited[x, y + 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y + 1);
@@ -450,10 +424,10 @@ namespace Carcassonne
                         }
                     }
 
-                if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().East == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().East == TileScript.Geography.City)
                     if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
                     {
-                        if (placedTiles.getPlacedTiles(x + 1, y) != null)
+                        if (placedTiles.GetPlacedTile(x + 1, y) != null)
                         {
                             if (!visited[x + 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x + 1, y);
                         }
@@ -463,10 +437,10 @@ namespace Carcassonne
                         }
                     }
 
-                if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().South == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().South == TileScript.Geography.City)
                     if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
                     {
-                        if (placedTiles.getPlacedTiles(x, y - 1) != null)
+                        if (placedTiles.GetPlacedTile(x, y - 1) != null)
                         {
                             if (!visited[x, y - 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y - 1);
                         }
@@ -476,10 +450,10 @@ namespace Carcassonne
                         }
                     }
 
-                if (placedTiles.getPlacedTiles(x, y).GetComponent<TileScript>().West == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().West == TileScript.Geography.City)
                     if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
                     {
-                        if (placedTiles.getPlacedTiles(x - 1, y) != null)
+                        if (placedTiles.GetPlacedTile(x - 1, y) != null)
                         {
                             if (!visited[x - 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x - 1, y);
                         }
@@ -588,9 +562,10 @@ namespace Carcassonne
                 stackScript.Pop();
                 UpdateDecisionButtons(true, true, tileControllerScript.currentTile);
                 TileControllerScript.ActivateCurrentTile(this);
-                if (!TileCanBePlaced(gameState.Tiles.Current))
+                //TODO This is incorrect.
+                if (!PlacedTiles.TileCanBePlaced(gameState.Tiles.Current, this))
                 {
-                    Debug.Log("Tile not possible to place: discarding and drawing a new one. " + "Tile id: " + tileControllerScript.currentTile.GetComponent<TileScript>().id);
+                    Debug.Log($"Tile (ID: {gameState.Tiles.Current.id}) not possible to place: discarding and drawing a new one.");
                     Destroy(tileControllerScript.currentTile);
                     PickupTile();
                 }
@@ -673,7 +648,6 @@ namespace Carcassonne
             if (gameState.phase == Phase.TileDown || gameState.phase == Phase.MeepleDown)
             {
                 calculatePoints(true, false);
-                NewTileRotation = 0;
                 if (stackScript.isEmpty())
                 {
                     GameOver();
@@ -762,18 +736,18 @@ namespace Carcassonne
                     var meeple = p.meeples[j];
                     if (!meeple.free)
                     {
-                        var tileID = placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().id;
+                        var tileID = placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().id;
                         var finalscore = 0;
                         if (meeple.geography == TileScript.Geography.City)
                         {
                             //CITY DIRECTION
-                            if (placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                            if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
                                 TileScript.Geography.Stream ||
-                                placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                                placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
                                 TileScript.Geography.Grass ||
-                                placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                                placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
                                 TileScript.Geography.Road ||
-                                placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                                placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
                                 TileScript.Geography.Village) // If it's a Stream, Grass, Road, Village
                             {
                                 if (CityIsFinishedDirection(meeple.x, meeple.z, meeple.direction))
@@ -782,7 +756,7 @@ namespace Carcassonne
 
                                     finalscore = GetComponent<PointScript>()
                                         .startDfsDirection(
-                                            placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>()
+                                            placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>()
                                                 .vIndex, meeple.geography, meeple.direction, GameEnd);
                                 }
 
@@ -796,7 +770,7 @@ namespace Carcassonne
                                     Debug.Log("GAME END");
                                     finalscore = GetComponent<PointScript>()
                                         .startDfsDirection(
-                                            placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>()
+                                            placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>()
                                                 .vIndex, meeple.geography, meeple.direction, GameEnd);
                                 }
                             }
@@ -806,14 +780,14 @@ namespace Carcassonne
                                 if (CityIsNotFinishedIfEmptyTileBesideCity(meeple.x, meeple.z))
                                     finalscore = GetComponent<PointScript>()
                                         .startDfs(
-                                            placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>()
+                                            placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>()
                                                 .vIndex, meeple.geography, GameEnd);
                                 if (GameEnd)
                                 {
                                     Debug.Log("GAME END I ELSE");
                                     finalscore = GetComponent<PointScript>()
                                         .startDfsDirection(
-                                            placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>()
+                                            placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>()
                                                 .vIndex, meeple.geography, meeple.direction, GameEnd);
                                 }
                             }
@@ -821,13 +795,13 @@ namespace Carcassonne
                         else
                         {
                             ///ROAD
-                            if (placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                            if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
                                 TileScript.Geography.Village ||
-                                placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                                placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
                                 TileScript.Geography.Grass)
                             {
                                 finalscore = GetComponent<PointScript>().startDfsDirection(placedTiles
-                                    .getPlacedTiles(meeple.x, meeple.z)
+                                    .GetPlacedTile(meeple.x, meeple.z)
                                     .GetComponent<TileScript>().vIndex, meeple.geography, meeple.direction, GameEnd);
                                 if (GameEnd)
                                     finalscore--;
@@ -836,14 +810,14 @@ namespace Carcassonne
                             {
                                 finalscore = GetComponent<PointScript>()
                                     .startDfs(
-                                        placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().vIndex,
+                                        placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().vIndex,
                                         meeple.geography, GameEnd);
                                 if (GameEnd)
                                     finalscore--;
                             }
 
                             //CLOISTER
-                            if (placedTiles.getPlacedTiles(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                            if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
                                 TileScript.Geography.Cloister &&
                                 meeple.direction == PointScript.Direction.CENTER)
                                 finalscore = placedTiles.CheckSurroundedCloister(meeple.x, meeple.z, GameEnd);
@@ -881,20 +855,25 @@ namespace Carcassonne
         [PunRPC]
         public void RotateTile()
         {
-            if (gameState.phase == Phase.TileDrawn)
+            //TODO Why are we checking the phase anyways? I added NewTurn because this was causing the check for valid new piece to fail.
+            if (gameState.phase == Phase.TileDrawn || gameState.phase == Phase.NewTurn)
             {
-                NewTileRotation++;
-                if (NewTileRotation > 3) NewTileRotation = 0;
                 gameState.Tiles.Current.Rotate();
 
                 if (pcRotate) tileControllerScript.currentTile.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
             }
+            else
+            {
+                Debug.LogWarning($"Tile not rotated because call came in {gameState.phase} and rotation is only valid during TileDrawn and NewTurn.");
+            }
         }
-
+        
+        /// <summary>
+        /// Reset Tile Rotation. THIS ONLY DEALS WITH THE STATE. IT DOES NOT ROTATE THE TILE IN THE VIEW.
+        /// </summary>
         public void ResetTileRotation()
         {
-            NewTileRotation = 0;
-            gameState.Tiles.Current.rotation = 0;
+            gameState.Tiles.Current.Rotate(0);
         }
 
         private void GameOver()
