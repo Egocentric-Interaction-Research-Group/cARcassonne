@@ -27,7 +27,7 @@ namespace Carcassonne
         // Add Meeple Down state functionality
 
         public bool gravity;
-        public bool startGame, pcRotate, isManipulating;
+        public bool startGame;
 
         public Material[] playerMaterials;
         public Material[] buttonMaterials;
@@ -43,7 +43,7 @@ namespace Carcassonne
 
         [HideInInspector] public GameObject playerHUD;
 
-        public GameObject confirmButton, rotateButton;
+        public GameObject confirmButton;//, rotateButton;
         public Sprite crossIcon, checkIcon;
 
         public RectTransform mPanelGameOver;
@@ -103,13 +103,6 @@ namespace Carcassonne
             set => placedTiles = value;
             get => placedTiles;
         }
-
-        public TileControllerScript TileControllerScript
-        {
-            set => tileControllerScript = value;
-            get => tileControllerScript;
-        }
-
         public PointScript.Direction Direction;
 
         public Vector3 SnapPosition;
@@ -118,24 +111,11 @@ namespace Carcassonne
 
         public string ErrorOutput { set; get; } = "";
 
-        //FIXME: I don't understand what the point of these two properties is.
-        public TileControllerScript TileControllerScript1
-        {
-            set => tileControllerScript = value;
-            get => tileControllerScript;
-        }
-
-        public TileControllerScript TileControllerScript2
-        {
-            set { tileControllerScript = value; }
-            get { return tileControllerScript; }
-        }
-
         [SerializeField]
         internal MeepleControllerScript meepleControllerScript;
     
         [SerializeField]
-        internal TileControllerScript tileControllerScript;
+        public TileControllerScript tileControllerScript;
 
         private void Start()
         {
@@ -167,11 +147,7 @@ namespace Carcassonne
 
             if (Input.GetKeyDown(KeyCode.P)) EndTurn();
             if (Input.GetKeyDown(KeyCode.R) && PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-                if (!isManipulating)
-                {
-                    pcRotate = true;
-                    RotateTileRPC();
-                }
+                    tileControllerScript.RotateTileRPC();
 
             if (Input.GetKeyDown(KeyCode.J)) meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject, this); //FIXME: Throws error when no meeple assigned!
             if (Input.GetKeyDown(KeyCode.B)) GameOver(); //FIXME Doesn't work/no effect
@@ -560,9 +536,8 @@ namespace Carcassonne
             if (gameState.phase == Phase.NewTurn)
             {
                 stackScript.Pop();
-                UpdateDecisionButtons(true, true, tileControllerScript.currentTile);
-                TileControllerScript.ActivateCurrentTile(this);
-                //TODO This is incorrect.
+                UpdateDecisionButtons(true, tileControllerScript.currentTile);
+                tileControllerScript.ActivateCurrentTile();
                 if (!PlacedTiles.TileCanBePlaced(gameState.Tiles.Current, this))
                 {
                     Debug.Log($"Tile (ID: {gameState.Tiles.Current.id}) not possible to place: discarding and drawing a new one.");
@@ -571,7 +546,7 @@ namespace Carcassonne
                 }
                 else
                 {
-                    ResetTileRotation();
+                    tileControllerScript.ResetTileRotation();
                     gameState.phase = Phase.TileDrawn;
                 }
             }
@@ -599,7 +574,6 @@ namespace Carcassonne
                     PlaceTile(tileControllerScript.currentTile, iTileAimX, iTileAimZ, false);
 
                     confirmButton.SetActive(false);
-                    //rotateButton.SetActive(false);
                     gameState.phase = Phase.TileDown;
                 }
                 else if (!placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
@@ -744,7 +718,7 @@ namespace Carcassonne
                             if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
                                 TileScript.Geography.Stream ||
                                 placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                TileScript.Geography.Grass ||
+                                TileScript.Geography.Field ||
                                 placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
                                 TileScript.Geography.Road ||
                                 placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
@@ -798,7 +772,7 @@ namespace Carcassonne
                             if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
                                 TileScript.Geography.Village ||
                                 placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                TileScript.Geography.Grass)
+                                TileScript.Geography.Field)
                             {
                                 finalscore = GetComponent<PointScript>().startDfsDirection(placedTiles
                                     .GetPlacedTile(meeple.x, meeple.z)
@@ -845,36 +819,6 @@ namespace Carcassonne
             table.GetComponent<ObjectManipulator>().enabled ^= true;
         }
 
-        public void RotateTileRPC()
-        {
-            if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-                photonView.RPC("RotateTile", RpcTarget.All);
-        }
-
-
-        [PunRPC]
-        public void RotateTile()
-        {
-            //TODO Why are we checking the phase anyways? I added NewTurn because this was causing the check for valid new piece to fail.
-            if (gameState.phase == Phase.TileDrawn || gameState.phase == Phase.NewTurn)
-            {
-                gameState.Tiles.Current.Rotate();
-
-                if (pcRotate) tileControllerScript.currentTile.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
-            }
-            else
-            {
-                Debug.LogWarning($"Tile not rotated because call came in {gameState.phase} and rotation is only valid during TileDrawn and NewTurn.");
-            }
-        }
-        
-        /// <summary>
-        /// Reset Tile Rotation. THIS ONLY DEALS WITH THE STATE. IT DOES NOT ROTATE THE TILE IN THE VIEW.
-        /// </summary>
-        public void ResetTileRotation()
-        {
-            gameState.Tiles.Current.Rotate(0);
-        }
 
         private void GameOver()
         {
@@ -912,71 +856,10 @@ namespace Carcassonne
         }
 
 
-        public void RotateDegreesRPC()
-        {
-            photonView.RPC("RotateDegrees", RpcTarget.All);
-        }
-
-        public void SaveEulersOnManipRPC()
-        {
-            photonView.RPC("SaveEulersOnManip", RpcTarget.All);
-        }
-
-        [PunRPC]
-        public void RotateDegrees()
-        {
-            if (!pcRotate)
-            {
-                var startRotationValue = tileControllerScript.currentTileEulersOnManip.y;
-                var onRealeaseRotationValue = tileControllerScript.currentTile.transform.localEulerAngles.y;
-                float endRotationValue = 0;
-
-                if (onRealeaseRotationValue <= 45 || onRealeaseRotationValue >= 315)
-                    tileControllerScript.currentTile.transform.localEulerAngles = new Vector3(tileControllerScript.currentTile.transform.localEulerAngles.x, 0, tileControllerScript.currentTile.transform.localEulerAngles.z);
-                else if (onRealeaseRotationValue <= 135 && onRealeaseRotationValue >= 45)
-                    tileControllerScript.currentTile.transform.localEulerAngles = new Vector3(tileControllerScript.currentTile.transform.localEulerAngles.x, 90, tileControllerScript.currentTile.transform.localEulerAngles.z);
-                else if (onRealeaseRotationValue <= 225 && onRealeaseRotationValue >= 135)
-                    tileControllerScript.currentTile.transform.localEulerAngles = new Vector3(tileControllerScript.currentTile.transform.localEulerAngles.x, 180, tileControllerScript.currentTile.transform.localEulerAngles.z);
-                else if (onRealeaseRotationValue <= 315 && onRealeaseRotationValue >= 225)
-                    tileControllerScript.currentTile.transform.localEulerAngles = new Vector3(tileControllerScript.currentTile.transform.localEulerAngles.x, 270, tileControllerScript.currentTile.transform.localEulerAngles.z);
-
-                if (startRotationValue == 270 && onRealeaseRotationValue == 0)
-                    endRotationValue = 1;
-                else
-                    endRotationValue = (onRealeaseRotationValue - startRotationValue) / 90;
-
-                endRotationValue = (float) Math.Abs(Math.Round(endRotationValue, 0));
-
-                Debug.Log("DET HÄR START: " + startRotationValue + " MINUS DEN HÄR CURRENT EURLERS " + tileControllerScript.currentTile.transform.localEulerAngles.y + " DELAS PÅ 90! ÄR LIKA MED " + endRotationValue);
-
-                if (startRotationValue > (int) onRealeaseRotationValue && endRotationValue == 1 &&
-                    onRealeaseRotationValue != 0)
-                {
-                    endRotationValue = 3;
-                    Debug.Log("I ifsatsena " + endRotationValue);
-                }
-
-                for (var i = 0; i < Math.Abs(endRotationValue); i++) RotateTileRPC();
-            }
-
-            pcRotate = false;
-            isManipulating = false;
-        }
-
-        [PunRPC]
-        public void SaveEulersOnManip()
-        {
-            tileControllerScript.currentTileEulersOnManip = tileControllerScript.currentTile.transform.localEulerAngles;
-            Debug.Log(tileControllerScript.currentTileEulersOnManip);
-            isManipulating = true;
-        }
-
-
-        public void UpdateDecisionButtons(bool confirm, bool rotate, GameObject tileOrMeeple)
+        public void UpdateDecisionButtons(bool confirm, GameObject tileOrMeeple)
         {
             if (currentPlayer.photonUser.GetComponent<PhotonView>().IsMine)
                 confirmButton.SetActive(confirm);
-            //rotateButton.SetActive(rotate);
             decisionButtons.GetComponent<Anchor_Script>().anchor = tileOrMeeple.transform.Find("North").gameObject;
         }
 
@@ -1028,6 +911,16 @@ namespace Carcassonne
 
         public void ChangeButtonMaterialOnRelease()
         {
+        }
+
+        public bool CurrentPlayerIsLocal
+        {
+            //TODO This probably should not be hardcoded. See if there is a better way to do this!
+            get
+            {
+                return PhotonNetwork.LocalPlayer.NickName ==
+                       (currentPlayer.getID() + 1).ToString();
+            }
         }
     }
 }

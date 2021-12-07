@@ -59,6 +59,8 @@ namespace Carcassonne
             }
             
             photonView.RPC("PopRPC", RpcTarget.All, idx);
+            // photonView.RPC("PopRPC", RpcTarget.Others, idx);
+            // PopRPC(idx);
             
             return tiles.Current.gameObject;
         }

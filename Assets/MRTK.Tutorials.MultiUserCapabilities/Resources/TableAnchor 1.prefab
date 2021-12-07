@@ -7544,8 +7544,6 @@ MonoBehaviour:
   gameState: {fileID: 11400000, guid: 484eca7d253584fb2bc2132eea5905f4, type: 2}
   gravity: 0
   startGame: 0
-  pcRotate: 0
-  isManipulating: 0
   playerMaterials:
   - {fileID: 2100000, guid: 6f9b113b96bd1c14b9715001ccb273cf, type: 2}
   - {fileID: 2100000, guid: 0496ef0168668b84a83a57e6db41954a, type: 2}
@@ -7575,9 +7573,8 @@ MonoBehaviour:
   table: {fileID: 0}
   playerHUD: {fileID: 1798396970156769198}
   confirmButton: {fileID: 2418039551976767261}
-  rotateButton: {fileID: 1831334870424103552}
-  crossIcon: {fileID: 21300000, guid: 8d0274d8bc6a17844a08b493920d9491, type: 3}
-  checkIcon: {fileID: 21300000, guid: b5066c514f7f02f4292cf842f3c8b75f, type: 3}
+  crossIcon: {fileID: 0}
+  checkIcon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   mPanelGameOver: {fileID: 0}
   stackScript: {fileID: 0}
   Direction: 0
@@ -7838,7 +7835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46a87ef1a4f54958bbeef17c9dbdfcef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTileEulersOnManip: {x: 0, y: 0, z: 0}
+  gameControllerScript: {fileID: 1798396970961904583}
   drawTileEffect: {fileID: 697020721478301335}
   tiles: {fileID: 11400000, guid: 862d7903a58864b2b8c5a0c4ba131f7d, type: 2}
   drawTile: {fileID: 5885163000918175278}
@@ -27175,7 +27172,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 1772661096503558811, guid: c50a580230afe4b438f4a9ce9229135b,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -27188,8 +27185,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1772661096503558811, guid: c50a580230afe4b438f4a9ce9229135b,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772661096503558811, guid: c50a580230afe4b438f4a9ce9229135b,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3859242173069354078, guid: c50a580230afe4b438f4a9ce9229135b,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4934399175823161970, guid: c50a580230afe4b438f4a9ce9229135b,
         type: 3}
@@ -27685,7 +27692,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 2682593833897869993, guid: de7ed5c946c4ea5479d7f913821185d5,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -27698,8 +27705,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2682593833897869993, guid: de7ed5c946c4ea5479d7f913821185d5,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2682593833897869993, guid: de7ed5c946c4ea5479d7f913821185d5,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5571216975436385522, guid: de7ed5c946c4ea5479d7f913821185d5,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8344102368965146534, guid: de7ed5c946c4ea5479d7f913821185d5,
         type: 3}
@@ -27960,7 +27977,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 886994189056317171, guid: 97af5ae76ebd5da4f85465c2a32e1a39,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -27973,8 +27990,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 886994189056317171, guid: 97af5ae76ebd5da4f85465c2a32e1a39,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 886994189056317171, guid: 97af5ae76ebd5da4f85465c2a32e1a39,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1449771362355594809, guid: 97af5ae76ebd5da4f85465c2a32e1a39,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2227808389094091811, guid: 97af5ae76ebd5da4f85465c2a32e1a39,
         type: 3}
@@ -28051,6 +28078,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 2766293659157379371, guid: 98cc17cb79f6bd046997cf7e10a67020,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3528672190663250315, guid: 98cc17cb79f6bd046997cf7e10a67020,
         type: 3}
       propertyPath: m_Name
@@ -28130,7 +28162,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 9130346385516709931, guid: 98cc17cb79f6bd046997cf7e10a67020,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -28140,6 +28172,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 9130346385516709931, guid: 98cc17cb79f6bd046997cf7e10a67020,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9130346385516709931, guid: 98cc17cb79f6bd046997cf7e10a67020,
         type: 3}
@@ -28456,6 +28493,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2104892734990071356, guid: 7cf247d228fe3334b989dce5ae209846,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2926275455052545878, guid: 7cf247d228fe3334b989dce5ae209846,
         type: 3}
       propertyPath: m_Name
@@ -28480,7 +28522,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3194755981456055894, guid: 7cf247d228fe3334b989dce5ae209846,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -28490,6 +28532,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 3194755981456055894, guid: 7cf247d228fe3334b989dce5ae209846,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3194755981456055894, guid: 7cf247d228fe3334b989dce5ae209846,
         type: 3}
@@ -28676,6 +28723,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 1041591156846195016, guid: 041fc6fc84684f44e9b7e74b40ec08a4,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3033839340723250868, guid: 041fc6fc84684f44e9b7e74b40ec08a4,
         type: 3}
       propertyPath: m_RootOrder
@@ -28750,7 +28802,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3091209215164357961, guid: 041fc6fc84684f44e9b7e74b40ec08a4,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -28760,6 +28812,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 3091209215164357961, guid: 041fc6fc84684f44e9b7e74b40ec08a4,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3091209215164357961, guid: 041fc6fc84684f44e9b7e74b40ec08a4,
         type: 3}
@@ -29026,6 +29083,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 350221462392235471, guid: 0d561ce6c741ffb40b93166e1702be43,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2343105095605880875, guid: 0d561ce6c741ffb40b93166e1702be43,
         type: 3}
       propertyPath: m_Name
@@ -29050,7 +29112,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3342575140213789203, guid: 0d561ce6c741ffb40b93166e1702be43,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -29060,6 +29122,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 3342575140213789203, guid: 0d561ce6c741ffb40b93166e1702be43,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3342575140213789203, guid: 0d561ce6c741ffb40b93166e1702be43,
         type: 3}
@@ -29545,7 +29612,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 303793022931033818, guid: a8c9800b686377e4495c884953e7cfcb,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -29558,6 +29625,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 303793022931033818, guid: a8c9800b686377e4495c884953e7cfcb,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 303793022931033818, guid: a8c9800b686377e4495c884953e7cfcb,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -29565,6 +29637,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TileTemplate(Clone) 39
+      objectReference: {fileID: 0}
+    - target: {fileID: 3725293953316539731, guid: a8c9800b686377e4495c884953e7cfcb,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7417266884600654075, guid: a8c9800b686377e4495c884953e7cfcb,
         type: 3}
@@ -30426,6 +30503,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8518393893424334921}
     m_Modifications:
+    - target: {fileID: 4191352798463333808, guid: d92a7fab9d1d69b469aeb98e57ed9c21,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4618732184463955208, guid: d92a7fab9d1d69b469aeb98e57ed9c21,
         type: 3}
       propertyPath: m_RootOrder
@@ -30510,7 +30592,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 9200080897985484366, guid: d92a7fab9d1d69b469aeb98e57ed9c21,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -30520,6 +30602,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200080897985484366, guid: d92a7fab9d1d69b469aeb98e57ed9c21,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9200080897985484366, guid: d92a7fab9d1d69b469aeb98e57ed9c21,
         type: 3}
@@ -30831,6 +30918,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3882786861073924156, guid: aec95aa3dc2f9a547b6fb15935e8d69b,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6749313661299780780, guid: aec95aa3dc2f9a547b6fb15935e8d69b,
         type: 3}
       propertyPath: constraintsManager
@@ -30850,7 +30942,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 6749313661299780780, guid: aec95aa3dc2f9a547b6fb15935e8d69b,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -30860,6 +30952,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749313661299780780, guid: aec95aa3dc2f9a547b6fb15935e8d69b,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6749313661299780780, guid: aec95aa3dc2f9a547b6fb15935e8d69b,
         type: 3}
@@ -31360,7 +31457,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 7132313217344691594, guid: 537683d905b767a4e91bbdea94db23ea,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -31373,8 +31470,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7132313217344691594, guid: 537683d905b767a4e91bbdea94db23ea,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7132313217344691594, guid: 537683d905b767a4e91bbdea94db23ea,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7190928555866343014, guid: 537683d905b767a4e91bbdea94db23ea,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 537683d905b767a4e91bbdea94db23ea, type: 3}
@@ -31691,11 +31798,51 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 4303327554133645308, guid: 361cf4bcbb0717845a3e45b4437ba00d,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7047031871556726997, guid: 361cf4bcbb0717845a3e45b4437ba00d,
+        type: 3}
+      propertyPath: constraintsManager
+      value: 
+      objectReference: {fileID: 8410631113342907708}
+    - target: {fileID: 7047031871556726997, guid: 361cf4bcbb0717845a3e45b4437ba00d,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7047031871556726997, guid: 361cf4bcbb0717845a3e45b4437ba00d,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7047031871556726997, guid: 361cf4bcbb0717845a3e45b4437ba00d,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
+    - target: {fileID: 7047031871556726997, guid: 361cf4bcbb0717845a3e45b4437ba00d,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7047031871556726997, guid: 361cf4bcbb0717845a3e45b4437ba00d,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 7047031871556726997, guid: 361cf4bcbb0717845a3e45b4437ba00d,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7047031871556726997, guid: 361cf4bcbb0717845a3e45b4437ba00d,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 361cf4bcbb0717845a3e45b4437ba00d, type: 3}
 --- !u!4 &1412806651897775352 stripped
@@ -31704,6 +31851,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1301937324926886664}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8410631113342907708 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7397718152356828724, guid: 361cf4bcbb0717845a3e45b4437ba00d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1301937324926886664}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1312614872560708063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31715,6 +31874,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TileTemplate(Clone) 83
+      objectReference: {fileID: 0}
+    - target: {fileID: 5014133575347134038, guid: 736826e7270d1fa43b545d3e2d76fc9b,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5259114247518096677, guid: 736826e7270d1fa43b545d3e2d76fc9b,
         type: 3}
@@ -31735,7 +31899,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5259114247518096677, guid: 736826e7270d1fa43b545d3e2d76fc9b,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -31745,6 +31909,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 5259114247518096677, guid: 736826e7270d1fa43b545d3e2d76fc9b,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5259114247518096677, guid: 736826e7270d1fa43b545d3e2d76fc9b,
         type: 3}
@@ -31886,6 +32055,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 729838061749107611, guid: a98fbb74ed3e1d1459e049dbdee54c68,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5147623572854995956, guid: a98fbb74ed3e1d1459e049dbdee54c68,
         type: 3}
       propertyPath: m_Name
@@ -31910,7 +32084,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5747248518650998449, guid: a98fbb74ed3e1d1459e049dbdee54c68,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -31920,6 +32094,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747248518650998449, guid: a98fbb74ed3e1d1459e049dbdee54c68,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5747248518650998449, guid: a98fbb74ed3e1d1459e049dbdee54c68,
         type: 3}
@@ -32485,7 +32664,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 4753653794566980592, guid: 688f0bd2e83c9d54bb380beb2b128450,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -32498,6 +32677,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4753653794566980592, guid: 688f0bd2e83c9d54bb380beb2b128450,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753653794566980592, guid: 688f0bd2e83c9d54bb380beb2b128450,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -32505,6 +32689,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TileTemplate(Clone) 67
+      objectReference: {fileID: 0}
+    - target: {fileID: 8656426175480883465, guid: 688f0bd2e83c9d54bb380beb2b128450,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 688f0bd2e83c9d54bb380beb2b128450, type: 3}
@@ -32526,6 +32715,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 1292090982313239308, guid: 07b98e04e10fb8b408278d068e40fb16,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3471397933333769953, guid: 07b98e04e10fb8b408278d068e40fb16,
         type: 3}
       propertyPath: m_RootOrder
@@ -32600,7 +32794,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 6749606639565444717, guid: 07b98e04e10fb8b408278d068e40fb16,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -32610,6 +32804,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749606639565444717, guid: 07b98e04e10fb8b408278d068e40fb16,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6749606639565444717, guid: 07b98e04e10fb8b408278d068e40fb16,
         type: 3}
@@ -33123,12 +33322,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46998f644fc46024b9e5f496bb66bfd9, type: 3}
---- !u!1 &2418039551976767444 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3894108795941771270, guid: 46998f644fc46024b9e5f496bb66bfd9,
-    type: 3}
-  m_PrefabInstance: {fileID: 1694546946187732946}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2418039551976766362 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3894108795941772360, guid: 46998f644fc46024b9e5f496bb66bfd9,
@@ -33138,6 +33331,12 @@ Transform:
 --- !u!1 &2418039551976767261 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3894108795941771471, guid: 46998f644fc46024b9e5f496bb66bfd9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1694546946187732946}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2418039551976767444 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3894108795941771270, guid: 46998f644fc46024b9e5f496bb66bfd9,
     type: 3}
   m_PrefabInstance: {fileID: 1694546946187732946}
   m_PrefabAsset: {fileID: 0}
@@ -34547,12 +34746,6 @@ PrefabInstance:
     - {fileID: 1798396970721014928, guid: b5d52ace882c33a4d8df0aff0226f217, type: 3}
     - {fileID: 1798396970721014931, guid: b5d52ace882c33a4d8df0aff0226f217, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b5d52ace882c33a4d8df0aff0226f217, type: 3}
---- !u!1 &1831334870424103552 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 116818543653014756, guid: b5d52ace882c33a4d8df0aff0226f217,
-    type: 3}
-  m_PrefabInstance: {fileID: 1798396970066765412}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1831334870977227873 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 116818544172583429, guid: b5d52ace882c33a4d8df0aff0226f217,
@@ -36121,7 +36314,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 1283256813425591200, guid: efce5c27fd99148428d2e227ed3f9dcb,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -36131,6 +36324,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 1283256813425591200, guid: efce5c27fd99148428d2e227ed3f9dcb,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1283256813425591200, guid: efce5c27fd99148428d2e227ed3f9dcb,
         type: 3}
@@ -36197,6 +36395,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 6853590845923186575, guid: efce5c27fd99148428d2e227ed3f9dcb,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efce5c27fd99148428d2e227ed3f9dcb, type: 3}
 --- !u!4 &278751294093921433 stripped
@@ -36447,6 +36650,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8518393893424334921}
     m_Modifications:
+    - target: {fileID: 2725513923325939619, guid: a7b29d68aeb56904d90aeb5b2f3482c1,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3157485731881075683, guid: a7b29d68aeb56904d90aeb5b2f3482c1,
         type: 3}
       propertyPath: constraintsManager
@@ -36466,7 +36674,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3157485731881075683, guid: a7b29d68aeb56904d90aeb5b2f3482c1,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -36476,6 +36684,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157485731881075683, guid: a7b29d68aeb56904d90aeb5b2f3482c1,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3157485731881075683, guid: a7b29d68aeb56904d90aeb5b2f3482c1,
         type: 3}
@@ -36702,6 +36915,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1826648064218581483, guid: 5731ab3dcd33e494c82cafc8030705ee,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2221200322263331613, guid: 5731ab3dcd33e494c82cafc8030705ee,
         type: 3}
       propertyPath: m_Name
@@ -36726,7 +36944,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 2473746687011382196, guid: 5731ab3dcd33e494c82cafc8030705ee,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -36736,6 +36954,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473746687011382196, guid: 5731ab3dcd33e494c82cafc8030705ee,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2473746687011382196, guid: 5731ab3dcd33e494c82cafc8030705ee,
         type: 3}
@@ -36822,6 +37045,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 6334114696876998477, guid: fa0424d159571e94e8450b54cd31498b,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8297609832315257797, guid: fa0424d159571e94e8450b54cd31498b,
         type: 3}
       propertyPath: constraintsManager
@@ -36841,7 +37069,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 8297609832315257797, guid: fa0424d159571e94e8450b54cd31498b,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -36851,6 +37079,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 8297609832315257797, guid: fa0424d159571e94e8450b54cd31498b,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8297609832315257797, guid: fa0424d159571e94e8450b54cd31498b,
         type: 3}
@@ -37441,7 +37674,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 498459669518341036, guid: d88f8b27ca92648448b001134d856434,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -37451,6 +37684,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 498459669518341036, guid: d88f8b27ca92648448b001134d856434,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 498459669518341036, guid: d88f8b27ca92648448b001134d856434,
         type: 3}
@@ -37522,6 +37760,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4379322674307995444, guid: d88f8b27ca92648448b001134d856434,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d88f8b27ca92648448b001134d856434, type: 3}
 --- !u!4 &3237942427855540546 stripped
@@ -37561,7 +37804,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 757043670298865517, guid: f176693eb5e9b184f894a800f14e95e1,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -37571,6 +37814,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 757043670298865517, guid: f176693eb5e9b184f894a800f14e95e1,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 757043670298865517, guid: f176693eb5e9b184f894a800f14e95e1,
         type: 3}
@@ -37631,6 +37879,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389828897567136512, guid: f176693eb5e9b184f894a800f14e95e1,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8865214842986076961, guid: f176693eb5e9b184f894a800f14e95e1,
         type: 3}
@@ -39132,6 +39385,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 447035542514766218, guid: 764679331c07b0f45a6b13f0cfb2e16f,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 549836218003166866, guid: 764679331c07b0f45a6b13f0cfb2e16f,
         type: 3}
       propertyPath: m_RootOrder
@@ -39211,7 +39469,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5247975319704370238, guid: 764679331c07b0f45a6b13f0cfb2e16f,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -39221,6 +39479,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 5247975319704370238, guid: 764679331c07b0f45a6b13f0cfb2e16f,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5247975319704370238, guid: 764679331c07b0f45a6b13f0cfb2e16f,
         type: 3}
@@ -39266,7 +39529,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 199408792025678142, guid: 275ec799550c9b14a8aaeae0db89a3ed,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -39279,6 +39542,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 199408792025678142, guid: 275ec799550c9b14a8aaeae0db89a3ed,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 199408792025678142, guid: 275ec799550c9b14a8aaeae0db89a3ed,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -39286,6 +39554,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TileTemplate(Clone) 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 3993195133397318456, guid: 275ec799550c9b14a8aaeae0db89a3ed,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4112715819941996337, guid: 275ec799550c9b14a8aaeae0db89a3ed,
         type: 3}
@@ -39447,6 +39720,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TileTemplate(Clone) 19
       objectReference: {fileID: 0}
+    - target: {fileID: 4529926725469835137, guid: fc9c47106b1341e4fac7671bb9d89bb9,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5369166793938593346, guid: fc9c47106b1341e4fac7671bb9d89bb9,
         type: 3}
       propertyPath: constraintsManager
@@ -39466,7 +39744,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5369166793938593346, guid: fc9c47106b1341e4fac7671bb9d89bb9,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -39476,6 +39754,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 5369166793938593346, guid: fc9c47106b1341e4fac7671bb9d89bb9,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5369166793938593346, guid: fc9c47106b1341e4fac7671bb9d89bb9,
         type: 3}
@@ -39896,7 +40179,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 7765794970870150629, guid: 3de5d429faf67a249bbf808a9089b07a,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -39906,6 +40189,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 7765794970870150629, guid: 3de5d429faf67a249bbf808a9089b07a,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7765794970870150629, guid: 3de5d429faf67a249bbf808a9089b07a,
         type: 3}
@@ -39971,6 +40259,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8479264516378520978, guid: 3de5d429faf67a249bbf808a9089b07a,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3de5d429faf67a249bbf808a9089b07a, type: 3}
@@ -40142,6 +40435,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8518393893424334921}
     m_Modifications:
+    - target: {fileID: 1160850422112499761, guid: b3c1b8fe8b50a5e4cbab3ef817c6a6c5,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6781295139338165716, guid: b3c1b8fe8b50a5e4cbab3ef817c6a6c5,
         type: 3}
       propertyPath: tileSet
@@ -40166,7 +40464,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 6938697743905177141, guid: b3c1b8fe8b50a5e4cbab3ef817c6a6c5,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -40176,6 +40474,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938697743905177141, guid: b3c1b8fe8b50a5e4cbab3ef817c6a6c5,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6938697743905177141, guid: b3c1b8fe8b50a5e4cbab3ef817c6a6c5,
         type: 3}
@@ -40361,7 +40664,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 1831266450475167498, guid: e19dabbb4b01c1f498c54ec2b4f36871,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -40374,6 +40677,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1831266450475167498, guid: e19dabbb4b01c1f498c54ec2b4f36871,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1831266450475167498, guid: e19dabbb4b01c1f498c54ec2b4f36871,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -40382,6 +40690,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 7191673531925073998, guid: e19dabbb4b01c1f498c54ec2b4f36871,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8683059689267977393, guid: e19dabbb4b01c1f498c54ec2b4f36871,
         type: 3}
       propertyPath: m_Name
@@ -40692,6 +41005,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8518393893424334921}
     m_Modifications:
+    - target: {fileID: 657646606943675756, guid: beabdf2f7b6805547837baebd7c3e1b4,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2745318115595221169, guid: beabdf2f7b6805547837baebd7c3e1b4,
         type: 3}
       propertyPath: spawnPos
@@ -40716,7 +41034,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5915679758641953080, guid: beabdf2f7b6805547837baebd7c3e1b4,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -40726,6 +41044,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 5915679758641953080, guid: beabdf2f7b6805547837baebd7c3e1b4,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5915679758641953080, guid: beabdf2f7b6805547837baebd7c3e1b4,
         type: 3}
@@ -40967,6 +41290,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8518393893424334921}
     m_Modifications:
+    - target: {fileID: 4137642292825624026, guid: 8c627f28a525abd4ca60c33c9277c66c,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5145433921823646777, guid: 8c627f28a525abd4ca60c33c9277c66c,
         type: 3}
       propertyPath: spawnPos
@@ -40996,7 +41324,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 6998629951583357496, guid: 8c627f28a525abd4ca60c33c9277c66c,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -41006,6 +41334,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998629951583357496, guid: 8c627f28a525abd4ca60c33c9277c66c,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6998629951583357496, guid: 8c627f28a525abd4ca60c33c9277c66c,
         type: 3}
@@ -41321,7 +41654,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 2855682453585494399, guid: 1e6ee14b15c4d004294a3123d3213aaf,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -41334,8 +41667,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2855682453585494399, guid: 1e6ee14b15c4d004294a3123d3213aaf,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2855682453585494399, guid: 1e6ee14b15c4d004294a3123d3213aaf,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3743011022450209225, guid: 1e6ee14b15c4d004294a3123d3213aaf,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e6ee14b15c4d004294a3123d3213aaf, type: 3}
@@ -42917,6 +43260,11 @@ PrefabInstance:
       propertyPath: tileSet
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4390678130579990516, guid: e3d2dc31674b03149a0207ace7a455d1,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6571770221299430940, guid: e3d2dc31674b03149a0207ace7a455d1,
         type: 3}
       propertyPath: m_Name
@@ -43001,7 +43349,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 8213939420342023692, guid: e3d2dc31674b03149a0207ace7a455d1,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -43011,6 +43359,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 8213939420342023692, guid: e3d2dc31674b03149a0207ace7a455d1,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8213939420342023692, guid: e3d2dc31674b03149a0207ace7a455d1,
         type: 3}
@@ -43366,7 +43719,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5789641187172474903, guid: d6c69a64c171b5b46a0ac6104ecefc93,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -43379,8 +43732,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5789641187172474903, guid: d6c69a64c171b5b46a0ac6104ecefc93,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5789641187172474903, guid: d6c69a64c171b5b46a0ac6104ecefc93,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461844328546323938, guid: d6c69a64c171b5b46a0ac6104ecefc93,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8562840118971414815, guid: d6c69a64c171b5b46a0ac6104ecefc93,
         type: 3}
@@ -43561,7 +43924,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3660022601681236152, guid: f9b2ee694da57db4696dee36284c4104,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -43571,6 +43934,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 3660022601681236152, guid: f9b2ee694da57db4696dee36284c4104,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3660022601681236152, guid: f9b2ee694da57db4696dee36284c4104,
         type: 3}
@@ -43631,6 +43999,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6278655987025071287, guid: f9b2ee694da57db4696dee36284c4104,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8357044446875684785, guid: f9b2ee694da57db4696dee36284c4104,
         type: 3}
@@ -43732,6 +44105,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8518393893424334921}
     m_Modifications:
+    - target: {fileID: 675333975250609644, guid: 35d50fca72fbf8141b331295e35da755,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1203445543533722625, guid: 35d50fca72fbf8141b331295e35da755,
         type: 3}
       propertyPath: m_Name
@@ -43811,7 +44189,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 6490118552832795181, guid: 35d50fca72fbf8141b331295e35da755,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -43821,6 +44199,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 6490118552832795181, guid: 35d50fca72fbf8141b331295e35da755,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6490118552832795181, guid: 35d50fca72fbf8141b331295e35da755,
         type: 3}
@@ -44631,7 +45014,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 6340686003686112776, guid: 19c501ff1433c40439cf0e1598a4f3b5,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -44644,8 +45027,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6340686003686112776, guid: 19c501ff1433c40439cf0e1598a4f3b5,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6340686003686112776, guid: 19c501ff1433c40439cf0e1598a4f3b5,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8172820952450065484, guid: 19c501ff1433c40439cf0e1598a4f3b5,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19c501ff1433c40439cf0e1598a4f3b5, type: 3}
@@ -45192,6 +45585,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2663802974800415937, guid: 159f6ecb0bdafec4caba31c6e6bd261c,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4199237178055471163, guid: 159f6ecb0bdafec4caba31c6e6bd261c,
         type: 3}
       propertyPath: constraintsManager
@@ -45211,7 +45609,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 4199237178055471163, guid: 159f6ecb0bdafec4caba31c6e6bd261c,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -45221,6 +45619,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 4199237178055471163, guid: 159f6ecb0bdafec4caba31c6e6bd261c,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4199237178055471163, guid: 159f6ecb0bdafec4caba31c6e6bd261c,
         type: 3}
@@ -45901,7 +46304,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 4195923025233690224, guid: d8ef8093a1916584ab318858dea74781,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -45914,8 +46317,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4195923025233690224, guid: d8ef8093a1916584ab318858dea74781,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195923025233690224, guid: d8ef8093a1916584ab318858dea74781,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4422238524742065784, guid: d8ef8093a1916584ab318858dea74781,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9028185881321145119, guid: d8ef8093a1916584ab318858dea74781,
         type: 3}
@@ -46536,7 +46949,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 4616343766945957717, guid: 5b2d1e92bd542894b8e2af5c1fa4d99e,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -46549,8 +46962,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4616343766945957717, guid: 5b2d1e92bd542894b8e2af5c1fa4d99e,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616343766945957717, guid: 5b2d1e92bd542894b8e2af5c1fa4d99e,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156999257288860113, guid: 5b2d1e92bd542894b8e2af5c1fa4d99e,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7316134902177891269, guid: 5b2d1e92bd542894b8e2af5c1fa4d99e,
         type: 3}
@@ -46806,7 +47229,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 1573091121884736896, guid: a65df3c57656c264e8e558037b1f068a,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -46819,8 +47242,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1573091121884736896, guid: a65df3c57656c264e8e558037b1f068a,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1573091121884736896, guid: a65df3c57656c264e8e558037b1f068a,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616349847373051468, guid: a65df3c57656c264e8e558037b1f068a,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5766512700973024605, guid: a65df3c57656c264e8e558037b1f068a,
         type: 3}
@@ -46857,6 +47290,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 1811873687604624963, guid: f6344d133f592de478cffcd2083fe427,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3300343321008640412, guid: f6344d133f592de478cffcd2083fe427,
         type: 3}
       propertyPath: m_RootOrder
@@ -46936,7 +47374,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 8921227900536184194, guid: f6344d133f592de478cffcd2083fe427,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -46946,6 +47384,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921227900536184194, guid: f6344d133f592de478cffcd2083fe427,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8921227900536184194, guid: f6344d133f592de478cffcd2083fe427,
         type: 3}
@@ -47292,6 +47735,11 @@ PrefabInstance:
       propertyPath: tileSet
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3827575047247046778, guid: 3a51388052f5a8c49887355242b87947,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5055466844220678835, guid: 3a51388052f5a8c49887355242b87947,
         type: 3}
       propertyPath: constraintsManager
@@ -47311,7 +47759,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5055466844220678835, guid: 3a51388052f5a8c49887355242b87947,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -47321,6 +47769,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 5055466844220678835, guid: 3a51388052f5a8c49887355242b87947,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5055466844220678835, guid: 3a51388052f5a8c49887355242b87947,
         type: 3}
@@ -47622,6 +48075,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5451593754379905021, guid: c06112b04350dd74a97160c75f9d0ced,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5586675198261284075, guid: c06112b04350dd74a97160c75f9d0ced,
         type: 3}
       propertyPath: m_Name
@@ -47646,7 +48104,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5661391731526044216, guid: c06112b04350dd74a97160c75f9d0ced,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -47656,6 +48114,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 5661391731526044216, guid: c06112b04350dd74a97160c75f9d0ced,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5661391731526044216, guid: c06112b04350dd74a97160c75f9d0ced,
         type: 3}
@@ -47757,6 +48220,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 753772688746615393, guid: 52048f88947b20a42b61af98d068377b,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2048386492397398668, guid: 52048f88947b20a42b61af98d068377b,
         type: 3}
       propertyPath: m_Name
@@ -47781,7 +48249,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 7552697611006497211, guid: 52048f88947b20a42b61af98d068377b,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -47791,6 +48259,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 7552697611006497211, guid: 52048f88947b20a42b61af98d068377b,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7552697611006497211, guid: 52048f88947b20a42b61af98d068377b,
         type: 3}
@@ -48576,7 +49049,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3768219825834921885, guid: 5ededb01f3e303c4ea3162bff7336368,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -48589,6 +49062,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3768219825834921885, guid: 5ededb01f3e303c4ea3162bff7336368,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3768219825834921885, guid: 5ededb01f3e303c4ea3162bff7336368,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -48597,6 +49075,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 6523721933309643371, guid: 5ededb01f3e303c4ea3162bff7336368,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ededb01f3e303c4ea3162bff7336368, type: 3}
 --- !u!4 &5533574969864508076 stripped
@@ -49251,7 +49734,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 1429243499237698193, guid: e4edb74500072a549832232aec04f596,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -49261,6 +49744,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 1429243499237698193, guid: e4edb74500072a549832232aec04f596,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1429243499237698193, guid: e4edb74500072a549832232aec04f596,
         type: 3}
@@ -49326,6 +49814,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TileTemplate(Clone) 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 8192586186307939811, guid: e4edb74500072a549832232aec04f596,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4edb74500072a549832232aec04f596, type: 3}
@@ -49916,7 +50409,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 321183382302788260, guid: 1ba68400e08eba14a8434d2039ccb19b,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -49926,6 +50419,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 321183382302788260, guid: 1ba68400e08eba14a8434d2039ccb19b,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 321183382302788260, guid: 1ba68400e08eba14a8434d2039ccb19b,
         type: 3}
@@ -49991,6 +50489,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467939683834649348, guid: 1ba68400e08eba14a8434d2039ccb19b,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ba68400e08eba14a8434d2039ccb19b, type: 3}
@@ -50792,6 +51295,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 4724808599929579465, guid: a741f9cab60b5584f9725d90a4463bf8,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6878345589885937147, guid: a741f9cab60b5584f9725d90a4463bf8,
         type: 3}
       propertyPath: m_Name
@@ -50871,7 +51379,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 8459301434899304386, guid: a741f9cab60b5584f9725d90a4463bf8,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -50881,6 +51389,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459301434899304386, guid: a741f9cab60b5584f9725d90a4463bf8,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8459301434899304386, guid: a741f9cab60b5584f9725d90a4463bf8,
         type: 3}
@@ -50981,7 +51494,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 4889525310503032810, guid: ed42d0237bc237a4d9f30c3c092dc49c,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -50994,8 +51507,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4889525310503032810, guid: ed42d0237bc237a4d9f30c3c092dc49c,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4889525310503032810, guid: ed42d0237bc237a4d9f30c3c092dc49c,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5529165727973518163, guid: ed42d0237bc237a4d9f30c3c092dc49c,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7238287797061409130, guid: ed42d0237bc237a4d9f30c3c092dc49c,
         type: 3}
@@ -51651,7 +52174,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 2544172504653196463, guid: 9680fcf847ab11e468e25637071e0afa,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -51661,6 +52184,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544172504653196463, guid: 9680fcf847ab11e468e25637071e0afa,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2544172504653196463, guid: 9680fcf847ab11e468e25637071e0afa,
         type: 3}
@@ -51726,6 +52254,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TileTemplate(Clone) 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 8840902511907826007, guid: 9680fcf847ab11e468e25637071e0afa,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9680fcf847ab11e468e25637071e0afa, type: 3}
@@ -52197,6 +52730,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3679572234945667318, guid: 9fe37210254a34741bed4d2a271e4f3e,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4201476414525134613, guid: 9fe37210254a34741bed4d2a271e4f3e,
         type: 3}
       propertyPath: constraintsManager
@@ -52216,7 +52754,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 4201476414525134613, guid: 9fe37210254a34741bed4d2a271e4f3e,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -52226,6 +52764,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201476414525134613, guid: 9fe37210254a34741bed4d2a271e4f3e,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4201476414525134613, guid: 9fe37210254a34741bed4d2a271e4f3e,
         type: 3}
@@ -53046,7 +53589,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3193985584092385429, guid: 2064bcc86a84aec49b7319718adc88a6,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -53059,8 +53602,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3193985584092385429, guid: 2064bcc86a84aec49b7319718adc88a6,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3193985584092385429, guid: 2064bcc86a84aec49b7319718adc88a6,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3496376142752879449, guid: 2064bcc86a84aec49b7319718adc88a6,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9117145066464512104, guid: 2064bcc86a84aec49b7319718adc88a6,
         type: 3}
@@ -53447,6 +54000,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8518393893424334921}
     m_Modifications:
+    - target: {fileID: 494129676299425810, guid: e644391066954c0448a4cde1b66fd7e2,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2142092386804151077, guid: e644391066954c0448a4cde1b66fd7e2,
         type: 3}
       propertyPath: spawnPos
@@ -53471,7 +54029,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3452776975819423690, guid: e644391066954c0448a4cde1b66fd7e2,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -53481,6 +54039,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 3452776975819423690, guid: e644391066954c0448a4cde1b66fd7e2,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3452776975819423690, guid: e644391066954c0448a4cde1b66fd7e2,
         type: 3}
@@ -53947,6 +54510,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8518393893424334921}
     m_Modifications:
+    - target: {fileID: 1118380739749351609, guid: 3add9b0caf60907478286baed947159a,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1338390926540860808, guid: 3add9b0caf60907478286baed947159a,
         type: 3}
       propertyPath: m_Name
@@ -54031,7 +54599,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 8494696120001066979, guid: 3add9b0caf60907478286baed947159a,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -54041,6 +54609,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 8494696120001066979, guid: 3add9b0caf60907478286baed947159a,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8494696120001066979, guid: 3add9b0caf60907478286baed947159a,
         type: 3}
@@ -54141,7 +54714,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3482902641167650780, guid: 8d84f2f1beed4bd48afbd06656395521,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -54154,8 +54727,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3482902641167650780, guid: 8d84f2f1beed4bd48afbd06656395521,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3482902641167650780, guid: 8d84f2f1beed4bd48afbd06656395521,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8569718185384456284, guid: 8d84f2f1beed4bd48afbd06656395521,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8570077565034644014, guid: 8d84f2f1beed4bd48afbd06656395521,
         type: 3}
@@ -54976,7 +55559,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 7007400677248574707, guid: 3b03db4b3fc76c44bb5eed3d96b636e8,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -54989,8 +55572,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7007400677248574707, guid: 3b03db4b3fc76c44bb5eed3d96b636e8,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7007400677248574707, guid: 3b03db4b3fc76c44bb5eed3d96b636e8,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7286684311610456857, guid: 3b03db4b3fc76c44bb5eed3d96b636e8,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b03db4b3fc76c44bb5eed3d96b636e8, type: 3}
@@ -55091,7 +55684,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5489974905905979329, guid: 7cdf280871f34dc4a95b89891ce08e5f,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -55104,8 +55697,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5489974905905979329, guid: 7cdf280871f34dc4a95b89891ce08e5f,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5489974905905979329, guid: 7cdf280871f34dc4a95b89891ce08e5f,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7316434386578503284, guid: 7cdf280871f34dc4a95b89891ce08e5f,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8531145881468269773, guid: 7cdf280871f34dc4a95b89891ce08e5f,
         type: 3}
@@ -55711,7 +56314,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 2733711521878092032, guid: c6b84a5ab869cf443a1ad3ac1d78d735,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -55724,8 +56327,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2733711521878092032, guid: c6b84a5ab869cf443a1ad3ac1d78d735,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2733711521878092032, guid: c6b84a5ab869cf443a1ad3ac1d78d735,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5288272428264172469, guid: c6b84a5ab869cf443a1ad3ac1d78d735,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5883494411682230049, guid: c6b84a5ab869cf443a1ad3ac1d78d735,
         type: 3}
@@ -56187,6 +56800,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TileTemplate(Clone) 73
       objectReference: {fileID: 0}
+    - target: {fileID: 5204403141550597516, guid: ae2a1d21302f70c45bd2393c13395a1d,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5489253370481778967, guid: ae2a1d21302f70c45bd2393c13395a1d,
         type: 3}
       propertyPath: constraintsManager
@@ -56206,7 +56824,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5489253370481778967, guid: ae2a1d21302f70c45bd2393c13395a1d,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -56216,6 +56834,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 5489253370481778967, guid: ae2a1d21302f70c45bd2393c13395a1d,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5489253370481778967, guid: ae2a1d21302f70c45bd2393c13395a1d,
         type: 3}
@@ -56297,6 +56920,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1847021156341777163, guid: 61414777fd38ad942b5078ea6df47c65,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4311495650575881459, guid: 61414777fd38ad942b5078ea6df47c65,
         type: 3}
       propertyPath: constraintsManager
@@ -56316,7 +56944,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 4311495650575881459, guid: 61414777fd38ad942b5078ea6df47c65,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -56326,6 +56954,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311495650575881459, guid: 61414777fd38ad942b5078ea6df47c65,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4311495650575881459, guid: 61414777fd38ad942b5078ea6df47c65,
         type: 3}
@@ -57982,6 +58615,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4915345200104770406, guid: 9626fe7e80181044eb113b3c19d38cc2,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5394412208715666395, guid: 9626fe7e80181044eb113b3c19d38cc2,
         type: 3}
       propertyPath: tileSet
@@ -58011,7 +58649,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 7796052261022530479, guid: 9626fe7e80181044eb113b3c19d38cc2,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -58021,6 +58659,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796052261022530479, guid: 9626fe7e80181044eb113b3c19d38cc2,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7796052261022530479, guid: 9626fe7e80181044eb113b3c19d38cc2,
         type: 3}
@@ -58146,7 +58789,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 6281808007459474150, guid: 7e2a39131efbc95438d14aa1bfa30288,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -58156,6 +58799,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 6281808007459474150, guid: 7e2a39131efbc95438d14aa1bfa30288,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6281808007459474150, guid: 7e2a39131efbc95438d14aa1bfa30288,
         type: 3}
@@ -58216,6 +58864,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998069254570045934, guid: 7e2a39131efbc95438d14aa1bfa30288,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8584720285244282759, guid: 7e2a39131efbc95438d14aa1bfa30288,
         type: 3}
@@ -58796,7 +59449,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3754545253897132429, guid: dde50a3813c32594c88446b3024586bf,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -58809,8 +59462,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3754545253897132429, guid: dde50a3813c32594c88446b3024586bf,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3754545253897132429, guid: dde50a3813c32594c88446b3024586bf,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5769543654358854021, guid: dde50a3813c32594c88446b3024586bf,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dde50a3813c32594c88446b3024586bf, type: 3}
@@ -58881,6 +59544,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6178575516119224099, guid: 87149045a2f36004a8ad321cba62ceb3,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6466960657232287643, guid: 87149045a2f36004a8ad321cba62ceb3,
         type: 3}
@@ -59058,6 +59726,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8611953532216399941, guid: cb380e755bcbf69408ba5b6d94c12c5a,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8675002012137146124, guid: cb380e755bcbf69408ba5b6d94c12c5a,
         type: 3}
       propertyPath: constraintsManager
@@ -59077,7 +59750,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 8675002012137146124, guid: cb380e755bcbf69408ba5b6d94c12c5a,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -59087,6 +59760,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 8675002012137146124, guid: cb380e755bcbf69408ba5b6d94c12c5a,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8675002012137146124, guid: cb380e755bcbf69408ba5b6d94c12c5a,
         type: 3}
@@ -59427,7 +60105,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 415881841650434602, guid: 419081d1e2f4a2242aa100011760542f,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -59440,6 +60118,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 415881841650434602, guid: 419081d1e2f4a2242aa100011760542f,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 415881841650434602, guid: 419081d1e2f4a2242aa100011760542f,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -59447,6 +60130,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TileTemplate(Clone) 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848496425356313674, guid: 419081d1e2f4a2242aa100011760542f,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 419081d1e2f4a2242aa100011760542f, type: 3}
@@ -59542,7 +60230,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 4203939928152844031, guid: db4a122a66a19364b905f59922ec70e9,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -59555,8 +60243,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4203939928152844031, guid: db4a122a66a19364b905f59922ec70e9,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4203939928152844031, guid: db4a122a66a19364b905f59922ec70e9,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4449766902226750838, guid: db4a122a66a19364b905f59922ec70e9,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5087808241198073527, guid: db4a122a66a19364b905f59922ec70e9,
         type: 3}
@@ -59738,6 +60436,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 3245443362128045935, guid: 5098bc9e8dd18f244ad6f18626762bdb,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3597081559901019913, guid: 5098bc9e8dd18f244ad6f18626762bdb,
         type: 3}
       propertyPath: m_Name
@@ -59817,7 +60520,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 8009047742129852671, guid: 5098bc9e8dd18f244ad6f18626762bdb,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -59827,6 +60530,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 8009047742129852671, guid: 5098bc9e8dd18f244ad6f18626762bdb,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8009047742129852671, guid: 5098bc9e8dd18f244ad6f18626762bdb,
         type: 3}
@@ -59913,6 +60621,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4722740699626442952, guid: df0d3cf225a74704db84da659beff439,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8346011047873835488, guid: df0d3cf225a74704db84da659beff439,
         type: 3}
       propertyPath: constraintsManager
@@ -59932,7 +60645,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 8346011047873835488, guid: df0d3cf225a74704db84da659beff439,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -59942,6 +60655,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 8346011047873835488, guid: df0d3cf225a74704db84da659beff439,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8346011047873835488, guid: df0d3cf225a74704db84da659beff439,
         type: 3}
@@ -60513,6 +61231,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8518393893424334921}
     m_Modifications:
+    - target: {fileID: 199860202071463380, guid: 6909e9367520f9e4db5de936ef84cb7a,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1180097849516869091, guid: 6909e9367520f9e4db5de936ef84cb7a,
         type: 3}
       propertyPath: spawnPos
@@ -60597,7 +61320,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 9203194015466720990, guid: 6909e9367520f9e4db5de936ef84cb7a,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -60610,11 +61333,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9203194015466720990, guid: 6909e9367520f9e4db5de936ef84cb7a,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203194015466720990, guid: 6909e9367520f9e4db5de936ef84cb7a,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6909e9367520f9e4db5de936ef84cb7a, type: 3}
+--- !u!4 &2893804940420731268 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5063533844865301788, guid: 6909e9367520f9e4db5de936ef84cb7a,
+    type: 3}
+  m_PrefabInstance: {fileID: 7957180453361904792}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2209115249637574058 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8126129714555955506, guid: 6909e9367520f9e4db5de936ef84cb7a,
@@ -60627,12 +61361,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &2893804940420731268 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5063533844865301788, guid: 6909e9367520f9e4db5de936ef84cb7a,
-    type: 3}
-  m_PrefabInstance: {fileID: 7957180453361904792}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7959513437689593801
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60669,7 +61397,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5030349087372606596, guid: 47eefbf70c73815499b9b5bd22baca9b,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -60682,8 +61410,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5030349087372606596, guid: 47eefbf70c73815499b9b5bd22baca9b,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5030349087372606596, guid: 47eefbf70c73815499b9b5bd22baca9b,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7590693516883004535, guid: 47eefbf70c73815499b9b5bd22baca9b,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8642234864147466500, guid: 47eefbf70c73815499b9b5bd22baca9b,
         type: 3}
@@ -60760,6 +61498,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TileTemplate(Clone) 18
       objectReference: {fileID: 0}
+    - target: {fileID: 6121930355225000276, guid: 9c6f1f99f44d3a44e9b00c4129c552da,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6217610509535410514, guid: 9c6f1f99f44d3a44e9b00c4129c552da,
         type: 3}
       propertyPath: m_RootOrder
@@ -60834,7 +61577,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 6403255413195262829, guid: 9c6f1f99f44d3a44e9b00c4129c552da,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -60844,6 +61587,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 6403255413195262829, guid: 9c6f1f99f44d3a44e9b00c4129c552da,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6403255413195262829, guid: 9c6f1f99f44d3a44e9b00c4129c552da,
         type: 3}
@@ -60969,7 +61717,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 1353308587387032184, guid: 3d6270662bc5353419ed1db5b9a695f5,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -60982,8 +61730,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1353308587387032184, guid: 3d6270662bc5353419ed1db5b9a695f5,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353308587387032184, guid: 3d6270662bc5353419ed1db5b9a695f5,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2052545627340227393, guid: 3d6270662bc5353419ed1db5b9a695f5,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5066419972873862542, guid: 3d6270662bc5353419ed1db5b9a695f5,
         type: 3}
@@ -61070,6 +61828,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 676779512213649570, guid: 36308f3fcda9c4149bdb307a55d52c9a,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2233763019330983245, guid: 36308f3fcda9c4149bdb307a55d52c9a,
         type: 3}
       propertyPath: m_Name
@@ -61094,7 +61857,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3460060419431600362, guid: 36308f3fcda9c4149bdb307a55d52c9a,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -61104,6 +61867,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 3460060419431600362, guid: 36308f3fcda9c4149bdb307a55d52c9a,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3460060419431600362, guid: 36308f3fcda9c4149bdb307a55d52c9a,
         type: 3}
@@ -61254,7 +62022,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 2224426032161087759, guid: d9423d153da821941bddeea419c717a9,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -61267,8 +62035,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2224426032161087759, guid: d9423d153da821941bddeea419c717a9,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2224426032161087759, guid: d9423d153da821941bddeea419c717a9,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3374629360415220914, guid: d9423d153da821941bddeea419c717a9,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4959048079935652299, guid: d9423d153da821941bddeea419c717a9,
         type: 3}
@@ -61305,6 +62083,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 6980614140929248920, guid: 02a913ac8dd6a6d48ae75ac0b9a01b21,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8622226459518494192, guid: 02a913ac8dd6a6d48ae75ac0b9a01b21,
         type: 3}
       propertyPath: m_RootOrder
@@ -61379,7 +62162,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 9009492279458345419, guid: 02a913ac8dd6a6d48ae75ac0b9a01b21,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -61389,6 +62172,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 9009492279458345419, guid: 02a913ac8dd6a6d48ae75ac0b9a01b21,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9009492279458345419, guid: 02a913ac8dd6a6d48ae75ac0b9a01b21,
         type: 3}
@@ -61575,6 +62363,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TileTemplate(Clone) 26
       objectReference: {fileID: 0}
+    - target: {fileID: 1188910434628437737, guid: 4a17195e67a7010479f4451febde1b27,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1284542781458059331, guid: 4a17195e67a7010479f4451febde1b27,
         type: 3}
       propertyPath: m_RootOrder
@@ -61649,7 +62442,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5261486671856655282, guid: 4a17195e67a7010479f4451febde1b27,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -61659,6 +62452,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 5261486671856655282, guid: 4a17195e67a7010479f4451febde1b27,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5261486671856655282, guid: 4a17195e67a7010479f4451febde1b27,
         type: 3}
@@ -61905,6 +62703,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6936483715011192611, guid: 0bd84a5307f435649af4a81c89b45a48,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8278762942067678080, guid: 0bd84a5307f435649af4a81c89b45a48,
         type: 3}
       propertyPath: constraintsManager
@@ -61924,7 +62727,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 8278762942067678080, guid: 0bd84a5307f435649af4a81c89b45a48,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -61934,6 +62737,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 8278762942067678080, guid: 0bd84a5307f435649af4a81c89b45a48,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8278762942067678080, guid: 0bd84a5307f435649af4a81c89b45a48,
         type: 3}
@@ -62034,7 +62842,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3131457119161536690, guid: fdb8c4284feefb64aa503da7a2ffbe90,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -62047,6 +62855,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3131457119161536690, guid: fdb8c4284feefb64aa503da7a2ffbe90,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3131457119161536690, guid: fdb8c4284feefb64aa503da7a2ffbe90,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -62054,6 +62867,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TileTemplate(Clone) 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 6931458751650531889, guid: fdb8c4284feefb64aa503da7a2ffbe90,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdb8c4284feefb64aa503da7a2ffbe90, type: 3}
@@ -62465,6 +63283,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 4087735223121831296, guid: b2ca07ab2aa771c498fdb3b871e74298,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4931224884931399321, guid: b2ca07ab2aa771c498fdb3b871e74298,
         type: 3}
       propertyPath: m_Name
@@ -62544,7 +63367,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 7494676034495923699, guid: b2ca07ab2aa771c498fdb3b871e74298,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -62554,6 +63377,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494676034495923699, guid: b2ca07ab2aa771c498fdb3b871e74298,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7494676034495923699, guid: b2ca07ab2aa771c498fdb3b871e74298,
         type: 3}
@@ -63709,7 +64537,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 552114808494675089, guid: cc1f214ffd2f7d8469f78c685a4d3f63,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -63719,6 +64547,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 552114808494675089, guid: cc1f214ffd2f7d8469f78c685a4d3f63,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 552114808494675089, guid: cc1f214ffd2f7d8469f78c685a4d3f63,
         type: 3}
@@ -63784,6 +64617,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TileTemplate(Clone) 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320243757598751851, guid: cc1f214ffd2f7d8469f78c685a4d3f63,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc1f214ffd2f7d8469f78c685a4d3f63, type: 3}
@@ -64560,6 +65398,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5893944832421513904, guid: fc384e3803d78424e8c5c3f3629bd2f6,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7001391753505088392, guid: fc384e3803d78424e8c5c3f3629bd2f6,
         type: 3}
       propertyPath: constraintsManager
@@ -64579,7 +65422,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 7001391753505088392, guid: fc384e3803d78424e8c5c3f3629bd2f6,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -64589,6 +65432,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 7001391753505088392, guid: fc384e3803d78424e8c5c3f3629bd2f6,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7001391753505088392, guid: fc384e3803d78424e8c5c3f3629bd2f6,
         type: 3}
@@ -64750,6 +65598,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1519438197779412015, guid: ba071a993446535459f0c03d18a7e863,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3256227163744714029, guid: ba071a993446535459f0c03d18a7e863,
         type: 3}
       propertyPath: constraintsManager
@@ -64769,7 +65622,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 3256227163744714029, guid: ba071a993446535459f0c03d18a7e863,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -64779,6 +65632,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ChangeCurrentTileOwnership
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256227163744714029, guid: ba071a993446535459f0c03d18a7e863,
+        type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3256227163744714029, guid: ba071a993446535459f0c03d18a7e863,
         type: 3}
@@ -65139,7 +65997,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 5350690225278084584, guid: ff792c3ec3be34149be9c2287c3894ae,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -65152,6 +66010,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5350690225278084584, guid: ff792c3ec3be34149be9c2287c3894ae,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5350690225278084584, guid: ff792c3ec3be34149be9c2287c3894ae,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -65160,6 +66023,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 8553926910708703917, guid: ff792c3ec3be34149be9c2287c3894ae,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8683811375777164562, guid: ff792c3ec3be34149be9c2287c3894ae,
         type: 3}
       propertyPath: m_RootOrder
@@ -65544,7 +66412,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1798396970961904583}
+      objectReference: {fileID: 1811510837220924674}
     - target: {fileID: 946742393969550609, guid: a0bb0b70f1c7de041877569c852e68c6,
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -65557,8 +66425,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 946742393969550609, guid: a0bb0b70f1c7de041877569c852e68c6,
         type: 3}
+      propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Carcassonne.TileControllerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 946742393969550609, guid: a0bb0b70f1c7de041877569c852e68c6,
+        type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5764987216218886744, guid: a0bb0b70f1c7de041877569c852e68c6,
+        type: 3}
+      propertyPath: constraintOnRotation
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0bb0b70f1c7de041877569c852e68c6, type: 3}

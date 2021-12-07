@@ -146,7 +146,7 @@ namespace Carcassonne
 
         public bool CityTileHasGrassOrStreamCenter(int x, int y)
         {
-            return tiles.Played[x, y].getCenter() == TileScript.Geography.Grass ||
+            return tiles.Played[x, y].getCenter() == TileScript.Geography.Field ||
                    tiles.Played[x, y].getCenter() == TileScript.Geography.Stream;
         }
 
@@ -357,19 +357,19 @@ namespace Carcassonne
                                     if (MatchGeographyOrNull(i, j - 1, PointScript.Direction.NORTH, tile.South))
                                         if (MatchGeographyOrNull(i, j + 1, PointScript.Direction.SOUTH, tile.North))
                                         {
-                                            gameControllerScript.ResetTileRotation();
-                                            Debug.Log($"Found a valid position for tile (ID: {tile.id}) at ({i},{j}) with rotation {k}.");
+                                            gameControllerScript.tileControllerScript.ResetTileRotation();
+                                            Debug.Log($"Found a valid position for tile {tile} (ID: {tile.id}) at ({i},{j}) with rotation {k}.");
                                             return true;
                                         }
                             
-                            gameControllerScript.RotateTile();
+                            gameControllerScript.tileControllerScript.RotateTile();
                         }
                     }
                 }
             }
 
             // Reset rotation to default because tile has been rotated in testing.
-            gameControllerScript.ResetTileRotation();
+            gameControllerScript.tileControllerScript.ResetTileRotation();
             return false;
         }
     }
