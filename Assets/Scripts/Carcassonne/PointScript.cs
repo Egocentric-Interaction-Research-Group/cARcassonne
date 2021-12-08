@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -12,8 +12,7 @@ namespace Carcassonne
             EAST,
             SOUTH,
             WEST,
-            CENTER,
-            SELF
+            CENTER
         }
 
         private bool broken;
@@ -79,7 +78,7 @@ namespace Carcassonne
             roadBlocks = 0;
             //if (weight == TileScript.geography.Road) roadBlocks = 1;
             finalScore = 0;
-            visited = new bool[85];
+            visited = new bool[85]; //TODO Hardcoded
 
             dfsDirection(Vindex, weight, direction, GameEnd);
             //Debug.Log(finalScore);
@@ -133,7 +132,8 @@ namespace Carcassonne
                         vertexIterator--;
                         neighbours.RemoveFirst();
                     }
-
+                    
+                    //TODO Looks for roadblocks but won't find circular roads.
                     if (weight == TileScript.Geography.Road)
                         if (neighbours.ElementAt(i).center == TileScript.Geography.Village ||
                             neighbours.ElementAt(i).center == TileScript.Geography.Cloister ||

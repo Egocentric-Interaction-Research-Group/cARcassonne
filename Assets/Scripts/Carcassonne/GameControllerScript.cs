@@ -778,7 +778,7 @@ namespace Carcassonne
                                     .GetPlacedTile(meeple.x, meeple.z)
                                     .GetComponent<TileScript>().vIndex, meeple.geography, meeple.direction, GameEnd);
                                 if (GameEnd)
-                                    finalscore--;
+                                    finalscore--; //FIXME THIS IS WRONG
                             }
                             else
                             {
@@ -787,7 +787,7 @@ namespace Carcassonne
                                         placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().vIndex,
                                         meeple.geography, GameEnd);
                                 if (GameEnd)
-                                    finalscore--;
+                                    finalscore--; //FIXME THIS IS WRONG
                             }
 
                             //CLOISTER
@@ -796,7 +796,8 @@ namespace Carcassonne
                                 meeple.direction == PointScript.Direction.CENTER)
                                 finalscore = placedTiles.CheckSurroundedCloister(meeple.x, meeple.z, GameEnd);
                         }
-
+                        
+                        //TODO If two people have meeples on a city and one doesn't score anything, their meeple should still be freed. Should be IF FEATURE IS FINISHED.
                         if (finalscore > 0 && RealCheck)
                         {
                             Debug.Log(currentPlayer.getID() + " recieved " + finalscore + " points. MEEPLEGEO: " + meepleControllerScript.meepleGeography);

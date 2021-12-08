@@ -17,8 +17,6 @@ namespace Carcassonne
         public TileState tiles;
         public FeatureState features;
 
-        // public GameObject[,] tiles.Played;
-
         private void Start()
         {
         }
@@ -92,12 +90,6 @@ namespace Carcassonne
             return t.gameObject;
         }
 
-
-        public int GetLength(int dimension)
-        {
-            return tiles.Played.GetLength(dimension);
-        }
-
         /// <summary>
         /// Checks whether there are any tiles adjacent to the given position.
         /// </summary>
@@ -121,20 +113,33 @@ namespace Carcassonne
             return false;
         }
 
+        private bool PositionIsInBounds(Vector2Int p)
+        {
+            return p.x >= 0 && p.x < tiles.Played.GetLength(0) &&
+                   p.y >= 0 && p.y < tiles.Played.GetLength(1);
+        }
+
         /// <summary>
-        /// Tests whether a board position has no tile OR a tile matching a particular geography in the given direction.
+        /// Tests whether a board position disqualifies a tile with a particular geography facing that position.
+        /// Checks that the position has no tile OR a tile matching a particular geography in the given direction.
+        /// Also returns true if the position is off the board (out of bounds).
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="dir"></param>
         /// <param name="geography"></param>
         /// <returns></returns>
-        public bool MatchGeographyOrNull(int x, int y, PointScript.Direction dir, TileScript.Geography geography)
+        public bool DirectionIsEmptyOrMatchesGeography(int x, int y, Vector2Int dir, TileScript.Geography geography)
         {
+            if (!PositionIsInBounds(new Vector2Int(x, y)))
+                return true;
+            
             if (tiles.Played[x, y] == null)
                 return true;
+            
             if (tiles.Played[x, y].getGeographyAt(dir) == geography)
                 return true;
+            
             return false;
         }
 
@@ -272,98 +277,55 @@ namespace Carcassonne
                 return pts;
             return 0;
         }
-        
-        //TODO: Remove
-        // public bool CheckNeighborsIfTileCanBePlaced(GameObject tile, int x, int y)
-        // {
-        //     var script = tile.GetComponent<TileScript>();
-        //     var isNotAlone2 = false;
-        //
-        //     if (tiles.Played[x - 1, y] != null)
-        //     {
-        //         isNotAlone2 = true;
-        //         if (script.West == tiles.Played[x - 1, y].East) return false;
-        //     }
-        //
-        //     if (tiles.Played[x + 1, y] != null)
-        //     {
-        //         isNotAlone2 = true;
-        //         if (script.East == tiles.Played[x + 1, y].West) return false;
-        //     }
-        //
-        //     if (tiles.Played[x, y - 1] != null)
-        //     {
-        //         isNotAlone2 = true;
-        //         if (script.South == tiles.Played[x, y - 1].North) return false;
-        //     }
-        //
-        //     if (tiles.Played[x, y + 1] != null)
-        //     {
-        //         isNotAlone2 = true;
-        //         if (script.North == tiles.Played[x, y + 1].South) return false;
-        //     }
-        //
-        //     return isNotAlone2;
-        // }
 
-        //Kontrollerar att tilen får placeras på angivna koordinater
         public bool TilePlacementIsValid(GameObject tile, int x, int z)
         {
-            var script = tile.GetComponent<TileScript>();
-            var isNotAlone = false;
-
-            //Debug.Log(tiles.Played[x - 1, z]);
-
-            if (tiles.Played[x - 1, z] != null)
-            {
-                isNotAlone = true;
-                if (script.West != tiles.Played[x - 1, z].East) return false;
-            }
-
-            if (tiles.Played[x + 1, z] != null)
-            {
-                isNotAlone = true;
-                if (script.East != tiles.Played[x + 1, z].West) return false;
-            }
-
-            if (tiles.Played[x, z - 1] != null)
-            {
-                isNotAlone = true;
-                if (script.South != tiles.Played[x, z - 1].North) return false;
-            }
-
-            if (tiles.Played[x, z + 1] != null)
-            {
-                isNotAlone = true;
-                if (script.North != tiles.Played[x, z + 1].South) return false;
-            }
-
+            return TilePlacementIsValid(tile.GetComponent<TileScript>(), x, z);
+        }
+        
+        public bool TilePlacementIsValid(TileScript tile, int x, int z)
+        {
+            var r = new Vector2Int(x, z);
+            
+            // Check that there is no tile in that position
             if (tiles.Played[x, z] != null) return false;
-            return isNotAlone;
+            
+            // Check that there is a matching neighbour
+            bool hasNeigbour = false;
+            foreach (var side in tile.Sides)
+            {
+                var dir = side.Key; // The direction (up/down/left/right) to check
+                var geo = side.Value; // The geographic feature in that direction on the base tile
+                var neighbour = dir + r;
+                
+                // Tracks whether there is at least one neighbour
+                var neighbourIsInBounds = PositionIsInBounds(neighbour); // If neighbour is not in bounds, don't change hasNeighbour.
+                if (!hasNeigbour && neighbourIsInBounds) hasNeigbour = tiles.Played[r.x + dir.x, r.y + dir.y] != null;
+
+                // Check whether a direction is empty or matches the geography of the tile
+                if (!DirectionIsEmptyOrMatchesGeography(neighbour.x, neighbour.y, -dir, geo)) return false;
+            }
+            
+            // The sides are all empty or matches. Return whether there is a neighbour.
+            return hasNeigbour;
         }
 
         public bool TileCanBePlaced(TileScript tile, GameControllerScript gameControllerScript)
         {
-            for (var i = 0; i < GetLength(0); i++)
+            for (var x = 0; x < tiles.Played.GetLength(0); x++)
             {
-                for (var j = 0; j < GetLength(1); j++)
+                for (var y = 0; y < tiles.Played.GetLength(1); y++)
                 {
-                    if (AnyAdjacentTiles(i, j) && GetPlacedTile(i, j) == null) // There is at least on adjacent tile.
+                    for (var k = 0; k < 4; k++)
                     {
-                        for (var k = 0; k < 4; k++)
+                        if (TilePlacementIsValid(tile, x, y))
                         {
-                            if (MatchGeographyOrNull(i - 1, j, PointScript.Direction.EAST, tile.West))
-                                if (MatchGeographyOrNull(i + 1, j, PointScript.Direction.WEST, tile.East))
-                                    if (MatchGeographyOrNull(i, j - 1, PointScript.Direction.NORTH, tile.South))
-                                        if (MatchGeographyOrNull(i, j + 1, PointScript.Direction.SOUTH, tile.North))
-                                        {
-                                            gameControllerScript.tileControllerScript.ResetTileRotation();
-                                            Debug.Log($"Found a valid position for tile {tile} (ID: {tile.id}) at ({i},{j}) with rotation {k}.");
-                                            return true;
-                                        }
-                            
-                            gameControllerScript.tileControllerScript.RotateTile();
+                            gameControllerScript.tileControllerScript.ResetTileRotation();
+                            Debug.Log($"Found a valid position for tile {tile} (ID: {tile.id}) at ({x},{y}) with rotation {k}.");
+                            return true;
                         }
+                        
+                        gameControllerScript.tileControllerScript.RotateTile();
                     }
                 }
             }

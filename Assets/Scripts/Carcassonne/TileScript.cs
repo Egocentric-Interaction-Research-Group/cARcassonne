@@ -224,6 +224,16 @@ namespace Carcassonne
                 return West;
             return Center;
         }
+        
+        public Geography getGeographyAt(Vector2Int direction)
+        {
+            if (direction == Vector2Int.up) return North;
+            if (direction == Vector2Int.down) return South;
+            if (direction == Vector2Int.right) return East;
+            if (direction == Vector2Int.left)
+                return West;
+            return Center;
+        }
 
         // public geography[] getGeography()
         // {
