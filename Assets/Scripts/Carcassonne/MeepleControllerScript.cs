@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Carcassonne.State;
 using Microsoft.MixedReality.Toolkit.UI;
@@ -135,16 +135,16 @@ namespace Carcassonne
         {
             try
             {
-                if (gameControllerScript.PlacedTiles.getPlacedTiles(this.iMeepleAimX, this.iMeepleAimZ) == gameControllerScript.TileControllerScript.currentTile)
+                if (gameControllerScript.PlacedTiles.GetPlacedTile(this.iMeepleAimX, this.iMeepleAimZ) == gameControllerScript.tileControllerScript.currentTile)
                 {
-                    var tile = gameControllerScript.PlacedTiles.getPlacedTiles(this.iMeepleAimX, this.iMeepleAimZ);
+                    var tile = gameControllerScript.PlacedTiles.GetPlacedTile(this.iMeepleAimX, this.iMeepleAimZ);
                     var tileScript = tile.GetComponent<TileScript>();
 
                     var layerMask = 1 << 9;
                     Physics.Raycast(meeples.Current.gameObject.transform.position, meeples.Current.gameObject.transform.TransformDirection(Vector3.down), out this.meepleHitTileDirection,
                         Mathf.Infinity, layerMask);
 
-                    this.meepleGeography = TileScript.Geography.Grass;
+                    this.meepleGeography = TileScript.Geography.Field;
                     gameControllerScript.Direction = PointScript.Direction.CENTER;
 
                     if (this.meepleHitTileDirection.collider != null)
@@ -193,7 +193,7 @@ namespace Carcassonne
                 else
                 {
                     gameControllerScript.SnapPosition = meeples.Current.gameObject.transform.position;
-                    this.meepleGeography = TileScript.Geography.Grass;
+                    this.meepleGeography = TileScript.Geography.Field;
                     gameControllerScript.ChangeConfirmButtonApperance(false);
                     gameControllerScript.CanConfirm = false;
                 }
@@ -239,7 +239,7 @@ namespace Carcassonne
                         meeples.Current = meepleGameObject.GetComponent<MeepleScript>();
                         // meepleGameObject.transform.rotation = Quaternion.identity;
 
-                        gameControllerScript.UpdateDecisionButtons(true, false, meepleGameObject);
+                        gameControllerScript.UpdateDecisionButtons(true, meepleGameObject);
                         gameControllerScript.gameState.phase = Phase.MeepleDrawn;
                         break;
                     }
@@ -269,10 +269,10 @@ namespace Carcassonne
         public void PlaceMeeple(GameObject meeple, int xs, int zs, PointScript.Direction direction,
             TileScript.Geography meepleGeography, GameControllerScript gameControllerScript)
         {
-            var currentTileScript = gameControllerScript.TileControllerScript1.currentTile.GetComponent<TileScript>();
+            var currentTileScript = gameControllerScript.tileControllerScript.currentTile.GetComponent<TileScript>();
             var currentCenter = currentTileScript.getCenter();
             bool res;
-            if (currentCenter == TileScript.Geography.Village || currentCenter == TileScript.Geography.Grass ||
+            if (currentCenter == TileScript.Geography.Village || currentCenter == TileScript.Geography.Field ||
                 currentCenter == TileScript.Geography.Cloister && direction != PointScript.Direction.CENTER)
                 res = GetComponent<PointScript>()
                     .testIfMeepleCantBePlacedDirection(currentTileScript.vIndex, meepleGeography, direction);

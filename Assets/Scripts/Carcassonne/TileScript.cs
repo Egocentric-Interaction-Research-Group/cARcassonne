@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.PlayerLoop;
 
 namespace Carcassonne
@@ -27,7 +28,7 @@ namespace Carcassonne
             Cloister,
             Village,
             Road,
-            Grass,
+            Field,
             City,
             Stream,
             CityStream,
@@ -141,24 +142,24 @@ namespace Carcassonne
                 // TODO Check the logic here.
                 case Geography.City:
                 case Geography.Cloister:
-                case Geography.Grass:
+                case Geography.Field:
                 case Geography.Road:
                 case Geography.Stream:
                 case Geography.Village:
                     matrix[1, 1] = Center;
-                    matrix[0, 0] = Geography.Grass; // NB: Grass here doesn't necessarily mean grass IF you were playing with Farmers. But because we are not considering farmers, it is an easy shortcut.
-                    matrix[2, 0] = Geography.Grass;
-                    matrix[0, 2] = Geography.Grass;
-                    matrix[2, 2] = Geography.Grass;
+                    matrix[0, 0] = Geography.Field; // NB: Grass here doesn't necessarily mean grass IF you were playing with Farmers. But because we are not considering farmers, it is an easy shortcut.
+                    matrix[2, 0] = Geography.Field;
+                    matrix[0, 2] = Geography.Field;
+                    matrix[2, 2] = Geography.Field;
                     break;
                 case Geography.CityRoad:
                 case Geography.CityStream:
                 case Geography.RoadStream:
-                    matrix[1, 1] = Geography.Grass;
-                    matrix[0, 0] = matrix[0, 1] == matrix[1, 0] ? matrix[0, 1] : Geography.Grass;
-                    matrix[2, 0] = matrix[2, 1] == matrix[1, 0] ? matrix[2, 1] : Geography.Grass;
-                    matrix[0, 2] = matrix[0, 1] == matrix[1, 2] ? matrix[0, 1] : Geography.Grass;
-                    matrix[2, 2] = matrix[2, 1] == matrix[1, 2] ? matrix[2, 1] : Geography.Grass;
+                    matrix[1, 1] = Geography.Field;
+                    matrix[0, 0] = matrix[0, 1] == matrix[1, 0] ? matrix[0, 1] : Geography.Field;
+                    matrix[2, 0] = matrix[2, 1] == matrix[1, 0] ? matrix[2, 1] : Geography.Field;
+                    matrix[0, 2] = matrix[0, 1] == matrix[1, 2] ? matrix[0, 1] : Geography.Field;
+                    matrix[2, 2] = matrix[2, 1] == matrix[1, 2] ? matrix[2, 1] : Geography.Field;
                     break;
             }
             
@@ -240,13 +241,13 @@ namespace Carcassonne
             rotation = 0;
             this.id = id;
             if (id == 1 || id == 2 || id == 3 || id == 4 || id == 5 || id == 6 || id == 12 || id == 17 || id == 25 ||
-                id == 26 || id == 27 || id == 28) Up = Geography.Grass;
+                id == 26 || id == 27 || id == 28) Up = Geography.Field;
             if (id == 1 || id == 2 || id == 4 || id == 7 || id == 9 || id == 14 || id == 25 || id == 27)
-                Right = Geography.Grass;
+                Right = Geography.Field;
             if (id == 1 || id == 3 || id == 7 || id == 8 || id == 12 || id == 13 || id == 15 || id == 17 || id == 18 ||
-                id == 20 || id == 22 || id == 26) Down = Geography.Grass;
+                id == 20 || id == 22 || id == 26) Down = Geography.Field;
             if (id == 1 || id == 2 || id == 7 || id == 10 || id == 13 || id == 14 || id == 15 || id == 18 || id == 25)
-                Left = Geography.Grass;
+                Left = Geography.Field;
             if (id == 6 || id == 29 || id == 30) Up = Geography.Road;
             if (id == 3 || id == 5 || id == 6 || id == 8 || id == 10 || id == 11 || id == 30) Right = Geography.Road;
             if (id == 2 || id == 4 || id == 5 || id == 6 || id == 9 || id == 10 || id == 11 || id == 16 || id == 19 ||
@@ -266,7 +267,7 @@ namespace Carcassonne
             if (id == 1 || id == 2 || id == 28) Center = Geography.Cloister;
             if (id == 3 || id == 4 || id == 8 || id == 9 || id == 10 || id == 29 || id == 30) Center = Geography.Road;
             if (id == 5 || id == 6 || id == 11) Center = Geography.Village;
-            if (id == 7 || id == 14 || id == 15 || id == 32) Center = Geography.Grass;
+            if (id == 7 || id == 14 || id == 15 || id == 32) Center = Geography.Field;
             if (id == 12 || id == 13 || id == 17 || id == 18 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 ||
                 id == 31) Center = Geography.City;
             if (id == 33) Center = Geography.CityStream;
@@ -326,10 +327,22 @@ namespace Carcassonne
             UpdateMatrix();
         }
 
+        public void Rotate(int position)
+        {
+            Debug.Assert(position < 4);
 
+            while (rotation != position)
+            {
+                Rotate();
+            }
+        }
+
+        /// <summary>
+        /// Called on Tile:Manipulation Ended (set in Unity Inspector)
+        /// </summary>
         public void SetCorrectRotation()
         {
-            GameObject.Find("GameController").GetComponent<GameControllerScript>().RotateDegreesRPC();
+            GameObject.Find("GameController").GetComponent<GameControllerScript>().tileControllerScript.RotateDegreesRPC();
         }
 
 
@@ -345,14 +358,16 @@ namespace Carcassonne
         public void DisableGravity()
         {
             GetComponent<Rigidbody>().useGravity = false;
-            GameObject.Find("GameController").GetComponent<GameControllerScript>().SaveEulersOnManipRPC();
         }
 
         public void EnableGravity()
         {
             GetComponent<Rigidbody>().useGravity = true;
         }
-
+        
+        /// <summary>
+        /// Called on Tile:Manipulation Ended (set in Unity Inspector)
+        /// </summary>
         public void SetSnapPosForCurrentTile()
         {
             GameObject.Find("GameController").GetComponent<GameControllerScript>().SetCurrentTileSnapPosition();
@@ -361,6 +376,11 @@ namespace Carcassonne
         public void transferTileOwnership(int currentPlayerID)
         {
             photonView.TransferOwnership(PhotonNetwork.PlayerList[currentPlayerID]);
+        }
+
+        public override string ToString()
+        {
+            return $"{Up.ToString()[0]}{Right.ToString()[0]}{Down.ToString()[0]}{Left.ToString()[0]}";
         }
     }
 }

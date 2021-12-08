@@ -121,8 +121,8 @@ namespace Carcassonne
                     //Does nothing right now.
                     if (neighbours.Count == 0)
                     {
-                        placeVertex(vertexIterator++, new[] {Vindex}, new[] {weight}, TileScript.Geography.Grass,
-                            new[] {TileScript.Geography.Grass}, new[] {direction});
+                        placeVertex(vertexIterator++, new[] {Vindex}, new[] {weight}, TileScript.Geography.Field,
+                            new[] {TileScript.Geography.Field}, new[] {direction});
                         neighbours = g.getNeighbours(Vindex, weight, direction);
                         tmp = g.getGraph()
                             .ElementAt(neighbours.ElementAt(0).endVertex); //Getting the tile that we are comming from
@@ -151,7 +151,7 @@ namespace Carcassonne
                         }
 
                     if (neighbours.ElementAt(i).center == TileScript.Geography.Village ||
-                        neighbours.ElementAt(i).center == TileScript.Geography.Grass)
+                        neighbours.ElementAt(i).center == TileScript.Geography.Field)
                         counter++;
                     else
                         dfs(neighbours.ElementAt(i).endVertex, weight, GameEnd);
@@ -217,7 +217,7 @@ namespace Carcassonne
                         }
 
                     if (neighbours.ElementAt(i).center == TileScript.Geography.Village ||
-                        neighbours.ElementAt(i).center == TileScript.Geography.Grass)
+                        neighbours.ElementAt(i).center == TileScript.Geography.Field)
                         counter++;
                     else
                         dfs(neighbours.ElementAt(i).endVertex, weight, GameEnd);
