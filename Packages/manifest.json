@@ -14,6 +14,7 @@
     "com.unity.ide.vscode": "1.2.4",
     "com.unity.ml-agents": "2.0.0",
     "com.unity.render-pipelines.universal": "10.6.0",
+    "com.unity.scripting.python": "4.0.0-pre.1",
     "com.unity.test-framework": "1.1.29",
     "com.unity.testtools.codecoverage": "1.1.0",
     "com.unity.textmeshpro": "3.0.6",
