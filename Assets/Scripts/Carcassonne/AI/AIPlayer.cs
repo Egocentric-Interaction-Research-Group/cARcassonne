@@ -177,25 +177,20 @@ public class AIPlayer : Agent
             //meepleX = 0.000f;
             //meepleZ = 0.000f;
         }
-        else if (actionBuffers.DiscreteActions[0] == 5f)
-        {
-            if (meepleDirection != Direction.SELF) //Checks so that a placement choice has been made since meeple was drawn.
-            {
-                wrapper.PlaceMeeple(meepleDirection);  //Either confirms and places the meeple if possible, or returns meeple and goes back to phase TileDown.
-            }
 
-            if (wrapper.GetGamePhase() == Phase.MeepleDown) //If meeple is placed.
-            {
-                AddReward(0.1f); //Rewards successfully placing a meeple
-            }
-            else if (wrapper.GetGamePhase() == Phase.TileDown) //If meeple gets returned.
-            {
-                AddReward(-0.1f); //Punishes returning a meeple & going back a phase (note: no punishment for never drawing a meeple).
-            }
-            else //Workaround for a bug where you can draw an unconfirmable meeple and never be able to change phase.
-            {
-                wrapper.FreeCurrentMeeple();
-            }
+        wrapper.PlaceMeeple(meepleDirection);  //Either confirms and places the meeple if possible, or returns meeple and goes back to phase TileDown.
+
+        if (wrapper.GetGamePhase() == Phase.MeepleDown) //If meeple is placed.
+        {
+            AddReward(0.1f); //Rewards successfully placing a meeple
+        }
+        else if (wrapper.GetGamePhase() == Phase.TileDown) //If meeple gets returned.
+        {
+            AddReward(-0.1f); //Punishes returning a meeple & going back a phase (note: no punishment for never drawing a meeple).
+        }
+        else //Workaround for a bug where you can draw an unconfirmable meeple and never be able to change phase.
+        {
+            wrapper.FreeCurrentMeeple();
         }
     }
 
@@ -317,7 +312,7 @@ public class AIPlayer : Agent
                 break;
             case Phase.MeepleDrawn:
                 //AI can choose to place a drawn meeple in 5 different places (N, S, W, E, C) or confirm/deny current placement.
-                allowedActions = 6;
+                allowedActions = 5;
                 break;
         }
 

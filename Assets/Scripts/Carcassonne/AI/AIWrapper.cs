@@ -58,8 +58,7 @@ namespace Assets.Scripts.Carcassonne.AI
 
         public void RotateTile()
         {
-            gc.pcRotate = true;
-            gc.RotateTileRPC();
+            gc.tileControllerScript.RotateTileRPC();
         }
 
         public void PlaceTile(int x, int z)
