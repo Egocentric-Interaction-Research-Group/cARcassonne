@@ -647,8 +647,10 @@ namespace Carcassonne
                 
                 Debug.Log($"Board Matrix Dims: {gameState.Tiles.Matrix.GetLength(0)}" +
                           $"x{gameState.Tiles.Matrix.GetLength(1)}" +
-                          $" ({gameState.Tiles.Matrix.Length})");
-                Debug.Log($"Board Matrix:\n{gameState.Tiles}");
+                          $" ({gameState.Tiles.Matrix.Length})\n" +
+                          $"Board Matrix Origin: {gameState.Tiles.MatrixOrigin}\n" +
+                          $"Board Matrix:\n{gameState.Tiles}\n" +
+                          $"City Bounds: {gameState.Features.Cities[0]}");
             }
             else
             {

@@ -4,18 +4,6 @@ using UnityEngine;
 
 namespace Carcassonne.State
 {
-    // public class Limits
-    // {
-    //     public Limits()
-    //     {
-    //         this.min = new Vector2Int(int.MaxValue, int.MaxValue);
-    //         this.max = new Vector2Int(int.MinValue, int.MinValue);
-    //     }
-    //
-    //     public Vector2Int min;
-    //     public Vector2Int max;
-    // }
-    
     [CreateAssetMenu(fileName = "TileState", menuName = "States/TileState")]
     public class TileState : ScriptableObject
     {
@@ -25,6 +13,22 @@ namespace Carcassonne.State
         
         public Vector2 lastPlayedPosition;
 
+        /// <summary>
+        /// The position of the bottom-left corner of the representation returned by Matrix in Subtile space.
+        /// </summary>
+        /// <remarks>
+        /// For example, if the lower-leftmost city is found on a tile that is at position (x=10,y=15),
+        /// MatrixOrigin would return (30,45). This can be added to the positions found in Matrix so that the
+        /// data from Matrix line up with the bounding boxes returned by City.BoundingBox.
+        /// </remarks>
+        public Vector2Int MatrixOrigin => CalculateLimits().min * 3;
+
+        /// <summary>
+        /// The subtile matrix representation of the board. The bottom corner (Bottom-Left) is 0,0 and the top corner
+        /// (top-right) is (3*x',3*y'), where x' and y' are the vertical and horizontal dimensions of the played tiles.
+        /// This is done to match the representation used in the game. I don't know if it lines up with other image representations.
+        /// Coordinates are represented [Horiz, Vert]
+        /// </summary>
         public TileScript.Geography?[,] Matrix => CalculateMatrix();
 
         private TileScript.Geography?[,] CalculateMatrix()
@@ -102,7 +106,7 @@ namespace Carcassonne.State
             {
                 for (var i = 0; i < Matrix.GetLength(0); i++)
                 {
-                    s += $" | {Matrix[i,j], 8}";
+                    s += $" | ({i},{j}): {Matrix[i,j], 8}";
                 }
                 s += $" |\n";
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Carcassonne.State.Features;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -105,7 +106,15 @@ namespace Carcassonne
         ///     Geography locations set to different local directions.
         /// </summary>
         private Geography Up, Down, Left, Right;
-
+        
+        private void Start()
+        {
+            // This is just so we have a static name for the Tile representing it's sides ar rotation == 0. 
+            Up = North;
+            Right = East;
+            Down = South;
+            Left = West;
+        }
 
         /// <summary>
         ///     Simple getter for the centerGeography
@@ -117,8 +126,9 @@ namespace Carcassonne
         }
 
         private Geography[,] matrix = new Geography[3, 3];
+        
         /// <summary>
-        /// The matrix representation of this tile. The bottom corner (Left-Down) is 0,0 and the top (Right, Top is (2,2).
+        /// The sub-tile matrix representation of this tile. The bottom corner (Left-Down) is 0,0 and the top (Right, Top is (2,2).
         /// This is done to match the representation used in the game. I don't know if it lines up with other image representations.
         /// Coordinates are represented [Horiz, Vert]
         /// </summary>
@@ -233,77 +243,6 @@ namespace Carcassonne
             if (direction == Vector2Int.left)
                 return West;
             return Center;
-        }
-
-        // public geography[] getGeography()
-        // {
-        //     var geographies = new geography[4] {North, South, East, West};
-        //     return geographies;
-        // }
-
-        /// <summary>
-        ///     Depending on the ID of the tile it recieves different attributes.
-        ///     ID's in tiles are not unique and they share them with other tiles who also recieve the same attributes.
-        /// </summary>
-        /// <param name="id"></param>
-        public void AssignAttributes(int id)
-        {
-            rotation = 0;
-            this.id = id;
-            if (id == 1 || id == 2 || id == 3 || id == 4 || id == 5 || id == 6 || id == 12 || id == 17 || id == 25 ||
-                id == 26 || id == 27 || id == 28) Up = Geography.Field;
-            if (id == 1 || id == 2 || id == 4 || id == 7 || id == 9 || id == 14 || id == 25 || id == 27)
-                Right = Geography.Field;
-            if (id == 1 || id == 3 || id == 7 || id == 8 || id == 12 || id == 13 || id == 15 || id == 17 || id == 18 ||
-                id == 20 || id == 22 || id == 26) Down = Geography.Field;
-            if (id == 1 || id == 2 || id == 7 || id == 10 || id == 13 || id == 14 || id == 15 || id == 18 || id == 25)
-                Left = Geography.Field;
-            if (id == 6 || id == 29 || id == 30) Up = Geography.Road;
-            if (id == 3 || id == 5 || id == 6 || id == 8 || id == 10 || id == 11 || id == 30) Right = Geography.Road;
-            if (id == 2 || id == 4 || id == 5 || id == 6 || id == 9 || id == 10 || id == 11 || id == 16 || id == 19 ||
-                id == 21 || id == 23 || id == 28 || id == 29 || id == 31) Down = Geography.Road;
-            if (id == 3 || id == 4 || id == 5 || id == 6 || id == 8 || id == 9 || id == 11 || id == 16 || id == 19)
-                Left = Geography.Road;
-            if (id == 7 || id == 8 || id == 9 || id == 10 || id == 11 || id == 13 || id == 14 || id == 15 || id == 16 ||
-                id == 18 || id == 19 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 || id == 31 || id == 32 ||
-                id == 33) Up = Geography.City;
-            if (id == 12 || id == 13 || id == 15 || id == 16 || id == 17 || id == 18 || id == 19 || id == 20 || id == 21 ||
-                id == 22 || id == 23 || id == 24 || id == 33) Right = Geography.City;
-            if (id == 14 || id == 24 || id == 32) Down = Geography.City;
-            if (id == 12 || id == 17 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24) Left = Geography.City;
-            if (id == 26 || id == 28 || id == 29 || id == 31 || id == 32) Right = Geography.Stream;
-            if (id == 25 || id == 27 || id == 30 || id == 33) Down = Geography.Stream;
-            if (id == 26 || id == 27 || id == 28 || id == 29 || id == 30 || id == 31 || id == 33) Left = Geography.Stream;
-            if (id == 1 || id == 2 || id == 28) Center = Geography.Cloister;
-            if (id == 3 || id == 4 || id == 8 || id == 9 || id == 10 || id == 29 || id == 30) Center = Geography.Road;
-            if (id == 5 || id == 6 || id == 11) Center = Geography.Village;
-            if (id == 7 || id == 14 || id == 15 || id == 32) Center = Geography.Field;
-            if (id == 12 || id == 13 || id == 17 || id == 18 || id == 20 || id == 21 || id == 22 || id == 23 || id == 24 ||
-                id == 31) Center = Geography.City;
-            if (id == 33) Center = Geography.CityStream;
-            if (id == 16 || id == 19) Center = Geography.CityRoad;
-            if (id == 17 || id == 18 || id == 19 || id == 22 || id == 23 || id == 24)
-                shield = true;
-            else
-                shield = false;
-
-            North = Up;
-            East = Right;
-            South = Down;
-            West = Left;
-            AssignTexture(id);
-        }
-
-        /// <summary>
-        ///     This method assigns the texture correlating to the ID. If the tile has an ID = 1, then its material texture will be
-        ///     replaced by the texture stored in the slot for ID 1.
-        /// </summary>
-        /// <param name="id">The tile ID</param>
-        private void AssignTexture(int id)
-        {
-            var m_Renderer = GetComponentInChildren<Renderer>();
-            m_Renderer.material.EnableKeyword("_MainTex");
-            GetComponentInChildren<Renderer>().material.SetTexture("_MainTex", textures[id - 1]);
         }
 
         // public void resetRotation()
