@@ -311,7 +311,7 @@ MonoBehaviour:
   West: 5
   East: 3
   Center: 3
-  tileSet: 0
+  tileSet: 1
 --- !u!114 &1781215485954129876
 MonoBehaviour:
   m_ObjectHideFlags: 0

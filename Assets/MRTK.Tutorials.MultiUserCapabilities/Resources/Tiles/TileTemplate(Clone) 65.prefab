@@ -444,8 +444,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 7166200312293997902, guid: fc9c47106b1341e4fac7671bb9d89bb9,
-    type: 3}
+  constraintsManager: {fileID: 3954939836556584444}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:

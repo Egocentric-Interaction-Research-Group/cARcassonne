@@ -237,7 +237,7 @@ MonoBehaviour:
   West: 5
   East: 5
   Center: 5
-  tileSet: 0
+  tileSet: 1
 --- !u!114 &7052919915752775804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,8 +282,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 5178589174641186611, guid: 9626fe7e80181044eb113b3c19d38cc2,
-    type: 3}
+  constraintsManager: {fileID: 7052919915752775804}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
