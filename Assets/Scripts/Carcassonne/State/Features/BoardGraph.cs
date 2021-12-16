@@ -168,8 +168,10 @@ namespace Carcassonne.State.Features
             g.AddVertex(st);
             foreach (var v in g.Vertices.Where(v => v != st))
             {
-                // Fully connect tile verticies
-                g.AddEdge(EdgeBetween(v, st, ConnectionType.Tile));
+                // Connect to adjacent sides and centre
+                if((v.location - st.location).sqrMagnitude < 4){
+                    g.AddEdge(EdgeBetween(v, st, ConnectionType.Tile));
+                }
 
                 // If the vertices are of the same type (City or Road) AND they are connected by the centre, add a connection
                 if (geography!= null && (geography == TileScript.Geography.City || geography == TileScript.Geography.Road)
