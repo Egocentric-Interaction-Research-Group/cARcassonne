@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using System;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Carcassonne
@@ -82,6 +83,20 @@ namespace Carcassonne
                 }
 
             return p;
+        }
+
+        public Vector2Int GetDirection()
+        {
+            switch (direction)
+            {
+                case PointScript.Direction.NORTH: return Vector2Int.up;
+                case PointScript.Direction.SOUTH: return Vector2Int.down;
+                case PointScript.Direction.EAST: return Vector2Int.right;
+                case PointScript.Direction.WEST: return Vector2Int.left;
+                case PointScript.Direction.CENTER: return Vector2Int.zero;
+                default:
+                    throw new ArgumentException($"Direction {direction} is invalid.");
+            }
         }
     }
 }

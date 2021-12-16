@@ -32065,6 +32065,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TileTemplate(Clone) 62
       objectReference: {fileID: 0}
+    - target: {fileID: 5159695443069834743, guid: a98fbb74ed3e1d1459e049dbdee54c68,
+        type: 3}
+      propertyPath: Center
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5747248518650998449, guid: a98fbb74ed3e1d1459e049dbdee54c68,
         type: 3}
       propertyPath: constraintsManager

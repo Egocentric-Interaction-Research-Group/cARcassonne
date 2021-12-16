@@ -1,0 +1,2952 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QuikGraph.Graphviz</name>
+    </assembly>
+    <members>
+        <member name="T:JetBrains.Annotations.CanBeNullAttribute">
+            <summary>
+            Indicates that the value of the marked element could be <c>null</c> sometimes,
+            so the check for <c>null</c> is necessary before its usage.
+            </summary>
+            <example><code>
+            [CanBeNull] object Test() => null;
+            
+            void UseTest() {
+              var p = Test();
+              var s = p.ToString(); // Warning: Possible 'System.NullReferenceException'
+            }
+            </code></example>
+        </member>
+        <member name="T:JetBrains.Annotations.NotNullAttribute">
+            <summary>
+            Indicates that the value of the marked element could never be <c>null</c>.
+            </summary>
+            <example><code>
+            [NotNull] object Foo() {
+              return null; // Warning: Possible 'null' assignment
+            }
+            </code></example>
+        </member>
+        <member name="T:JetBrains.Annotations.ItemNotNullAttribute">
+            <summary>
+            Can be appplied to symbols of types derived from IEnumerable as well as to symbols of Task
+            and Lazy classes to indicate that the value of a collection item, of the Task.Result property
+            or of the Lazy.Value property can never be null.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Annotations.ItemCanBeNullAttribute">
+            <summary>
+            Can be appplied to symbols of types derived from IEnumerable as well as to symbols of Task
+            and Lazy classes to indicate that the value of a collection item, of the Task.Result property
+            or of the Lazy.Value property can be null.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Annotations.ContractAnnotationAttribute">
+            <summary>
+            Describes dependency between method input and output.
+            </summary>
+            <syntax>
+            <p>Function Definition Table syntax:</p>
+            <list>
+            <item>FDT      ::= FDTRow [;FDTRow]*</item>
+            <item>FDTRow   ::= Input =&gt; Output | Output &lt;= Input</item>
+            <item>Input    ::= ParameterName: Value [, Input]*</item>
+            <item>Output   ::= [ParameterName: Value]* {halt|stop|void|nothing|Value}</item>
+            <item>Value    ::= true | false | null | notnull | canbenull</item>
+            </list>
+            If method has single input parameter, it's name could be omitted.<br/>
+            Using <c>halt</c> (or <c>void</c>/<c>nothing</c>, which is the same) for method output
+            means that the methos doesn't return normally (throws or terminates the process).<br/>
+            Value <c>canbenull</c> is only applicable for output parameters.<br/>
+            You can use multiple <c>[ContractAnnotation]</c> for each FDT row, or use single attribute
+            with rows separated by semicolon. There is no notion of order rows, all rows are checked
+            for applicability and applied per each program state tracked by R# analysis.<br/>
+            </syntax>
+            <examples><list>
+            <item><code>
+            [ContractAnnotation("=&gt; halt")]
+            public void TerminationMethod()
+            </code></item>
+            <item><code>
+            [ContractAnnotation("halt &lt;= condition: false")]
+            public void Assert(bool condition, string text) // regular assertion method
+            </code></item>
+            <item><code>
+            [ContractAnnotation("s:null =&gt; true")]
+            public bool IsNullOrEmpty(string s) // string.IsNullOrEmpty()
+            </code></item>
+            <item><code>
+            // A method that returns null if the parameter is null,
+            // and not null if the parameter is not null
+            [ContractAnnotation("null =&gt; null; notnull =&gt; notnull")]
+            public object Transform(object data) 
+            </code></item>
+            <item><code>
+            [ContractAnnotation("=&gt; true, result: notnull; =&gt; false, result: null")]
+            public bool TryParse(string s, out Person result)
+            </code></item>
+            </list></examples>
+        </member>
+        <member name="T:JetBrains.Annotations.UsedImplicitlyAttribute">
+            <summary>
+            Indicates that the marked symbol is used implicitly (e.g. via reflection, in external library),
+            so this symbol will not be marked as unused (as well as by other usage inspections).
+            </summary>
+        </member>
+        <member name="T:JetBrains.Annotations.MeansImplicitUseAttribute">
+            <summary>
+            Should be used on attributes and causes ReSharper to not mark symbols marked with such attributes
+            as unused (as well as by other usage inspections)
+            </summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseKindFlags.Access">
+            <summary>Only entity marked with attribute considered used.</summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseKindFlags.Assign">
+            <summary>Indicates implicit assignment to a member.</summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature">
+            <summary>
+            Indicates implicit instantiation of a type with fixed constructor signature.
+            That means any unused constructor parameters won't be reported as such.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature">
+            <summary>Indicates implicit instantiation of a type.</summary>
+        </member>
+        <member name="T:JetBrains.Annotations.ImplicitUseTargetFlags">
+            <summary>
+            Specify what is considered used implicitly when marked
+            with <see cref="T:JetBrains.Annotations.MeansImplicitUseAttribute"/> or <see cref="T:JetBrains.Annotations.UsedImplicitlyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseTargetFlags.Members">
+            <summary>Members of entity marked with attribute are considered used.</summary>
+        </member>
+        <member name="F:JetBrains.Annotations.ImplicitUseTargetFlags.WithMembers">
+            <summary>Entity marked with attribute and all its members considered used.</summary>
+        </member>
+        <member name="T:JetBrains.Annotations.PublicAPIAttribute">
+            <summary>
+            This attribute is intended to mark publicly available API
+            which should not be removed and so is treated as used.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Annotations.InstantHandleAttribute">
+            <summary>
+            Tells code analysis engine if the parameter is completely handled when the invoked method is on stack.
+            If the parameter is a delegate, indicates that delegate is executed while the method is executed.
+            If the parameter is an enumerable, indicates that it is enumerated while the method is executed.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Annotations.PureAttribute">
+            <summary>
+            Indicates that a method does not make any observable state changes.
+            The same as <c>System.Diagnostics.Contracts.PureAttribute</c>.
+            </summary>
+            <example><code>
+            [Pure] int Multiply(int x, int y) => x * y;
+            
+            void M() {
+              Multiply(123, 42); // Waring: Return value of pure method is not used
+            }
+            </code></example>
+        </member>
+        <member name="T:QuikGraph.Utils.DisposableHelpers">
+            <summary>
+            Helpers to work with <see cref="T:System.IDisposable"/>.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Utils.DisposableHelpers.Finally(System.Action)">
+            <summary>
+            Calls an action when going out of scope.
+            </summary>
+            <param name="action">The action to call.</param>
+            <returns>A <see cref="T:System.IDisposable"/> object to give to a using clause.</returns>
+        </member>
+        <member name="M:QuikGraph.Utils.DisposableHelpers.FinallyScope.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:QuikGraph.Utils.MathUtils">
+            <summary>
+            Math utilities.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Utils.MathUtils.DoubleEpsilon">
+            <summary>
+            Smallest value such that 1.0+<see cref="F:QuikGraph.Utils.MathUtils.DoubleEpsilon"/> != 1.0
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Utils.MathUtils.IsZero(System.Double)">
+            <summary>
+            Returns whether or not the double is "close" to 0, but this is faster.
+            </summary>
+            <returns>The result of the comparision.</returns>
+            <param name="a">The double to compare to 0.</param>
+        </member>
+        <member name="M:QuikGraph.Utils.MathUtils.NearEqual(System.Double,System.Double)">
+            <summary>
+            Returns whether or not two <see cref="T:System.Double"/>s are "equal". That is, whether or
+            not they are within epsilon of each other.
+            </summary>
+            <param name="a">The first <see cref="T:System.Double"/> to compare.</param>
+            <param name="b">The second <see cref="T:System.Double"/> to compare.</param>
+            <returns>The result of the comparision.</returns>
+        </member>
+        <member name="T:QuikGraph.Graphviz.FormatClusterEventHandler`2">
+            <summary>
+            Delegate for a clustered graph formatting event.
+            </summary>
+            <typeparam name="TVertex">Vertex type.</typeparam>
+            <typeparam name="TEdge">Edge type.</typeparam>
+            <param name="sender">Event sender.</param>
+            <param name="args">Event arguments.</param>
+        </member>
+        <member name="T:QuikGraph.Graphviz.FormatEdgeAction`2">
+            <summary>
+            Delegate for an edge formatting event.
+            </summary>
+            <typeparam name="TVertex">Vertex type.</typeparam>
+            <typeparam name="TEdge">Edge type.</typeparam>
+            <param name="sender">Event sender.</param>
+            <param name="args">Event arguments.</param>
+        </member>
+        <member name="T:QuikGraph.Graphviz.FormatVertexEventHandler`1">
+            <summary>
+            Delegate for a vertex formatting event.
+            </summary>
+            <typeparam name="TVertex">Vertex type.</typeparam>
+            <param name="sender">Event sender.</param>
+            <param name="args">Event arguments.</param>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizArrow">
+            <summary>
+            Graphviz arrow.
+            <see href="https://www.graphviz.org/doc/info/arrows.html">See more</see>
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizArrow.#ctor(QuikGraph.Graphviz.Dot.GraphvizArrowShape)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizArrow"/> class.
+            </summary>
+            <param name="shape">Arrow shape.</param>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizArrow.#ctor(QuikGraph.Graphviz.Dot.GraphvizArrowShape,QuikGraph.Graphviz.Dot.GraphvizArrowClipping,QuikGraph.Graphviz.Dot.GraphvizArrowFilling)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizArrow"/> class.
+            </summary>
+            <param name="shape">Arrow shape.</param>
+            <param name="clipping">Arrow clipping.</param>
+            <param name="filling">Arrow filling.</param>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizArrow.Shape">
+            <summary>
+            Arrow shape.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizArrow.Clipping">
+            <summary>
+            Arrow clipping.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizArrow.Filling">
+            <summary>
+            Arrow filling.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizArrow.ToDot">
+            <summary>
+            Converts this arrow to DOT.
+            </summary>
+            <returns>Arrow as DOT.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizArrow.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizArrowClipping">
+            <summary>
+            Enumeration of possible arrow clippings.
+            <see href="https://www.graphviz.org/doc/info/arrows.html">See more</see>
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowClipping.None">
+            <summary>
+            No clipping.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowClipping.Left">
+            <summary>
+            Clip the shape, leaving only the part to the left of the edge.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowClipping.Right">
+            <summary>
+            Clip the shape, leaving only the part to the right of the edge.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizArrowFilling">
+            <summary>
+            Enumeration of possible arrow fillings.
+            <see href="https://www.graphviz.org/doc/info/arrows.html">See more</see>
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowFilling.Close">
+            <summary>
+            Use a closed (filled) version of the shape.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowFilling.Open">
+            <summary>
+            Use an open (non-filled) version of the shape.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizArrowShape">
+            <summary>
+            Enumeration of possible arrow shapes.
+            <see href="https://www.graphviz.org/doc/info/arrows.html">See more</see>
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowShape.Box">
+            <summary>
+            Box.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowShape.Crow">
+            <summary>
+            Crow.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowShape.Diamond">
+            <summary>
+            Diamond.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowShape.Dot">
+            <summary>
+            Dot.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowShape.Inv">
+            <summary>
+            Inv.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowShape.None">
+            <summary>
+            None.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowShape.Normal">
+            <summary>
+            Normal.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowShape.Tee">
+            <summary>
+            Tee.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowShape.Vee">
+            <summary>
+            Vee.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowShape.Curve">
+            <summary>
+            Curve.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizArrowShape.ICurve">
+            <summary>
+            ICurve.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizClusterMode">
+            <summary>
+            Enumeration of possible cluster modes.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizClusterMode.Local">
+            <summary>
+            Local.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizClusterMode.Global">
+            <summary>
+            Global.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizClusterMode.None">
+            <summary>
+            None.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizColor">
+            <summary>
+            Represents a color.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizColor.#ctor(System.Byte,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizColor"/> struct.
+            </summary>
+            <param name="a">Alpha channel value.</param>
+            <param name="r">Red channel value.</param>
+            <param name="g">Green channel value.</param>
+            <param name="b">Blue channel value.</param>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.A">
+            <summary>
+            Alpha channel value.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.R">
+            <summary>
+            Red channel value.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.G">
+            <summary>
+            Green channel value.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.B">
+            <summary>
+            Blue channel value.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizColor.op_Equality(QuikGraph.Graphviz.Dot.GraphvizColor,QuikGraph.Graphviz.Dot.GraphvizColor)">
+            <summary>
+            Indicates whether both <see cref="T:QuikGraph.Graphviz.Dot.GraphvizColor"/> are equal.
+            </summary>
+            <param name="color1">First <see cref="T:QuikGraph.Graphviz.Dot.GraphvizColor"/> to compare.</param>
+            <param name="color2">Second <see cref="T:QuikGraph.Graphviz.Dot.GraphvizColor"/> to compare.</param>
+            <returns>True if both <see cref="T:QuikGraph.Graphviz.Dot.GraphvizColor"/> are equal, otherwise false.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizColor.op_Inequality(QuikGraph.Graphviz.Dot.GraphvizColor,QuikGraph.Graphviz.Dot.GraphvizColor)">
+            <summary>
+            Indicates whether both <see cref="T:QuikGraph.Graphviz.Dot.GraphvizColor"/> are not equal.
+            </summary>
+            <param name="color1">First <see cref="T:QuikGraph.Graphviz.Dot.GraphvizColor"/> to compare.</param>
+            <param name="color2">Second <see cref="T:QuikGraph.Graphviz.Dot.GraphvizColor"/> to compare.</param>
+            <returns>True if both <see cref="T:QuikGraph.Graphviz.Dot.GraphvizColor"/> are equal, otherwise false.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizColor.Equals(QuikGraph.Graphviz.Dot.GraphvizColor)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizColor.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizColor.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.AliceBlue">
+            <summary>
+            Alice blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.AntiqueWhite">
+            <summary>
+            Antique while color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Aqua">
+            <summary>
+            Aqua color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Aquamarine">
+            <summary>
+            Aquamarine color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Azure">
+            <summary>
+            Azure color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Beige">
+            <summary>
+            Beige color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Bisque">
+            <summary>
+            Bisque color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Black">
+            <summary>
+            Black color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.BlanchedAlmond">
+            <summary>
+            Blanched almond color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Blue">
+            <summary>
+            Blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.BlueViolet">
+            <summary>
+            Blue violet color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Brown">
+            <summary>
+            Brown color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.BurlyWood">
+            <summary>
+            Burly wood color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.CadetBlue">
+            <summary>
+            Cadet blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Chartreuse">
+            <summary>
+            Chartreuse color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Chocolate">
+            <summary>
+            Chocolate color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Coral">
+            <summary>
+            Coral color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.CornflowerBlue">
+            <summary>
+            Corn flower blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Cornsilk">
+            <summary>
+            Corn silk color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Crimson">
+            <summary>
+            Crimson color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Cyan">
+            <summary>
+            Cyan color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkBlue">
+            <summary>
+            Dark blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkCyan">
+            <summary>
+            Dark cyan color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkGoldenrod">
+            <summary>
+            Dark goldenrod color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkGray">
+            <summary>
+            Dark gray color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkGreen">
+            <summary>
+            Dark green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkKhaki">
+            <summary>
+            Dark khaki color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkMagenta">
+            <summary>
+            Dark magenta color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkOliveGreen">
+            <summary>
+            Dark olive green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkOrange">
+            <summary>
+            Dark orange color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkOrchid">
+            <summary>
+            Dark orchid color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkRed">
+            <summary>
+            Dark red color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkSalmon">
+            <summary>
+            Dark salmon color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkSeaGreen">
+            <summary>
+            Dark sea green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkSlateBlue">
+            <summary>
+            Dark slate blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkSlateGray">
+            <summary>
+            Dark slate gray color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkTurquoise">
+            <summary>
+            Dark turquoise color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DarkViolet">
+            <summary>
+            Dark violet color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DeepPink">
+            <summary>
+            Deep pink color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DeepSkyBlue">
+            <summary>
+            Deep sky blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DimGray">
+            <summary>
+            Dim gray color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.DodgerBlue">
+            <summary>
+            Dodger blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Firebrick">
+            <summary>
+            Firebrick color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.FloralWhite">
+            <summary>
+            Floral white color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.ForestGreen">
+            <summary>
+            Forest green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Fuchsia">
+            <summary>
+            Fuchsia color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Gainsboro">
+            <summary>
+            Gainsboro color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.GhostWhite">
+            <summary>
+            Ghost white color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Gold">
+            <summary>
+            Gold color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Goldenrod">
+            <summary>
+            Goldenrod color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Gray">
+            <summary>
+            Gray color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Green">
+            <summary>
+            Green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.GreenYellow">
+            <summary>
+            Green yellow color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Honeydew">
+            <summary>
+            Honeydew color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.HotPink">
+            <summary>
+            Hot pink color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.IndianRed">
+            <summary>
+            Indian red color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Indigo">
+            <summary>
+            Indigo color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Ivory">
+            <summary>
+            Ivory color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Khaki">
+            <summary>
+            Khaki color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Lavender">
+            <summary>
+            Lavender color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LavenderBlush">
+            <summary>
+            Lavender blush color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LawnGreen">
+            <summary>
+            Lawn green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LemonChiffon">
+            <summary>
+            Lemon chiffon color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightBlue">
+            <summary>
+            Light blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightCoral">
+            <summary>
+            Light coral color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightCyan">
+            <summary>
+            Light cyan color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightGoldenrodYellow">
+            <summary>
+            Light Goldenrod yellow color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightGray">
+            <summary>
+            Light gray color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightGreen">
+            <summary>
+            Light green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightPink">
+            <summary>
+            Light pink color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightSalmon">
+            <summary>
+            Light salmon color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightSeaGreen">
+            <summary>
+            Light sea green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightSkyBlue">
+            <summary>
+            Light sky blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightSlateGray">
+            <summary>
+            Light slate gray color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightSteelBlue">
+            <summary>
+            Light steel blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LightYellow">
+            <summary>
+            Light yellow color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Lime">
+            <summary>
+            Lime color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.LimeGreen">
+            <summary>
+            Lime green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Linen">
+            <summary>
+            Linen color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Magenta">
+            <summary>
+            Magenta color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Maroon">
+            <summary>
+            Maroon color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.MediumAquamarine">
+            <summary>
+            Medium aquamarine color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.MediumBlue">
+            <summary>
+            Medium blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.MediumOrchid">
+            <summary>
+            Medium orchid color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.MediumPurple">
+            <summary>
+            Medium purple color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.MediumSeaGreen">
+            <summary>
+            Medium sea green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.MediumSlateBlue">
+            <summary>
+            Medium slate blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.MediumSpringGreen">
+            <summary>
+            Medium spring green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.MediumTurquoise">
+            <summary>
+            Medium turquoise color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.MediumVioletRed">
+            <summary>
+            Medium violet red color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.MidnightBlue">
+            <summary>
+            Midnight blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.MintCream">
+            <summary>
+            Mint cream color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.MistyRose">
+            <summary>
+            Misty rose color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Moccasin">
+            <summary>
+            Moccasin color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.NavajoWhite">
+            <summary>
+            Navajo white color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Navy">
+            <summary>
+            Navy color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.OldLace">
+            <summary>
+            Old lace color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Olive">
+            <summary>
+            Olive color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.OliveDrab">
+            <summary>
+            Olive drab color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Orange">
+            <summary>
+            Orange color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.OrangeRed">
+            <summary>
+            Orange red color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Orchid">
+            <summary>
+            Orchid color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.PaleGoldenrod">
+            <summary>
+            Pale goldenrod color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.PaleGreen">
+            <summary>
+            Pale green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.PaleTurquoise">
+            <summary>
+            Pale turquoise color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.PaleVioletRed">
+            <summary>
+            Pale violet red color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.PapayaWhip">
+            <summary>
+            Papaya whip color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.PeachPuff">
+            <summary>
+            Peach puff color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Peru">
+            <summary>
+            Peru color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Pink">
+            <summary>
+            Pink color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Plum">
+            <summary>
+            Plum color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.PowderBlue">
+            <summary>
+            Powder blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Purple">
+            <summary>
+            Purple color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Red">
+            <summary>
+            Red color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.RosyBrown">
+            <summary>
+            Rosy brown color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.RoyalBlue">
+            <summary>
+            Royal blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.SaddleBrown">
+            <summary>
+            Saddle brown color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Salmon">
+            <summary>
+            Salmon color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.SandyBrown">
+            <summary>
+            Sandy brown color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.SeaGreen">
+            <summary>
+            Sea green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.SeaShell">
+            <summary>
+            Sea shell color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Sienna">
+            <summary>
+            Sienna color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Silver">
+            <summary>
+            Silver color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.SkyBlue">
+            <summary>
+            Sky blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.SlateBlue">
+            <summary>
+            Slate blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.SlateGray">
+            <summary>
+            Slate gray color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Snow">
+            <summary>
+            Snow color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.SpringGreen">
+            <summary>
+            Spring green color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.SteelBlue">
+            <summary>
+            Steel blue color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Tan">
+            <summary>
+            Tan color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Teal">
+            <summary>
+            Teal color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Thistle">
+            <summary>
+            Thistle color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Tomato">
+            <summary>
+            Tomato color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Transparent">
+            <summary>
+            Transparent color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Turquoise">
+            <summary>
+            Turquoise color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Violet">
+            <summary>
+            Violet color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Wheat">
+            <summary>
+            Wheat color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.White">
+            <summary>
+            White color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.WhiteSmoke">
+            <summary>
+            White smoke color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.Yellow">
+            <summary>
+            Yellow color.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizColor.YellowGreen">
+            <summary>
+            Yellow green color.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizEdge">
+            <summary>
+            Graphviz edge.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.Comment">
+            <summary>
+            Comment.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:comment">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.Label">
+            <summary>
+            Label.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.ToolTip">
+            <summary>
+            Tooltip.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:tooltip">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.Url">
+            <summary>
+            URL.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:URL">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.Direction">
+            <summary>
+            Direction.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:dir">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.Font">
+            <summary>
+            Font.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontname">See more</see> or
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontsize">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.FontColor">
+            <summary>
+            Font color.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontcolor">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.PenWidth">
+            <summary>
+            Pen width.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:penwidth">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.Head">
+            <summary>
+            Edge head.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.HeadArrow">
+            <summary>
+            Edge arrow.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:arrowhead">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.HeadPort">
+            <summary>
+            Head port.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:headport">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.Tail">
+            <summary>
+            Tail.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.TailArrow">
+            <summary>
+            Tail arrow.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:arrowtail">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.TailPort">
+            <summary>
+            Tail port.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:tailport">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.IsConstrained">
+            <summary>
+            Indicates if edge is constrained.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:constraint">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.IsDecorated">
+            <summary>
+            Indicates if edge is decorated.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:decorate">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.Layer">
+            <summary>
+            Layer.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:layer">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.StrokeColor">
+            <summary>
+            Stroke color.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:color">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.Style">
+            <summary>
+            Edge style.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:style">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.Weight">
+            <summary>
+            Weight.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:weight">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.Length">
+            <summary>
+            Length.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:len">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdge.MinLength">
+            <summary>
+            Minimal length.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:minlen">See more</see>
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizEdge.ToDot">
+            <summary>
+            Converts this edge to DOT.
+            </summary>
+            <returns>Edge as DOT.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizEdge.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizEdgeDirection">
+            <summary>
+            Enumeration of possible edge directions.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizEdgeDirection.None">
+            <summary>
+            None.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizEdgeDirection.Forward">
+            <summary>
+            Forward.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizEdgeDirection.Back">
+            <summary>
+            Backward.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizEdgeDirection.Both">
+            <summary>
+            Both directions.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizEdgeExtremity">
+            <summary>
+            Graphviz edge extremity.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizEdgeExtremity.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizEdgeExtremity"/> class.
+            </summary>
+            <param name="isHead">Indicates if this edge extremity is the head.</param>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeExtremity.IsHead">
+            <summary>
+            Indicates if this extremity is edge head or tail.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeExtremity.IsClipped">
+            <summary>
+            Is edge extremity clipped to the boundaries of the target node?
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:headclip">See more</see> or
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:tailclip">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeExtremity.IsHtmlLabel">
+            <summary>
+            Indicates if label should be read as HTML or normal text. By default it is normal text.
+            <see href="https://www.graphviz.org/doc/info/shapes.html#html">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeExtremity.Label">
+            <summary>
+            Label.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:headlabel">See more</see> or
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:taillabel">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeExtremity.ToolTip">
+            <summary>
+            Tooltip.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:headtooltip">See more</see> or
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:tailtooltip">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeExtremity.Url">
+            <summary>
+            URL.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:headURL">See more</see> or
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:tailURL">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeExtremity.Logical">
+            <summary>
+            Logical extremity of an edge.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:lhead">See more</see> or
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:ltail">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeExtremity.Same">
+            <summary>
+            Identifier to group edge extremities with same identifier.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:samehead">See more</see> or
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:sametail">See more</see>
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizEdgeExtremity.AddParameters(System.Collections.IDictionary)">
+            <summary>
+            Adds this edge extremity parameters to the given <paramref name="parameters"/> map.
+            </summary>
+            <param name="parameters">Parameter map to fill.</param>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizEdgeLabel">
+            <summary>
+            Graphviz edge label.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeLabel.Angle">
+            <summary>
+            Label angle.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:labelangle">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeLabel.Distance">
+            <summary>
+            Scaling factor from node.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:labeldistance">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeLabel.Float">
+            <summary>
+            Floating label.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:labelfloat">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeLabel.Font">
+            <summary>
+            Font.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontname">See more</see> or
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontsize">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeLabel.FontColor">
+            <summary>
+            Font color.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:labelfontcolor">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeLabel.IsHtmlLabel">
+            <summary>
+            Indicates if label should be read as HTML or normal text. By default it is normal text.
+            <see href="https://www.graphviz.org/doc/info/shapes.html#html">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizEdgeLabel.Value">
+            <summary>
+            Label text.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:label">See more</see>
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizEdgeLabel.AddParameters(System.Collections.IDictionary)">
+            <summary>
+            Adds this edge label parameters to the given <paramref name="parameters"/> map.
+            </summary>
+            <param name="parameters">Parameter map to fill.</param>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizEdgeStyle">
+            <summary>
+            Enumeration of possible edge styles.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizEdgeStyle.Unspecified">
+            <summary>
+            Unspecified.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizEdgeStyle.Invis">
+            <summary>
+            Invisible.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizEdgeStyle.Dashed">
+            <summary>
+            Dashed.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizEdgeStyle.Dotted">
+            <summary>
+            Dotted.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizEdgeStyle.Bold">
+            <summary>
+            Bold.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizEdgeStyle.Solid">
+            <summary>
+            Solid.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizFont">
+            <summary>
+            Graphviz font.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizFont.Name">
+            <summary>
+            Font name.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontname">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizFont.SizeInPoints">
+            <summary>
+            Font size (in points).
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontsize">See more</see>
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizFont.#ctor(System.String,System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizFont"/> class.
+            </summary>
+            <param name="name">Font name.</param>
+            <param name="sizeInPoints">Font size.</param>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizGraph">
+            <summary>
+            Graphviz graph.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.Name">
+            <summary>
+            Graph name.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.Comment">
+            <summary>
+            Comment.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:comment">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.Url">
+            <summary>
+            URL.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:URL">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.BackgroundColor">
+            <summary>
+            Background color.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:bgcolor">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.ClusterRank">
+            <summary>
+            Cluster rank mode.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:clusterrank">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.Font">
+            <summary>
+            Font.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontname">See more</see> or
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontsize">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.FontColor">
+            <summary>
+            Font color.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontcolor">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.PenWidth">
+            <summary>
+            Pen width.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:penwidth">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.IsCentered">
+            <summary>
+            Graph should be centered?
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:center">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.IsCompounded">
+            <summary>
+            Graph is compound?
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:compound">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.IsConcentrated">
+            <summary>
+            Graph is concentrated?
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:concentrate">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.IsLandscape">
+            <summary>
+            Graph is landscape?
+            <see href="https://www.graphviz.org/doc/info/attrs.html#dd:orientation">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.IsNormalized">
+            <summary>
+            Graph should be normalized?
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:normalize">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.IsReMinCross">
+            <summary>
+            Should run crossing minimization?
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:remincross">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.IsHtmlLabel">
+            <summary>
+            Indicates if label should be read as HTML or normal text. By default it is normal text.
+            <see href="https://www.graphviz.org/doc/info/shapes.html#html">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.Label">
+            <summary>
+            Label.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:label">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.LabelJustification">
+            <summary>
+            Label justification.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:labeljust">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.LabelLocation">
+            <summary>
+            Label location.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:labelloc">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.Layers">
+            <summary>
+            Layers.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:layers">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.McLimit">
+            <summary>
+            Crossing minimization improvement tries limit.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:mclimit">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.NodeSeparation">
+            <summary>
+            Node separation.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:nodesep">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.RankDirection">
+            <summary>
+            Rank direction.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:rankdir">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.RankSeparation">
+            <summary>
+            Rank separation.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:ranksep">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.NsLimit">
+            <summary>
+            Iterations limit for simplex applications.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:nslimit">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.NsLimit1">
+            <summary>
+            Iterations limit for simplex applications.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:nslimit1">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.OutputOrder">
+            <summary>
+            Output order.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:outputorder">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.PageDirection">
+            <summary>
+            Page direction.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:pagedir">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.PageSize">
+            <summary>
+            Page size.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:page">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.Quantum">
+            <summary>
+            Quantum.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:quantum">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.Ratio">
+            <summary>
+            Aspect ratio.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:ratio">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.Resolution">
+            <summary>
+            Resolution.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:resolution">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.Rotate">
+            <summary>
+            Graph rotation.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:rotate">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.SamplePoints">
+            <summary>
+            Sample points.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:samplepoints">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.SearchSize">
+            <summary>
+            Search size.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:searchsize">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.Size">
+            <summary>
+            Size.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:size">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.Splines">
+            <summary>
+            Graph splines draw mode.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:splines">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizGraph.StyleSheet">
+            <summary>
+            Stylesheet.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:stylesheet">See more</see>
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizGraph.ToDot">
+            <summary>
+            Converts this graph to DOT.
+            </summary>
+            <returns>Graph as DOT.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizGraph.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizImageType">
+            <summary>
+            Enumeration of possible image types.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Cmap">
+            <summary>
+            Client side imagemaps.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Fig">
+            <summary>
+            Figure format.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Gd">
+            <summary>
+            Gd format.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Gd2">
+            <summary>
+            Gd2 format.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Gif">
+            <summary>
+            GIF format.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Hpgl">
+            <summary>
+            HP-GL/2 format.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Imap">
+            <summary>
+            Server-side imagemaps.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Jpeg">
+            <summary>
+            JPEG format.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Mif">
+            <summary>
+            FrameMaker MIF format.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Mp">
+            <summary>
+            MetaPost.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Pcl">
+            <summary>
+            PCL format.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Pic">
+            <summary>
+            PIC format.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.PlainText">
+            <summary>
+            Plain text format.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Png">
+            <summary>
+            Portable Network Graphics format
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Ps">
+            <summary>
+            PostScript.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Ps2">
+            <summary>
+            PostScript for PDF.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Svg">
+            <summary>
+            Scalable Vector Graphics.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Svgz">
+            <summary>
+            Scalable Vector Graphics, gzipped.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Vrml">
+            <summary>
+            VRML.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Vtx">
+            <summary>
+            Visual Thought format.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizImageType.Wbmp">
+            <summary>
+            Wireless BitMap format.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizLabelJustification">
+            <summary>
+            Enumeration of possible label justification.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizLabelJustification.L">
+            <summary>
+            Left justification.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizLabelJustification.R">
+            <summary>
+            Right justification.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizLabelJustification.C">
+            <summary>
+            Centered.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizLabelLocation">
+            <summary>
+            Enumeration of label locations.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizLabelLocation.T">
+            <summary>
+            Top.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizLabelLocation.B">
+            <summary>
+            Bottom.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizLayer">
+            <summary>
+            Graphviz layer.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizLayer.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizLayer"/> class.
+            </summary>
+            <param name="name">Layer name.</param>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizLayer.Name">
+            <summary>
+            Layer name.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizLayerCollection">
+            <summary>
+            Graphviz layer collection.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizLayerCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizLayerCollection"/> class.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizLayerCollection.#ctor(QuikGraph.Graphviz.Dot.GraphvizLayer[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizLayerCollection"/> class.
+            </summary>
+            <param name="list">The list that is wrapped by the new collection.</param>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizLayerCollection.#ctor(QuikGraph.Graphviz.Dot.GraphvizLayerCollection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizLayerCollection"/> class.
+            </summary>
+            <param name="list">The list that is wrapped by the new collection.</param>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizLayerCollection.Separators">
+            <summary>
+            Allowed collection item separators.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:layersep">See more</see>
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizLayerCollection.ToDot">
+            <summary>
+            Converts this collection to DOT.
+            </summary>
+            <returns>Collection as DOT.</returns>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizOutputMode">
+            <summary>
+            Enumeration of possible output modes.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizOutputMode.BreadthFirst">
+            <summary>
+            Breadth first.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizOutputMode.NodesFirst">
+            <summary>
+            Nodes first.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizOutputMode.EdgesFirst">
+            <summary>
+            Edges first.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizPageDirection">
+            <summary>
+            Enumeration of possible page directions.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizPageDirection.BL">
+            <summary>
+            Major order: Bottom to Top, Minor order: Left to Right.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizPageDirection.BR">
+            <summary>
+            Major order: Bottom to Top, Minor order: Right to Left.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizPageDirection.TL">
+            <summary>
+            Major order: Top to Bottom, Minor order: Left to Right.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizPageDirection.TR">
+            <summary>
+            Major order: Top to Bottom, Minor order: Right to Left.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizPageDirection.RB">
+            <summary>
+            Major order: Right to Left, Minor order: Bottom to Top.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizPageDirection.RT">
+            <summary>
+            Major order: Right to Left, Minor order: Top to Bottom.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizPageDirection.LB">
+            <summary>
+            Major order: Left to Right, Minor order: Bottom to Top.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizPageDirection.LT">
+            <summary>
+            Major order: Left to Right, Minor order: Top to Bottom.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizPoint">
+            <summary>
+            Graphviz point.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizPoint.X">
+            <summary>
+            X.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizPoint.Y">
+            <summary>
+            Y.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizPoint.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizPoint"/> class.
+            </summary>
+            <param name="x">X value.</param>
+            <param name="y">Y value.</param>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizRankDirection">
+            <summary>
+            Enumeration of possible rank directions.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizRankDirection.LR">
+            <summary>
+            Left to right.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizRankDirection.TB">
+            <summary>
+            Top to bottom.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizRatioMode">
+            <summary>
+            Enumeration of possible ratio modes.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizRatioMode.Fill">
+            <summary>
+            Filling.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizRatioMode.Compress">
+            <summary>
+            Compressing.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizRatioMode.Auto">
+            <summary>
+            Automatic.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizRecord">
+            <summary>
+            Graphviz record.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizRecord.Cells">
+            <summary>
+            Record cells.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizRecord.ToDot">
+            <summary>
+            Converts this record to DOT.
+            </summary>
+            <returns>Record as DOT.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizRecord.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizRecordCell">
+            <summary>
+            Graphviz record cell.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizRecordCell.Cells">
+            <summary>
+            Record cells.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizRecordCell.HasPort">
+            <summary>
+            Indicates if record has port.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizRecordCell.Port">
+            <summary>
+            Port.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizRecordCell.HasText">
+            <summary>
+            Indicates if record has text.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizRecordCell.Text">
+            <summary>
+            Text.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizRecordCell.ToDot">
+            <summary>
+            Converts this record cell to DOT.
+            </summary>
+            <returns>Record cell as DOT.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizRecordCell.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizRecordCellCollection">
+            <summary>
+            Graphviz record cell collection.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizRecordCellCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizRecordCellCollection"/> class.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizRecordCellCollection.#ctor(QuikGraph.Graphviz.Dot.GraphvizRecordCell[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizRecordCellCollection"/> class.
+            </summary>
+            <param name="list">The list that is wrapped by the new collection.</param>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizRecordCellCollection.#ctor(QuikGraph.Graphviz.Dot.GraphvizRecordCellCollection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizRecordCellCollection"/> class.
+            </summary>
+            <param name="list">The list that is wrapped by the new collection.</param>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizSizeF">
+            <summary>
+            Graphviz size (float).
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizSizeF.Width">
+            <summary>
+            Width.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:width">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizSizeF.Height">
+            <summary>
+            Height.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:height">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizSizeF.IsEmpty">
+            <summary>
+            Indicates if this size is empty.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizSizeF.#ctor(System.Single,System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizSizeF"/> struct.
+            </summary>
+            <param name="width">Width.</param>
+            <param name="height">Height.</param>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizSizeF.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizSize">
+            <summary>
+            Graphviz size.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizSize.Width">
+            <summary>
+            Width.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:width">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizSize.Height">
+            <summary>
+            Height.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:height">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizSize.IsEmpty">
+            <summary>
+            Indicates if this size is empty.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizSize.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Dot.GraphvizSize"/> struct.
+            </summary>
+            <param name="width">Width.</param>
+            <param name="height">Height.</param>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizSize.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizSplineType">
+            <summary>
+            Enumeration of possible spline types.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:splines">See details</see>
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizSplineType.Spline">
+            <summary>
+            Edges drawn as splines routed by around nodes.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizSplineType.None">
+            <summary>
+            No edge drawn.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizSplineType.Line">
+            <summary>
+            Edges drawn with line segments.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizSplineType.Polyline">
+            <summary>
+            Edges drawn as polylines.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizSplineType.Curved">
+            <summary>
+            Edges drawn as curved arcs.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizSplineType.Ortho">
+            <summary>
+            Edges drawn with orthogonal lines.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizVertex">
+            <summary>
+            Graphviz vertex.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Position">
+            <summary>
+            Position.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:pos">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Comment">
+            <summary>
+            Comment.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:comment">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.IsHtmlLabel">
+            <summary>
+            Indicates if label should be read as HTML or normal text. By default it is normal text.
+            <see href="https://www.graphviz.org/doc/info/shapes.html#html">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Label">
+            <summary>
+            Label.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:label">See more</see>
+            </summary>
+            <remarks>
+            If <see cref="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Shape"/> is defined to <see cref="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Record"/>, you can
+            use <see cref="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Record"/> structure to generate a string label. Note also that if <see cref="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Label"/>
+            is set, it has the priority over <see cref="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Record"/> so rather than using <see cref="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Record"/>
+            to generate the label you can define it using your own way in the <see cref="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Label"/>.
+            The only constraint will be to generate a fully valid record string.
+            </remarks>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.ToolTip">
+            <summary>
+            Tooltip.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:tooltip">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Url">
+            <summary>
+            URL.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:URL">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Distortion">
+            <summary>
+            Distortion.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:distortion">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.FillColor">
+            <summary>
+            Filling color.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fillcolor">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Font">
+            <summary>
+            Font.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontname">See more</see> or
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontsize">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.FontColor">
+            <summary>
+            Font color.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fontcolor">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.PenWidth">
+            <summary>
+            Pen width.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:penwidth">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Group">
+            <summary>
+            Vertex group.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:group">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Layer">
+            <summary>
+            Vertex layer.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:layer">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Orientation">
+            <summary>
+            Orientation.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:orientation">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Peripheries">
+            <summary>
+            Peripheries.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:peripheries">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Regular">
+            <summary>
+            Indicates if it is a regular vertex.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:regular">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Record">
+            <summary>
+            Record info.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:label">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Shape">
+            <summary>
+            Vertex shape.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:shape">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Sides">
+            <summary>
+            Vertex sides.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:sides">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Size">
+            <summary>
+            Vertex size.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:width">See more</see> or
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:height">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.FixedSize">
+            <summary>
+            Fixed size.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:fixedsize">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Skew">
+            <summary>
+            Skew.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:skew">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.StrokeColor">
+            <summary>
+            Stroke color.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:color">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Style">
+            <summary>
+            Vertex style.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:style">See more</see>
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Dot.GraphvizVertex.Z">
+            <summary>
+            Z index.
+            <see href="https://www.graphviz.org/doc/info/attrs.html#d:z">See more</see>
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizVertex.InternalToDot(QuikGraph.Graphviz.Dot.GraphvizVertex)">
+            <summary>
+            Converts this vertex to DOT.
+            </summary>
+            <param name="commonFormat">Common vertex format to apply.</param>
+            <returns>Vertex as DOT.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizVertex.ToDot">
+            <summary>
+            Converts this vertex to DOT.
+            </summary>
+            <returns>Vertex as DOT.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Dot.GraphvizVertex.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizVertexShape">
+            <summary>
+            Enumeration of possible vertex shapes.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Unspecified">
+            <summary>
+            Unspecified.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Box">
+            <summary>
+            Box.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Polygon">
+            <summary>
+            Polygon.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Ellipse">
+            <summary>
+            Ellipse.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Circle">
+            <summary>
+            Circle.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Point">
+            <summary>
+            Point.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Egg">
+            <summary>
+            Egg.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Triangle">
+            <summary>
+            Triangle.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Plaintext">
+            <summary>
+            Plain text.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Diamond">
+            <summary>
+            Diamond.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Trapezium">
+            <summary>
+            Trapezium.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Parallelogram">
+            <summary>
+            Parallelogram.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.House">
+            <summary>
+            House.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Pentagon">
+            <summary>
+            Pentagon.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Hexagon">
+            <summary>
+            Hexagon.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Septagon">
+            <summary>
+            Septagon.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Octagon">
+            <summary>
+            Octagon.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.DoubleCircle">
+            <summary>
+            Double circle.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.DoubleOctagon">
+            <summary>
+            Double octagon.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.TripleOctagon">
+            <summary>
+            Triple octagon.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.InvTriangle">
+            <summary>
+            Inverted triangle.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.InvTrapezium">
+            <summary>
+            Inverted trapezium.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.InvHouse">
+            <summary>
+            Inverted house.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.MDiamond">
+            <summary>
+            MDiamond.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.MSquare">
+            <summary>
+            MSquare.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.MCircle">
+            <summary>
+            MCircle.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Rect">
+            <summary>
+            Rectangle (rect).
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Rectangle">
+            <summary>
+            Rectangle.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexShape.Record">
+            <summary>
+            Record.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Dot.GraphvizVertexStyle">
+            <summary>
+            Enumeration of possible vertex styles.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexStyle.Unspecified">
+            <summary>
+            Unspecified.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexStyle.Filled">
+            <summary>
+            Filled.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexStyle.Diagonals">
+            <summary>
+            Diagonals.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexStyle.Rounded">
+            <summary>
+            Rounded.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexStyle.Invis">
+            <summary>
+            Invisible.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexStyle.Dashed">
+            <summary>
+            Dashed.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexStyle.Dotted">
+            <summary>
+            Dotted.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexStyle.Bold">
+            <summary>
+            Bold.
+            </summary>
+        </member>
+        <member name="F:QuikGraph.Graphviz.Dot.GraphvizVertexStyle.Solid">
+            <summary>
+            Solid.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.FormatClusterEventArgs`2">
+            <summary>
+            Arguments of an event related to the formatting of a clustered graph.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.FormatClusterEventArgs`2.#ctor(QuikGraph.IVertexAndEdgeListGraph{`0,`1},QuikGraph.Graphviz.Dot.GraphvizGraph)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.EdgeEventArgs`2"/> class.
+            </summary>
+            <param name="clusteredGraph">Graph to format.</param>
+            <param name="graphFormat">Graph format.</param>
+        </member>
+        <member name="P:QuikGraph.Graphviz.FormatClusterEventArgs`2.Cluster">
+            <summary>
+            Graph to format.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.FormatClusterEventArgs`2.GraphFormat">
+            <summary>
+            Graph format.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.FormatEdgeEventArgs`2">
+            <summary>
+            Arguments of an event related to the formatting of an edge.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.FormatEdgeEventArgs`2.#ctor(`1,QuikGraph.Graphviz.Dot.GraphvizEdge)">
+            <summary />
+        </member>
+        <member name="P:QuikGraph.Graphviz.FormatEdgeEventArgs`2.EdgeFormat">
+            <summary>
+            Edge format.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.FormatVertexEventArgs`1">
+            <summary>
+            Arguments of an event related to the formatting of an edge.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.FormatVertexEventArgs`1.#ctor(`0,QuikGraph.Graphviz.Dot.GraphvizVertex)">
+            <summary />
+        </member>
+        <member name="P:QuikGraph.Graphviz.FormatVertexEventArgs`1.VertexFormat">
+            <summary>
+            Vertex format.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.GraphvizExtensions">
+            <summary>
+            Helper extensions to render graphs to graphviz
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.GraphvizExtensions.ToGraphviz``2(QuikGraph.IEdgeListGraph{``0,``1})">
+            <summary>
+            Renders a graph to the Graphviz DOT format.
+            </summary>
+            <typeparam name="TVertex">Vertex type.</typeparam>
+            <typeparam name="TEdge">Edge type.</typeparam>
+            <param name="graph">Graph to convert.</param>
+            <returns>Graph serialized in DOT format.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.GraphvizExtensions.ToGraphviz``2(QuikGraph.IEdgeListGraph{``0,``1},System.Action{QuikGraph.Graphviz.GraphvizAlgorithm{``0,``1}})">
+            <summary>
+            Renders a graph to the Graphviz DOT format.
+            </summary>
+            <typeparam name="TVertex">Vertex type.</typeparam>
+            <typeparam name="TEdge">Edge type.</typeparam>
+            <param name="graph">Graph to convert.</param>
+            <param name="initAlgorithm">Delegate that initializes the DOT generation algorithm.</param>
+            <returns>Graph serialized in DOT format.</returns>
+        </member>
+        <member name="T:QuikGraph.Graphviz.FileDotEngine">
+            <summary>
+            Default dot engine implementation, writes dot code to disk.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.FileDotEngine.Run(QuikGraph.Graphviz.Dot.GraphvizImageType,System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:QuikGraph.Graphviz.GraphvizAlgorithm`2">
+            <summary>
+            An algorithm that renders a graph to the Graphviz DOT format.
+            </summary>
+            <typeparam name="TVertex">Vertex type.</typeparam>
+            <typeparam name="TEdge">Edge type.</typeparam>
+        </member>
+        <member name="M:QuikGraph.Graphviz.GraphvizAlgorithm`2.#ctor(QuikGraph.IEdgeListGraph{`0,`1})">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.GraphvizAlgorithm`2"/> class.
+            </summary>
+            <param name="graph">Graph to convert to DOT.</param>
+        </member>
+        <member name="M:QuikGraph.Graphviz.GraphvizAlgorithm`2.#ctor(QuikGraph.IEdgeListGraph{`0,`1},QuikGraph.Graphviz.Dot.GraphvizImageType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.GraphvizAlgorithm`2"/> class.
+            </summary>
+            <param name="graph">Graph to convert to DOT.</param>
+            <param name="imageType">Target output image type.</param>
+        </member>
+        <member name="P:QuikGraph.Graphviz.GraphvizAlgorithm`2.GraphFormat">
+            <summary>
+            Graph format.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.GraphvizAlgorithm`2.CommonVertexFormat">
+            <summary>
+            Common vertex format.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.GraphvizAlgorithm`2.CommonEdgeFormat">
+            <summary>
+            Common edge format.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.GraphvizAlgorithm`2.VisitedGraph">
+            <summary>
+            Graph to convert.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.GraphvizAlgorithm`2.Output">
+            <summary>
+            Dot output stream.
+            </summary>
+            <remarks>Not null after a run of <see cref="M:QuikGraph.Graphviz.GraphvizAlgorithm`2.Generate"/> or <see cref="M:QuikGraph.Graphviz.GraphvizAlgorithm`2.Generate(QuikGraph.Graphviz.IDotEngine,System.String)"/>.</remarks>
+        </member>
+        <member name="P:QuikGraph.Graphviz.GraphvizAlgorithm`2.ImageType">
+            <summary>
+            Current image output type.
+            </summary>
+        </member>
+        <member name="E:QuikGraph.Graphviz.GraphvizAlgorithm`2.FormatCluster">
+            <summary>
+            Fired when formatting a clustered graph.
+            </summary>
+        </member>
+        <member name="E:QuikGraph.Graphviz.GraphvizAlgorithm`2.FormatVertex">
+            <summary>
+            Fired when formatting a vertex.
+            </summary>
+        </member>
+        <member name="E:QuikGraph.Graphviz.GraphvizAlgorithm`2.FormatEdge">
+            <summary>
+            Fired when formatting an edge.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.GraphvizAlgorithm`2.Generate">
+            <summary>
+            Generates the DOT corresponding to <see cref="P:QuikGraph.Graphviz.GraphvizAlgorithm`2.VisitedGraph"/>.
+            </summary>
+            <returns>DOT serialization of <see cref="P:QuikGraph.Graphviz.GraphvizAlgorithm`2.VisitedGraph"/>.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.GraphvizAlgorithm`2.Generate(QuikGraph.Graphviz.IDotEngine,System.String)">
+            <summary>
+            Generates the DOT corresponding to <see cref="P:QuikGraph.Graphviz.GraphvizAlgorithm`2.VisitedGraph"/> using <paramref name="dot"/> engine
+            and puts result in <paramref name="outputFilePath"/>.
+            </summary>
+            <returns>File path containing DOT serialization of <see cref="P:QuikGraph.Graphviz.GraphvizAlgorithm`2.VisitedGraph"/>.</returns>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Helpers.CultureHelpers">
+            <summary>
+            Helpers related to <see cref="T:System.Globalization.CultureInfo"/>.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Helpers.CultureHelpers.ToInvariantString(System.Single)">
+            <summary>
+            Converts the given <see cref="T:System.Single"/> <paramref name="value"/> to <see cref="T:System.String"/>
+            using invariant culture.
+            </summary>
+            <param name="value">Value to convert.</param>
+            <returns>Float as string.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Helpers.CultureHelpers.ToInvariantString(System.Double)">
+            <summary>
+            Converts the given <see cref="T:System.Double"/> <paramref name="value"/> to <see cref="T:System.String"/>
+            using invariant culture.
+            </summary>
+            <param name="value">Value to convert.</param>
+            <returns>Double as string.</returns>
+        </member>
+        <member name="T:QuikGraph.Graphviz.Helpers.HtmlString">
+            <summary>
+            String representing HTML content.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.Helpers.HtmlString.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.Helpers.HtmlString"/> struct.
+            </summary>
+            <param name="html">HTML string.</param>
+        </member>
+        <member name="P:QuikGraph.Graphviz.Helpers.HtmlString.String">
+            <summary>
+            HTML string.
+            </summary>
+        </member>
+        <member name="T:QuikGraph.Graphviz.DotEscapers">
+            <summary>
+            Dot escape helpers.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.DotEscapers.EscapePort(System.String)">
+            <summary>
+            Escapes the given <paramref name="value"/> as being a record port value.
+            </summary>
+            <param name="value">String value to escape.</param>
+            <returns>Escaped string.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.DotEscapers.EscapeRecord(System.String)">
+            <summary>
+            Escapes the given <paramref name="value"/> as being a record value.
+            </summary>
+            <param name="value">String value to escape.</param>
+            <returns>Escaped string.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.DotEscapers.Escape(System.String)">
+            <summary>
+            Escapes the given <paramref name="value"/>.
+            </summary>
+            <param name="value">String value to escape.</param>
+            <returns>Escaped string.</returns>
+        </member>
+        <member name="T:QuikGraph.Graphviz.IDotEngine">
+            <summary>
+            Represents a Dot engine runner.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.IDotEngine.Run(QuikGraph.Graphviz.Dot.GraphvizImageType,System.String,System.String)">
+            <summary>
+            Runs the Dot engine using the given <paramref name="dot"/> content and outputs
+            the result in given <paramref name="outputFilePath"/> respecting <paramref name="imageType"/>.
+            </summary>
+            <param name="imageType">Image type.</param>
+            <param name="dot">Graph serialized using Dot language.</param>
+            <param name="outputFilePath">Target file path.</param>
+            <returns>Path to the saved result.</returns>
+        </member>
+        <member name="T:QuikGraph.Graphviz.CondensatedGraphRenderer`3">
+            <summary>
+            Condensation graph to DOT renderer.
+            </summary>
+            <typeparam name="TVertex">Vertex type.</typeparam>
+            <typeparam name="TEdge">Edge type.</typeparam>
+            <typeparam name="TGraph">Graph type.</typeparam>
+        </member>
+        <member name="M:QuikGraph.Graphviz.CondensatedGraphRenderer`3.#ctor(QuikGraph.IEdgeListGraph{`2,QuikGraph.Algorithms.Condensation.CondensedEdge{`0,`1,`2}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.CondensatedGraphRenderer`3"/> class.
+            </summary>
+            <param name="graph">Graph to convert to DOT.</param>
+        </member>
+        <member name="M:QuikGraph.Graphviz.CondensatedGraphRenderer`3.Initialize">
+            <inheritdoc />
+        </member>
+        <member name="M:QuikGraph.Graphviz.CondensatedGraphRenderer`3.Clean">
+            <inheritdoc />
+        </member>
+        <member name="T:QuikGraph.Graphviz.EdgeMergeCondensatedGraphRenderer`2">
+            <summary>
+            Edge merge condensation graph to DOT renderer.
+            </summary>
+            <typeparam name="TVertex">Vertex type.</typeparam>
+            <typeparam name="TEdge">Edge type.</typeparam>
+        </member>
+        <member name="M:QuikGraph.Graphviz.EdgeMergeCondensatedGraphRenderer`2.#ctor(QuikGraph.IEdgeListGraph{`0,QuikGraph.Algorithms.Condensation.MergedEdge{`0,`1}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.EdgeMergeCondensatedGraphRenderer`2"/> class.
+            </summary>
+            <param name="graph">Graph to convert to DOT.</param>
+        </member>
+        <member name="M:QuikGraph.Graphviz.EdgeMergeCondensatedGraphRenderer`2.Initialize">
+            <inheritdoc />
+        </member>
+        <member name="M:QuikGraph.Graphviz.EdgeMergeCondensatedGraphRenderer`2.Clean">
+            <inheritdoc />
+        </member>
+        <member name="T:QuikGraph.Graphviz.GraphRendererBase`2">
+            <summary>
+            Base class for Graph to DOT renderer.
+            </summary>
+            <typeparam name="TVertex">Vertex type.</typeparam>
+            <typeparam name="TEdge">Edge type.</typeparam>
+        </member>
+        <member name="M:QuikGraph.Graphviz.GraphRendererBase`2.#ctor(QuikGraph.IEdgeListGraph{`0,`1})">
+            <summary>
+            Initializes a new instance of the <see cref="T:QuikGraph.Graphviz.GraphvizAlgorithm`2"/> class.
+            </summary>
+            <param name="graph">Graph to convert to DOT.</param>
+        </member>
+        <member name="M:QuikGraph.Graphviz.GraphRendererBase`2.Initialize">
+            <summary>
+            Initializes renderer for generation.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.GraphRendererBase`2.Clean">
+            <summary>
+            Cleans renderer after generation.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.GraphRendererBase`2.Graphviz">
+            <summary>
+            Graph to DOT algorithm.
+            </summary>
+        </member>
+        <member name="P:QuikGraph.Graphviz.GraphRendererBase`2.VisitedGraph">
+            <inheritdoc cref="P:QuikGraph.Graphviz.GraphvizAlgorithm`2.VisitedGraph"/>
+        </member>
+        <member name="M:QuikGraph.Graphviz.GraphRendererBase`2.Generate(QuikGraph.Graphviz.IDotEngine,System.String)">
+            <inheritdoc cref="M:QuikGraph.Graphviz.GraphvizAlgorithm`2.Generate(QuikGraph.Graphviz.IDotEngine,System.String)"/>
+        </member>
+        <member name="T:QuikGraph.Graphviz.SvgHtmlWrapper">
+            <summary>
+            Helpers to related to SVG and HTML.
+            </summary>
+        </member>
+        <member name="M:QuikGraph.Graphviz.SvgHtmlWrapper.DumpHtml(QuikGraph.Graphviz.Dot.GraphvizSize,System.String)">
+            <summary>
+            Creates an HTML file containing the given <paramref name="svgFilePath"/>.
+            </summary>
+            <param name="size">Image size.</param>
+            <param name="svgFilePath">SVG file path.</param>
+            <returns>Dumped HTML file path.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.SvgHtmlWrapper.WrapSvg(System.String)">
+            <summary>
+            Creates an HTML file that wraps the given <paramref name="svgFilePath"/>.
+            </summary>
+            <param name="svgFilePath">SVG file path.</param>
+            <returns>HTML file path.</returns>
+        </member>
+        <member name="M:QuikGraph.Graphviz.SvgHtmlWrapper.ParseSize(System.String)">
+            <summary>
+            Parses the size of an SVG.
+            </summary>
+            <param name="svg">SVG content.</param>
+            <returns>SVG size.</returns>
+        </member>
+    </members>
+</doc>

@@ -8,6 +8,8 @@ namespace Carcassonne.State
     [CreateAssetMenu(fileName = "FeatureState", menuName = "States/FeatureState")]
     public class FeatureState : ScriptableObject
     {
+        public BoardGraph Graph = new BoardGraph();
+        
         public List<City> Cities = new List<City>();
         // public List<Road> roads;
         // public List<Chapel> chapels;
@@ -15,6 +17,7 @@ namespace Carcassonne.State
         private void Awake()
         {
             Cities = new List<City>();
+            Graph = new BoardGraph();
         }
     }
 }

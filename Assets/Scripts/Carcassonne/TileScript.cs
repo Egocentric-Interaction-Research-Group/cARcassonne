@@ -10,6 +10,8 @@ namespace Carcassonne
 {
     public class TileScript : MonoBehaviourPun
     {
+
+        public const int SubtTileDimension = 3; 
     
         /// <summary>
         ///     Describes the different set of game tiles (used in different versions of gameplay).
@@ -22,9 +24,12 @@ namespace Carcassonne
     
         /// <summary>
         ///     Geography decides what is contained within each direction. If there is a road going out to the right and the
-        ///     rotation is 0 then east will become "road"
+        ///     rotation is 0 then east will become "road".
+        ///
+        ///     Represented as a bitmask so that combination tiles (CityRoad) can be tested as City & X == City,
+        ///     which returns True for X in [City, CityStream, CityRoad].
         /// </summary>
-        public enum Geography
+        [Flags] public enum Geography
         {
             Cloister,
             Village,
@@ -32,9 +37,9 @@ namespace Carcassonne
             Field,
             City,
             Stream,
-            CityStream,
-            RoadStream,
-            CityRoad
+            CityStream = City + Stream,
+            RoadStream = Road + Stream,
+            CityRoad = City + Road
         }
 
         /// <summary>
@@ -137,7 +142,7 @@ namespace Carcassonne
             get => matrix;
             // private set => matrix = value;
         }
-
+        
         private void UpdateMatrix()
         {
             matrix[1, 0] = South;
@@ -174,6 +179,22 @@ namespace Carcassonne
             }
             
             // Log debug statement here.
+        }
+
+        public Dictionary<Vector2Int, Geography> SubTileDictionary => getSubTileDictionary();
+
+        private Dictionary<Vector2Int, Geography> getSubTileDictionary()
+        {
+            Dictionary<Vector2Int, Geography> d = new Dictionary<Vector2Int, Geography>();
+            for (var i = 0; i < SubtTileDimension; i++)
+            {
+                for (var j = 0; j < SubtTileDimension; j++)
+                {
+                    d.Add(new Vector2Int(i, j) - Vector2Int.one, Matrix[i,j]);
+                }
+            }
+
+            return d;
         }
 
         private void Awake()
@@ -240,9 +261,12 @@ namespace Carcassonne
             if (direction == Vector2Int.up) return North;
             if (direction == Vector2Int.down) return South;
             if (direction == Vector2Int.right) return East;
-            if (direction == Vector2Int.left)
-                return West;
-            return Center;
+            if (direction == Vector2Int.left) return West;
+            if (direction == Vector2Int.zero) return Center;
+
+            throw new ArgumentOutOfRangeException(
+                $"Direction should be in [-1,-1] - [1,1]." +
+                $"{direction} is out of range. Corners are not implemented.");
         }
 
         // public void resetRotation()
