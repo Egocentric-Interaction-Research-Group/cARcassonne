@@ -112,7 +112,7 @@ namespace Assets.Scripts.Carcassonne.AI
         public int GetMaxTileId()
         {
             //This needs a better solution if expansions are added. This number has just been manually taken from the game scene.
-            return 23;
+            return 24;
         }
         public int GetMaxBoardSize()
         {
