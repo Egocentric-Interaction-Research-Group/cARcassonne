@@ -4,6 +4,11 @@ using UnityEngine;
 using System;
 using static Carcassonne.PointScript;
 
+/*
+ * The AIWrapper acts as a middle-man between the AIPlayer-class and the data it needs and actions it can perform. It separates the AI logic from the code implementation. Its specific purpose is to
+ * allow the exact same AIPlayer-class to be used in the real environment and the training environment. This means the AIWrapper class will look different in both these project, as the code running
+ * the game differs in the two implementations.
+ */
 namespace Assets.Scripts.Carcassonne.AI
 {
     public class AIWrapper : InterfaceAIWrapper
@@ -70,13 +75,11 @@ namespace Assets.Scripts.Carcassonne.AI
 
         public void PlaceMeeple(Direction meepleDirection)
         {
-            float meepleX = 0;
-            float meepleZ = 0;
-            if (meepleDirection == Direction.NORTH || meepleDirection == Direction.SOUTH || meepleDirection == Direction.CENTER)
-            {
-                meepleX = 0.000f;
-            }
-            else if (meepleDirection == Direction.EAST)
+            float meepleX = 0.000f;
+            float meepleZ = 0.000f;
+            
+            //If clause only changes X if it is east or west.
+            if (meepleDirection == Direction.EAST)
             {
                 meepleX = 0.011f;
             }
@@ -84,12 +87,9 @@ namespace Assets.Scripts.Carcassonne.AI
             {
                 meepleX = -0.011f;
             }
-
-            if (meepleDirection == Direction.WEST || meepleDirection == Direction.EAST || meepleDirection == Direction.CENTER)
-            {
-                meepleZ = 0.000f;
-            }
-            else if (meepleDirection == Direction.NORTH)
+            
+            //If clause only changes Z if it is north or south
+            if (meepleDirection == Direction.NORTH)
             {
                 meepleZ = 0.011f;
             }
@@ -97,20 +97,16 @@ namespace Assets.Scripts.Carcassonne.AI
             {
                 meepleZ = -0.011f;
             }
-            state.Meeples.Current.gameObject.transform.localPosition = state.Tiles.Current.transform.localPosition + new Vector3(meepleX, 0.86f, meepleZ);
-            gc.meepleControllerScript.CurrentMeepleRayCast();
-            gc.meepleControllerScript.AimMeeple(gc);
-            gc.SetMeepleSnapPos();
+
+            gc.meepleControllerScript.aiMeepleX = meepleX;
+            gc.meepleControllerScript.aiMeepleZ = meepleZ;
             gc.ConfirmPlacementRPC();
-
-            //The two rows below are just a workaround to get meeples to stay on top of the table and not have a seemingly random Y coordinate.
-            state.Meeples.Current.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
-            state.Meeples.Current.gameObject.transform.localPosition = new Vector3(state.Meeples.Current.gameObject.transform.localPosition.x, 0.86f, state.Meeples.Current.gameObject.transform.localPosition.z);
-
         }
 
         public void FreeCurrentMeeple()
         {
+            //This is only used as a workaround for a current bug, where a meeple cannot be properly placed on a tile (e.g. when someone occupies the road/city that it connects to)
+            //but the game does not recognize this as a faulty placement either, and threfore does not return the meeple.
             gc.meepleControllerScript.FreeMeeple(state.Meeples.Current.gameObject, gc);
         }
 
@@ -121,7 +117,7 @@ namespace Assets.Scripts.Carcassonne.AI
 
         public int GetMaxTileId()
         {
-            //This needs a better solution for expansions.
+            //This needs a better solution if expansions are added. This number has just been manually taken from the game scene.
             return 23;
         }
         public int GetMaxBoardSize()
@@ -151,22 +147,9 @@ namespace Assets.Scripts.Carcassonne.AI
 
         public void Reset()
         {
-            //Reset everything and start a new game. Should this even exist in real game?
+            //In the training environment, this resets the game stage entirely before the next training session. Serves no purpose here except to make the code function.
         }
 
-        #endregion
-
-        //The methods below are only use for printing out information, used for test purposes.
-        #region "Real game specific"
-        public TileScript GetCurrentTile()
-        {
-            return state.Tiles.Current;
-        }
-
-        public MeepleScript GetCurrentMeeple()
-        {
-            return state.Meeples.Current;
-        }
         #endregion
     }
 }

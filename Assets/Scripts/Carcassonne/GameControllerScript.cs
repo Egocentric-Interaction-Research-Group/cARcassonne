@@ -569,16 +569,53 @@ namespace Carcassonne
             }
         }
 
+
         public void ConfirmPlacementRPC()
         {
             if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-                photonView.RPC("ConfirmPlacement", RpcTarget.All);
+            {
+                if (currentPlayer.controlledByAI) //This section is only used by the AI. As it does not move the tile physically, the aim has to be set manually before the call.
+                {
+                    photonView.RPC("ConfirmPlacementAI", RpcTarget.All, iTileAimX, iTileAimZ, meepleControllerScript.aiMeepleX, meepleControllerScript.aiMeepleZ);
+                }
+                else
+                {
+                    photonView.RPC("ConfirmPlacement", RpcTarget.All);
+                }
+            }
+        }
+
+        //This method replaces the ConfirmPLacementRPC method for the AI agent, which does not move the game objects. The placements has to be explicitly set before ConfirmPlacement()-call.
+        [PunRPC]
+        public void ConfirmPlacementAI(int tileX, int tileZ, float meepleX, float meepleZ)
+        {
+            if (gameState.phase == Phase.TileDrawn)
+            {
+                iTileAimX = tileX;
+                iTileAimZ = tileZ;
+                ConfirmPlacement();
+            } else if (gameState.phase == Phase.MeepleDrawn) //TODO: Replace the complex meeple placement code with something less tied to the gameObjects physical position. Something more AI Friendly.
+            {
+                //The following code is needed as the meeple placement is heavily tied to the physical position of the meeple. May be better with a separate and simpler AI method for this as it may not
+                //work in multiplayer when the meeple position needs to be updated.
+                gameState.Meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(meepleX, 0.86f, meepleZ);
+                meepleControllerScript.CurrentMeepleRayCast();
+                meepleControllerScript.AimMeeple(this);
+                SetMeepleSnapPos();
+                ConfirmPlacement();
+
+                //The two rows below are just a workaround to get meeples to stay on top of the table and not have a seemingly random Y coordinate. This may need a mode solid fix for multiplayer mode.
+                gameState.Meeples.Current.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
+                gameState.Meeples.Current.gameObject.transform.localPosition = new Vector3(gameState.Meeples.Current.gameObject.transform.localPosition.x, 0.86f, gameState.Meeples.Current.gameObject.transform.localPosition.z);
+            }
+            
         }
 
         [PunRPC]
         public void ConfirmPlacement()
         {
-            if (currentPlayer == null || !currentPlayer.controlledByAI) //This should only happen for base tile and human players. AI does not move the tile.
+            //The raycast should only happen for base tile and human players. AI does not move the tile. Why this tile raycast call was done outside phase check I dont know, but I left it there.
+            if (currentPlayer == null || !currentPlayer.controlledByAI) 
             {
                 CurrentTileRaycastPosition();
             }
