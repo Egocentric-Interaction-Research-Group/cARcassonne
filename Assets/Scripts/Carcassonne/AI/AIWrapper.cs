@@ -4,25 +4,29 @@ using UnityEngine;
 using System;
 using static Carcassonne.PointScript;
 
+
+/// <summary>
+///  The AIWrapper acts as a middle-man between the AIPlayer-class and the data it needs and actions it can perform. It separates the AI logic from the code implementation. Its specific purpose is to 
+///  allow the exact same AIPlayer-class to be used in the real environment and the training environment. This means the AIWrapper class will look different in both these project, as the code running
+///  the game differs in the two implementations.
+///  Version 1.0
+/// </summary>
 /*
- * The AIWrapper acts as a middle-man between the AIPlayer-class and the data it needs and actions it can perform. It separates the AI logic from the code implementation. Its specific purpose is to
- * allow the exact same AIPlayer-class to be used in the real environment and the training environment. This means the AIWrapper class will look different in both these project, as the code running
- * the game differs in the two implementations.
+
  */
 namespace Assets.Scripts.Carcassonne.AI
 {
     public class AIWrapper : InterfaceAIWrapper
     {
-        public GameControllerScript gc;
+        public GameControllerScript controller;
         public GameState state; //Contains TileState, MeepleState, FeatureState, PlayerState and a GameLog.
         public PlayerScript player;
         public int totalTiles;
-
-        #region "Interface methods"
+        public float previousScore;
         public AIWrapper()
         {
-            gc = GameObject.Find("GameController").GetComponent<GameControllerScript>();
-            state = gc.gameState;
+            controller = GameObject.Find("GameController").GetComponent<GameControllerScript>();
+            state = controller.gameState;
             totalTiles = state.Tiles.Remaining.Count;
         }
 
@@ -33,7 +37,7 @@ namespace Assets.Scripts.Carcassonne.AI
 
         public void PickUpTile()
         {
-            gc.PickupTileRPC();
+            controller.PickupTileRPC();
         }
 
         public int GetCurrentTileId()
@@ -46,31 +50,26 @@ namespace Assets.Scripts.Carcassonne.AI
             return state.phase;
         }
 
-        public int GetMeeplesLeft()
-        {
-            return player.AmountOfFreeMeeples();
-        }
-
         public void EndTurn()
         {
-            gc.EndTurnRPC();
+            controller.EndTurnRPC();
         }
 
         public void DrawMeeple()
         {
-            gc.meepleControllerScript.DrawMeepleRPC();
+            controller.meepleControllerScript.DrawMeepleRPC();
         }
 
         public void RotateTile()
         {
-            gc.tileControllerScript.RotateTileRPC();
+            controller.tileControllerScript.RotateTileRPC();
         }
 
         public void PlaceTile(int x, int z)
         {
-            gc.iTileAimX = x;
-            gc.iTileAimZ = z;
-            gc.ConfirmPlacementRPC();
+            controller.iTileAimX = x;
+            controller.iTileAimZ = z;
+            controller.ConfirmPlacementRPC();
         }
 
         public void PlaceMeeple(Direction meepleDirection)
@@ -98,21 +97,16 @@ namespace Assets.Scripts.Carcassonne.AI
                 meepleZ = -0.011f;
             }
 
-            gc.meepleControllerScript.aiMeepleX = meepleX;
-            gc.meepleControllerScript.aiMeepleZ = meepleZ;
-            gc.ConfirmPlacementRPC();
+            controller.meepleControllerScript.aiMeepleX = meepleX;
+            controller.meepleControllerScript.aiMeepleZ = meepleZ;
+            controller.ConfirmPlacementRPC();
         }
 
         public void FreeCurrentMeeple()
         {
             //This is only used as a workaround for a current bug, where a meeple cannot be properly placed on a tile (e.g. when someone occupies the road/city that it connects to)
             //but the game does not recognize this as a faulty placement either, and threfore does not return the meeple.
-            gc.meepleControllerScript.FreeMeeple(state.Meeples.Current.gameObject, gc);
-        }
-
-        public int GetMaxMeeples()
-        {
-            return player.meeples.Count;
+            controller.meepleControllerScript.FreeMeeple(state.Meeples.Current.gameObject, controller);
         }
 
         public int GetMaxTileId()
@@ -125,12 +119,7 @@ namespace Assets.Scripts.Carcassonne.AI
             return state.Tiles.Played.GetLength(0);
         }
 
-        public float[,] GetPlacedTiles()
-        {
-            return null;
-        }
-
-        public TileScript[,] GetTiles()
+        public object[,] GetTiles()
         {
             return state.Tiles.Played;
         }
@@ -145,11 +134,56 @@ namespace Assets.Scripts.Carcassonne.AI
             return totalTiles;
         }
 
+        public int GetMeeplesLeft()
+        {
+            return player.AmountOfFreeMeeples();
+        }
+
+        public int GetMaxMeeples()
+        {
+            return player.meeples.Count;
+        }
+
         public void Reset()
         {
             //In the training environment, this resets the game stage entirely before the next training session. Serves no purpose here except to make the code function.
         }
 
-        #endregion
+        public int GetMinX()
+        {
+            return controller.minX;
+        }
+
+        public int GetMaxX()
+        {
+            return controller.maxX;
+        }
+
+        public int GetMinZ()
+        {
+            return controller.minZ;
+        }
+
+        public int GetMaxZ()
+        {
+            return controller.maxZ;
+        }
+
+        public float GetScore()
+        {
+            return (float)player.score;
+        }
+
+        public float GetScoreChange()
+        {
+            if ((float)player.score != previousScore)
+            {
+                Debug.Log("Player " + player.getID() + " score changed from " + previousScore + "p to " + player.score + "p");
+            }
+            float scoreChange = (float)player.score - previousScore;
+            previousScore = (float)player.score;
+            return scoreChange;
+        }
+
     }
 }

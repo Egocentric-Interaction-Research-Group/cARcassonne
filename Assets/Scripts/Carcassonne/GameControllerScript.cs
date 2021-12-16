@@ -70,6 +70,8 @@ namespace Carcassonne
 
         [HideInInspector]
         public int iTileAimX, iTileAimZ;
+        [HideInInspector]
+        public int minX, maxX, minZ, maxZ; //These are only used for limiting AI agents movement.
 
 
         //public ErrorPlaneScript ErrorPlane;
@@ -243,7 +245,11 @@ namespace Carcassonne
                 playerHuds[1].transform.GetChild(3).gameObject.GetComponent<TextMeshPro>().text = "Player 2    (You)";
 
             VertexItterator = 1;
-
+            //Variables used for AI placing boundary. It starts at the starting tiles coordinates which would be [20,20] 
+            minX = 85;
+            minZ = 85;
+            maxX = 85;
+            maxZ = 85;
             PlaceTile(tileControllerScript.currentTile, 85, 85, true);
 
             currentPlayer = gameState.Players.All[0];
@@ -497,6 +503,7 @@ namespace Carcassonne
         {
             tempX = x;
             tempY = z;
+            UpdateAIBoundary(x, z);
             tile.GetComponent<TileScript>().vIndex = VertexItterator;
 
             GetComponent<PointScript>().placeVertex(VertexItterator, placedTiles.GetNeighbors(tempX, tempY),
@@ -974,6 +981,32 @@ namespace Carcassonne
             {
                 return PhotonNetwork.LocalPlayer.NickName ==
                        (currentPlayer.getID() + 1).ToString();
+            }
+        }
+
+        /// <summary>
+        /// Update the boundaries that the AI can place tiles within. Variablesare based on the
+        /// on tiles furthest in each direction on the grid
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="z"></param>
+        public void UpdateAIBoundary(int x, int z)
+        {
+            if (x < minX)
+            {
+                minX = x;
+            }
+            if (z < minZ)
+            {
+                minZ = z;
+            }
+            if (x > maxX)
+            {
+                maxX = x;
+            }
+            if (z > maxZ)
+            {
+                maxZ = z;
             }
         }
     }

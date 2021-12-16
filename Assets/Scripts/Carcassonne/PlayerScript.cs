@@ -30,7 +30,7 @@ namespace Carcassonne
         public GameObject photonUser => gameObject;
         private Color32 playerColor;
         private string playerName;
-        private int score;
+        public int score;
         public GameObject ai;
         public bool controlledByAI = true;
 
@@ -65,6 +65,7 @@ namespace Carcassonne
             if (controlledByAI)
             {
                 GameObject aiObj = Instantiate(ai, transform);
+                aiObj.GetComponent<CarcassonneAgent>().wrapper.player = this;
                 aiObj.SetActive(true);
             }
         }
