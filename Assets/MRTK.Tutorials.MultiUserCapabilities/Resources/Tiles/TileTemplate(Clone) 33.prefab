@@ -156,6 +156,7 @@ MonoBehaviour:
   West: 2
   East: 2
   Center: 2
+  tileSet: 0
 --- !u!114 &5861605701608102111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,20 +192,23 @@ MonoBehaviour:
   oneHandRotationModeNear: 0
   oneHandRotationModeFar: 0
   releaseBehavior: 0
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 7166200312293997902, guid: fc9c47106b1341e4fac7671bb9d89bb9,
-    type: 3}
+  constraintsManager: {fileID: 5861605701608102111}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8295437879408232180, guid: fc9c47106b1341e4fac7671bb9d89bb9,
           type: 3}
+        m_TargetAssemblyTypeName: 
         m_MethodName: DisableGravity
         m_Mode: 1
         m_Arguments:
@@ -220,6 +224,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8295437879408232180, guid: fc9c47106b1341e4fac7671bb9d89bb9,
           type: 3}
+        m_TargetAssemblyTypeName: 
         m_MethodName: EnableGravity
         m_Mode: 1
         m_Arguments:
@@ -232,6 +237,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 8295437879408232180, guid: fc9c47106b1341e4fac7671bb9d89bb9,
           type: 3}
+        m_TargetAssemblyTypeName: 
         m_MethodName: SetSnapPosForCurrentTile
         m_Mode: 1
         m_Arguments:
@@ -244,6 +250,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 8295437879408232180, guid: fc9c47106b1341e4fac7671bb9d89bb9,
           type: 3}
+        m_TargetAssemblyTypeName: 
         m_MethodName: SetCorrectRotation
         m_Mode: 1
         m_Arguments:
@@ -602,6 +609,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -626,6 +634,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &8621855422079664861
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ namespace Carcassonne
         private int counter;
         private int finalScore;
         private Graph g;
-        private readonly int nbrOfVertices = 85;
+        private readonly int nbrOfVertices = 72;
         private int roadBlocks;
         private int vertexIterator;
         private bool[] visited;
@@ -35,7 +35,7 @@ namespace Carcassonne
             roadBlocks = 0;
             broken = false;
             counter = 0;
-            visited = new bool[85];
+            visited = new bool[72];
             dfs(Vindex, weight, false);
             return broken || roadBlocks == 2;
         }
@@ -45,7 +45,7 @@ namespace Carcassonne
             roadBlocks = 0;
             broken = false;
             counter = 0;
-            visited = new bool[85];
+            visited = new bool[72];
             dfsDirection(Vindex, weight, direction, false);
             return broken || roadBlocks == 2;
             ;
@@ -56,7 +56,7 @@ namespace Carcassonne
             counter = 1;
             roadBlocks = 0;
             finalScore = 0;
-            visited = new bool[85];
+            visited = new bool[72];
             Debug.Log("StartDFS");
             dfs(Vindex, weight, GameEnd);
             //Debug.Log(finalScore);
@@ -79,7 +79,7 @@ namespace Carcassonne
             roadBlocks = 0;
             //if (weight == TileScript.geography.Road) roadBlocks = 1;
             finalScore = 0;
-            visited = new bool[85];
+            visited = new bool[72];
 
             dfsDirection(Vindex, weight, direction, GameEnd);
             //Debug.Log(finalScore);
