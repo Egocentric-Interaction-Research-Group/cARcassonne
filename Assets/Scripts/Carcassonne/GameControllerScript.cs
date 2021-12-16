@@ -172,11 +172,14 @@ namespace Carcassonne
                     break;
                 case Phase.TileDown:
 
-                    if (firstTurnCounter != 0) meepleControllerScript.drawMeepleEffect.Play();
-                    tileControllerScript.currentTile.transform.localPosition = new Vector3
-                    (stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f, 0.5900002f,
-                        stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
-                    endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[1];
+                    if (firstTurnCounter != 0)
+                    {
+                        meepleControllerScript.drawMeepleEffect.Play();
+                        tileControllerScript.currentTile.transform.localPosition = new Vector3
+                        (stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f, 0.5900002f,
+                            stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
+                        endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[1];
+                    }
 
                     break;
                 case Phase.MeepleDrawn:
