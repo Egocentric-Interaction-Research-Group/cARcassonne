@@ -68,7 +68,10 @@ namespace Carcassonne
         private bool isPunEnabled;
         //float xOffset, zOffset, yOffset;
 
-        private int iTileAimX, iTileAimZ;
+        [HideInInspector]
+        public int iTileAimX, iTileAimZ;
+        [HideInInspector]
+        public int minX, maxX, minZ, maxZ; //These are only used for limiting AI agents movement.
 
 
         //public ErrorPlaneScript ErrorPlane;
@@ -242,7 +245,11 @@ namespace Carcassonne
                 playerHuds[1].transform.GetChild(3).gameObject.GetComponent<TextMeshPro>().text = "Player 2    (You)";
 
             VertexItterator = 1;
-
+            //Variables used for AI placing boundary. It starts at the starting tiles coordinates which would be [20,20] 
+            minX = 85;
+            minZ = 85;
+            maxX = 85;
+            maxZ = 85;
             PlaceTile(tileControllerScript.currentTile, 85, 85, true);
 
             currentPlayer = gameState.Players.All[0];
@@ -258,6 +265,10 @@ namespace Carcassonne
 
         private void BaseTileCreation()
         {
+            //These two lines are only a workaround for an unknown bug making the basetile spawn not in the center, as the BaseSpawnPosition GameObject is not set to the center.
+            GameObject tileSpawn = GameObject.Find("BaseSpawnPosition");
+            tileSpawn.transform.localPosition = new Vector3(0, tileSpawn.transform.localPosition.y, 0);
+
             tileControllerScript.currentTile = stackScript.firstTile;
             // tileControllerScript.currentTile.name = "BaseTile";
             tileControllerScript.currentTile.transform.parent = table.transform;
@@ -492,6 +503,7 @@ namespace Carcassonne
         {
             tempX = x;
             tempY = z;
+            UpdateAIBoundary(x, z);
             tile.GetComponent<TileScript>().vIndex = VertexItterator;
 
             GetComponent<PointScript>().placeVertex(VertexItterator, placedTiles.GetNeighbors(tempX, tempY),
@@ -509,8 +521,15 @@ namespace Carcassonne
             {
                 placedTiles.PlaceTile(x, z, tile);
 
-
-                tileControllerScript.currentTile.transform.localPosition = SnapPosition;
+                if (gameState.Players.Current.controlledByAI) //The snapposition cannot be used for the AI as it does not move the tile. It uses iTileAim instead.
+                {
+                    tileControllerScript.currentTile.transform.localPosition = new Vector3(stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f,
+                        tileControllerScript.currentTile.transform.localPosition.y, stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
+                }
+                else
+                {
+                    tileControllerScript.currentTile.transform.localPosition = SnapPosition;
+                }
             }
             else
             {
@@ -557,16 +576,56 @@ namespace Carcassonne
             }
         }
 
+
         public void ConfirmPlacementRPC()
         {
             if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-                photonView.RPC("ConfirmPlacement", RpcTarget.All);
+            {
+                if (currentPlayer.controlledByAI) //This section is only used by the AI. As it does not move the tile physically, the aim has to be set manually before the call.
+                {
+                    photonView.RPC("ConfirmPlacementAI", RpcTarget.All, iTileAimX, iTileAimZ, meepleControllerScript.aiMeepleX, meepleControllerScript.aiMeepleZ);
+                }
+                else
+                {
+                    photonView.RPC("ConfirmPlacement", RpcTarget.All);
+                }
+            }
+        }
+
+        //This method replaces the ConfirmPLacementRPC method for the AI agent, which does not move the game objects. The placements has to be explicitly set before ConfirmPlacement()-call.
+        [PunRPC]
+        public void ConfirmPlacementAI(int tileX, int tileZ, float meepleX, float meepleZ)
+        {
+            if (gameState.phase == Phase.TileDrawn)
+            {
+                iTileAimX = tileX;
+                iTileAimZ = tileZ;
+                ConfirmPlacement();
+            } else if (gameState.phase == Phase.MeepleDrawn) //TODO: Replace the complex meeple placement code with something less tied to the gameObjects physical position. Something more AI Friendly.
+            {
+                //The following code is needed as the meeple placement is heavily tied to the physical position of the meeple. May be better with a separate and simpler AI method for this as it may not
+                //work in multiplayer when the meeple position needs to be updated.
+                gameState.Meeples.Current.gameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(meepleX, 0.86f, meepleZ);
+                meepleControllerScript.CurrentMeepleRayCast();
+                meepleControllerScript.AimMeeple(this);
+                SetMeepleSnapPos();
+                ConfirmPlacement();
+
+                //The two rows below are just a workaround to get meeples to stay on top of the table and not have a seemingly random Y coordinate. This may need a mode solid fix for multiplayer mode.
+                gameState.Meeples.Current.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
+                gameState.Meeples.Current.gameObject.transform.localPosition = new Vector3(gameState.Meeples.Current.gameObject.transform.localPosition.x, 0.86f, gameState.Meeples.Current.gameObject.transform.localPosition.z);
+            }
+            
         }
 
         [PunRPC]
         public void ConfirmPlacement()
         {
-            CurrentTileRaycastPosition();
+            //The raycast should only happen for base tile and human players. AI does not move the tile. Why this tile raycast call was done outside phase check I dont know, but I left it there.
+            if (currentPlayer == null || !currentPlayer.controlledByAI) 
+            {
+                CurrentTileRaycastPosition();
+            }
             if (gameState.phase == Phase.TileDrawn)
             {
                 if (placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
@@ -575,10 +634,12 @@ namespace Carcassonne
 
                     confirmButton.SetActive(false);
                     gameState.phase = Phase.TileDown;
+
+                    Debug.Log("Tile placed in (" + iTileAimX + ", " + iTileAimZ + ")");
                 }
                 else if (!placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
                 {
-                    Debug.Log("Tile cant be placed");
+                    //Debug.Log("Tile cant be placed in (" + iTileAimX + ", " + iTileAimZ + ")");
                 }
             }
             else if (gameState.phase == Phase.MeepleDrawn)
@@ -920,6 +981,32 @@ namespace Carcassonne
             {
                 return PhotonNetwork.LocalPlayer.NickName ==
                        (currentPlayer.getID() + 1).ToString();
+            }
+        }
+
+        /// <summary>
+        /// Update the boundaries that the AI can place tiles within. Variablesare based on the
+        /// on tiles furthest in each direction on the grid
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="z"></param>
+        public void UpdateAIBoundary(int x, int z)
+        {
+            if (x < minX)
+            {
+                minX = x;
+            }
+            if (z < minZ)
+            {
+                minZ = z;
+            }
+            if (x > maxX)
+            {
+                maxX = x;
+            }
+            if (z > maxZ)
+            {
+                maxZ = z;
             }
         }
     }
