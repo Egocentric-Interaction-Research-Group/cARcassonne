@@ -35,7 +35,7 @@ namespace Carcassonne
             tiles.lastPlayedPosition = new Vector2(x, z);
             
             // Update Feature States
-            features.Graph += BoardGraph.Get(ts, new Vector2Int(x, z));
+            features.Graph.Add(BoardGraph.FromTile(ts, new Vector2Int(x, z)) );
             
             Debug.Log($"{features.Graph}");
             

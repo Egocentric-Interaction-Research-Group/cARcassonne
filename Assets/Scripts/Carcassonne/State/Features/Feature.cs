@@ -19,7 +19,7 @@ namespace Carcassonne.State.Features
         // TODO Implement this. The intention is to do so, but it isn't a simple task and requires referencing the remaining tiles.
         // public bool Completable { get; }
         
-        public Dictionary<PlayerScript, int> Meeples { get; }
+        public IEnumerable<MeepleScript> Meeples { get; }
 
 
 }

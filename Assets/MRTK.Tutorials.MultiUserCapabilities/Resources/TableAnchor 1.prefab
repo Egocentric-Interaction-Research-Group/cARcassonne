@@ -32068,7 +32068,7 @@ PrefabInstance:
     - target: {fileID: 5159695443069834743, guid: a98fbb74ed3e1d1459e049dbdee54c68,
         type: 3}
       propertyPath: Center
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5747248518650998449, guid: a98fbb74ed3e1d1459e049dbdee54c68,
         type: 3}
@@ -36300,6 +36300,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TileTemplate(Clone) 63
       objectReference: {fileID: 0}
+    - target: {fileID: 927476105582773770, guid: efce5c27fd99148428d2e227ed3f9dcb,
+        type: 3}
+      propertyPath: Center
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1283256813425591200, guid: efce5c27fd99148428d2e227ed3f9dcb,
         type: 3}
       propertyPath: constraintsManager
@@ -39449,6 +39454,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 587947770260881937, guid: 764679331c07b0f45a6b13f0cfb2e16f,
+        type: 3}
+      propertyPath: Center
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4830149629712490163, guid: 764679331c07b0f45a6b13f0cfb2e16f,
         type: 3}
@@ -46329,6 +46339,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onManipulationStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279619239167600757, guid: d8ef8093a1916584ab318858dea74781,
+        type: 3}
+      propertyPath: Center
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4422238524742065784, guid: d8ef8093a1916584ab318858dea74781,
         type: 3}
@@ -62648,6 +62663,11 @@ PrefabInstance:
       propertyPath: spawnPos
       value: 
       objectReference: {fileID: 1798396971500894291}
+    - target: {fileID: 3156779310354174253, guid: 0bd84a5307f435649af4a81c89b45a48,
+        type: 3}
+      propertyPath: Center
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5605604386007646029, guid: 0bd84a5307f435649af4a81c89b45a48,
         type: 3}
       propertyPath: m_Name

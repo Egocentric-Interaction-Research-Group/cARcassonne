@@ -53,11 +53,6 @@ namespace Carcassonne
         public int rotation;
 
         /// <summary>
-        ///     Meeple ID (to be used/fixed later)
-        /// </summary>
-        public int meeple; //Använd senare
-
-        /// <summary>
         ///     The vIndex of the tile. Is applied when placed on the board
         /// </summary>
         public int vIndex;

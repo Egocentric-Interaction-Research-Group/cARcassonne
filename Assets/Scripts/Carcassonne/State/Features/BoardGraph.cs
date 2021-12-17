@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using QuikGraph;
@@ -14,7 +15,6 @@ namespace Carcassonne.State.Features
 {
     // Type Aliases
     using CarcassonneEdge = TaggedUndirectedEdge<SubTile, ConnectionType>;
-    using CarcassonneGraph = QuikGraph.UndirectedGraph<SubTile, TaggedUndirectedEdge<SubTile, ConnectionType>>;
 
     public enum ConnectionType
     {
@@ -22,12 +22,26 @@ namespace Carcassonne.State.Features
         Board,
         Feature
     }
+
+    /// <summary>
+    /// Event arguments for a BoardGraph.Changed event.
+    ///
+    /// graph: A reference to the graph in question
+    /// vertices: New vertices added to the graph
+    /// edges: New edges added to the graph
+    /// </summary>
+    public class BoardChangedEventArgs : EventArgs
+    {
+        public BoardGraph graph;
+        public IEnumerable<SubTile> vertices;
+        public IEnumerable<CarcassonneEdge> edges;
+    }
+    
     public class SubTile : IComparable<SubTile>
         {
             public TileScript tile;
             public Vector2Int location;
             public TileScript.Geography geography;
-            [CanBeNull] public MeepleScript meeple;
 
             /// <summary>
             /// Create a new SubTile
@@ -42,7 +56,6 @@ namespace Carcassonne.State.Features
                 this.location = tilePosition * 3 + Vector2Int.one + direction; // The centre of the tile is at the tile's position + [1,1] to leave room for the -1 movement.
                 this.geography = tile.getGeographyAt(direction);
                 // Debug.Log($"GEOGRAPHY 44: {tile} @ {direction} = {geography}");
-                this.meeple = meeple;
             }
 
             public int CompareTo(SubTile other)
@@ -50,7 +63,7 @@ namespace Carcassonne.State.Features
                 // Check to see if these are the same vertices
                 if (location == other.location)
                 {
-                    if(tile == other.tile && geography == other.geography && meeple == other.meeple) return 0;
+                    if(tile == other.tile && geography == other.geography) return 0;
                 
                     throw new ArgumentException(
                         $"Vertices have the same location ({location}), but have different tiles, geographies, or meeples." +
@@ -66,19 +79,50 @@ namespace Carcassonne.State.Features
 
     public class BoardGraph : CarcassonneGraph
     {
-        
-        public RectInt Bounds => GetBounds();
-        private RectInt GetBounds()
+        public void Add(BoardGraph b)
         {
-            RectInt b = new RectInt();
+            IEnumerable<CarcassonneEdge> edges = b.Edges;
+            IEnumerable<SubTile> vertices = b.Vertices;
+            
+            AddVerticesAndEdgeRange(b.Edges);
+            
+            // Search for adjacent vertices and add links
+            foreach (var va in Vertices)
+            {
+                // Find all Subtiles that are adjacent to the vertex in graph a
+                var toLink = b.Vertices.Where(vb => (va.location - vb.location).sqrMagnitude == 1 &&
+                                                    va.tile != vb.tile);
 
-            b.min = new Vector2Int(this.Vertices.Min(v => v.location.x), this.Vertices.Min(v => v.location.y));
-            b.max = new Vector2Int(this.Vertices.Max(v => v.location.x), this.Vertices.Max(v => v.location.y));
+                foreach (var subtile in toLink)
+                {
+                    Debug.Assert(va.geography == subtile.geography, $"Geographies ({va.geography}, {subtile.geography}) do not match.");
 
-            return b;
+                    CarcassonneEdge e = EdgeBetween(va, subtile, ConnectionType.Board); 
+                    AddEdge(e);
+                    edges.Append(e);
+
+                    if (va.geography == TileScript.Geography.City || va.geography == TileScript.Geography.Road)
+                    {
+                        CarcassonneEdge f = EdgeBetween(va, subtile, ConnectionType.Feature);
+                        AddEdge(f);
+                        edges.Append(f);
+                    }
+                }
+            }
+
+            Debug.Log("Firing a Board.Changed event.");
+            // Fire board changed event.
+            BoardChangedEventArgs args = new BoardChangedEventArgs();
+            args.graph = this;
+            args.edges = edges;
+            args.vertices = vertices;
+            OnChanged(args);
         }
 
-        #region AddTiles
+        protected virtual void OnChanged(BoardChangedEventArgs args)
+        {
+            Changed?.Invoke(this, args);
+        }
 
         /// <summary>
         /// Add two TileGraphs together. Uses the physical location of subtiles to find and link neighbours.
@@ -86,49 +130,40 @@ namespace Carcassonne.State.Features
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static BoardGraph operator +(BoardGraph a, BoardGraph b)
-        {   
-            var tg = new BoardGraph();
-            tg.AddVerticesAndEdgeRange(a.Edges);
-            tg.AddVerticesAndEdgeRange(b.Edges);
-            
-            // Search for adjacent vertices and add links
-            foreach (var va in a.Vertices)
-            {
-                // Find all Subtiles that are adjacent to the vertex in graph a
-                var toLink = b.Vertices.Where(vb => (va.location - vb.location).sqrMagnitude == 1);
-
-                foreach (var subtile in toLink)
-                {
-                    Debug.Assert(va.geography == subtile.geography, $"Geographies ({va.geography}, {subtile.geography}) do not match.");
-
-                    tg.AddEdge(EdgeBetween(va, subtile, ConnectionType.Board));
-
-                    if (va.geography == TileScript.Geography.City || va.geography == TileScript.Geography.Road)
-                    {
-                        tg.AddEdge(EdgeBetween(va, subtile, ConnectionType.Feature));
-                    }
-                }
-            }
-            
-            return tg;
-        }
-
-        #endregion
-
+        // public static BoardGraph operator +(BoardGraph a, BoardGraph b)
+        // {   
+        //     var tg = new BoardGraph();
+        //     tg.AddVerticesAndEdgeRange(a.Edges);
+        //     tg.AddVerticesAndEdgeRange(b.Edges);
+        //     
+        //     // Search for adjacent vertices and add links
+        //     foreach (var va in a.Vertices)
+        //     {
+        //         // Find all Subtiles that are adjacent to the vertex in graph a
+        //         var toLink = b.Vertices.Where(vb => (va.location - vb.location).sqrMagnitude == 1);
+        //
+        //         foreach (var subtile in toLink)
+        //         {
+        //             Debug.Assert(va.geography == subtile.geography, $"Geographies ({va.geography}, {subtile.geography}) do not match.");
+        //
+        //             tg.AddEdge(EdgeBetween(va, subtile, ConnectionType.Board));
+        //
+        //             if (va.geography == TileScript.Geography.City || va.geography == TileScript.Geography.Road)
+        //             {
+        //                 tg.AddEdge(EdgeBetween(va, subtile, ConnectionType.Feature));
+        //             }
+        //         }
+        //     }
+        //     
+        //     return tg;
+        // }
 
         /// <summary>
         /// Get a graph representation of the tile itself.
         /// </summary>
         /// <param name="tile"></param>
         /// <returns></returns>
-        public static BoardGraph Get(TileScript tile,
-            Vector2Int location)
-        {
-            return Get(tile, location, null);
-        }
-        
-        public static BoardGraph Get(TileScript tile, Vector2Int location, [CanBeNull] MeepleScript meeple)
+        public static BoardGraph FromTile(TileScript tile, Vector2Int location)
         {
             BoardGraph g = new BoardGraph();
     
@@ -138,14 +173,14 @@ namespace Carcassonne.State.Features
                 var direction = side.Key;
                 var geography = side.Value;
                 // Debug.Log($"GEOGRAPHY 140: {tile} @ {direction} = {geography}");
-                g = AddAndConnectSubTile(tile, location, meeple, direction, g, geography);
+                g = AddAndConnectSubTile(tile, location, direction, g, geography);
             }
             
             // Add a centre vertex IF it is a cloister
             if (tile.Center == TileScript.Geography.Cloister)
             {
                 var direction = Vector2Int.zero;
-                g = AddAndConnectSubTile(tile, location, meeple, direction, g, null);
+                g = AddAndConnectSubTile(tile, location, direction, g, null);
                 
                 // Remove connections between NORTH/SOUTH and EAST/WEST. They are redundant now that the centre is connected.
                 var edgesToRemove =
@@ -156,14 +191,12 @@ namespace Carcassonne.State.Features
             return g;
         }
 
-        private static BoardGraph AddAndConnectSubTile(TileScript tile, Vector2Int location, MeepleScript meeple,
-            Vector2Int direction, BoardGraph g, TileScript.Geography? geography)
+        private static BoardGraph AddAndConnectSubTile(TileScript tile, Vector2Int location, Vector2Int direction, BoardGraph g, TileScript.Geography? geography)
         {
             Debug.Assert( (TileScript.Geography.City & TileScript.Geography.CityRoad) == TileScript.Geography.City );
             Debug.Assert( (TileScript.Geography.Road & TileScript.Geography.CityRoad) == TileScript.Geography.Road );
             
             SubTile st = new SubTile(tile, location, direction);
-            if (meeple != null && meeple.GetDirection() == direction) st.meeple = meeple;
 
             g.AddVertex(st);
             foreach (var v in g.Vertices.Where(v => v != st))
@@ -203,47 +236,6 @@ namespace Carcassonne.State.Features
             return new CarcassonneEdge(a, b, t);
         }
 
-        public override string ToString()
-        {
-            return this.ToGraphviz(algorithm =>
-            {
-                algorithm.FormatVertex += (sender, args) =>
-                {
-                    var p = args.Vertex.location - Bounds.min;
-                    args.VertexFormat.Label = $"{args.Vertex.geography}";
-                    args.VertexFormat.Position = new GraphvizPoint(p.x, p.y);
-                    switch (args.Vertex.geography)
-                    {
-                        case TileScript.Geography.City:
-                            args.VertexFormat.StrokeColor = GraphvizColor.Red;
-                            break;
-                        case TileScript.Geography.Road:
-                            args.VertexFormat.StrokeColor = GraphvizColor.Black;
-                            break;
-                        case TileScript.Geography.Field:
-                            args.VertexFormat.StrokeColor = GraphvizColor.Green;
-                            break;
-                        case TileScript.Geography.Cloister:
-                            args.VertexFormat.StrokeColor = GraphvizColor.Blue;
-                            break;
-                    }
-                };
-                algorithm.FormatEdge += (sender, args) =>
-                {
-                    switch (args.Edge.Tag)
-                    {
-                        case ConnectionType.Board:
-                            args.EdgeFormat.StrokeColor = GraphvizColor.Black;
-                            break;
-                        case ConnectionType.Feature:
-                            args.EdgeFormat.StrokeColor = GraphvizColor.DeepPink;
-                            break;
-                        case ConnectionType.Tile:
-                            args.EdgeFormat.StrokeColor = GraphvizColor.Aqua;
-                            break;
-                    }
-                };
-            });
-        }
+        public event EventHandler<BoardChangedEventArgs> Changed;
     }
 }

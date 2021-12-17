@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.State;
+using Carcassonne.State.Features;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
@@ -119,6 +120,21 @@ namespace Carcassonne
 
         private void Start()
         {
+            gameState.Features.Graph.Changed += UpdateCities;
+        }
+        
+        public void UpdateCities(object sender, BoardChangedEventArgs args)
+        {
+            BoardGraph graph = args.graph;
+            gameState.Features.Cities = City.FromBoardGraph(graph);
+
+            string debugString = "Cities: \n\n";
+            foreach (var city in gameState.Features.Cities)
+            {
+                debugString += city.ToString();
+                debugString += "\n\n";
+            }
+            Debug.Log(debugString);
         }
 
         // Update is called once per frame
@@ -284,8 +300,8 @@ namespace Carcassonne
             // Test code to print the bounding boxes of a completed city.
             if (cityIsFinished)
             {
-                var city = gameState.Features.Cities.Single(c => c.Contains(new Vector2Int(x, y)));
-                var limits = city.BoundingBox;
+                var city = gameState.Features.Cities.Single(c => c.Bounds.Contains(new Vector2Int(x, y) * 3));
+                var limits = city.Bounds;
                 Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
             }
             
@@ -311,8 +327,8 @@ namespace Carcassonne
             
             if (cityIsFinished)
             {
-                var city = gameState.Features.Cities.Single(c => c.Contains(new Vector2Int(x, y)));
-                var limits = city.BoundingBox;
+                var city = gameState.Features.Cities.Single(c => c.Bounds.Contains(new Vector2Int(x, y) * 3));
+                var limits = city.Bounds;
                 Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
             }
             
@@ -648,12 +664,12 @@ namespace Carcassonne
                     gameState.phase = Phase.NewTurn;
                 }
                 
-                Debug.Log($"Board Matrix Dims: {gameState.Tiles.Matrix.GetLength(0)}" +
-                          $"x{gameState.Tiles.Matrix.GetLength(1)}" +
-                          $" ({gameState.Tiles.Matrix.Length})\n" +
-                          $"Board Matrix Origin: {gameState.Tiles.MatrixOrigin}\n" +
-                          $"Board Matrix:\n{gameState.Tiles}\n" +
-                          $"City Bounds: {gameState.Features.Cities[0]}");
+                // Debug.Log($"Board Matrix Dims: {gameState.Tiles.Matrix.GetLength(0)}" +
+                //           $"x{gameState.Tiles.Matrix.GetLength(1)}" +
+                //           $" ({gameState.Tiles.Matrix.Length})\n" +
+                //           $"Board Matrix Origin: {gameState.Tiles.MatrixOrigin}\n" +
+                //           $"Board Matrix:\n{gameState.Tiles}\n" +
+                //           $"City Bounds: {gameState.Features.Cities[0]}");
             }
             else
             {
