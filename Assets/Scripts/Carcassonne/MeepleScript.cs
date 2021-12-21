@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Photon.Pun;
 using UnityEngine;
 
@@ -7,12 +8,38 @@ namespace Carcassonne
     public class MeepleScript : MonoBehaviourPun
     {
         // Start is called before the first frame update
-        public Material[] materials = new Material[5];
-        public PointScript.Direction direction;
-        public TileScript.Geography geography;
-        public bool free;
+        // public Material[] materials = new Material[5];
+        // public Vector2Int direction;
+        // public TileScript.Geography geography;
+        // public bool free;
+        //
+        // public int x, z;
 
-        public int x, z;
+        #region Legacy
+
+        private const bool LegacyDepricationError = false;
+
+        [ObsoleteAttribute("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
+        public Vector2Int direction => GameObject.Find("GameController").GetComponent<GameControllerScript>().
+            gameState.Meeples.Placement.Single(kvp => kvp.Value.Meeple == this).Value.Direction;
+
+        [ObsoleteAttribute("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
+        public Vector2Int position => GameObject.Find("GameController").GetComponent<GameControllerScript>().gameState
+            .Meeples.Placement.Single(kvp => kvp.Value.Meeple == this).Key;
+        
+        [ObsoleteAttribute("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
+        public TileScript.Geography geography => GameObject.Find("GameController").GetComponent<GameControllerScript>().gameState.
+            Tiles.Played[position.x, position.y].getGeographyAt(direction);
+        
+        [ObsoleteAttribute("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
+        public bool free => !GameObject.Find("GameController").GetComponent<GameControllerScript>().gameState.Meeples
+            .InPlay.Contains(this);
+
+        [ObsoleteAttribute("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
+        public int x => position.x;
+        public int z=> position.y;
+
+        #endregion
         
 
         private PlayerScript _player;
@@ -24,9 +51,9 @@ namespace Carcassonne
 
         private void Start()
         {
-            free = true;
-            x = 0;
-            z = 0;
+            // free = true;
+            // x = 0;
+            // z = 0;
             // id = 1;
         }
 
@@ -34,41 +61,48 @@ namespace Carcassonne
         {
             GameObject.Find("GameController").GetComponent<GameControllerScript>().SetMeepleSnapPos();
         }
-
-        public void assignAttributes(int x, int z, PointScript.Direction direction, TileScript.Geography geography)
-        {
-            this.direction = direction;
-            this.geography = geography;
-
-            this.x = x;
-            this.z = z;
-
-            /*
-        switch (direction)
-        {
-            case PointScript.Direction.NORTH:
-                this.x = x;
-                this.z = z + .5f;
-                break;
-            case PointScript.Direction.EAST:
-                this.x = x + .5f;
-                this.z = z;
-                break;
-            case PointScript.Direction.SOUTH:
-                this.x = x;
-                this.z = z - .5f;
-                break;
-            case PointScript.Direction.WEST:
-                this.x = x - .5f;
-                this.z = z;
-                break;
-            default:
-                this.x = x;
-                this.z = z;
-                break;
-        }
-        */
-        }
+        
+        /// <summary>
+        /// Sets a meeple as being placed at a specific point.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="z"></param>
+        /// <param name="direction"></param>
+        /// <param name="geography"></param>
+        // public void assignAttributes(int x, int z, Vector2Int direction, TileScript.Geography geography)
+        // {
+        //     this.direction = direction;
+        //     this.geography = geography;
+        //
+        //     this.x = x;
+        //     this.z = z;
+        //
+        //     /*
+        // switch (direction)
+        // {
+        //     case PointScript.North:
+        //         this.x = x;
+        //         this.z = z + .5f;
+        //         break;
+        //     case PointScript.East:
+        //         this.x = x + .5f;
+        //         this.z = z;
+        //         break;
+        //     case PointScript.South:
+        //         this.x = x;
+        //         this.z = z - .5f;
+        //         break;
+        //     case PointScript.West:
+        //         this.x = x - .5f;
+        //         this.z = z;
+        //         break;
+        //     default:
+        //         this.x = x;
+        //         this.z = z;
+        //         break;
+        // }
+        // */
+        // }
 
         //TODO Looks like this could be problematic for more than 2 users. Does this ownership mean meeple possession?
         private PlayerScript SetPlayer(PlayerScript p)
@@ -85,18 +119,5 @@ namespace Carcassonne
             return p;
         }
 
-        public Vector2Int GetDirection()
-        {
-            switch (direction)
-            {
-                case PointScript.Direction.NORTH: return Vector2Int.up;
-                case PointScript.Direction.SOUTH: return Vector2Int.down;
-                case PointScript.Direction.EAST: return Vector2Int.right;
-                case PointScript.Direction.WEST: return Vector2Int.left;
-                case PointScript.Direction.CENTER: return Vector2Int.zero;
-                default:
-                    throw new ArgumentException($"Direction {direction} is invalid.");
-            }
-        }
     }
 }

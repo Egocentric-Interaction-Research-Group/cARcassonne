@@ -1,17 +1,21 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Carcassonne.State
 {
     [CreateAssetMenu(fileName = "TileState", menuName = "States/TileState")]
-    public class TileState : ScriptableObject
+    public class TileState : ScriptableObject, IGamePieceState<TileScript>//,TileScript.Geography>
     {
-        public List<TileScript> Remaining;
-        [CanBeNull] public TileScript Current;
-        public TileScript[,] Played;
+        public List<TileScript> Remaining => _remaining;
+        [CanBeNull] public TileScript Current { get; set; }
+        public TileScript[,] Played => _played; 
         
         public Vector2 lastPlayedPosition;
+
+        private List<TileScript> _remaining;
+        private TileScript[,] _played;
 
         /// <summary>
         /// The position of the bottom-left corner of the representation returned by Matrix in Subtile space.
@@ -95,8 +99,14 @@ namespace Carcassonne.State
 
         private void Awake()
         {
-            Remaining = new List<TileScript>();
-            Current = null;
+            _played = new TileScript[GameRules.BoardSize, GameRules.BoardSize];
+            _remaining = new List<TileScript>();
+        }
+
+        private void OnEnable()
+        {
+            _played = new TileScript[GameRules.BoardSize, GameRules.BoardSize];
+            _remaining = new List<TileScript>();
         }
 
         public override string ToString()

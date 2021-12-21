@@ -59,7 +59,7 @@ namespace Carcassonne
 
         public GameObject northCollider, southCollider, westCollider, eastCollider;
 
-        public bool northOcupied, southOcupied, eastOcupied, westOcupied, centerOcupied; //TODO Fix Spelling
+        // public bool northOcupied, southOcupied, eastOcupied, westOcupied, centerOcupied; //TODO Fix Spelling
 
         /// <summary>
         ///     The list of textures. All tile instances have a reference of all the textures so it can assign it to itself
@@ -197,59 +197,62 @@ namespace Carcassonne
             UpdateMatrix();
         }
 
-        public bool IsOccupied(PointScript.Direction direction)  //TODO Fix naming (spelling)
-        {
-            switch (direction)
-            {
-                case PointScript.Direction.NORTH:
-                    return northOcupied;
-                case PointScript.Direction.SOUTH:
-                    return southOcupied;
-                case PointScript.Direction.EAST:
-                    return eastOcupied;
-                case PointScript.Direction.WEST:
-                    return westOcupied;
-                default:
-                    return centerOcupied;
-            }
-        }
+        // public bool IsOccupied(Vector2Int direction)  //TODO Fix naming (spelling)
+        // {
+        //     switch (direction)
+        //     {
+        //         case PointScript.North:
+        //             return northOcupied;
+        //         case PointScript.South:
+        //             return southOcupied;
+        //         case PointScript.East:
+        //             return eastOcupied;
+        //         case PointScript.West:
+        //             return westOcupied;
+        //         default:
+        //             return centerOcupied;
+        //     }
+        // }
 
-
-        public void occupy(PointScript.Direction direction)
-        {
-            if (direction == PointScript.Direction.NORTH) northOcupied = true;
-            if (direction == PointScript.Direction.SOUTH) southOcupied = true;
-            if (direction == PointScript.Direction.EAST) eastOcupied = true;
-            if (direction == PointScript.Direction.WEST) westOcupied = true;
-            if (direction == PointScript.Direction.CENTER) centerOcupied = true;
-            if (Center == getGeographyAt(direction) && direction != PointScript.Direction.CENTER ||
-                Center == Geography.City)
-            {
-                if (getGeographyAt(PointScript.Direction.NORTH) == getGeographyAt(direction)) northOcupied = true;
-                if (getGeographyAt(PointScript.Direction.EAST) == getGeographyAt(direction)) eastOcupied = true;
-                if (getGeographyAt(PointScript.Direction.SOUTH) == getGeographyAt(direction)) southOcupied = true;
-                if (getGeographyAt(PointScript.Direction.WEST) == getGeographyAt(direction)) westOcupied = true;
-            }
-
-            if (Center == Geography.City && getGeographyAt(direction) == Geography.City)
-                centerOcupied = true;
-            else if (Center == Geography.Road && getGeographyAt(direction) == Geography.Road) centerOcupied = true;
-        }
+        /// <summary>
+        /// Sets a point on the Tile as occupied by a Meeple
+        /// </summary>
+        /// <param name="direction"></param>
+        // public void occupy(Vector2Int direction)
+        // {
+        //     if (direction == PointScript.North) northOcupied = true;
+        //     if (direction == PointScript.South) southOcupied = true;
+        //     if (direction == PointScript.East) eastOcupied = true;
+        //     if (direction == PointScript.West) westOcupied = true;
+        //     if (direction == PointScript.Centre) centerOcupied = true;
+        //     if (Center == getGeographyAt(direction) && direction != PointScript.Centre ||
+        //         Center == Geography.City)
+        //     {
+        //         if (getGeographyAt(PointScript.North) == getGeographyAt(direction)) northOcupied = true;
+        //         if (getGeographyAt(PointScript.East) == getGeographyAt(direction)) eastOcupied = true;
+        //         if (getGeographyAt(PointScript.South) == getGeographyAt(direction)) southOcupied = true;
+        //         if (getGeographyAt(PointScript.West) == getGeographyAt(direction)) westOcupied = true;
+        //     }
+        //
+        //     if (Center == Geography.City && getGeographyAt(direction) == Geography.City)
+        //         centerOcupied = true;
+        //     else if (Center == Geography.Road && getGeographyAt(direction) == Geography.Road) centerOcupied = true;
+        // }
 
         /// <summary>
         ///     Returns the tile geography at a specific direction.
         /// </summary>
         /// <param name="direction"></param>
         /// <returns></returns>
-        public Geography getGeographyAt(PointScript.Direction direction)
-        {
-            if (direction == PointScript.Direction.NORTH) return North;
-            if (direction == PointScript.Direction.SOUTH) return South;
-            if (direction == PointScript.Direction.EAST) return East;
-            if (direction == PointScript.Direction.WEST)
-                return West;
-            return Center;
-        }
+        // public Geography getGeographyAt(Vector2Int direction)
+        // {
+        //     if (direction == PointScript.North) return North;
+        //     if (direction == PointScript.South) return South;
+        //     if (direction == PointScript.East) return East;
+        //     if (direction == PointScript.West)
+        //         return West;
+        //     return Center;
+        // }
         
         public Geography getGeographyAt(Vector2Int direction)
         {

@@ -20,5 +20,10 @@ namespace Carcassonne.State
             Cities = new List<City>();
             Graph = new BoardGraph();
         }
+
+        public IFeature GetFeatureAt(Vector2Int position, Vector2Int direction)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

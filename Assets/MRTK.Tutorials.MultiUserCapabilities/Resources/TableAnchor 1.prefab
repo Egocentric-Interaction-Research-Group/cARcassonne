@@ -7577,7 +7577,7 @@ MonoBehaviour:
   checkIcon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   mPanelGameOver: {fileID: 0}
   stackScript: {fileID: 0}
-  Direction: 0
+  Direction: {x: 0, y: 0}
   SnapPosition: {x: 0, y: 0, z: 0}
   CanConfirm: 0
   meepleControllerScript: {fileID: 8220263693249302836}

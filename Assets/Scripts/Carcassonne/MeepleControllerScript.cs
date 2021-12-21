@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Carcassonne.State;
 using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;
@@ -84,23 +85,23 @@ namespace Carcassonne
             if (fMeepleAimX - basePositionTransform.localPosition.x > 0)
             {
                 iMeepleAimX = (int) ((fMeepleAimX - basePositionTransform.localPosition.x) * gameControllerScript.scale + 1f) / 2 +
-                              85;
+                              GameRules.BoardSize / 2;
             }
             else
             {
                 iMeepleAimX = (int) ((fMeepleAimX - basePositionTransform.localPosition.x) * gameControllerScript.scale - 1f) / 2 +
-                              85;
+                              GameRules.BoardSize / 2;
             }
 
             if (fMeepleAimZ - basePositionTransform.localPosition.z > 0)
             {
                 iMeepleAimZ = (int) ((fMeepleAimZ - basePositionTransform.localPosition.z) * gameControllerScript.scale + 1f) / 2 +
-                              85;
+                              GameRules.BoardSize / 2;
             }
             else
             {
                 iMeepleAimZ = (int) ((fMeepleAimZ - basePositionTransform.localPosition.z) * gameControllerScript.scale - 1f) / 2 +
-                              85;
+                              GameRules.BoardSize / 2;
             }
         }
     
@@ -116,22 +117,46 @@ namespace Carcassonne
         {
         
         }
-
-        public MeepleScript FindMeeple(int x, int y, TileScript.Geography geography, GameControllerScript gameControllerScript)
+        
+        /// <summary>
+        /// Find a meeple at the specified position, on the specified geography, in the specified direction.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="geography"></param>
+        /// <param name="direction"></param>
+        /// <returns></returns>
+        public MeepleScript FindMeeple(int x, int y, TileScript.Geography geography, Vector2Int? direction = null)
         {
-            MeepleScript res = null;
+            var position = new Vector2Int(x, y);
 
-            foreach (var m in meeples.All)
+            if (gameControllerScript.gameState.Meeples.Placement.ContainsKey(position))
             {
-                var tmp = m.GetComponent<MeepleScript>();
+                var tile = gameControllerScript.gameState.Tiles.Played[position.x, position.y];
+                var geo = tile.SubTileDictionary[position]; 
+                Debug.Assert(tile != null, $"There is a meeple at position {position}, so the tile there should not be null.");
 
-                if (tmp.geography == geography && tmp.x == x && tmp.z == y) return tmp;
+                var meeplePlacement = gameControllerScript.gameState.Meeples.Placement[position];
+                var dir = meeplePlacement.Direction;
+                var meep = meeplePlacement.Meeple;
+
+                // If there is no direction passed, we just want dir == direction to be true
+                if (direction == null)
+                {
+                    direction = dir;
+                }
+
+                // Test for meeple.
+                    if (dir == direction && geo == geography)
+                {
+                    return meep;
+                }
             }
 
-            return res;
+            return null;
         }
 
-        public void AimMeeple(GameControllerScript gameControllerScript)
+        public void AimMeeple()
         {
             try
             {
@@ -145,33 +170,33 @@ namespace Carcassonne
                         Mathf.Infinity, layerMask);
 
                     this.meepleGeography = TileScript.Geography.Field;
-                    gameControllerScript.Direction = PointScript.Direction.CENTER;
+                    gameControllerScript.Direction = PointScript.Centre;
 
                     if (this.meepleHitTileDirection.collider != null)
                     {
                         if (this.meepleHitTileDirection.collider.name == "East")
                         {
-                            gameControllerScript.Direction = PointScript.Direction.EAST;
+                            gameControllerScript.Direction = PointScript.East;
                             this.meepleGeography = tileScript.East;
                         }
                         else if (this.meepleHitTileDirection.collider.name == "West")
                         {
-                            gameControllerScript.Direction = PointScript.Direction.WEST;
+                            gameControllerScript.Direction = PointScript.West;
                             this.meepleGeography = tileScript.West;
                         }
                         else if (this.meepleHitTileDirection.collider.name == "North")
                         {
-                            gameControllerScript.Direction = PointScript.Direction.NORTH;
+                            gameControllerScript.Direction = PointScript.North;
                             this.meepleGeography = tileScript.North;
                         }
                         else if (this.meepleHitTileDirection.collider.name == "South")
                         {
-                            gameControllerScript.Direction = PointScript.Direction.SOUTH;
+                            gameControllerScript.Direction = PointScript.South;
                             this.meepleGeography = tileScript.South;
                         }
                         else if (this.meepleHitTileDirection.collider.name == "Center")
                         {
-                            gameControllerScript.Direction = PointScript.Direction.CENTER;
+                            gameControllerScript.Direction = PointScript.Centre;
                             this.meepleGeography = tileScript.getCenter();
                         }
 
@@ -205,9 +230,11 @@ namespace Carcassonne
             }
         }
 
-        public void FreeMeeple(GameObject meeple, GameControllerScript gameControllerScript)
+        public void FreeMeeple(GameObject meeple)
         {
-            meeple.GetComponent<MeepleScript>().free = true;
+            // meeple.GetComponent<MeepleScript>().free = true;
+            gameControllerScript.gameState.Meeples.Placement.Remove(meeple.GetComponent<MeepleScript>().position);
+            
             meeple.transform.position = new Vector3(20, 20, 20);
             meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
             meeple.GetComponentInChildren<BoxCollider>().enabled = false;
@@ -220,29 +247,27 @@ namespace Carcassonne
         {
             if (gameControllerScript.gameState.phase == Phase.TileDown)
             {
-                foreach (MeepleScript meeple in players.Current.meeples) //TODO Inefficient. Just want the first free meeple.
+                var meeple = players.Current.meeples.FirstOrDefault(m => !gameControllerScript.gameState.Meeples.InPlay.Contains(m));
+                
+                if (meeple != null)
                 {
-                    GameObject meepleGameObject = meeple.gameObject;
-                    if (meeple.free)
-                    {
-                        meepleGameObject.SetActive(true);
-                        meepleGameObject.GetComponentInChildren<Rigidbody>().useGravity = true;
-                        meepleGameObject.GetComponentInChildren<BoxCollider>().enabled = true;
-                        meepleGameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
-                        meepleGameObject.GetComponentInChildren<ObjectManipulator>().enabled = true;
-                        meepleGameObject.transform.parent = gameControllerScript.table.transform;
-                        meepleGameObject.transform.position = meepleSpawnPosition.transform.position;
-                            // meepleGameObject.transform.parent = GameObject.Find("MeepleDrawPosition").transform.parent;
-                            // meepleGameObject.transform.localPosition = new Vector3(0,0,0);
-                            // meepleGameObject.transform.SetParent(GameObject.Find("Table").transform, true);
+                    var meepleGameObject = meeple.gameObject; 
+                    meepleGameObject.SetActive(true);
+                    meepleGameObject.GetComponentInChildren<Rigidbody>().useGravity = true;
+                    meepleGameObject.GetComponentInChildren<BoxCollider>().enabled = true;
+                    meepleGameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+                    meepleGameObject.GetComponentInChildren<ObjectManipulator>().enabled = true;
+                    meepleGameObject.transform.parent = gameControllerScript.table.transform;
+                    meepleGameObject.transform.position = meepleSpawnPosition.transform.position;
+                    // meepleGameObject.transform.parent = GameObject.Find("MeepleDrawPosition").transform.parent;
+                    // meepleGameObject.transform.localPosition = new Vector3(0,0,0);
+                    // meepleGameObject.transform.SetParent(GameObject.Find("Table").transform, true);
                         
-                        meeples.Current = meepleGameObject.GetComponent<MeepleScript>();
-                        // meepleGameObject.transform.rotation = Quaternion.identity;
+                    meeples.Current = meepleGameObject.GetComponent<MeepleScript>();
+                    // meepleGameObject.transform.rotation = Quaternion.identity;
 
-                        gameControllerScript.UpdateDecisionButtons(true, meepleGameObject);
-                        gameControllerScript.gameState.phase = Phase.MeepleDrawn;
-                        break;
-                    }
+                    gameControllerScript.UpdateDecisionButtons(true, meepleGameObject);
+                    gameControllerScript.gameState.phase = Phase.MeepleDrawn;
                 }
             }
             else
@@ -252,58 +277,85 @@ namespace Carcassonne
             }
         }
 
-        public MeepleScript FindMeeple(int x, int y, TileScript.Geography geography, PointScript.Direction direction, GameControllerScript gameControllerScript)
+        public bool GeographyCanHoldMeeples(TileScript.Geography geography)
         {
-            MeepleScript res = null;
-
-            foreach (var m in meeples.All)
+            if ((geography & TileScript.Geography.City) == TileScript.Geography.City ||
+                (geography & TileScript.Geography.Road) == TileScript.Geography.Road ||
+                geography == TileScript.Geography.Cloister)
             {
-                var tmp = m.GetComponent<MeepleScript>();
-
-                if (tmp.geography == geography && tmp.x == x && tmp.z == y && tmp.direction == direction) return tmp;
+                return true;
             }
 
-            return res;
+            return false;
         }
 
-        public void PlaceMeeple(GameObject meeple, int xs, int zs, PointScript.Direction direction,
-            TileScript.Geography meepleGeography, GameControllerScript gameControllerScript)
+        public bool IsValidPlacement(Vector2Int position, Vector2Int direction)
         {
-            var currentTileScript = gameControllerScript.tileControllerScript.currentTile.GetComponent<TileScript>();
-            var currentCenter = currentTileScript.getCenter();
-            bool res;
-            if (currentCenter == TileScript.Geography.Village || currentCenter == TileScript.Geography.Field ||
-                currentCenter == TileScript.Geography.Cloister && direction != PointScript.Direction.CENTER)
-                res = GetComponent<PointScript>()
-                    .testIfMeepleCantBePlacedDirection(currentTileScript.vIndex, meepleGeography, direction);
-            else if (currentCenter == TileScript.Geography.Cloister && direction == PointScript.Direction.CENTER)
-                res = false;
-            else
-                res = GetComponent<PointScript>().testIfMeepleCantBePlaced(currentTileScript.vIndex, meepleGeography);
+            var tile = gameControllerScript.gameState.Tiles.Played[position.x, position.y];
+            var geography = tile.getGeographyAt(direction);
+            
+            // Placement is invalid if not on a type of feature that can have a meeple
+            if (!GeographyCanHoldMeeples(geography)) return false;
+            
+            // Placement is invalid if feature already has meeple
+            if (gameControllerScript.gameState.Features.GetFeatureAt(position, direction).Meeples.Any())
+                return false;
 
-            if (meepleGeography == TileScript.Geography.City)
-            {
-                if (currentCenter == TileScript.Geography.City)
-                    res = gameControllerScript.CityIsNotFinishedIfEmptyTileBesideCity(xs, zs) || res;
-                else
-                    res = gameControllerScript.CityIsFinishedDirection(xs, zs, direction) || res;
-            }
+            // Nothing makes it invalid, so return true
+            return true;
+        }
 
-            if (!currentTileScript.IsOccupied(direction) && !res)
-            {
-                meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
-                meeple.GetComponentInChildren<BoxCollider>().enabled = false;
-                meeple.GetComponent<ObjectManipulator>().enabled = false;
+        public bool PlaceMeeple(GameObject meeple, Vector2Int position, Vector2Int direction)
+        {
+            var meepleScript = meeple.GetComponent<MeepleScript>();
+            
+            // Test if Meeple placement is valid
+            if (!IsValidPlacement(position, direction)) return false;
+            
+            // Place meeple
+            gameControllerScript.gameState.Meeples.Placement.Add(position, new PlacedMeeple(meepleScript, direction));
+            
+            // Move game to next phase
+            gameControllerScript.gameState.phase = Phase.MeepleDown;
 
-                currentTileScript.occupy(direction);
-                if (meepleGeography == TileScript.Geography.CityRoad) meepleGeography = TileScript.Geography.City;
+            return true;
 
-                meeple.GetComponent<MeepleScript>().assignAttributes(xs, zs, direction, meepleGeography);
-                meeple.GetComponent<MeepleScript>().free = false;
-
-
-                gameControllerScript.gameState.phase = Phase.MeepleDown;
-            }
+            // var currentCenter = currentTileScript.getCenter();
+            //
+            // // Determine whether a meeple is [res]tricted from being placed
+            // bool res;
+            // if (currentCenter == TileScript.Geography.Village || currentCenter == TileScript.Geography.Field ||
+            //     currentCenter == TileScript.Geography.Cloister && direction != PointScript.Centre)
+            //     res = GetComponent<PointScript>()
+            //         .testIfMeepleCantBePlacedDirection(currentTileScript.vIndex, meepleGeography, direction);
+            // else if (currentCenter == TileScript.Geography.Cloister && direction == PointScript.Centre)
+            //     res = false;
+            // else
+            //     res = GetComponent<PointScript>().testIfMeepleCantBePlaced(currentTileScript.vIndex, meepleGeography);
+            //
+            // if (meepleGeography == TileScript.Geography.City)
+            // {
+            //     if (currentCenter == TileScript.Geography.City)
+            //         res = gameControllerScript.CityIsNotFinishedIfEmptyTileBesideCity(xs, zs) || res;
+            //     else
+            //         res = gameControllerScript.CityIsFinishedDirection(xs, zs, direction) || res;
+            // }
+            //
+            // if (!currentTileScript.IsOccupied(direction) && !res)
+            // {
+            //     meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
+            //     meeple.GetComponentInChildren<BoxCollider>().enabled = false;
+            //     meeple.GetComponent<ObjectManipulator>().enabled = false;
+            //
+            //     currentTileScript.occupy(direction);
+            //     if (meepleGeography == TileScript.Geography.CityRoad) meepleGeography = TileScript.Geography.City;
+            //
+            //     meeple.GetComponent<MeepleScript>().assignAttributes(xs, zs, direction, meepleGeography);
+            //     meeple.GetComponent<MeepleScript>().free = false;
+            //
+            //
+            //     gameControllerScript.gameState.phase = Phase.MeepleDown;
+            // }
         }
     }
 }

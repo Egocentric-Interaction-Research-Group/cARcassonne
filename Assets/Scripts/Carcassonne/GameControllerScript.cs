@@ -104,7 +104,7 @@ namespace Carcassonne
             set => placedTiles = value;
             get => placedTiles;
         }
-        public PointScript.Direction Direction;
+        public Vector2Int Direction;
 
         public Vector3 SnapPosition;
 
@@ -151,8 +151,8 @@ namespace Carcassonne
                     ChangeConfirmButtonApperance(false);
 
                 SnapPosition = new Vector3
-                (stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f, tileControllerScript.currentTile.transform.localPosition.y,
-                    stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
+                (stackScript.basePositionTransform.localPosition.x + (iTileAimX - GameRules.BoardSize / 2) * 0.033f, tileControllerScript.currentTile.transform.localPosition.y,
+                    stackScript.basePositionTransform.localPosition.z + (iTileAimZ - GameRules.BoardSize / 2) * 0.033f);
             }
 
             if (startGame)
@@ -165,7 +165,7 @@ namespace Carcassonne
             if (Input.GetKeyDown(KeyCode.R) && PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
                     tileControllerScript.RotateTileRPC();
 
-            if (Input.GetKeyDown(KeyCode.J)) meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject, this); //FIXME: Throws error when no meeple assigned!
+            if (Input.GetKeyDown(KeyCode.J)) meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject); //FIXME: Throws error when no meeple assigned!
             if (Input.GetKeyDown(KeyCode.B)) GameOver(); //FIXME Doesn't work/no effect
 
             switch (gameState.phase)
@@ -192,8 +192,8 @@ namespace Carcassonne
                     {
                         meepleControllerScript.drawMeepleEffect.Play();
                         tileControllerScript.currentTile.transform.localPosition = new Vector3
-                        (stackScript.basePositionTransform.localPosition.x + (iTileAimX - 85) * 0.033f, 0.5900002f,
-                            stackScript.basePositionTransform.localPosition.z + (iTileAimZ - 85) * 0.033f);
+                        (stackScript.basePositionTransform.localPosition.x + (iTileAimX - GameRules.BoardSize / 2) * 0.033f, 0.5900002f,
+                            stackScript.basePositionTransform.localPosition.z + (iTileAimZ - GameRules.BoardSize / 2) * 0.033f);
                         endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[1];
                     }
 
@@ -205,7 +205,7 @@ namespace Carcassonne
                     ////confirmButton.transform.up = table.transform.forward;
                     meepleControllerScript.drawMeepleEffect.Stop();
                     meepleControllerScript.CurrentMeepleRayCast();
-                    meepleControllerScript.AimMeeple(this);
+                    meepleControllerScript.AimMeeple();
 
                     break;
                 case Phase.MeepleDown:
@@ -227,7 +227,7 @@ namespace Carcassonne
             int players = PhotonNetwork.CurrentRoom.PlayerCount;
             firstTurnCounter = players;
             placedTiles = GetComponent<PlacedTilesScript>();
-            placedTiles.InstansiatePlacedTilesArray();
+            placedTiles.PlacedTilesArrayIsEmptyCheck();
 
             table = GameObject.Find("Table");
             decisionButtons = GameObject.Find("DecisionButtons");
@@ -262,7 +262,7 @@ namespace Carcassonne
 
             VertexItterator = 1;
 
-            PlaceTile(tileControllerScript.currentTile, 85, 85, true);
+            PlaceTile(tileControllerScript.currentTile, GameRules.BoardSize / 2, GameRules.BoardSize / 2, true);
 
             currentPlayer = gameState.Players.All[0];
 
@@ -285,17 +285,17 @@ namespace Carcassonne
         }
 
         //TODO Replace this
-        public bool CityIsFinishedDirection(int x, int y, PointScript.Direction direction)
+        public bool CityIsFinishedDirection(int x, int y, Vector2Int direction)
         {
             meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
-            meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, direction, this));
+            meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, direction));
 
             cityIsFinished = true;
-            visited = new bool[170, 170];
+            visited = new bool[GameRules.BoardSize, GameRules.BoardSize];
             RecursiveCityIsFinishedDirection(x, y, direction);
             Debug.Log(
                 "DIRECTION__________________________CITY IS FINISHED EFTER DIRECTION REKURSIV: ___________________________" +
-                cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, this));
+                cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City));
             
             // Test code to print the bounding boxes of a completed city.
             if (cityIsFinished)
@@ -314,16 +314,16 @@ namespace Carcassonne
         { 
             // Create a list of meeples in the city
             meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
-            meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, this));
+            meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City));
 
             // Set up variables
             cityIsFinished = true;
-            visited = new bool[170, 170];
+            visited = new bool[GameRules.BoardSize, GameRules.BoardSize];
             
             // Check to see if city is not finished due to empty tiles
             RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y);
             Debug.Log("__________________________CITY IS FINISHED EFTER REKURSIV: ___________________________" +
-                      cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, this));
+                      cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City));
             
             if (cityIsFinished)
             {
@@ -335,10 +335,10 @@ namespace Carcassonne
             return cityIsFinished;
         }
 
-        public void RecursiveCityIsFinishedDirection(int x, int y, PointScript.Direction direction)
+        public void RecursiveCityIsFinishedDirection(int x, int y, Vector2Int direction)
         {
             visited[x, y] = true;
-            if (direction == PointScript.Direction.NORTH)
+            if (direction == PointScript.North)
                 if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().North == TileScript.Geography.City)
                 {
                     if (placedTiles.GetPlacedTile(x, y + 1) != null)
@@ -351,7 +351,7 @@ namespace Carcassonne
                     }
                 }
 
-            if (direction == PointScript.Direction.EAST)
+            if (direction == PointScript.East)
                 if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().East == TileScript.Geography.City)
                 {
                     if (placedTiles.GetPlacedTile(x + 1, y) != null)
@@ -364,7 +364,7 @@ namespace Carcassonne
                     }
                 }
 
-            if (direction == PointScript.Direction.SOUTH)
+            if (direction == PointScript.South)
                 if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().South == TileScript.Geography.City)
                 {
                     if (placedTiles.GetPlacedTile(x, y - 1) != null)
@@ -377,7 +377,7 @@ namespace Carcassonne
                     }
                 }
 
-            if (direction == PointScript.Direction.WEST)
+            if (direction == PointScript.West)
                 if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().West == TileScript.Geography.City)
                 {
                     if (placedTiles.GetPlacedTile(x - 1, y) != null)
@@ -478,28 +478,28 @@ namespace Carcassonne
 
             if (tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x > 0)
             {
-                iTileAimX = (int) ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale + 1f) / 2 + 85;
+                iTileAimX = (int) ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale + 1f) / 2 + GameRules.BoardSize / 2;
 
                 var testX = ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * 10f + 1f) / 2f + 85f;
                 //Debug.Log("Float X: " + Math.Round(testX));
             }
             else
             {
-                iTileAimX = (int) ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale - 1f) / 2 + 85;
+                iTileAimX = (int) ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale - 1f) / 2 + GameRules.BoardSize / 2;
                 var testX = ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * 10f - 1f) / 2f + 85f;
                 //Debug.Log("Float X: " + Math.Round(testX));
             }
 
             if (tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z > 0)
             {
-                iTileAimZ = (int) ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale + 1f) / 2 + 85;
+                iTileAimZ = (int) ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale + 1f) / 2 + GameRules.BoardSize / 2;
 
                 var testZ = ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f + 1f) / 2f + 85f;
                 //Debug.Log("Float Z: " + Math.Round(testZ));
             }
             else
             {
-                iTileAimZ = (int) ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale - 1f) / 2 + 85;
+                iTileAimZ = (int) ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale - 1f) / 2 + GameRules.BoardSize / 2;
 
                 var testZ = ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f - 1f) / 2f + 85f;
                 //Debug.Log("Float Z: " + Math.Round(testZ));
@@ -611,13 +611,13 @@ namespace Carcassonne
                             meepleControllerScript.meepleGeography == TileScript.Geography.Road)
                         {
                             meepleControllerScript.PlaceMeeple(gameState.Meeples.Current.gameObject,
-                                meepleControllerScript.iMeepleAimX, meepleControllerScript.iMeepleAimZ,
-                                Direction, meepleControllerScript.meepleGeography, this);
+                                new Vector2Int(meepleControllerScript.iMeepleAimX, meepleControllerScript.iMeepleAimZ),
+                                Direction);
                         }
                     }
                     else
                     {
-                        meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject, this);
+                        meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject);
                     }
                 }
             }
@@ -814,7 +814,7 @@ namespace Carcassonne
                             //CLOISTER
                             if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
                                 TileScript.Geography.Cloister &&
-                                meeple.direction == PointScript.Direction.CENTER)
+                                meeple.direction == PointScript.Centre)
                                 finalscore = placedTiles.CheckSurroundedCloister(meeple.x, meeple.z, GameEnd);
                         }
                         
@@ -825,7 +825,10 @@ namespace Carcassonne
                             meeple.player.SetPlayerScore(
                                 meeple.player.GetPlayerScore() + finalscore);
 
-                            meeple.free = true;
+                            // meeple.free = true;
+                            gameState.Meeples.Placement.Remove(meeple.GetComponent<MeepleScript>().position);
+
+                            
                             meeple.transform.position = new Vector3(20, 20, 20);
                             meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
                             meeple.GetComponentInChildren<BoxCollider>().enabled = false;
@@ -911,12 +914,12 @@ namespace Carcassonne
                 gameState.Meeples.Current.transform.position =
                     new Vector3(SnapPosition.x, gameState.Meeples.Current.transform.position.y, SnapPosition.z);
 
-                if (Direction == PointScript.Direction.WEST || Direction == PointScript.Direction.EAST)
+                if (Direction == PointScript.West || Direction == PointScript.East)
                 {
                     if (gameState.Meeples.Current.transform.rotation.eulerAngles.y != 90) gameState.Meeples.Current.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
                 }
-                else if (Direction == PointScript.Direction.NORTH || Direction == PointScript.Direction.SOUTH ||
-                         Direction == PointScript.Direction.CENTER)
+                else if (Direction == PointScript.North || Direction == PointScript.South ||
+                         Direction == PointScript.Centre)
                 {
                     if (gameState.Meeples.Current.transform.rotation.eulerAngles.y == 90) gameState.Meeples.Current.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
                 }

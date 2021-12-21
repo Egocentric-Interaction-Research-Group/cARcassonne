@@ -5,17 +5,49 @@ using UnityEngine;
 
 namespace Carcassonne.State
 {
+    public struct PlacedMeeple
+    {
+        public PlacedMeeple(MeepleScript meeple, Vector2Int direction)
+        {
+            Meeple = meeple;
+            Direction = direction;
+        }
+
+        public MeepleScript Meeple { get; }
+        public Vector2Int Direction { get; }
+    }
+    
     /// <summary>
     /// MeepleState hold all of the information about the position, availability, and ownership of meeples.
     /// Player meeple list derive from this information store.
     /// </summary>
     [CreateAssetMenu(fileName = "MeepleState", menuName = "States/MeepleState")]
-    public class MeepleState : ScriptableObject
+    public class MeepleState : ScriptableObject, IGamePieceState<MeepleScript>
     {
+        List<MeepleScript> IGamePieceState<MeepleScript>.Remaining => _remaining;
+        
+        /// <summary>
+        /// The current Meeple being played.
+        /// </summary>
+        [CanBeNull] public MeepleScript Current { get; set; }
+
+        public MeepleScript[,] Played { get; }
+        public Vector2Int MatrixOrigin { get; }
+
+        public Dictionary<Vector2Int, PlacedMeeple> Placement = new Dictionary<Vector2Int, PlacedMeeple>();
+        public IEnumerable<MeepleScript> InPlay => Placement.Select(p => p.Value.Meeple);
+
+        /// <summary>
+        /// The set of all Meeples in the game.
+        /// </summary>
         public List<MeepleScript> All = new List<MeepleScript>();
-        public Dictionary<PlayerScript, MeepleScript> Free => null;
-        [CanBeNull] public MeepleScript Current;
-        // public MeepleScript[,] Played; //TODO Implement
+        
+        /// <summary>
+        /// The free meeples remaining for each player 
+        /// </summary>
+        // public Dictionary<PlayerScript, MeepleScript> Remaining => null;
+
+        private List<MeepleScript> _remaining;
 
         private void OnEnable()
         {

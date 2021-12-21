@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Carcassonne.State.Features
 {
@@ -21,6 +22,5 @@ namespace Carcassonne.State.Features
         
         public IEnumerable<MeepleScript> Meeples { get; }
 
-
-}
+    }
 }

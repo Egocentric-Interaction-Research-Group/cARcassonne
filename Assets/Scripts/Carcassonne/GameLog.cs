@@ -16,7 +16,7 @@ namespace Carcassonne
         public PlayerScript Player;
         public TileScript Tile;
         public Vector2 Location;
-        public PointScript.Direction? MeeplePlacement; // The `?` means that it can be null, if no Meeple was placed.
+        public Vector2Int? MeeplePlacement; // The `?` means that it can be null, if no Meeple was placed.
         
         public bool MeeplePlayed => MeeplePlacement != null;
     }

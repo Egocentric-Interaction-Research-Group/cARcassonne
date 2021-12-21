@@ -1,25 +1,24 @@
 using System.Collections.Generic;
 using System.Linq;
+using Carcassonne.State;
 using UnityEngine;
 
 namespace Carcassonne
 {
     public class PointScript : MonoBehaviour
     {
-        public enum Direction
-        {
-            NORTH,
-            EAST,
-            SOUTH,
-            WEST,
-            CENTER
-        }
-
+        public static Vector2Int North => Vector2Int.up;
+        public static Vector2Int South => Vector2Int.down;
+        public static Vector2Int West => Vector2Int.left;
+        public static Vector2Int East => Vector2Int.right;
+        public static Vector2Int Centre => Vector2Int.zero;
+        public static Vector2Int Center => Vector2Int.zero;
+        
         private bool broken;
         private int counter;
         private int finalScore;
         private Graph g;
-        private readonly int nbrOfVertices = 85;
+        private readonly int nbrOfVertices = GameRules.BoardSize / 2;
         private int roadBlocks;
         private int vertexIterator;
         private bool[] visited;
@@ -29,33 +28,33 @@ namespace Carcassonne
             g = new Graph(nbrOfVertices);
         }
 
-        public bool testIfMeepleCantBePlaced(int Vindex, TileScript.Geography weight)
-        {
-            roadBlocks = 0;
-            broken = false;
-            counter = 0;
-            visited = new bool[85];
-            dfs(Vindex, weight, false);
-            return broken || roadBlocks == 2;
-        }
-
-        public bool testIfMeepleCantBePlacedDirection(int Vindex, TileScript.Geography weight, Direction direction)
-        {
-            roadBlocks = 0;
-            broken = false;
-            counter = 0;
-            visited = new bool[85];
-            dfsDirection(Vindex, weight, direction, false);
-            return broken || roadBlocks == 2;
-            ;
-        }
+        // public bool testIfMeepleCantBePlaced(int Vindex, TileScript.Geography weight)
+        // {
+        //     roadBlocks = 0;
+        //     broken = false;
+        //     counter = 0;
+        //     visited = new bool[GameRules.BoardSize / 2];
+        //     dfs(Vindex, weight, false);
+        //     return broken || roadBlocks == 2;
+        // }
+        //
+        // public bool testIfMeepleCantBePlacedDirection(int Vindex, TileScript.Geography weight, Vector2Int direction)
+        // {
+        //     roadBlocks = 0;
+        //     broken = false;
+        //     counter = 0;
+        //     visited = new bool[GameRules.BoardSize / 2];
+        //     dfsDirection(Vindex, weight, direction, false);
+        //     return broken || roadBlocks == 2;
+        //     ;
+        // }
 
         public int startDfs(int Vindex, TileScript.Geography weight, bool GameEnd)
         {
             counter = 1;
             roadBlocks = 0;
             finalScore = 0;
-            visited = new bool[85];
+            visited = new bool[GameRules.BoardSize / 2];
             Debug.Log("StartDFS");
             dfs(Vindex, weight, GameEnd);
             //Debug.Log(finalScore);
@@ -72,13 +71,13 @@ namespace Carcassonne
         /// <param name="Vindex"></param>
         /// <param name="weight"></param>
         /// <param name="direction"></param>
-        public int startDfsDirection(int Vindex, TileScript.Geography weight, Direction direction, bool GameEnd)
+        public int startDfsDirection(int Vindex, TileScript.Geography weight, Vector2Int direction, bool GameEnd)
         {
             counter = 0;
             roadBlocks = 0;
             //if (weight == TileScript.geography.Road) roadBlocks = 1;
             finalScore = 0;
-            visited = new bool[85]; //TODO Hardcoded
+            visited = new bool[GameRules.BoardSize / 2]; //TODO Hardcoded
 
             dfsDirection(Vindex, weight, direction, GameEnd);
             //Debug.Log(finalScore);
@@ -92,7 +91,7 @@ namespace Carcassonne
             return finalScore;
         }
 
-        private void dfsDirection(int Vindex, TileScript.Geography weight, Direction direction, bool GameEnd)
+        private void dfsDirection(int Vindex, TileScript.Geography weight, Vector2Int direction, bool GameEnd)
         {
             if (!visited[Vindex])
             {
@@ -228,7 +227,7 @@ namespace Carcassonne
         }
 
         public void placeVertex(int Vindex, int[] Vindexes, TileScript.Geography[] weights,
-            TileScript.Geography startCenter, TileScript.Geography[] endCenters, Direction[] directions)
+            TileScript.Geography startCenter, TileScript.Geography[] endCenters, Vector2Int[] directions)
         {
             vertexIterator = Vindex;
             for (var i = 0; i < Vindexes.Length; i++)
@@ -246,33 +245,13 @@ namespace Carcassonne
                 for (var i = 0; i < nbrOfVertices; i++) graph.AddLast(new LinkedList<Edge>());
             }
 
-            public static Direction getReverseDirection(Direction direction)
+            public static Vector2Int getReverseDirection(Vector2Int direction)
             {
-                Direction res;
-                switch (direction)
-                {
-                    case Direction.EAST:
-                        res = Direction.WEST;
-                        break;
-                    case Direction.WEST:
-                        res = Direction.EAST;
-                        break;
-                    case Direction.NORTH:
-                        res = Direction.SOUTH;
-                        break;
-                    case Direction.SOUTH:
-                        res = Direction.NORTH;
-                        break;
-                    default:
-                        res = Direction.NORTH;
-                        break;
-                }
-
-                return res;
+                return -direction;
             }
 
             public void addEdge(int startVertex, int endVertex, TileScript.Geography weight,
-                TileScript.Geography startCenter, TileScript.Geography endCenter, Direction direction)
+                TileScript.Geography startCenter, TileScript.Geography endCenter, Vector2Int direction)
             {
                 graph.ElementAt(startVertex)
                     .AddLast(new Edge(endVertex, weight, endCenter, getReverseDirection(direction)));
@@ -306,7 +285,7 @@ namespace Carcassonne
                 return neighbours;
             }
 
-            public LinkedList<Edge> getNeighbours(int Vindex, TileScript.Geography weight, Direction direction)
+            public LinkedList<Edge> getNeighbours(int Vindex, TileScript.Geography weight, Vector2Int direction)
             {
                 var neighbours = new LinkedList<Edge>();
                 if (weight == TileScript.Geography.Road || weight == TileScript.Geography.City)
@@ -329,12 +308,12 @@ namespace Carcassonne
         public class Edge
         {
             public TileScript.Geography center;
-            public Direction direction;
+            public Vector2Int direction;
             public int endVertex;
             public bool hasMeeple;
             public TileScript.Geography weight;
 
-            public Edge(int endVertex, TileScript.Geography weight, TileScript.Geography center, Direction direction)
+            public Edge(int endVertex, TileScript.Geography weight, TileScript.Geography center, Vector2Int direction)
             {
                 hasMeeple = false;
                 this.endVertex = endVertex;

@@ -21,9 +21,13 @@ namespace Carcassonne
         {
         }
 
-        public void InstansiatePlacedTilesArray()
+        [ObsoleteAttribute("This function is obsolete. Just here for a consistency check now.", false)]
+        public void PlacedTilesArrayIsEmptyCheck()
         {
-            tiles.Played = new TileScript[170, 170];
+            foreach (var t in tiles.Played)
+            {
+                Debug.Assert( t == null, $"All members of the array tiles.Played should be null at the beginning of the game, but {t} was found.");
+            }
         }
 
         public void PlaceTile(int x, int z, GameObject tile)
@@ -38,47 +42,6 @@ namespace Carcassonne
             features.Graph.Add(BoardGraph.FromTile(ts, new Vector2Int(x, z)) );
             
             Debug.Log($"{features.Graph}");
-            
-            // // Cities
-            // var cities = new List<City>();
-            // foreach (var side in ts.Sides)
-            // {
-            //     var dir = pos + side.Key;
-            //     var geo = side.Value;
-            //     
-            //     // If there's a city linked to an existing tile, add this tile to that city.
-            //     if (geo == TileScript.Geography.City && tiles.Played[dir.x, dir.y] != null)
-            //     {
-            //         try
-            //         {
-            //             var c = features.Cities.Single(c => c.Contains(dir));
-            //             if (!c.Contains(pos)) // As long as the current tile has not already been added to the city.
-            //             {
-            //                 c.Add(pos, ts);
-            //                 cities.Add(c);
-            //             }
-            //         }
-            //         catch (ArgumentNullException e) {}
-            //     }
-            // }
-            //
-            // // If the tile has linked multiple cities.
-            // if (cities.Count > 1)
-            // {
-            //     var c = new City();
-            //     // Add all of the newly connected cities together, remove them from the list, and add the newly created city.
-            //     foreach (var city in cities)
-            //     {
-            //         c += city;
-            //         features.Cities.Remove(city);
-            //     }
-            //     features.Cities.Add(c);
-            // } else if (cities.Count == 0 && ts.Sides.Any(s => s.Value == TileScript.Geography.City))
-            // { // If there are city parts to the tile, but no cities have been linked, create a new city
-            //     var c = new City();
-            //     c.Add(pos, ts);
-            //     features.Cities.Add(c);
-            // }
         }
 
         //FIXME This should be changable to a TileScript return type
@@ -91,29 +54,6 @@ namespace Carcassonne
             }
 
             return t.gameObject;
-        }
-
-        /// <summary>
-        /// Checks whether there are any tiles adjacent to the given position.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="z"></param>
-        /// <returns></returns>
-        public bool AnyAdjacentTiles(int x, int z)
-        {
-            if (x + 1 < tiles.Played.GetLength(0))
-                if (tiles.Played[x + 1, z] != null)
-                    return true;
-            if (x - 1 >= 0)
-                if (tiles.Played[x - 1, z] != null)
-                    return true;
-            if (z + 1 < tiles.Played.GetLength(1))
-                if (tiles.Played[x, z + 1] != null)
-                    return true;
-            if (z - 1 >= 0)
-                if (tiles.Played[x, z - 1] != null)
-                    return true;
-            return false;
         }
 
         private bool PositionIsInBounds(Vector2Int p)
@@ -144,12 +84,6 @@ namespace Carcassonne
                 return true;
             
             return false;
-        }
-
-        public bool CityTileHasCityCenter(int x, int y)
-        {
-            return tiles.Played[x, y].getCenter() == TileScript.Geography.City ||
-                   tiles.Played[x, y].getCenter() == TileScript.Geography.CityRoad;
         }
 
         public bool CityTileHasGrassOrStreamCenter(int x, int y)
@@ -239,29 +173,29 @@ namespace Carcassonne
             return centers;
         }
 
-        public PointScript.Direction[] getDirections(int x, int y)
+        public Vector2Int[] getDirections(int x, int y)
         {
-            var directions = new PointScript.Direction[4];
+            var directions = new Vector2Int[4];
             var itt = 0;
             if (tiles.Played[x + 1, y] != null)
             {
-                directions[itt] = PointScript.Direction.EAST;
+                directions[itt] = PointScript.East;
                 itt++;
             }
 
             if (tiles.Played[x - 1, y] != null)
             {
-                directions[itt] = PointScript.Direction.WEST;
+                directions[itt] = PointScript.West;
                 itt++;
             }
 
             if (tiles.Played[x, y + 1] != null)
             {
-                directions[itt] = PointScript.Direction.NORTH;
+                directions[itt] = PointScript.North;
                 itt++;
             }
 
-            if (tiles.Played[x, y - 1] != null) directions[itt] = PointScript.Direction.SOUTH;
+            if (tiles.Played[x, y - 1] != null) directions[itt] = PointScript.South;
             return directions;
         }
 
