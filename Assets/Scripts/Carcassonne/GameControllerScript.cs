@@ -84,6 +84,9 @@ namespace Carcassonne
 
         private DateTimeOffset currentTime = DateTimeOffset.Now;
         private string JsonBoundingBox;
+        public StringBuilder sb;
+        public StringWriter sw;
+        public JsonWriter writer;
 
         private int tempX;
         private int tempY;
@@ -150,6 +153,12 @@ namespace Carcassonne
 
         private void Start()
         {
+            sb = new StringBuilder();
+            sw = new StringWriter(sb);
+            writer = new JsonTextWriter(sw);
+            writer.WriteStartObject();
+            writer.WritePropertyName("bbox");
+            writer.WriteStartArray();
         }
 
         // Update is called once per frame
@@ -372,27 +381,21 @@ namespace Carcassonne
                 int width = ((limits.xMax - matrixX) * 3) - ((limits.xMin - matrixX) * 3);
 
                 //TODO ADD JSON APPENDING
-                StringBuilder sb = new StringBuilder();
-                StringWriter sw = new StringWriter(sb);
-                using(JsonWriter writer = new JsonTextWriter(sw))
-                {
-                    writer.WriteStartObject();
-                    writer.WritePropertyName("bbox");
-                    writer.WriteStartArray();
-                    writer.WriteValue(modifiedX);
-                    writer.WriteValue(modifiedY);
-                    writer.WriteValue(width);
-                    writer.WriteValue(height);
-                    writer.WriteEndArray();
-                    writer.WriteEndObject();
 
-                }
+                writer.WriteStartArray();
+                writer.WriteValue(modifiedX);
+                writer.WriteValue(modifiedY);
+                writer.WriteValue(width);
+                writer.WriteValue(height);
+                writer.WriteEndArray();
+               
+
+               
                 /*JsonBoundingBox = "{\n" +
                     $"\"bbox: [{modifiedX},{modifiedY},{width},{height}]\n" +
                     "}";
                 */
-                JsonBoundingBox = sb.ToString();
-
+              
                 //Multiplying by three because the matrix is increased by 3 on every side.
                 Debug.Log($"Modified Bounding box is: ({((limits.xMin - matrixX) * 3)-1},{((limits.yMin - matrixY) * 3)-1}) - ({((limits.xMax - matrixX) * 3)-1},{((limits.yMax - matrixY) * 3)-1}");
                 Debug.Log(JsonBoundingBox);
@@ -1168,24 +1171,12 @@ namespace Carcassonne
         }
         private void OnApplicationQuit()
         {
-            RunPythonImageGenerator();
-            
-            int width = 120;
-            int height = 120;
-            int stride = width * 4;
-            int[,] integers = new int[width, height];
-            gameState.Tiles.ToString();
-            for (int i = 0; i < gameState.Tiles.Matrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < gameState.Tiles.Matrix.GetLength(1); j++)
-                {
-                    integers[i, j] = (int)gameState.Tiles.Matrix[i, j];
-                }
-            }
-
-
+            writer.WriteEndArray();
+            writer.WriteEndObject();
+            JsonBoundingBox = sb.ToString();
             File.WriteAllText("Assets/PythonImageGenerator/TxtFiles/"+"Output" + currentTime.ToUnixTimeMilliseconds() + ".txt", gameState.Tiles.ToString());
-            
+            File.WriteAllText("Assets/PythonImageGenerator/TxtFiles/"+"Output" + currentTime.ToUnixTimeMilliseconds() + ".json", JsonBoundingBox);
+            RunPythonImageGenerator();
 
         }
         public void RunPythonImageGenerator()

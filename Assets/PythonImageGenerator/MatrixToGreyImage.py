@@ -1,12 +1,17 @@
+import pathlib
 from posixpath import basename
 import numpy as np
 import glob
 import os
 from PIL import Image
+import inspect
 
 
 from enum import Enum
 
+
+filename = inspect.getframeinfo(inspect.currentframe()).filename
+path = os.path.dirname(os.path.abspath(filename))
 class Tile(Enum):
     Cloister = 1 * 25
     Village = 75
@@ -19,9 +24,9 @@ class Tile(Enum):
     CityRoad = 9 * 25
 
 
-filePath = glob.glob(os.path.dirname(__file__) +"/TxtFiles/*.txt")
+filePath = glob.glob(path + "/Assets/PythonImageGenerator/TxtFiles/*.txt")
 for x in filePath:
-    if os.path.isfile(os.path.dirname(__file__)+"/Images/"+os.path.splitext(x)[0]+".png"):
+    if os.path.isfile(path +"/Assets/PythonImageGenerator/Images/"+os.path.splitext(x)[0]+".png"):
         continue
     else:
         with open(x,'r+') as f:
@@ -38,27 +43,6 @@ for x in filePath:
     
 
     input = np.asarray(l)
-
-    #input[60,60] = 10
-    #input[60,61] = 10
-    #input[60,62] = 10
-    #input[60,63] = 10
-    #input[60,64] = 10
-    #input[60,65] = 10
-
-    #input[61,60] = 10
-    #input[61,61] = 10
-    #input[61,62] = 10
-    #input[61,63] = 10
-    #input[61,64] = 10
-    #input[61,65] = 10
-
-    #input[62,60] = 10
-    #input[62,61] = 10
-    #input[62,62] = 10
-    #input[62,63] = 10
-    #input[62,64] = 10
-    #input[62,65] = 10
     
 
     #plt.imshow(input)
@@ -70,8 +54,9 @@ for x in filePath:
     #plt.tight_layout()
     #plt.savefig("Images\\"+os.path.splitext(x)[0]+".png")
     img = Image.fromarray(np.uint8(input), 'L')
-    print(os.path.splitext(os.path.basename(x))[0]+".png")
-    img.save(os.path.dirname(__file__)+"/Images/"+os.path.splitext(os.path.basename(x))[0]+".png")
+    #print(os.path.splitext(os.path.basename(x))[0]+".png")
+    print(path)
+    img.save(path +"/Assets/PythonImageGenerator/Images/"+os.path.splitext(os.path.basename(x))[0]+".png")
     #img.show()
         #l = [ [Tile[x.rstrip('\n')] for x in line.split(',')] for line in f]
 

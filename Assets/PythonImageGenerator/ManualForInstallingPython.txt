@@ -8,6 +8,7 @@
 4. Install the "numpy" and "pillow" dependencies using pip3.
  "pip3 install numpy"
  "pip3 install pillow"
+ "pip3 install pathlib"
 
 5. Create a requirements.txt file with the following command.
  "pip3 freeze > ./ProjectSettings/requirements.txt

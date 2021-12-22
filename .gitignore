@@ -695,5 +695,6 @@ Packages/docfx.console.2.58.4/
 /Assets/PythonImageGenerator/TxtFiles/*.txt
 /Assets/PythonImageGenerator/TxtFiles/*.meta
 /Assets/PythonImageGenerator/TxtFiles/*.png
+/Assets/PythonImageGenerator/TxtFiles/*.json
 /Assets/PythonImageGenerator/Images/*.png
 /Assets/PythonImageGenerator/Images/*.meta
