@@ -33,9 +33,9 @@ namespace Carcassonne.State
         /// This is done to match the representation used in the game. I don't know if it lines up with other image representations.
         /// Coordinates are represented [Horiz, Vert]
         /// </summary>
-        public TileScript.Geography?[,] Matrix => CalculateMatrix();
+        public Geography?[,] Matrix => CalculateMatrix();
 
-        private TileScript.Geography?[,] CalculateMatrix()
+        private Geography?[,] CalculateMatrix()
         {
             // Find min and max indices for x and 
             // Are these things that TileScript could be tracking? BoardLimits? or something?
@@ -45,7 +45,7 @@ namespace Carcassonne.State
             Debug.Log($"Found Limits. Tiles found from ({xmin},{ymin}) to ({xmax},{ymax})");
             
             // Create a new matrix that is 3 * (xmax-xmin) x 3 * (ymax - ymin);
-            var GeographyMatrix = new TileScript.Geography?[3 * (xmax - xmin), 3 * (ymax - ymin)];
+            var GeographyMatrix = new Geography?[3 * (xmax - xmin), 3 * (ymax - ymin)];
             
             for (var i = 0; i < xmax - xmin; i++)
             {

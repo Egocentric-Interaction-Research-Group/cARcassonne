@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using QuikGraph;
 using QuikGraph.Graphviz;
@@ -34,16 +35,16 @@ namespace Carcassonne.State.Features
                     args.VertexFormat.Position = new GraphvizPoint(p.x, p.y);
                     switch (args.Vertex.geography)
                     {
-                        case TileScript.Geography.City:
+                        case Geography.City:
                             args.VertexFormat.StrokeColor = GraphvizColor.Red;
                             break;
-                        case TileScript.Geography.Road:
+                        case Geography.Road:
                             args.VertexFormat.StrokeColor = GraphvizColor.Black;
                             break;
-                        case TileScript.Geography.Field:
+                        case Geography.Field:
                             args.VertexFormat.StrokeColor = GraphvizColor.Green;
                             break;
-                        case TileScript.Geography.Cloister:
+                        case Geography.Cloister:
                             args.VertexFormat.StrokeColor = GraphvizColor.Blue;
                             break;
                     }
@@ -65,5 +66,7 @@ namespace Carcassonne.State.Features
                 };
             });
         }
+
+        public IEnumerable<Vector2Int> Locations => Vertices.Select(v => v.location);
     }
 }

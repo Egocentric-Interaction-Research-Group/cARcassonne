@@ -60,7 +60,7 @@ namespace Carcassonne
         public GameObject meepleSpawnPosition;
         internal int iMeepleAimX;
         internal int iMeepleAimZ;
-        public TileScript.Geography meepleGeography;
+        public Geography meepleGeography;
         public RaycastHit meepleHitTileDirection;
 
         /// <summary>
@@ -126,15 +126,15 @@ namespace Carcassonne
         /// <param name="geography"></param>
         /// <param name="direction"></param>
         /// <returns></returns>
-        public MeepleScript FindMeeple(int x, int y, TileScript.Geography geography, Vector2Int? direction = null)
+        public MeepleScript FindMeeple(int x, int y, Geography geography, Vector2Int? direction = null)
         {
             var position = new Vector2Int(x, y);
 
             if (gameControllerScript.gameState.Meeples.Placement.ContainsKey(position))
             {
                 var tile = gameControllerScript.gameState.Tiles.Played[position.x, position.y];
-                var geo = tile.SubTileDictionary[position]; 
                 Debug.Assert(tile != null, $"There is a meeple at position {position}, so the tile there should not be null.");
+                var geo = tile.SubTileDictionary[position]; 
 
                 var meeplePlacement = gameControllerScript.gameState.Meeples.Placement[position];
                 var dir = meeplePlacement.Direction;
@@ -169,7 +169,7 @@ namespace Carcassonne
                     Physics.Raycast(meeples.Current.gameObject.transform.position, meeples.Current.gameObject.transform.TransformDirection(Vector3.down), out this.meepleHitTileDirection,
                         Mathf.Infinity, layerMask);
 
-                    this.meepleGeography = TileScript.Geography.Field;
+                    this.meepleGeography = Geography.Field;
                     gameControllerScript.Direction = PointScript.Centre;
 
                     if (this.meepleHitTileDirection.collider != null)
@@ -202,7 +202,7 @@ namespace Carcassonne
 
                         gameControllerScript.SnapPosition = this.meepleHitTileDirection.collider.transform.position;
 
-                        if (this.meepleGeography == TileScript.Geography.City || this.meepleGeography == TileScript.Geography.Road || this.meepleGeography == TileScript.Geography.Cloister)
+                        if (this.meepleGeography == Geography.City || this.meepleGeography == Geography.Road || this.meepleGeography == Geography.Cloister)
                         {
                             gameControllerScript.ChangeConfirmButtonApperance(true);
                             gameControllerScript.CanConfirm = true;
@@ -218,7 +218,7 @@ namespace Carcassonne
                 else
                 {
                     gameControllerScript.SnapPosition = meeples.Current.gameObject.transform.position;
-                    this.meepleGeography = TileScript.Geography.Field;
+                    this.meepleGeography = Geography.Field;
                     gameControllerScript.ChangeConfirmButtonApperance(false);
                     gameControllerScript.CanConfirm = false;
                 }
@@ -277,29 +277,15 @@ namespace Carcassonne
             }
         }
 
-        public bool GeographyCanHoldMeeples(TileScript.Geography geography)
-        {
-            if ((geography & TileScript.Geography.City) == TileScript.Geography.City ||
-                (geography & TileScript.Geography.Road) == TileScript.Geography.Road ||
-                geography == TileScript.Geography.Cloister)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         public bool IsValidPlacement(Vector2Int position, Vector2Int direction)
         {
-            var tile = gameControllerScript.gameState.Tiles.Played[position.x, position.y];
-            var geography = tile.getGeographyAt(direction);
+            var feature = gameControllerScript.gameState.Features.GetFeatureAt(position, direction);
             
             // Placement is invalid if not on a type of feature that can have a meeple
-            if (!GeographyCanHoldMeeples(geography)) return false;
+            if (feature == null) return false;
             
             // Placement is invalid if feature already has meeple
-            if (gameControllerScript.gameState.Features.GetFeatureAt(position, direction).Meeples.Any())
-                return false;
+            if (meeples.InFeature(feature).Any()) return false;
 
             // Nothing makes it invalid, so return true
             return true;

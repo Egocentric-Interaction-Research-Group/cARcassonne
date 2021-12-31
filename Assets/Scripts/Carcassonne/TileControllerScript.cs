@@ -118,7 +118,7 @@ namespace Carcassonne
             // Set the internal model
             tiles.Current.Rotate(rotation);
             
-            Debug.Log($"Tile {tiles.Current} transformed to {angles.y} (Rotateion {rotation}).");
+            Debug.Log($"Tile {tiles.Current} transformed to {angles.y} (Rotation {rotation}).");
         }
 
         /// <summary>

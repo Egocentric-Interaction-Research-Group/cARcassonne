@@ -49,7 +49,7 @@ namespace Carcassonne
         //     ;
         // }
 
-        public int startDfs(int Vindex, TileScript.Geography weight, bool GameEnd)
+        public int startDfs(int Vindex, Geography weight, bool GameEnd)
         {
             counter = 1;
             roadBlocks = 0;
@@ -58,7 +58,7 @@ namespace Carcassonne
             Debug.Log("StartDFS");
             dfs(Vindex, weight, GameEnd);
             //Debug.Log(finalScore);
-            if (weight == TileScript.Geography.City) return counter;
+            if (weight == Geography.City) return counter;
             //Debug.Log("final score: " + finalScore);
             return finalScore;
         }
@@ -71,7 +71,7 @@ namespace Carcassonne
         /// <param name="Vindex"></param>
         /// <param name="weight"></param>
         /// <param name="direction"></param>
-        public int startDfsDirection(int Vindex, TileScript.Geography weight, Vector2Int direction, bool GameEnd)
+        public int startDfsDirection(int Vindex, Geography weight, Vector2Int direction, bool GameEnd)
         {
             counter = 0;
             roadBlocks = 0;
@@ -86,12 +86,12 @@ namespace Carcassonne
             //{
             //    counter--;
             //}
-            if (weight == TileScript.Geography.City) return counter;
+            if (weight == Geography.City) return counter;
             //Debug.Log("final score: " + finalScore);
             return finalScore;
         }
 
-        private void dfsDirection(int Vindex, TileScript.Geography weight, Vector2Int direction, bool GameEnd)
+        private void dfsDirection(int Vindex, Geography weight, Vector2Int direction, bool GameEnd)
         {
             if (!visited[Vindex])
             {
@@ -100,7 +100,7 @@ namespace Carcassonne
 
                 var neighbours = g.getNeighbours(Vindex, weight, direction);
 
-                if (weight == TileScript.Geography.Road) Debug.Log(weight + " : " + neighbours.Count);
+                if (weight == Geography.Road) Debug.Log(weight + " : " + neighbours.Count);
 
                 for (var i = 0; i < neighbours.Count; i++)
                 {
@@ -119,8 +119,8 @@ namespace Carcassonne
                     //Does nothing right now.
                     if (neighbours.Count == 0)
                     {
-                        placeVertex(vertexIterator++, new[] {Vindex}, new[] {weight}, TileScript.Geography.Field,
-                            new[] {TileScript.Geography.Field}, new[] {direction});
+                        placeVertex(vertexIterator++, new[] {Vindex}, new[] {weight}, Geography.Field,
+                            new[] {Geography.Field}, new[] {direction});
                         neighbours = g.getNeighbours(Vindex, weight, direction);
                         tmp = g.getGraph()
                             .ElementAt(neighbours.ElementAt(0).endVertex); //Getting the tile that we are comming from
@@ -133,10 +133,10 @@ namespace Carcassonne
                     }
                     
                     //TODO Looks for roadblocks but won't find circular roads.
-                    if (weight == TileScript.Geography.Road)
-                        if (neighbours.ElementAt(i).center == TileScript.Geography.Village ||
-                            neighbours.ElementAt(i).center == TileScript.Geography.Cloister ||
-                            neighbours.ElementAt(i).center == TileScript.Geography.City)
+                    if (weight == Geography.Road)
+                        if (neighbours.ElementAt(i).center == Geography.Village ||
+                            neighbours.ElementAt(i).center == Geography.Cloister ||
+                            neighbours.ElementAt(i).center == Geography.City)
                         {
                             //Debug.Log(neighbours.ElementAt(i).center);
                             roadBlocks++;
@@ -149,8 +149,8 @@ namespace Carcassonne
                             //Debug.Log("RoadBlock hit");
                         }
 
-                    if (neighbours.ElementAt(i).center == TileScript.Geography.Village ||
-                        neighbours.ElementAt(i).center == TileScript.Geography.Field)
+                    if (neighbours.ElementAt(i).center == Geography.Village ||
+                        neighbours.ElementAt(i).center == Geography.Field)
                         counter++;
                     else
                         dfs(neighbours.ElementAt(i).endVertex, weight, GameEnd);
@@ -169,16 +169,16 @@ namespace Carcassonne
                     g.getGraph().ElementAt(i).Remove(g.getGraph().ElementAt(i).ElementAt(j));
         }
 
-        private void dfs(int Vindex, TileScript.Geography weight, bool GameEnd)
+        private void dfs(int Vindex, Geography weight, bool GameEnd)
         {
             if (!visited[Vindex])
             {
-                if (weight == TileScript.Geography.Road)
+                if (weight == Geography.Road)
                 {
                     counter++;
                     Debug.Log("Hit Road " + counter);
                 }
-                else if (weight == TileScript.Geography.City)
+                else if (weight == Geography.City)
                 {
                     counter += 2;
                     Debug.Log("Hit Town " + counter);
@@ -195,7 +195,7 @@ namespace Carcassonne
                     }
                     else
                     {
-                        if (weight == TileScript.Geography.Road)
+                        if (weight == Geography.Road)
                         {
                             if (!visited[neighbours.ElementAt(i).endVertex]) broken = true;
                         }
@@ -205,18 +205,18 @@ namespace Carcassonne
                         }
                     }
 
-                    if (weight == TileScript.Geography.Road)
-                        if (neighbours.ElementAt(i).center == TileScript.Geography.Village ||
-                            neighbours.ElementAt(i).center == TileScript.Geography.Cloister ||
-                            neighbours.ElementAt(i).center == TileScript.Geography.City ||
-                            neighbours.ElementAt(i).center == TileScript.Geography.RoadStream)
+                    if (weight == Geography.Road)
+                        if (neighbours.ElementAt(i).center == Geography.Village ||
+                            neighbours.ElementAt(i).center == Geography.Cloister ||
+                            neighbours.ElementAt(i).center == Geography.City ||
+                            neighbours.ElementAt(i).center == Geography.RoadStream)
                         {
                             roadBlocks++;
                             if (roadBlocks == 2) finalScore = counter;
                         }
 
-                    if (neighbours.ElementAt(i).center == TileScript.Geography.Village ||
-                        neighbours.ElementAt(i).center == TileScript.Geography.Field)
+                    if (neighbours.ElementAt(i).center == Geography.Village ||
+                        neighbours.ElementAt(i).center == Geography.Field)
                         counter++;
                     else
                         dfs(neighbours.ElementAt(i).endVertex, weight, GameEnd);
@@ -226,8 +226,8 @@ namespace Carcassonne
             if (GameEnd) finalScore = counter;
         }
 
-        public void placeVertex(int Vindex, int[] Vindexes, TileScript.Geography[] weights,
-            TileScript.Geography startCenter, TileScript.Geography[] endCenters, Vector2Int[] directions)
+        public void placeVertex(int Vindex, int[] Vindexes, Geography[] weights,
+            Geography startCenter, Geography[] endCenters, Vector2Int[] directions)
         {
             vertexIterator = Vindex;
             for (var i = 0; i < Vindexes.Length; i++)
@@ -250,8 +250,8 @@ namespace Carcassonne
                 return -direction;
             }
 
-            public void addEdge(int startVertex, int endVertex, TileScript.Geography weight,
-                TileScript.Geography startCenter, TileScript.Geography endCenter, Vector2Int direction)
+            public void addEdge(int startVertex, int endVertex, Geography weight,
+                Geography startCenter, Geography endCenter, Vector2Int direction)
             {
                 graph.ElementAt(startVertex)
                     .AddLast(new Edge(endVertex, weight, endCenter, getReverseDirection(direction)));
@@ -271,24 +271,24 @@ namespace Carcassonne
             }
 
 
-            public LinkedList<Edge> getNeighbours(int Vindex, TileScript.Geography weight)
+            public LinkedList<Edge> getNeighbours(int Vindex, Geography weight)
             {
                 var neighbours = new LinkedList<Edge>();
-                if (weight == TileScript.Geography.Road)
+                if (weight == Geography.Road)
                     for (var i = 0; i < graph.ElementAt(Vindex).Count; i++)
                         if (graph.ElementAt(Vindex).ElementAt(i).weight == weight)
                             neighbours.AddLast(graph.ElementAt(Vindex).ElementAt(i));
-                if (weight == TileScript.Geography.City)
+                if (weight == Geography.City)
                     for (var i = 0; i < graph.ElementAt(Vindex).Count; i++)
                         if (graph.ElementAt(Vindex).ElementAt(i).weight == weight)
                             neighbours.AddLast(graph.ElementAt(Vindex).ElementAt(i));
                 return neighbours;
             }
 
-            public LinkedList<Edge> getNeighbours(int Vindex, TileScript.Geography weight, Vector2Int direction)
+            public LinkedList<Edge> getNeighbours(int Vindex, Geography weight, Vector2Int direction)
             {
                 var neighbours = new LinkedList<Edge>();
-                if (weight == TileScript.Geography.Road || weight == TileScript.Geography.City)
+                if (weight == Geography.Road || weight == Geography.City)
                     for (var i = 0; i < graph.ElementAt(Vindex).Count; i++)
                         if (graph.ElementAt(Vindex).ElementAt(i).weight == weight &&
                             graph.ElementAt(Vindex).ElementAt(i).direction == getReverseDirection(direction))
@@ -307,13 +307,13 @@ namespace Carcassonne
 
         public class Edge
         {
-            public TileScript.Geography center;
+            public Geography center;
             public Vector2Int direction;
             public int endVertex;
             public bool hasMeeple;
-            public TileScript.Geography weight;
+            public Geography weight;
 
-            public Edge(int endVertex, TileScript.Geography weight, TileScript.Geography center, Vector2Int direction)
+            public Edge(int endVertex, Geography weight, Geography center, Vector2Int direction)
             {
                 hasMeeple = false;
                 this.endVertex = endVertex;

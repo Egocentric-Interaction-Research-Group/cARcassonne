@@ -72,7 +72,7 @@ namespace Carcassonne
         /// <param name="dir"></param>
         /// <param name="geography"></param>
         /// <returns></returns>
-        public bool DirectionIsEmptyOrMatchesGeography(int x, int y, Vector2Int dir, TileScript.Geography geography)
+        public bool DirectionIsEmptyOrMatchesGeography(int x, int y, Vector2Int dir, Geography geography)
         {
             if (!PositionIsInBounds(new Vector2Int(x, y)))
                 return true;
@@ -88,8 +88,8 @@ namespace Carcassonne
 
         public bool CityTileHasGrassOrStreamCenter(int x, int y)
         {
-            return tiles.Played[x, y].getCenter() == TileScript.Geography.Field ||
-                   tiles.Played[x, y].getCenter() == TileScript.Geography.Stream;
+            return tiles.Played[x, y].getCenter() == Geography.Field ||
+                   tiles.Played[x, y].getCenter() == Geography.Stream;
         }
 
         //Hämtar grannarna till en specifik tile
@@ -121,9 +121,9 @@ namespace Carcassonne
             return Neighbors;
         }
 
-        public TileScript.Geography[] getWeights(int x, int y)
+        public Geography[] getWeights(int x, int y)
         {
-            var weights = new TileScript.Geography[4];
+            var weights = new Geography[4];
             var itt = 0;
             if (tiles.Played[x + 1, y] != null)
             {
@@ -147,9 +147,9 @@ namespace Carcassonne
             return weights;
         }
 
-        public TileScript.Geography[] getCenters(int x, int y)
+        public Geography[] getCenters(int x, int y)
         {
-            var centers = new TileScript.Geography[4];
+            var centers = new Geography[4];
             var itt = 0;
             if (tiles.Played[x + 1, y] != null)
             {

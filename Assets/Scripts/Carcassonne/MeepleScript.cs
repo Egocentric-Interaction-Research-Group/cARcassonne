@@ -28,7 +28,7 @@ namespace Carcassonne
             .Meeples.Placement.Single(kvp => kvp.Value.Meeple == this).Key;
         
         [ObsoleteAttribute("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
-        public TileScript.Geography geography => GameObject.Find("GameController").GetComponent<GameControllerScript>().gameState.
+        public Geography geography => GameObject.Find("GameController").GetComponent<GameControllerScript>().gameState.
             Tiles.Played[position.x, position.y].getGeographyAt(direction);
         
         [ObsoleteAttribute("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]

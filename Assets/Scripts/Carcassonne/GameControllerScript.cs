@@ -284,18 +284,19 @@ namespace Carcassonne
             tileControllerScript.currentTile.GetComponent<NearInteractionGrabbable>().enabled = false;
         }
 
-        //TODO Replace this
+        #region REPLACE_NEXT
+
         public bool CityIsFinishedDirection(int x, int y, Vector2Int direction)
         {
             meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
-            meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, direction));
+            meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, Geography.City, direction));
 
             cityIsFinished = true;
             visited = new bool[GameRules.BoardSize, GameRules.BoardSize];
             RecursiveCityIsFinishedDirection(x, y, direction);
             Debug.Log(
                 "DIRECTION__________________________CITY IS FINISHED EFTER DIRECTION REKURSIV: ___________________________" +
-                cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City));
+                cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, Geography.City));
             
             // Test code to print the bounding boxes of a completed city.
             if (cityIsFinished)
@@ -314,7 +315,7 @@ namespace Carcassonne
         { 
             // Create a list of meeples in the city
             meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
-            meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City));
+            meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, Geography.City));
 
             // Set up variables
             cityIsFinished = true;
@@ -323,7 +324,7 @@ namespace Carcassonne
             // Check to see if city is not finished due to empty tiles
             RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y);
             Debug.Log("__________________________CITY IS FINISHED EFTER REKURSIV: ___________________________" +
-                      cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City));
+                      cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, Geography.City));
             
             if (cityIsFinished)
             {
@@ -334,12 +335,13 @@ namespace Carcassonne
             
             return cityIsFinished;
         }
-
+        #endregion
+        
         public void RecursiveCityIsFinishedDirection(int x, int y, Vector2Int direction)
         {
             visited[x, y] = true;
             if (direction == PointScript.North)
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().North == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().North == Geography.City)
                 {
                     if (placedTiles.GetPlacedTile(x, y + 1) != null)
                     {
@@ -352,7 +354,7 @@ namespace Carcassonne
                 }
 
             if (direction == PointScript.East)
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().East == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().East == Geography.City)
                 {
                     if (placedTiles.GetPlacedTile(x + 1, y) != null)
                     {
@@ -365,7 +367,7 @@ namespace Carcassonne
                 }
 
             if (direction == PointScript.South)
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().South == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().South == Geography.City)
                 {
                     if (placedTiles.GetPlacedTile(x, y - 1) != null)
                     {
@@ -378,7 +380,7 @@ namespace Carcassonne
                 }
 
             if (direction == PointScript.West)
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().West == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().West == Geography.City)
                 {
                     if (placedTiles.GetPlacedTile(x - 1, y) != null)
                     {
@@ -405,7 +407,7 @@ namespace Carcassonne
 
             if (placedTiles.GetPlacedTile(x, y) != null) // If there is a tile here
             {
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().North == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().North == Geography.City)
                     if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
                     {
                         if (placedTiles.GetPlacedTile(x, y + 1) != null)
@@ -419,7 +421,7 @@ namespace Carcassonne
                         }
                     }
 
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().East == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().East == Geography.City)
                     if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
                     {
                         if (placedTiles.GetPlacedTile(x + 1, y) != null)
@@ -432,7 +434,7 @@ namespace Carcassonne
                         }
                     }
 
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().South == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().South == Geography.City)
                     if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
                     {
                         if (placedTiles.GetPlacedTile(x, y - 1) != null)
@@ -445,7 +447,7 @@ namespace Carcassonne
                         }
                     }
 
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().West == TileScript.Geography.City)
+                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().West == Geography.City)
                     if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
                     {
                         if (placedTiles.GetPlacedTile(x - 1, y) != null)
@@ -606,9 +608,9 @@ namespace Carcassonne
                 {
                     if (CanConfirm)
                     {
-                        if (meepleControllerScript.meepleGeography == TileScript.Geography.City ||
-                            meepleControllerScript.meepleGeography == TileScript.Geography.Cloister ||
-                            meepleControllerScript.meepleGeography == TileScript.Geography.Road)
+                        if (meepleControllerScript.meepleGeography == Geography.City ||
+                            meepleControllerScript.meepleGeography == Geography.Cloister ||
+                            meepleControllerScript.meepleGeography == Geography.Road)
                         {
                             meepleControllerScript.PlaceMeeple(gameState.Meeples.Current.gameObject,
                                 new Vector2Int(meepleControllerScript.iMeepleAimX, meepleControllerScript.iMeepleAimZ),
@@ -733,17 +735,17 @@ namespace Carcassonne
                     {
                         var tileID = placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().id;
                         var finalscore = 0;
-                        if (meeple.geography == TileScript.Geography.City)
+                        if (meeple.geography == Geography.City)
                         {
                             //CITY DIRECTION
                             if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                TileScript.Geography.Stream ||
+                                Geography.Stream ||
                                 placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                TileScript.Geography.Field ||
+                                Geography.Field ||
                                 placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                TileScript.Geography.Road ||
+                                Geography.Road ||
                                 placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                TileScript.Geography.Village) // If it's a Stream, Grass, Road, Village
+                                Geography.Village) // If it's a Stream, Grass, Road, Village
                             {
                                 if (CityIsFinishedDirection(meeple.x, meeple.z, meeple.direction))
                                 {
@@ -791,9 +793,9 @@ namespace Carcassonne
                         {
                             ///ROAD
                             if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                TileScript.Geography.Village ||
+                                Geography.Village ||
                                 placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                TileScript.Geography.Field)
+                                Geography.Field)
                             {
                                 finalscore = GetComponent<PointScript>().startDfsDirection(placedTiles
                                     .GetPlacedTile(meeple.x, meeple.z)
@@ -813,7 +815,7 @@ namespace Carcassonne
 
                             //CLOISTER
                             if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                TileScript.Geography.Cloister &&
+                                Geography.Cloister &&
                                 meeple.direction == PointScript.Centre)
                                 finalscore = placedTiles.CheckSurroundedCloister(meeple.x, meeple.z, GameEnd);
                         }

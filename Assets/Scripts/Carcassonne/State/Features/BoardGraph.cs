@@ -41,7 +41,7 @@ namespace Carcassonne.State.Features
         {
             public TileScript tile;
             public Vector2Int location;
-            public TileScript.Geography geography;
+            public Geography geography;
 
             /// <summary>
             /// Create a new SubTile
@@ -53,7 +53,7 @@ namespace Carcassonne.State.Features
             public SubTile(TileScript tile, Vector2Int tilePosition, Vector2Int direction, [CanBeNull] MeepleScript meeple = null)
             {
                 this.tile = tile;
-                this.location = tilePosition * 3 + Vector2Int.one + direction; // The centre of the tile is at the tile's position + [1,1] to leave room for the -1 movement.
+                this.location = Coordinates.TileToSubTile(tilePosition, direction); // The centre of the tile is at the tile's position + [1,1] to leave room for the -1 movement.
                 this.geography = tile.getGeographyAt(direction);
                 // Debug.Log($"GEOGRAPHY 44: {tile} @ {direction} = {geography}");
             }
@@ -101,7 +101,7 @@ namespace Carcassonne.State.Features
                     AddEdge(e);
                     edges.Append(e);
 
-                    if (va.geography == TileScript.Geography.City || va.geography == TileScript.Geography.Road)
+                    if (va.geography == Geography.City || va.geography == Geography.Road)
                     {
                         CarcassonneEdge f = EdgeBetween(va, subtile, ConnectionType.Feature);
                         AddEdge(f);
@@ -177,7 +177,7 @@ namespace Carcassonne.State.Features
             }
             
             // Add a centre vertex IF it is a cloister
-            if (tile.Center == TileScript.Geography.Cloister)
+            if (tile.Center == Geography.Cloister)
             {
                 var direction = Vector2Int.zero;
                 g = AddAndConnectSubTile(tile, location, direction, g, null);
@@ -191,10 +191,10 @@ namespace Carcassonne.State.Features
             return g;
         }
 
-        private static BoardGraph AddAndConnectSubTile(TileScript tile, Vector2Int location, Vector2Int direction, BoardGraph g, TileScript.Geography? geography)
+        private static BoardGraph AddAndConnectSubTile(TileScript tile, Vector2Int location, Vector2Int direction, BoardGraph g, Geography? geography)
         {
-            Debug.Assert( (TileScript.Geography.City & TileScript.Geography.CityRoad) == TileScript.Geography.City );
-            Debug.Assert( (TileScript.Geography.Road & TileScript.Geography.CityRoad) == TileScript.Geography.Road );
+            Debug.Assert( (Geography.City & Geography.CityRoad) == Geography.City );
+            Debug.Assert( (Geography.Road & Geography.CityRoad) == Geography.Road );
             
             SubTile st = new SubTile(tile, location, direction);
 
@@ -207,7 +207,7 @@ namespace Carcassonne.State.Features
                 }
 
                 // If the vertices are of the same type (City or Road) AND they are connected by the centre, add a connection
-                if (geography!= null && (geography == TileScript.Geography.City || geography == TileScript.Geography.Road)
+                if (geography!= null && (geography == Geography.City || geography == Geography.Road)
                                      && geography == v.geography && (geography & tile.Center) == geography)
                 {
                     g.AddEdge(EdgeBetween(v, st, ConnectionType.Feature));

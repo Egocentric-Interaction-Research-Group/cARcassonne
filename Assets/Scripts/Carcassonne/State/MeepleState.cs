@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Carcassonne.State.Features;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -34,8 +35,25 @@ namespace Carcassonne.State
         public MeepleScript[,] Played { get; }
         public Vector2Int MatrixOrigin { get; }
 
+        /// <summary>
+        /// Dictionary of meeple placement. Key is coordinate in Tile coordinate system.
+        /// </summary>
         public Dictionary<Vector2Int, PlacedMeeple> Placement = new Dictionary<Vector2Int, PlacedMeeple>();
         public IEnumerable<MeepleScript> InPlay => Placement.Select(p => p.Value.Meeple);
+
+        public Dictionary<Vector2Int, MeepleScript> SubTilePlacement => getSubTilePlacement();
+
+        private Dictionary<Vector2Int, MeepleScript> getSubTilePlacement()
+        {
+            Dictionary<Vector2Int, MeepleScript> subTilePlacement = new Dictionary<Vector2Int, MeepleScript>();
+            
+            foreach (var kvp in Placement)
+            {
+                subTilePlacement.Add(Coordinates.TileToSubTile(kvp.Key, kvp.Value.Direction), kvp.Value.Meeple);
+            }
+
+            return subTilePlacement;
+        }
 
         /// <summary>
         /// The set of all Meeples in the game.
@@ -73,6 +91,14 @@ namespace Carcassonne.State
         public List<MeepleScript> MeeplesForPlayer(PlayerScript p)
         {
             return (from meeple in All where meeple.player == p select meeple).ToList();
+        }
+
+        public IEnumerable<MeepleScript> InFeature(CarcassonneGraph feature)
+        {
+            var inFeature = SubTilePlacement.Where(locationMeeple => feature.Locations.Contains(locationMeeple.Key));
+            var meeples = inFeature.Select(locationMeeple => locationMeeple.Value);
+
+            return meeples;
         }
 
         [CanBeNull]

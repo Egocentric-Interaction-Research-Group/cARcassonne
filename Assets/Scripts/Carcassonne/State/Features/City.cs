@@ -19,12 +19,6 @@ namespace Carcassonne.State.Features
         public int Shields => Vertices.Select(v=> v.tile).Distinct().Count(t=> t.Shield);
         public bool Complete => OpenSides == 0;
         // public bool Completable => IsCompletable();
-        public IEnumerable<MeepleScript> Meeples => GetMeeples();
-
-        private IEnumerable<MeepleScript> GetMeeples()
-        {
-            throw new System.NotImplementedException();
-        }
 
         /// <summary>
         /// Get the bounding box for the city in the SubTile Coordinate system.
@@ -140,8 +134,8 @@ namespace Carcassonne.State.Features
             edges.Where(e =>
             {
                 var featureEdge = e.Tag == ConnectionType.Feature;
-                var cityVertices = e.Source.geography == TileScript.Geography.City &&
-                                   e.Target.geography == TileScript.Geography.City;
+                var cityVertices = e.Source.geography == Geography.City &&
+                                   e.Target.geography == Geography.City;
                 return featureEdge && cityVertices;
             });
 
@@ -155,7 +149,7 @@ namespace Carcassonne.State.Features
             // This should still contain non-city nodes, they should just be isolated.
             connectedComponents.Compute();
             // Filter non-City subtiles here.
-            var components = connectedComponents.Components.Where(kvp => kvp.Key.geography == TileScript.Geography.City);
+            var components = connectedComponents.Components.Where(kvp => kvp.Key.geography == Geography.City);
             
             var cityVertices = components.ToLookup(p => p.Value, p=>p.Key);
 
@@ -172,7 +166,7 @@ namespace Carcassonne.State.Features
         {
             City city = new City();
             
-            Debug.Assert(vertices.All(v=> v.geography == TileScript.Geography.City));
+            Debug.Assert(vertices.All(v=> v.geography == Geography.City));
 
             city.AddVertexRange(vertices);
 
