@@ -232,14 +232,15 @@ namespace Carcassonne
 
         public void FreeMeeple(GameObject meeple)
         {
+            var position = meeple.GetComponent<MeepleScript>().position;
+            Debug.Log($"Meeple at position {position} has been freed.");
             // meeple.GetComponent<MeepleScript>().free = true;
-            gameControllerScript.gameState.Meeples.Placement.Remove(meeple.GetComponent<MeepleScript>().position);
+            gameControllerScript.gameState.Meeples.Placement.Remove(position);
             
             meeple.transform.position = new Vector3(20, 20, 20);
             meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
             meeple.GetComponentInChildren<BoxCollider>().enabled = false;
             meeple.GetComponentInChildren<MeshRenderer>().enabled = false;
-            gameControllerScript.gameState.phase = Phase.TileDown;
         }
 
         [PunRPC]

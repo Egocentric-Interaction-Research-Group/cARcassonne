@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d327e54bfe6241e196fe44aa0b756e72, type: 3}
   m_Name: FeatureState
   m_EditorClassIdentifier: 
+  Meeples: {fileID: 11400000, guid: a97cad862442a428da06ca3536ae1163, type: 2}

@@ -22,5 +22,18 @@ namespace Carcassonne.State.Features
         
         // public IEnumerable<MeepleScript> Meeples { get; }
 
+        public int Points
+        {
+            get;
+        }
+
     }
+    
+    public abstract class FeatureGraph : CarcassonneGraph, IFeature{
+        public abstract bool Complete { get; }
+        public abstract int Segments { get; }
+        public abstract int OpenSides { get; }
+        public abstract int Points { get; }
+    }
+    
 }

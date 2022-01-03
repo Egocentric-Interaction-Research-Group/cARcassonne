@@ -11,13 +11,13 @@ namespace Carcassonne.State.Features
     using CarcassonneEdge = TaggedUndirectedEdge<SubTile, ConnectionType>;
     using BoardGraphFilter = Func<IEnumerable<TaggedUndirectedEdge<SubTile, ConnectionType>>, IEnumerable<TaggedUndirectedEdge<SubTile, ConnectionType>>>;
     
-    public class City : CarcassonneGraph, IFeature
+    public class City : FeatureGraph
     {
-        public int Segments => FeatureEdges.Count() - IntraTileFeatureConnections;
-        public int OpenSides => ComputeOpenSides();
+        public override int Segments => Vertices.Count() - IntraTileFeatureConnections;
+        public override int OpenSides => ComputeOpenSides();
 
         public int Shields => Vertices.Select(v=> v.tile).Distinct().Count(t=> t.Shield);
-        public bool Complete => OpenSides == 0;
+        public override bool Complete => OpenSides == 0;
         // public bool Completable => IsCompletable();
 
         /// <summary>
@@ -27,6 +27,12 @@ namespace Carcassonne.State.Features
 
         // public bool Contains(Vector2Int xy) => Vertices.Any(v => v.location == xy);
 
+        
+        /// <summary>
+        /// A count of the number of vertices representing a single feature on a single tile in the city.
+        /// For example, if a city is split on a tile (two ports are disconnected) that tile would return 0
+        /// for this measure. But if the NORTH and SOUTH of a tile were a connected city, it would return 1.
+        /// </summary>
         private int IntraTileFeatureConnections =>
             Edges.Count(e => e.Tag == ConnectionType.Feature && e.Source.tile == e.Target.tile);
 
@@ -44,7 +50,7 @@ namespace Carcassonne.State.Features
 
             var boardVertices = Enumerable.Concat(sourceBoardVertices, targetBoardVertices);
 
-            return boardVertices.Distinct().Count();
+            return Vertices.Count() - boardVertices.Distinct().Count();
         }
 
         // private bool IsCompletable()
@@ -177,5 +183,16 @@ namespace Carcassonne.State.Features
 
             return city;
         }
+        
+        public override int Points => getPoints();
+
+        private int getPoints()
+        {
+            int segments = Vertices.Count() - IntraTileFeatureConnections;
+            int points = segments + Shields;
+            
+            return Complete ? points * 2 : points;
+        }
+
     }
 }

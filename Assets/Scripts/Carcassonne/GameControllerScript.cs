@@ -132,6 +132,8 @@ namespace Carcassonne
             foreach (var city in gameState.Features.Cities)
             {
                 debugString += city.ToString();
+                debugString += "\n";
+                debugString += $"Segments: {city.Segments}, Open Sides: {city.OpenSides}, Complete: {city.Complete}";
                 debugString += "\n\n";
             }
             Debug.Log(debugString);
@@ -165,7 +167,13 @@ namespace Carcassonne
             if (Input.GetKeyDown(KeyCode.R) && PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
                     tileControllerScript.RotateTileRPC();
 
-            if (Input.GetKeyDown(KeyCode.J)) meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject); //FIXME: Throws error when no meeple assigned!
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject); //FIXME: Throws error when no meeple assigned!}
+                
+                gameState.phase = Phase.TileDown;
+            }
+
             if (Input.GetKeyDown(KeyCode.B)) GameOver(); //FIXME Doesn't work/no effect
 
             switch (gameState.phase)
@@ -283,115 +291,115 @@ namespace Carcassonne
             tileControllerScript.currentTile.GetComponent<ObjectManipulator>().enabled = false;
             tileControllerScript.currentTile.GetComponent<NearInteractionGrabbable>().enabled = false;
         }
-
-        #region REPLACE_NEXT
-
-        public bool CityIsFinishedDirection(int x, int y, Vector2Int direction)
-        {
-            meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
-            meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, Geography.City, direction));
-
-            cityIsFinished = true;
-            visited = new bool[GameRules.BoardSize, GameRules.BoardSize];
-            RecursiveCityIsFinishedDirection(x, y, direction);
-            Debug.Log(
-                "DIRECTION__________________________CITY IS FINISHED EFTER DIRECTION REKURSIV: ___________________________" +
-                cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, Geography.City));
-            
-            // Test code to print the bounding boxes of a completed city.
-            if (cityIsFinished)
-            {
-                var city = gameState.Features.Cities.Single(c => c.Bounds.Contains(new Vector2Int(x, y) * 3));
-                var limits = city.Bounds;
-                Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
-            }
-            
-            return cityIsFinished;
-        }
-
-        //Test City checker
-        //FIXME: Only called in MeepleControllerScript. Is this still used?
-        public bool CityIsNotFinishedIfEmptyTileBesideCity(int x, int y)
-        { 
-            // Create a list of meeples in the city
-            meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
-            meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, Geography.City));
-
-            // Set up variables
-            cityIsFinished = true;
-            visited = new bool[GameRules.BoardSize, GameRules.BoardSize];
-            
-            // Check to see if city is not finished due to empty tiles
-            RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y);
-            Debug.Log("__________________________CITY IS FINISHED EFTER REKURSIV: ___________________________" +
-                      cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, Geography.City));
-            
-            if (cityIsFinished)
-            {
-                var city = gameState.Features.Cities.Single(c => c.Bounds.Contains(new Vector2Int(x, y) * 3));
-                var limits = city.Bounds;
-                Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
-            }
-            
-            return cityIsFinished;
-        }
-        #endregion
-        
-        public void RecursiveCityIsFinishedDirection(int x, int y, Vector2Int direction)
-        {
-            visited[x, y] = true;
-            if (direction == PointScript.North)
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().North == Geography.City)
-                {
-                    if (placedTiles.GetPlacedTile(x, y + 1) != null)
-                    {
-                        if (!visited[x, y + 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y + 1);
-                    }
-                    else
-                    {
-                        cityIsFinished = false;
-                    }
-                }
-
-            if (direction == PointScript.East)
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().East == Geography.City)
-                {
-                    if (placedTiles.GetPlacedTile(x + 1, y) != null)
-                    {
-                        if (!visited[x + 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x + 1, y);
-                    }
-                    else
-                    {
-                        cityIsFinished = false;
-                    }
-                }
-
-            if (direction == PointScript.South)
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().South == Geography.City)
-                {
-                    if (placedTiles.GetPlacedTile(x, y - 1) != null)
-                    {
-                        if (!visited[x, y - 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y - 1);
-                    }
-                    else
-                    {
-                        cityIsFinished = false;
-                    }
-                }
-
-            if (direction == PointScript.West)
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().West == Geography.City)
-                {
-                    if (placedTiles.GetPlacedTile(x - 1, y) != null)
-                    {
-                        if (!visited[x - 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x - 1, y);
-                    }
-                    else
-                    {
-                        cityIsFinished = false;
-                    }
-                }
-        }
+        //
+        // #region REPLACE_NEXT
+        //
+        // public bool CityIsFinishedDirection(int x, int y, Vector2Int direction)
+        // {
+        //     meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
+        //     meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, Geography.City, direction));
+        //
+        //     cityIsFinished = true;
+        //     visited = new bool[GameRules.BoardSize, GameRules.BoardSize];
+        //     RecursiveCityIsFinishedDirection(x, y, direction);
+        //     Debug.Log(
+        //         "DIRECTION__________________________CITY IS FINISHED EFTER DIRECTION REKURSIV: ___________________________" +
+        //         cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, Geography.City));
+        //     
+        //     // Test code to print the bounding boxes of a completed city.
+        //     if (cityIsFinished)
+        //     {
+        //         var city = gameState.Features.Cities.Single(c => c.Bounds.Contains(new Vector2Int(x, y) * 3));
+        //         var limits = city.Bounds;
+        //         Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
+        //     }
+        //     
+        //     return cityIsFinished;
+        // }
+        //
+        // //Test City checker
+        // //FIXME: Only called in MeepleControllerScript. Is this still used?
+        // public bool CityIsNotFinishedIfEmptyTileBesideCity(int x, int y)
+        // { 
+        //     // Create a list of meeples in the city
+        //     meepleControllerScript.MeeplesInCity = new List<MeepleScript>();
+        //     meepleControllerScript.MeeplesInCity.Add(meepleControllerScript.FindMeeple(x, y, Geography.City));
+        //
+        //     // Set up variables
+        //     cityIsFinished = true;
+        //     visited = new bool[GameRules.BoardSize, GameRules.BoardSize];
+        //     
+        //     // Check to see if city is not finished due to empty tiles
+        //     RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y);
+        //     Debug.Log("__________________________CITY IS FINISHED EFTER REKURSIV: ___________________________" +
+        //               cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, Geography.City));
+        //     
+        //     if (cityIsFinished)
+        //     {
+        //         var city = gameState.Features.Cities.Single(c => c.Bounds.Contains(new Vector2Int(x, y) * 3));
+        //         var limits = city.Bounds;
+        //         Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
+        //     }
+        //     
+        //     return cityIsFinished;
+        // }
+        // #endregion
+        //
+        // public void RecursiveCityIsFinishedDirection(int x, int y, Vector2Int direction)
+        // {
+        //     visited[x, y] = true;
+        //     if (direction == PointScript.North)
+        //         if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().North == Geography.City)
+        //         {
+        //             if (placedTiles.GetPlacedTile(x, y + 1) != null)
+        //             {
+        //                 if (!visited[x, y + 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y + 1);
+        //             }
+        //             else
+        //             {
+        //                 cityIsFinished = false;
+        //             }
+        //         }
+        //
+        //     if (direction == PointScript.East)
+        //         if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().East == Geography.City)
+        //         {
+        //             if (placedTiles.GetPlacedTile(x + 1, y) != null)
+        //             {
+        //                 if (!visited[x + 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x + 1, y);
+        //             }
+        //             else
+        //             {
+        //                 cityIsFinished = false;
+        //             }
+        //         }
+        //
+        //     if (direction == PointScript.South)
+        //         if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().South == Geography.City)
+        //         {
+        //             if (placedTiles.GetPlacedTile(x, y - 1) != null)
+        //             {
+        //                 if (!visited[x, y - 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y - 1);
+        //             }
+        //             else
+        //             {
+        //                 cityIsFinished = false;
+        //             }
+        //         }
+        //
+        //     if (direction == PointScript.West)
+        //         if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().West == Geography.City)
+        //         {
+        //             if (placedTiles.GetPlacedTile(x - 1, y) != null)
+        //             {
+        //                 if (!visited[x - 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x - 1, y);
+        //             }
+        //             else
+        //             {
+        //                 cityIsFinished = false;
+        //             }
+        //         }
+        // }
 
 
         /// <summary>
@@ -540,7 +548,7 @@ namespace Carcassonne
             }
 
 
-            calculatePoints(false, false);
+            //calculatePoints(false, false);
         }
 
 
@@ -620,6 +628,8 @@ namespace Carcassonne
                     else
                     {
                         meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject);
+                        
+                        gameState.phase = Phase.TileDown;
                     }
                 }
             }
@@ -642,7 +652,34 @@ namespace Carcassonne
             
             if (gameState.phase == Phase.TileDown || gameState.phase == Phase.MeepleDown)
             {
-                calculatePoints(true, false);
+                
+                // Check finished features
+                var features = gameState.Features.CompleteWithMeeples;
+
+                foreach( var f in features)
+                {
+                    var meeples = gameState.Meeples.InFeature(f).ToList();
+
+                    var playerMeeples = meeples.GroupBy(m => m.player);
+                    var playerMeepleCount = playerMeeples.ToDictionary(g => g.Key, g => g.Count());
+
+                    var scoringPlayers = playerMeepleCount.
+                        Where(kvp => kvp.Value == playerMeepleCount.Values.Max())
+                        .Select((kvp => kvp.Key));
+
+                    // Calculate points for those that are finished
+                    foreach (var p in scoringPlayers)
+                    {
+                        p.Score += f.Points;
+                    }
+
+                    // Free meeples
+                    foreach( var m in meeples)
+                    {
+                        meepleControllerScript.FreeMeeple(m.gameObject);
+                    }
+                }
+                
                 if (stackScript.isEmpty())
                 {
                     GameOver();
@@ -684,7 +721,7 @@ namespace Carcassonne
         {
             for (var i = 0; i < gameState.Players.All.Count; i++)
                 playerHuds[i].GetComponentInChildren<TextMeshPro>().text =
-                    "Score: " + gameState.Players.All[i].GetPlayerScore();
+                    "Score: " + gameState.Players.All[i].Score;
 
 
             if (currentPlayer.getID() == 0)
@@ -724,117 +761,121 @@ namespace Carcassonne
             //    playerHuds[2].GetComponentInChildren<MeshRenderer>().material = playerMaterials[6];
             //}
         }
-
+        
+        //FIXME this does too many things
         public void calculatePoints(bool RealCheck, bool GameEnd)
         {
             foreach (var p in gameState.Players.All)
-                for (var j = 0; j < p.meeples.Count; j++)
+                for (var j = 0; j < p.meeples.Count; j++)  // Loop over meeples for players
                 {
                     var meeple = p.meeples[j];
-                    if (!meeple.free)
+                    if (!meeple.free)   // Only placed meeples
                     {
-                        var tileID = placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().id;
-                        var finalscore = 0;
-                        if (meeple.geography == Geography.City)
-                        {
-                            //CITY DIRECTION
-                            if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                Geography.Stream ||
-                                placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                Geography.Field ||
-                                placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                Geography.Road ||
-                                placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                Geography.Village) // If it's a Stream, Grass, Road, Village
-                            {
-                                if (CityIsFinishedDirection(meeple.x, meeple.z, meeple.direction))
-                                {
-                                    Debug.Log("CITY IS FINISHED END");
-
-                                    finalscore = GetComponent<PointScript>()
-                                        .startDfsDirection(
-                                            placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>()
-                                                .vIndex, meeple.geography, meeple.direction, GameEnd);
-                                }
-
-                                //else
-                                //{
-                                //    GetComponent<PointScript>().startDfsDirection(placedTiles.getPlacedTiles(meeple.x, meeple.z).
-                                //        GetComponent<TileScript>().vIndex, meeple.geography, meeple.direction, GameEnd);
-                                //}
-                                if (GameEnd)
-                                {
-                                    Debug.Log("GAME END");
-                                    finalscore = GetComponent<PointScript>()
-                                        .startDfsDirection(
-                                            placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>()
-                                                .vIndex, meeple.geography, meeple.direction, GameEnd);
-                                }
-                            }
-                            else
-                            {
-                                //CITY NO DIRECTION
-                                if (CityIsNotFinishedIfEmptyTileBesideCity(meeple.x, meeple.z))
-                                    finalscore = GetComponent<PointScript>()
-                                        .startDfs(
-                                            placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>()
-                                                .vIndex, meeple.geography, GameEnd);
-                                if (GameEnd)
-                                {
-                                    Debug.Log("GAME END I ELSE");
-                                    finalscore = GetComponent<PointScript>()
-                                        .startDfsDirection(
-                                            placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>()
-                                                .vIndex, meeple.geography, meeple.direction, GameEnd);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            ///ROAD
-                            if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                Geography.Village ||
-                                placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                Geography.Field)
-                            {
-                                finalscore = GetComponent<PointScript>().startDfsDirection(placedTiles
-                                    .GetPlacedTile(meeple.x, meeple.z)
-                                    .GetComponent<TileScript>().vIndex, meeple.geography, meeple.direction, GameEnd);
-                                if (GameEnd)
-                                    finalscore--; //FIXME THIS IS WRONG
-                            }
-                            else
-                            {
-                                finalscore = GetComponent<PointScript>()
-                                    .startDfs(
-                                        placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().vIndex,
-                                        meeple.geography, GameEnd);
-                                if (GameEnd)
-                                    finalscore--; //FIXME THIS IS WRONG
-                            }
-
-                            //CLOISTER
-                            if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
-                                Geography.Cloister &&
-                                meeple.direction == PointScript.Centre)
-                                finalscore = placedTiles.CheckSurroundedCloister(meeple.x, meeple.z, GameEnd);
-                        }
+                        var finalscore = gameState.Features.GetFeatureAt(meeple.position, meeple.direction).Points;
+                        
+                        // var tileID = placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().id;
+                        // var finalscore = 0;
+                        // if (meeple.geography == Geography.City)
+                        // {
+                        //     //CITY DIRECTION
+                        //     if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                        //         Geography.Stream ||
+                        //         placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                        //         Geography.Field ||
+                        //         placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                        //         Geography.Road ||
+                        //         placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                        //         Geography.Village) // If it's a Stream, Grass, Road, Village
+                        //     {
+                        //         if (CityIsFinishedDirection(meeple.x, meeple.z, meeple.direction))
+                        //         {
+                        //             Debug.Log("CITY IS FINISHED END");
+                        //
+                        //             finalscore = GetComponent<PointScript>()
+                        //                 .startDfsDirection(
+                        //                     placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>()
+                        //                         .vIndex, meeple.geography, meeple.direction, GameEnd);
+                        //         }
+                        //
+                        //         //else
+                        //         //{
+                        //         //    GetComponent<PointScript>().startDfsDirection(placedTiles.getPlacedTiles(meeple.x, meeple.z).
+                        //         //        GetComponent<TileScript>().vIndex, meeple.geography, meeple.direction, GameEnd);
+                        //         //}
+                        //         if (GameEnd)
+                        //         {
+                        //             Debug.Log("GAME END");
+                        //             finalscore = GetComponent<PointScript>()
+                        //                 .startDfsDirection(
+                        //                     placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>()
+                        //                         .vIndex, meeple.geography, meeple.direction, GameEnd);
+                        //         }
+                        //     }
+                        //     else
+                        //     {
+                        //         //CITY NO DIRECTION
+                        //         if (CityIsNotFinishedIfEmptyTileBesideCity(meeple.x, meeple.z))
+                        //             finalscore = GetComponent<PointScript>()
+                        //                 .startDfs(
+                        //                     placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>()
+                        //                         .vIndex, meeple.geography, GameEnd);
+                        //         if (GameEnd)
+                        //         {
+                        //             Debug.Log("GAME END I ELSE");
+                        //             finalscore = GetComponent<PointScript>()
+                        //                 .startDfsDirection(
+                        //                     placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>()
+                        //                         .vIndex, meeple.geography, meeple.direction, GameEnd);
+                        //         }
+                        //     }
+                        // }
+                        // else
+                        // {
+                        //     ///ROAD
+                        //     if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                        //         Geography.Village ||
+                        //         placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                        //         Geography.Field)
+                        //     {
+                        //         finalscore = GetComponent<PointScript>().startDfsDirection(placedTiles
+                        //             .GetPlacedTile(meeple.x, meeple.z)
+                        //             .GetComponent<TileScript>().vIndex, meeple.geography, meeple.direction, GameEnd);
+                        //         if (GameEnd)
+                        //             finalscore--; //FIXME THIS IS WRONG
+                        //     }
+                        //     else
+                        //     {
+                        //         finalscore = GetComponent<PointScript>()
+                        //             .startDfs(
+                        //                 placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().vIndex,
+                        //                 meeple.geography, GameEnd);
+                        //         if (GameEnd)
+                        //             finalscore--; //FIXME THIS IS WRONG
+                        //     }
+                        //
+                        //     //CLOISTER
+                        //     if (placedTiles.GetPlacedTile(meeple.x, meeple.z).GetComponent<TileScript>().getCenter() ==
+                        //         Geography.Cloister &&
+                        //         meeple.direction == PointScript.Centre)
+                        //         finalscore = placedTiles.CheckSurroundedCloister(meeple.x, meeple.z, GameEnd);
+                        // }
                         
                         //TODO If two people have meeples on a city and one doesn't score anything, their meeple should still be freed. Should be IF FEATURE IS FINISHED.
                         if (finalscore > 0 && RealCheck)
                         {
                             Debug.Log(currentPlayer.getID() + " recieved " + finalscore + " points. MEEPLEGEO: " + meepleControllerScript.meepleGeography);
-                            meeple.player.SetPlayerScore(
-                                meeple.player.GetPlayerScore() + finalscore);
+                            meeple.player.Score = meeple.player.Score + finalscore;
 
                             // meeple.free = true;
-                            gameState.Meeples.Placement.Remove(meeple.GetComponent<MeepleScript>().position);
+                            // gameState.Meeples.Placement.Remove(meeple.GetComponent<MeepleScript>().position);
+                            //
+                            //
+                            // meeple.transform.position = new Vector3(20, 20, 20);
+                            // meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
+                            // meeple.GetComponentInChildren<BoxCollider>().enabled = false;
+                            // meeple.GetComponentInChildren<MeshRenderer>().enabled = false;
 
-                            
-                            meeple.transform.position = new Vector3(20, 20, 20);
-                            meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
-                            meeple.GetComponentInChildren<BoxCollider>().enabled = false;
-                            meeple.GetComponentInChildren<MeshRenderer>().enabled = false;
+                            meepleControllerScript.FreeMeeple(meeple.gameObject);
                         }
                     }
                 }

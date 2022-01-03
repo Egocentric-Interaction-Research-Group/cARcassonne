@@ -72,14 +72,10 @@ namespace Carcassonne
             return _id;
         }
 
-        public int GetPlayerScore()
+        public int Score
         {
-            return score;
-        }
-
-        public void SetPlayerScore(int playerScore)
-        {
-            score = playerScore;
+            get { return score; }
+            set { score = value; }
         }
     }
 }
