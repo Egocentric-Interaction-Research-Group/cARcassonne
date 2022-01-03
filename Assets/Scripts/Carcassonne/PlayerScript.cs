@@ -6,15 +6,6 @@ using UnityEngine;
 
 namespace Carcassonne
 {
-    // public class PlayerScript : MonoBehaviour
-    // {
-    //     public void CreatePlayer(int id, string name, Material playerMat, GameObject photonUser)
-    //     {
-    //         Players.All.Add(new Player(id, name, playerMat, photonUser));
-    //         // players.AddLast(new Player(name, color));
-    //     }
-    //
-    // }
 
     /// <summary>
     /// The Gameplay AI team will likely have to extract a base class from this so that there are Players who do not have

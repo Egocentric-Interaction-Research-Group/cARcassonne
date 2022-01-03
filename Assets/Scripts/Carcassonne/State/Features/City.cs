@@ -18,15 +18,6 @@ namespace Carcassonne.State.Features
 
         public int Shields => Vertices.Select(v=> v.tile).Distinct().Count(t=> t.Shield);
         public override bool Complete => OpenSides == 0;
-        // public bool Completable => IsCompletable();
-
-        /// <summary>
-        /// Get the bounding box for the city in the SubTile Coordinate system.
-        /// </summary>
-        // public RectInt Bounds => CalculateBounds();
-
-        // public bool Contains(Vector2Int xy) => Vertices.Any(v => v.location == xy);
-
         
         /// <summary>
         /// A count of the number of vertices representing a single feature on a single tile in the city.
@@ -53,89 +44,6 @@ namespace Carcassonne.State.Features
             return Vertices.Count() - boardVertices.Distinct().Count();
         }
 
-        // private bool IsCompletable()
-        // {
-        //     if (Complete) return true;
-        //     throw new System.NotImplementedException();
-        // }
-
-        // private Dictionary<PlayerScript, int> CountMeeplesForPlayers()
-        // {
-        //     var meeplesForPlayer = new Dictionary<PlayerScript, int>();
-        //
-        //     foreach (var position in positions.Vertices.Where(v => v.meeple))
-        //     {
-        //         var player = position.meeple.player;
-        //         if (!meeplesForPlayer.ContainsKey(player))
-        //         {
-        //             meeplesForPlayer.Add(player, 0);
-        //         }
-        //
-        //         meeplesForPlayer[player] += 1;
-        //     }
-        //
-        //     return meeplesForPlayer;
-        // }
-
-        // public void Add(Vector2Int xy, TileScript t)
-        // {
-        //     Add(xy, t, null);
-        // }
-        //
-        // public void Add(Vector2Int xy, TileScript t, [CanBeNull] MeepleScript m)
-        // {
-        //     var position = new CarcassonneVertex(xy, t, m);
-        //     
-        //     // Add the vertex
-        //     positions.AddVertex(position);
-        //
-        //     // var clockwiseTiles = new[] { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
-        //     // for (var i = 0; i < clockwiseTiles.Length; i++) // For each side
-        //     // {
-        //     //     // Check if (the side is a city) and (there is a tile on that side)
-        //     //     if( (t.Sides[i] == TileScript.Geography.City) && (positions.Vertices.Any(p => p.location == (position.location + clockwiseTiles[i]))) )
-        //     //     {
-        //     //         UndirectedEdge<CarcassonneVertex> e = new UndirectedEdge<CarcassonneVertex>(position, positions.Vertices.Single(p => p.location == (position.location + clockwiseTiles[i])));
-        //     //         positions.AddEdge(e);
-        //     //     }
-        //     // }
-        //
-        //     foreach (var side in t.Sides)
-        //     {
-        //         var dir = side.Key;
-        //         var geo = side.Value;
-        //
-        //         if (geo == TileScript.Geography.City &&
-        //             positions.Vertices.Any(p => p.location == (position.location + dir)))
-        //         {
-        //             UndirectedEdge<CarcassonneVertex> e = City.EdgeBetween(position,
-        //                 positions.Vertices.Single(p => p.location == (position.location + dir)));
-        //             positions.AddEdge(e);
-        //         }
-        //     }
-        // }
-
-        // private RectInt CalculateBounds()
-        // {
-        //     RectInt b = new RectInt();
-        //
-        //     foreach (var subTile in Vertices)
-        //     {
-        //         if (b.size == Vector2Int.zero)
-        //         {
-        //             b.position = subTile.location;
-        //             b.size = Vector2Int.one;
-        //         }
-        //
-        //         if (subTile.location.x <  b.xMin){ b.xMin = subTile.location.x;}
-        //         if (subTile.location.x >= b.xMax){ b.xMax = subTile.location.x + 1;}
-        //         if (subTile.location.y <  b.yMin){ b.yMin = subTile.location.y;}
-        //         if (subTile.location.y >= b.yMax){ b.yMax = subTile.location.y + 1;}
-        //     }
-        //     
-        //     return b;
-        // }
-        
         public static BoardGraphFilter CityFilter = edges =>
             edges.Where(e =>
             {

@@ -70,23 +70,10 @@ namespace Carcassonne.State
         private void OnEnable()
         {
             All.Clear();
-            // GameObject[] meepleObjects = GameObject.FindGameObjectsWithTag("Meeple ");
-            // All = from meeple in meepleObjects select meeple.GetComponent<MeepleScript>()).ToList();
 
             Current = null;
-            
         }
 
-        // private Dictionary<Player, int> CalculateRemainingMeeples()
-        // {
-        //     return Players.All.ToDictionary(p => p, CalculateRemainingMeeplesForPlayer);
-        // }
-        //
-        // private int CalculateRemainingMeeplesForPlayer(Player player)
-        // {
-        //     var playerMeeples = new List<GameObject>(player.meeples);
-        //     return playerMeeples.Count(p => p.GetComponent<MeepleScript>().free);
-        // }
 
         public List<MeepleScript> MeeplesForPlayer(PlayerScript p)
         {

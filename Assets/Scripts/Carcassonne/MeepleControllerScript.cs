@@ -307,42 +307,6 @@ namespace Carcassonne
 
             return true;
 
-            // var currentCenter = currentTileScript.getCenter();
-            //
-            // // Determine whether a meeple is [res]tricted from being placed
-            // bool res;
-            // if (currentCenter == TileScript.Geography.Village || currentCenter == TileScript.Geography.Field ||
-            //     currentCenter == TileScript.Geography.Cloister && direction != PointScript.Centre)
-            //     res = GetComponent<PointScript>()
-            //         .testIfMeepleCantBePlacedDirection(currentTileScript.vIndex, meepleGeography, direction);
-            // else if (currentCenter == TileScript.Geography.Cloister && direction == PointScript.Centre)
-            //     res = false;
-            // else
-            //     res = GetComponent<PointScript>().testIfMeepleCantBePlaced(currentTileScript.vIndex, meepleGeography);
-            //
-            // if (meepleGeography == TileScript.Geography.City)
-            // {
-            //     if (currentCenter == TileScript.Geography.City)
-            //         res = gameControllerScript.CityIsNotFinishedIfEmptyTileBesideCity(xs, zs) || res;
-            //     else
-            //         res = gameControllerScript.CityIsFinishedDirection(xs, zs, direction) || res;
-            // }
-            //
-            // if (!currentTileScript.IsOccupied(direction) && !res)
-            // {
-            //     meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
-            //     meeple.GetComponentInChildren<BoxCollider>().enabled = false;
-            //     meeple.GetComponent<ObjectManipulator>().enabled = false;
-            //
-            //     currentTileScript.occupy(direction);
-            //     if (meepleGeography == TileScript.Geography.CityRoad) meepleGeography = TileScript.Geography.City;
-            //
-            //     meeple.GetComponent<MeepleScript>().assignAttributes(xs, zs, direction, meepleGeography);
-            //     meeple.GetComponent<MeepleScript>().free = false;
-            //
-            //
-            //     gameControllerScript.gameState.phase = Phase.MeepleDown;
-            // }
         }
     }
 }

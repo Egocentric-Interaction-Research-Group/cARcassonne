@@ -19,6 +19,8 @@ namespace Carcassonne.State
         // public List<Chapel> chapels;
 
         public IEnumerable<FeatureGraph> All => new List<FeatureGraph>().Concat(Cities);
+        public IEnumerable<FeatureGraph> Complete => All.Where(f => f.Complete);
+        public IEnumerable<FeatureGraph> Incomplete => All.Where(f => !f.Complete);
 
         private void Awake()
         {

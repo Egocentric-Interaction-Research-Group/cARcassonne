@@ -11,17 +11,19 @@ namespace Carcassonne
 
         public static Vector2Int SubTileToTile(Vector2Int subTilePosition)
         {
-            throw new System.NotImplementedException(); 
+            return subTilePosition / 3;
         }
 
         public static Vector2Int SubTileToDirection(Vector2Int subTilePosition)
         {
-            throw new System.NotImplementedException();
+            (var position, var direction) = SubTileToBoard(subTilePosition);
+
+            return direction;
         }
         
         public static (Vector2Int position, Vector2Int direction) SubTileToBoard(Vector2Int subTilePosition)
         {
-            var position = subTilePosition / 3;
+            var position = SubTileToTile(subTilePosition);
             var direction = (subTilePosition - 3 * position) - Vector2Int.one;
 
             Debug.Assert(new Vector2Int(3,3) / 3 == Vector2Int.one, $"(3,3) / 3 should be (1,1)"); // Basic Test

@@ -125,40 +125,6 @@ namespace Carcassonne.State.Features
         }
 
         /// <summary>
-        /// Add two TileGraphs together. Uses the physical location of subtiles to find and link neighbours.
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        // public static BoardGraph operator +(BoardGraph a, BoardGraph b)
-        // {   
-        //     var tg = new BoardGraph();
-        //     tg.AddVerticesAndEdgeRange(a.Edges);
-        //     tg.AddVerticesAndEdgeRange(b.Edges);
-        //     
-        //     // Search for adjacent vertices and add links
-        //     foreach (var va in a.Vertices)
-        //     {
-        //         // Find all Subtiles that are adjacent to the vertex in graph a
-        //         var toLink = b.Vertices.Where(vb => (va.location - vb.location).sqrMagnitude == 1);
-        //
-        //         foreach (var subtile in toLink)
-        //         {
-        //             Debug.Assert(va.geography == subtile.geography, $"Geographies ({va.geography}, {subtile.geography}) do not match.");
-        //
-        //             tg.AddEdge(EdgeBetween(va, subtile, ConnectionType.Board));
-        //
-        //             if (va.geography == TileScript.Geography.City || va.geography == TileScript.Geography.Road)
-        //             {
-        //                 tg.AddEdge(EdgeBetween(va, subtile, ConnectionType.Feature));
-        //             }
-        //         }
-        //     }
-        //     
-        //     return tg;
-        // }
-
-        /// <summary>
         /// Get a graph representation of the tile itself.
         /// </summary>
         /// <param name="tile"></param>
