@@ -3,13 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using QuikGraph;
-using QuikGraph.Graphviz;
-using QuikGraph.Graphviz.Dot;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
-
 
 namespace Carcassonne.State.Features
 {
@@ -67,7 +61,7 @@ namespace Carcassonne.State.Features
                 
                     throw new ArgumentException(
                         $"Vertices have the same location ({location}), but have different tiles, geographies, or meeples." +
-                        $"Only one SubTile may occupy a given location.");
+                        "Only one SubTile may occupy a given location.");
                 }
             
                 // If they are different, sort by hash code
@@ -195,7 +189,6 @@ namespace Carcassonne.State.Features
         {
             if (a.CompareTo(b) > 0)
             {
-                CarcassonneEdge e = new CarcassonneEdge(b, a, t);
                 return new CarcassonneEdge(b, a, t);
             }
 

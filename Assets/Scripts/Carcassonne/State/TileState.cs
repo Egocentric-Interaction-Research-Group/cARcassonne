@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace Carcassonne.State
 {
@@ -10,8 +9,8 @@ namespace Carcassonne.State
     {
         public List<TileScript> Remaining => _remaining;
         [CanBeNull] public TileScript Current { get; set; }
-        public TileScript[,] Played => _played; 
-        
+        public TileScript[,] Played => _played; //TODO Default representation should be a dictionary with a position and a tile.
+
         public Vector2 lastPlayedPosition;
 
         private List<TileScript> _remaining;
@@ -118,7 +117,7 @@ namespace Carcassonne.State
                 {
                     s += $" | ({i},{j}): {Matrix[i,j], 8}";
                 }
-                s += $" |\n";
+                s += " |\n";
             }
             return s;
         }

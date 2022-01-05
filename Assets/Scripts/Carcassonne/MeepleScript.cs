@@ -80,19 +80,19 @@ namespace Carcassonne
         //     /*
         // switch (direction)
         // {
-        //     case PointScript.North:
+        //     case Vector2Int.up:
         //         this.x = x;
         //         this.z = z + .5f;
         //         break;
-        //     case PointScript.East:
+        //     case Vector2Int.right:
         //         this.x = x + .5f;
         //         this.z = z;
         //         break;
-        //     case PointScript.South:
+        //     case Vector2Int.down:
         //         this.x = x;
         //         this.z = z - .5f;
         //         break;
-        //     case PointScript.West:
+        //     case Vector2Int.left:
         //         this.x = x - .5f;
         //         this.z = z;
         //         break;

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Carcassonne.State;
 using Carcassonne.State.Features;
 using UnityEngine;
@@ -17,8 +15,12 @@ namespace Carcassonne
         public TileState tiles;
         public FeatureState features;
 
+        public int Count => _count;
+        private int _count;
+
         private void Start()
         {
+            _count = 0;
         }
 
         [ObsoleteAttribute("This function is obsolete. Just here for a consistency check now.", false)]
@@ -36,10 +38,12 @@ namespace Carcassonne
             var pos = new Vector2Int(x, z);
             // Update the Tile State
             tiles.Played[x, z] = ts;
-            tiles.lastPlayedPosition = new Vector2(x, z);
+            tiles.lastPlayedPosition = pos;
             
             // Update Feature States
-            features.Graph.Add(BoardGraph.FromTile(ts, new Vector2Int(x, z)) );
+            features.Graph.Add(BoardGraph.FromTile(ts, pos) );
+
+            _count++;
             
             Debug.Log($"{features.Graph}");
         }
@@ -85,135 +89,135 @@ namespace Carcassonne
             
             return false;
         }
-
-        public bool CityTileHasGrassOrStreamCenter(int x, int y)
-        {
-            return tiles.Played[x, y].getCenter() == Geography.Field ||
-                   tiles.Played[x, y].getCenter() == Geography.Stream;
-        }
-
-        //Hämtar grannarna till en specifik tile
-        public int[] GetNeighbors(int x, int y)
-        {
-            var Neighbors = new int[4];
-            var itt = 0;
-
-
-            if (tiles.Played[x + 1, y] != null)
-            {
-                Neighbors[itt] = tiles.Played[x + 1, y].vIndex;
-                itt++;
-            }
-
-            if (tiles.Played[x - 1, y] != null)
-            {
-                Neighbors[itt] = tiles.Played[x - 1, y].vIndex;
-                itt++;
-            }
-
-            if (tiles.Played[x, y + 1] != null)
-            {
-                Neighbors[itt] = tiles.Played[x, y + 1].vIndex;
-                itt++;
-            }
-
-            if (tiles.Played[x, y - 1] != null) Neighbors[itt] = tiles.Played[x, y - 1].vIndex;
-            return Neighbors;
-        }
-
-        public Geography[] getWeights(int x, int y)
-        {
-            var weights = new Geography[4];
-            var itt = 0;
-            if (tiles.Played[x + 1, y] != null)
-            {
-                weights[itt] = tiles.Played[x + 1, y].West;
-                itt++;
-            }
-
-            if (tiles.Played[x - 1, y] != null)
-            {
-                weights[itt] = tiles.Played[x - 1, y].East;
-                itt++;
-            }
-
-            if (tiles.Played[x, y + 1] != null)
-            {
-                weights[itt] = tiles.Played[x, y + 1].South;
-                itt++;
-            }
-
-            if (tiles.Played[x, y - 1] != null) weights[itt] = tiles.Played[x, y - 1].North;
-            return weights;
-        }
-
-        public Geography[] getCenters(int x, int y)
-        {
-            var centers = new Geography[4];
-            var itt = 0;
-            if (tiles.Played[x + 1, y] != null)
-            {
-                centers[itt] = tiles.Played[x + 1, y].getCenter();
-                itt++;
-            }
-
-            if (tiles.Played[x - 1, y] != null)
-            {
-                centers[itt] = tiles.Played[x - 1, y].getCenter();
-                itt++;
-            }
-
-            if (tiles.Played[x, y + 1] != null)
-            {
-                centers[itt] = tiles.Played[x, y + 1].getCenter();
-                itt++;
-            }
-
-            if (tiles.Played[x, y - 1] != null) centers[itt] = tiles.Played[x, y - 1].getCenter();
-            return centers;
-        }
-
-        public Vector2Int[] getDirections(int x, int y)
-        {
-            var directions = new Vector2Int[4];
-            var itt = 0;
-            if (tiles.Played[x + 1, y] != null)
-            {
-                directions[itt] = PointScript.East;
-                itt++;
-            }
-
-            if (tiles.Played[x - 1, y] != null)
-            {
-                directions[itt] = PointScript.West;
-                itt++;
-            }
-
-            if (tiles.Played[x, y + 1] != null)
-            {
-                directions[itt] = PointScript.North;
-                itt++;
-            }
-
-            if (tiles.Played[x, y - 1] != null) directions[itt] = PointScript.South;
-            return directions;
-        }
-
-        public int CheckSurroundedCloister(int x, int z, bool endTurn)
-        {
-            var pts = 1;
-            if (tiles.Played[x - 1, z - 1] != null) pts++;
-            if (tiles.Played[x - 1, z] != null) pts++;
-            if (tiles.Played[x - 1, z + 1] != null) pts++;
-            if (tiles.Played[x, z - 1] != null) pts++;
-            if (tiles.Played[x, z + 1] != null) pts++;
-            if (tiles.Played[x + 1, z - 1] != null) pts++;
-            if (tiles.Played[x + 1, z] != null) pts++;
-            if (tiles.Played[x + 1, z + 1] != null) pts++;
-            if (pts == 9 || endTurn)
-                return pts;
-            return 0;
-        }
+        
+        // public bool CityTileHasGrassOrStreamCenter(int x, int y)
+        // {
+        //     return tiles.Played[x, y].getCenter() == Geography.Field ||
+        //            tiles.Played[x, y].getCenter() == Geography.Stream;
+        // }
+        //
+        // //Hämtar grannarna till en specifik tile
+        // public int[] GetNeighbors(int x, int y)
+        // {
+        //     var Neighbors = new int[4];
+        //     var itt = 0;
+        //
+        //
+        //     if (tiles.Played[x + 1, y] != null)
+        //     {
+        //         Neighbors[itt] = tiles.Played[x + 1, y].vIndex;
+        //         itt++;
+        //     }
+        //
+        //     if (tiles.Played[x - 1, y] != null)
+        //     {
+        //         Neighbors[itt] = tiles.Played[x - 1, y].vIndex;
+        //         itt++;
+        //     }
+        //
+        //     if (tiles.Played[x, y + 1] != null)
+        //     {
+        //         Neighbors[itt] = tiles.Played[x, y + 1].vIndex;
+        //         itt++;
+        //     }
+        //
+        //     if (tiles.Played[x, y - 1] != null) Neighbors[itt] = tiles.Played[x, y - 1].vIndex;
+        //     return Neighbors;
+        // }
+        //
+        // public Geography[] getWeights(int x, int y)
+        // {
+        //     var weights = new Geography[4];
+        //     var itt = 0;
+        //     if (tiles.Played[x + 1, y] != null)
+        //     {
+        //         weights[itt] = tiles.Played[x + 1, y].West;
+        //         itt++;
+        //     }
+        //
+        //     if (tiles.Played[x - 1, y] != null)
+        //     {
+        //         weights[itt] = tiles.Played[x - 1, y].East;
+        //         itt++;
+        //     }
+        //
+        //     if (tiles.Played[x, y + 1] != null)
+        //     {
+        //         weights[itt] = tiles.Played[x, y + 1].South;
+        //         itt++;
+        //     }
+        //
+        //     if (tiles.Played[x, y - 1] != null) weights[itt] = tiles.Played[x, y - 1].North;
+        //     return weights;
+        // }
+        //
+        // public Geography[] getCenters(int x, int y)
+        // {
+        //     var centers = new Geography[4];
+        //     var itt = 0;
+        //     if (tiles.Played[x + 1, y] != null)
+        //     {
+        //         centers[itt] = tiles.Played[x + 1, y].getCenter();
+        //         itt++;
+        //     }
+        //
+        //     if (tiles.Played[x - 1, y] != null)
+        //     {
+        //         centers[itt] = tiles.Played[x - 1, y].getCenter();
+        //         itt++;
+        //     }
+        //
+        //     if (tiles.Played[x, y + 1] != null)
+        //     {
+        //         centers[itt] = tiles.Played[x, y + 1].getCenter();
+        //         itt++;
+        //     }
+        //
+        //     if (tiles.Played[x, y - 1] != null) centers[itt] = tiles.Played[x, y - 1].getCenter();
+        //     return centers;
+        // }
+        //
+        // public Vector2Int[] getDirections(int x, int y)
+        // {
+        //     var directions = new Vector2Int[4];
+        //     var itt = 0;
+        //     if (tiles.Played[x + 1, y] != null)
+        //     {
+        //         directions[itt] = Vector2Int.right;
+        //         itt++;
+        //     }
+        //
+        //     if (tiles.Played[x - 1, y] != null)
+        //     {
+        //         directions[itt] = Vector2Int.left;
+        //         itt++;
+        //     }
+        //
+        //     if (tiles.Played[x, y + 1] != null)
+        //     {
+        //         directions[itt] = Vector2Int.up;
+        //         itt++;
+        //     }
+        //
+        //     if (tiles.Played[x, y - 1] != null) directions[itt] = Vector2Int.down;
+        //     return directions;
+        // }
+        //
+        // public int CheckSurroundedCloister(int x, int z, bool endTurn)
+        // {
+        //     var pts = 1;
+        //     if (tiles.Played[x - 1, z - 1] != null) pts++;
+        //     if (tiles.Played[x - 1, z] != null) pts++;
+        //     if (tiles.Played[x - 1, z + 1] != null) pts++;
+        //     if (tiles.Played[x, z - 1] != null) pts++;
+        //     if (tiles.Played[x, z + 1] != null) pts++;
+        //     if (tiles.Played[x + 1, z - 1] != null) pts++;
+        //     if (tiles.Played[x + 1, z] != null) pts++;
+        //     if (tiles.Played[x + 1, z + 1] != null) pts++;
+        //     if (pts == 9 || endTurn)
+        //         return pts;
+        //     return 0;
+        // }
 
         public bool TilePlacementIsValid(GameObject tile, int x, int z)
         {

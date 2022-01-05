@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.State.Features;
-using Photon.Pun;
 using UnityEngine;
 
 namespace Carcassonne.State
@@ -15,16 +13,17 @@ namespace Carcassonne.State
         public BoardGraph Graph = new BoardGraph();
 
         public List<City> Cities = new List<City>();
-        // public List<Road> roads;
+        public List<Road> Roads = new List<Road>();
         // public List<Chapel> chapels;
 
-        public IEnumerable<FeatureGraph> All => new List<FeatureGraph>().Concat(Cities);
+        public IEnumerable<FeatureGraph> All => new List<FeatureGraph>().Concat(Cities).Concat(Roads);
         public IEnumerable<FeatureGraph> Complete => All.Where(f => f.Complete);
         public IEnumerable<FeatureGraph> Incomplete => All.Where(f => !f.Complete);
 
         private void Awake()
         {
             Cities = new List<City>();
+            Roads = new List<Road>();
             Graph = new BoardGraph();
         }
 
@@ -67,12 +66,10 @@ namespace Carcassonne.State
                 }
             }
 
-            var city = Cities.SingleOrDefault(c =>
+            var feature = All.SingleOrDefault(c =>
                 c.Vertices.Count(v => v.location == Coordinates.TileToSubTile(position, direction)) == 1);
-            // var road
-            // var cloister
 
-            return new FeatureGraph[] { city }.SingleOrDefault(f => f != null);
+            return feature;
         }
 
         /// <summary>

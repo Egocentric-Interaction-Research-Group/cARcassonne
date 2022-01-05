@@ -9,7 +9,6 @@ using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Carcassonne
 {
@@ -120,13 +119,14 @@ namespace Carcassonne
 
         private void Start()
         {
-            gameState.Features.Graph.Changed += UpdateCities;
+            gameState.Features.Graph.Changed += UpdateFeatures;
         }
         
-        public void UpdateCities(object sender, BoardChangedEventArgs args)
+        public void UpdateFeatures(object sender, BoardChangedEventArgs args)
         {
             BoardGraph graph = args.graph;
             gameState.Features.Cities = City.FromBoardGraph(graph);
+            gameState.Features.Roads = Road.FromBoardGraph(graph);
 
             string debugString = "Cities: \n\n";
             foreach (var city in gameState.Features.Cities)
@@ -134,6 +134,16 @@ namespace Carcassonne
                 debugString += city.ToString();
                 debugString += "\n";
                 debugString += $"Segments: {city.Segments}, Open Sides: {city.OpenSides}, Complete: {city.Complete}";
+                debugString += "\n\n";
+            }
+            Debug.Log(debugString);
+            
+            debugString = "Roads: \n\n";
+            foreach (var road in gameState.Features.Roads)
+            {
+                debugString += road.ToString();
+                debugString += "\n";
+                debugString += $"Segments: {road.Segments}, Open Sides: {road.OpenSides}, Complete: {road.Complete}";
                 debugString += "\n\n";
             }
             Debug.Log(debugString);
@@ -292,74 +302,6 @@ namespace Carcassonne
             tileControllerScript.currentTile.GetComponent<NearInteractionGrabbable>().enabled = false;
         }
 
-        /// <summary>
-        /// This tells you if a city is NOT finished due to there being an empty square on the city side of a tile.
-        /// It does not return anything, just sets cityIsFinished as false.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public void RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(int x, int y)
-        {
-            visited[x, y] = true;
-
-
-            if (placedTiles.GetPlacedTile(x, y) != null) // If there is a tile here
-            {
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().North == Geography.City)
-                    if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
-                    {
-                        if (placedTiles.GetPlacedTile(x, y + 1) != null)
-
-                        {
-                            if (!visited[x, y + 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y + 1);
-                        }
-                        else
-                        {
-                            cityIsFinished = false;
-                        }
-                    }
-
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().East == Geography.City)
-                    if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
-                    {
-                        if (placedTiles.GetPlacedTile(x + 1, y) != null)
-                        {
-                            if (!visited[x + 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x + 1, y);
-                        }
-                        else
-                        {
-                            cityIsFinished = false;
-                        }
-                    }
-
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().South == Geography.City)
-                    if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
-                    {
-                        if (placedTiles.GetPlacedTile(x, y - 1) != null)
-                        {
-                            if (!visited[x, y - 1]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x, y - 1);
-                        }
-                        else
-                        {
-                            cityIsFinished = false;
-                        }
-                    }
-
-                if (placedTiles.GetPlacedTile(x, y).GetComponent<TileScript>().West == Geography.City)
-                    if (!placedTiles.CityTileHasGrassOrStreamCenter(x, y))
-                    {
-                        if (placedTiles.GetPlacedTile(x - 1, y) != null)
-                        {
-                            if (!visited[x - 1, y]) RecursiveSetCityIsNotFinishedIfEmptyTileBesideCity(x - 1, y);
-                        }
-                        else
-                        {
-                            cityIsFinished = false;
-                        }
-                    }
-            }
-        }
-
         [PunRPC]
         private void CurrentTileRaycastPosition()
         {
@@ -379,30 +321,19 @@ namespace Carcassonne
             if (tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x > 0)
             {
                 iTileAimX = (int) ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale + 1f) / 2 + GameRules.BoardSize / 2;
-
-                var testX = ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * 10f + 1f) / 2f + 85f;
-                //Debug.Log("Float X: " + Math.Round(testX));
             }
             else
             {
                 iTileAimX = (int) ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale - 1f) / 2 + GameRules.BoardSize / 2;
-                var testX = ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * 10f - 1f) / 2f + 85f;
-                //Debug.Log("Float X: " + Math.Round(testX));
             }
 
             if (tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z > 0)
             {
                 iTileAimZ = (int) ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale + 1f) / 2 + GameRules.BoardSize / 2;
-
-                var testZ = ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f + 1f) / 2f + 85f;
-                //Debug.Log("Float Z: " + Math.Round(testZ));
             }
             else
             {
                 iTileAimZ = (int) ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale - 1f) / 2 + GameRules.BoardSize / 2;
-
-                var testZ = ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * 10f - 1f) / 2f + 85f;
-                //Debug.Log("Float Z: " + Math.Round(testZ));
             }
         }
 
@@ -411,13 +342,13 @@ namespace Carcassonne
         {
             tempX = x;
             tempY = z;
-            tile.GetComponent<TileScript>().vIndex = VertexItterator;
+            // tile.GetComponent<TileScript>().vIndex = placedTiles.Count; //VertexItterator; // COUNT OF THE TILES
 
-            GetComponent<PointScript>().placeVertex(VertexItterator, placedTiles.GetNeighbors(tempX, tempY),
-                placedTiles.getWeights(tempX, tempY), tileControllerScript.currentTile.GetComponent<TileScript>().getCenter(),
-                placedTiles.getCenters(tempX, tempY), placedTiles.getDirections(tempX, tempY));
-
-            VertexItterator++;
+            // GetComponent<PointScript>().placeVertex(VertexItterator, placedTiles.GetNeighbors(tempX, tempY),
+            //     placedTiles.getWeights(tempX, tempY), tileControllerScript.currentTile.GetComponent<TileScript>().getCenter(),
+            //     placedTiles.getCenters(tempX, tempY), placedTiles.getDirections(tempX, tempY));
+            //
+            // VertexItterator++;
 
             tile.GetComponent<BoxCollider>().enabled = false;
             tile.GetComponent<Rigidbody>().useGravity = false;
@@ -427,7 +358,6 @@ namespace Carcassonne
             if (!firstTile)
             {
                 placedTiles.PlaceTile(x, z, tile);
-
 
                 tileControllerScript.currentTile.transform.localPosition = SnapPosition;
             }
@@ -454,13 +384,15 @@ namespace Carcassonne
         {
             if (gameState.phase == Phase.NewTurn)
             {
-                stackScript.Pop();
-                UpdateDecisionButtons(true, tileControllerScript.currentTile);
+                var currentTileGameObject = stackScript.Pop();
+                UpdateDecisionButtons(true, currentTileGameObject);
                 tileControllerScript.ActivateCurrentTile();
-                if (!PlacedTiles.TileCanBePlaced(gameState.Tiles.Current, this))
+                var currentTile = gameState.Tiles.Current;
+                
+                if (!PlacedTiles.TileCanBePlaced(currentTile, this))
                 {
-                    Debug.Log($"Tile (ID: {gameState.Tiles.Current.id}) not possible to place: discarding and drawing a new one.");
-                    Destroy(tileControllerScript.currentTile);
+                    Debug.Log($"Tile (ID: {currentTile.id}) not possible to place: discarding and drawing a new one.");
+                    Destroy(currentTile);
                     PickupTile();
                 }
                 else
@@ -506,19 +438,19 @@ namespace Carcassonne
                 {
                     if (CanConfirm)
                     {
-                        if (meepleControllerScript.meepleGeography == Geography.City ||
-                            meepleControllerScript.meepleGeography == Geography.Cloister ||
-                            meepleControllerScript.meepleGeography == Geography.Road)
+                        var position = new Vector2Int(meepleControllerScript.iMeepleAimX,
+                            meepleControllerScript.iMeepleAimZ);
+                        var placed = meepleControllerScript.PlaceMeeple(gameState.Meeples.Current, position, Direction);
+                        if (!placed)
                         {
-                            meepleControllerScript.PlaceMeeple(gameState.Meeples.Current.gameObject,
-                                new Vector2Int(meepleControllerScript.iMeepleAimX, meepleControllerScript.iMeepleAimZ),
-                                Direction);
+                            Debug.LogWarning($"Something has gone wrong with meeple placement. {position}, {Direction} should be a valid position for your Meeple, but for some reason it is not.");
                         }
                     }
                     else
                     {
-                        meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject);
+                        meepleControllerScript.FreeMeeple(gameState.Meeples.Current);
                         
+                        //TODO test multiplayer on this!
                         gameState.phase = Phase.TileDown;
                     }
                 }
@@ -538,10 +470,10 @@ namespace Carcassonne
         [PunRPC]
         public void EndTurn()
         {
-            gameState.Log.LogTurn();
-            
             if (gameState.phase == Phase.TileDown || gameState.phase == Phase.MeepleDown)
             {
+                
+                gameState.Log.LogTurn();
                 
                 // Check finished features
                 var features = gameState.Features.CompleteWithMeeples;
@@ -714,11 +646,6 @@ namespace Carcassonne
             decisionButtons.GetComponent<Anchor_Script>().anchor = tileOrMeeple.transform.Find("North").gameObject;
         }
 
-        public void ChangeStateToNewTurn()
-        {
-            gameState.phase = Phase.NewTurn;
-        }
-
         public void ChangeConfirmButtonApperance(bool confirmed)
         {
             if (confirmed)
@@ -740,12 +667,12 @@ namespace Carcassonne
                 gameState.Meeples.Current.transform.position =
                     new Vector3(SnapPosition.x, gameState.Meeples.Current.transform.position.y, SnapPosition.z);
 
-                if (Direction == PointScript.West || Direction == PointScript.East)
+                if (Direction == Vector2Int.left || Direction == Vector2Int.right)
                 {
                     if (gameState.Meeples.Current.transform.rotation.eulerAngles.y != 90) gameState.Meeples.Current.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
                 }
-                else if (Direction == PointScript.North || Direction == PointScript.South ||
-                         Direction == PointScript.Centre)
+                else if (Direction == Vector2Int.up || Direction == Vector2Int.down ||
+                         Direction == Vector2Int.zero)
                 {
                     if (gameState.Meeples.Current.transform.rotation.eulerAngles.y == 90) gameState.Meeples.Current.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
                 }
@@ -754,14 +681,6 @@ namespace Carcassonne
             {
                 SnapPosition = gameState.Meeples.Current.transform.position;
             }
-        }
-
-        public void ChangeButtonMaterialOnPress()
-        {
-        }
-
-        public void ChangeButtonMaterialOnRelease()
-        {
         }
 
         public bool CurrentPlayerIsLocal

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Carcassonne.State.Features;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.PlayerLoop;
 
 namespace Carcassonne
 {
@@ -35,7 +32,7 @@ namespace Carcassonne
         /// <summary>
         ///     The vIndex of the tile. Is applied when placed on the board
         /// </summary>
-        public int vIndex;
+        // public int vIndex;
 
         public GameObject northCollider, southCollider, westCollider, eastCollider;
 
@@ -181,13 +178,13 @@ namespace Carcassonne
         // {
         //     switch (direction)
         //     {
-        //         case PointScript.North:
+        //         case Vector2Int.up:
         //             return northOcupied;
-        //         case PointScript.South:
+        //         case Vector2Int.down:
         //             return southOcupied;
-        //         case PointScript.East:
+        //         case Vector2Int.right:
         //             return eastOcupied;
-        //         case PointScript.West:
+        //         case Vector2Int.left:
         //             return westOcupied;
         //         default:
         //             return centerOcupied;
@@ -200,18 +197,18 @@ namespace Carcassonne
         /// <param name="direction"></param>
         // public void occupy(Vector2Int direction)
         // {
-        //     if (direction == PointScript.North) northOcupied = true;
-        //     if (direction == PointScript.South) southOcupied = true;
-        //     if (direction == PointScript.East) eastOcupied = true;
-        //     if (direction == PointScript.West) westOcupied = true;
-        //     if (direction == PointScript.Centre) centerOcupied = true;
-        //     if (Center == getGeographyAt(direction) && direction != PointScript.Centre ||
+        //     if (direction == Vector2Int.up) northOcupied = true;
+        //     if (direction == Vector2Int.down) southOcupied = true;
+        //     if (direction == Vector2Int.right) eastOcupied = true;
+        //     if (direction == Vector2Int.left) westOcupied = true;
+        //     if (direction == Vector2Int.zero) centerOcupied = true;
+        //     if (Center == getGeographyAt(direction) && direction != Vector2Int.zero ||
         //         Center == Geography.City)
         //     {
-        //         if (getGeographyAt(PointScript.North) == getGeographyAt(direction)) northOcupied = true;
-        //         if (getGeographyAt(PointScript.East) == getGeographyAt(direction)) eastOcupied = true;
-        //         if (getGeographyAt(PointScript.South) == getGeographyAt(direction)) southOcupied = true;
-        //         if (getGeographyAt(PointScript.West) == getGeographyAt(direction)) westOcupied = true;
+        //         if (getGeographyAt(Vector2Int.up) == getGeographyAt(direction)) northOcupied = true;
+        //         if (getGeographyAt(Vector2Int.right) == getGeographyAt(direction)) eastOcupied = true;
+        //         if (getGeographyAt(Vector2Int.down) == getGeographyAt(direction)) southOcupied = true;
+        //         if (getGeographyAt(Vector2Int.left) == getGeographyAt(direction)) westOcupied = true;
         //     }
         //
         //     if (Center == Geography.City && getGeographyAt(direction) == Geography.City)
@@ -226,10 +223,10 @@ namespace Carcassonne
         /// <returns></returns>
         // public Geography getGeographyAt(Vector2Int direction)
         // {
-        //     if (direction == PointScript.North) return North;
-        //     if (direction == PointScript.South) return South;
-        //     if (direction == PointScript.East) return East;
-        //     if (direction == PointScript.West)
+        //     if (direction == Vector2Int.up) return North;
+        //     if (direction == Vector2Int.down) return South;
+        //     if (direction == Vector2Int.right) return East;
+        //     if (direction == Vector2Int.left)
         //         return West;
         //     return Center;
         // }
@@ -243,7 +240,7 @@ namespace Carcassonne
             if (direction == Vector2Int.zero) return Center;
 
             throw new ArgumentOutOfRangeException(
-                $"Direction should be in [-1,-1] - [1,1]." +
+                "Direction should be in [-1,-1] - [1,1]." +
                 $"{direction} is out of range. Corners are not implemented.");
         }
 

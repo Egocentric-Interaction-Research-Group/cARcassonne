@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Carcassonne.State;
-using MRTK.Tutorials.MultiUserCapabilities;
 using UnityEngine;
 
 namespace Carcassonne
