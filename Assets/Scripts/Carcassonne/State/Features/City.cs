@@ -66,8 +66,7 @@ namespace Carcassonne.State.Features
 
         private int getPoints()
         {
-            int segments = Vertices.Count() - IntraTileFeatureConnections;
-            int points = segments + Shields;
+            int points = Segments + Shields;
             
             return Complete ? points * 2 : points;
         }

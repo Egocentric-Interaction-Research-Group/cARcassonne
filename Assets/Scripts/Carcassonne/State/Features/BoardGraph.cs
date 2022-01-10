@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using QuikGraph;
+using QuikGraph.Algorithms;
 using UnityEngine;
+using WebSocketSharp;
 
 namespace Carcassonne.State.Features
 {
@@ -143,35 +145,52 @@ namespace Carcassonne.State.Features
                 g = AddAndConnectSubTile(tile, location, direction, g, null);
                 
                 // Remove connections between NORTH/SOUTH and EAST/WEST. They are redundant now that the centre is connected.
-                var edgesToRemove =
-                    g.Edges.Where(e => (e.Source.location - e.Target.location).sqrMagnitude == 4);
-                g.RemoveEdges(edgesToRemove);
+                // var edgesToRemove =
+                //     g.Edges.Where(e => (e.Source.location - e.Target.location).sqrMagnitude == 4);
+                // g.RemoveEdges(edgesToRemove);
             }
+            
+            // Check for redundant feature edges
+            BoardGraph redundancyCheck = new BoardGraph();
+            redundancyCheck.AddVerticesAndEdgeRange(g.Edges.Where(e => e.Tag == ConnectionType.Feature));
+            var edges = redundancyCheck.MinimumSpanningTreePrim(EdgeWeights);
+            var redundantEdges = redundancyCheck.Edges.Where(e => !edges.Contains(e));
+            foreach (var e in redundantEdges) Debug.Log($"Redundant: {e.Source.geography} -- {e.Target.geography} ({e.Tag})");
+            g.RemoveEdges(redundantEdges);
 
             return g;
         }
 
-        private static BoardGraph AddAndConnectSubTile(TileScript tile, Vector2Int location, Vector2Int direction, BoardGraph g, Geography? geography)
+        private static BoardGraph AddAndConnectSubTile(TileScript tile, Vector2Int location, Vector2Int direction,
+            BoardGraph g, Geography? geography)
         {
             SubTile st = new SubTile(tile, location, direction);
 
             g.AddVertex(st);
+            
+            // Add feature edges
             foreach (var v in g.Vertices.Where(v => v != st))
             {
-                // Connect to adjacent sides and centre
-                if((v.location - st.location).sqrMagnitude < 4){
-                    g.AddEdge(EdgeBetween(v, st, ConnectionType.Tile));
-                }
-
                 // If the vertices are of the same type (City or Road) AND they are connected by the centre, add a connection
-                if (geography!= null && (geography == Geography.City || geography == Geography.Road)
-                                     && geography == v.geography && (geography & tile.Center) == geography)
+                if (geography != null && (geography == Geography.City || geography == Geography.Road)
+                                      && geography == v.geography && (geography & tile.Center) == geography)
                 {
                     g.AddEdge(EdgeBetween(v, st, ConnectionType.Feature));
+                }
+                
+                // Connect to adjacent sides and centre
+                if ((v.location - st.location).sqrMagnitude < 4)
+                {
+                    g.AddEdge(EdgeBetween(v, st, ConnectionType.Tile));
                 }
             }
 
             return g;
+        }
+    
+        private static double EdgeWeights(CarcassonneEdge edge)
+        {
+            return (edge.Source.location - edge.Target.location).sqrMagnitude;
         }
 
         /// <summary>

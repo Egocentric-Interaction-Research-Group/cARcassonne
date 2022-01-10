@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.State.Features;
@@ -30,7 +31,8 @@ namespace Carcassonne.State
 
 
         /// <summary>
-        /// 
+        /// Gets the feature at the location on the baord. The location does not necessarily map to a vertex.
+        /// It can be a corner or a centre piece of a tile that is not vertex-mapped.
         /// </summary>
         /// <param name="location">The subtile location</param>
         /// <returns></returns>
@@ -47,29 +49,29 @@ namespace Carcassonne.State
 
         public FeatureGraph GetFeatureAt(Vector2Int position, Vector2Int direction)
         {
-            // Features in the middle of a tile are not NECESSARILY captured in the graph representation. Special processing required.
-            if (direction == Vector2Int.zero)
-            {
-                // The subtile at the north side of the centre position in question
-                SubTile subtileUp = Graph.Vertices.SingleOrDefault(t =>
-                    t.location == Coordinates.TileToSubTile(position, direction + Vector2Int.up)); 
-                TileScript tile = subtileUp.tile;
-                
-                // If it is a road or city, get the direction of a subtile from a connected edge of the same feature
-                if (tile.Center.HasCityOrRoad())
-                {
-                    var geography = tile.Center.Simple();
-                    // Get a direction that has the same geography (and is therefore connected to) the centre
-                    direction = tile.Sides.First(kvp => kvp.Value == geography).Key;
-                }
-                else if (!tile.Center.IsFeature())
-                {
-                    return null;
-                }
-            }
-
+            var location = Coordinates.TileToSubTile(position, direction);
             var feature = All.SingleOrDefault(c =>
-                c.Vertices.Count(v => v.location == Coordinates.TileToSubTile(position, direction)) == 1);
+                c.Vertices.Count(v => v.location == location) == 1);
+
+            if (feature != null)
+            {
+                return feature;
+            }
+            
+            // Handle centre roads/cities and corner cities
+            var subtileUp = Graph.Vertices.Single(t=> 
+                t.location == Coordinates.TileToSubTile(position, direction + Vector2Int.up)); 
+            var tile = subtileUp.tile;
+            var geography = tile.getGeographyAt(direction);
+
+
+            if (geography.HasCityOrRoad())
+            {
+                var newDirection = tile.Sides.First(kvp => kvp.Value == geography.Simple()).Key;
+                var newLocation = Coordinates.TileToSubTile(position, newDirection);
+                feature = All.SingleOrDefault(c =>
+                    c.Vertices.Count(v => v.location == newLocation) == 1);
+            }
 
             return feature;
         }

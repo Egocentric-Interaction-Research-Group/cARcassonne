@@ -12,12 +12,14 @@ namespace Carcassonne.State.Features
     
     public class Cloister : FeatureGraph
     {
-        public override int Segments => 8 - _openSides;
+        private const int NumSides = 9;
         
+        public override int Segments => NumSides - _openSides;
+
         public override int Points => Segments;
 
         public override int OpenSides => _openSides;
-        private int _openSides = 8;
+        private int _openSides = NumSides;
 
         public static List<Cloister> FromBoardGraph(BoardGraph bg)
         {
@@ -41,6 +43,8 @@ namespace Carcassonne.State.Features
 
                 c.AddVertex(cl);
                 c._openSides -= tileCount;
+                
+                cloisters.Add(c);
             }
 
             return cloisters;

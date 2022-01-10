@@ -174,63 +174,6 @@ namespace Carcassonne
             UpdateMatrix();
         }
 
-        // public bool IsOccupied(Vector2Int direction)  //TODO Fix naming (spelling)
-        // {
-        //     switch (direction)
-        //     {
-        //         case Vector2Int.up:
-        //             return northOcupied;
-        //         case Vector2Int.down:
-        //             return southOcupied;
-        //         case Vector2Int.right:
-        //             return eastOcupied;
-        //         case Vector2Int.left:
-        //             return westOcupied;
-        //         default:
-        //             return centerOcupied;
-        //     }
-        // }
-
-        /// <summary>
-        /// Sets a point on the Tile as occupied by a Meeple
-        /// </summary>
-        /// <param name="direction"></param>
-        // public void occupy(Vector2Int direction)
-        // {
-        //     if (direction == Vector2Int.up) northOcupied = true;
-        //     if (direction == Vector2Int.down) southOcupied = true;
-        //     if (direction == Vector2Int.right) eastOcupied = true;
-        //     if (direction == Vector2Int.left) westOcupied = true;
-        //     if (direction == Vector2Int.zero) centerOcupied = true;
-        //     if (Center == getGeographyAt(direction) && direction != Vector2Int.zero ||
-        //         Center == Geography.City)
-        //     {
-        //         if (getGeographyAt(Vector2Int.up) == getGeographyAt(direction)) northOcupied = true;
-        //         if (getGeographyAt(Vector2Int.right) == getGeographyAt(direction)) eastOcupied = true;
-        //         if (getGeographyAt(Vector2Int.down) == getGeographyAt(direction)) southOcupied = true;
-        //         if (getGeographyAt(Vector2Int.left) == getGeographyAt(direction)) westOcupied = true;
-        //     }
-        //
-        //     if (Center == Geography.City && getGeographyAt(direction) == Geography.City)
-        //         centerOcupied = true;
-        //     else if (Center == Geography.Road && getGeographyAt(direction) == Geography.Road) centerOcupied = true;
-        // }
-
-        /// <summary>
-        ///     Returns the tile geography at a specific direction.
-        /// </summary>
-        /// <param name="direction"></param>
-        /// <returns></returns>
-        // public Geography getGeographyAt(Vector2Int direction)
-        // {
-        //     if (direction == Vector2Int.up) return North;
-        //     if (direction == Vector2Int.down) return South;
-        //     if (direction == Vector2Int.right) return East;
-        //     if (direction == Vector2Int.left)
-        //         return West;
-        //     return Center;
-        // }
-        
         public Geography getGeographyAt(Vector2Int direction)
         {
             if (direction == Vector2Int.up) return North;
@@ -239,15 +182,25 @@ namespace Carcassonne
             if (direction == Vector2Int.left) return West;
             if (direction == Vector2Int.zero) return Center;
 
-            throw new ArgumentOutOfRangeException(
-                "Direction should be in [-1,-1] - [1,1]." +
-                $"{direction} is out of range. Corners are not implemented.");
+            if (direction.x > 1 || direction.y > 1)
+            {
+                throw new ArgumentOutOfRangeException(
+                    "Direction should be in [-1,-1] - [1,1]." +
+                    $"{direction} is out of range.");
+            }
+            
+            // Handle corner geographies
+            var leftRight = getGeographyAt(new Vector2Int(direction.x, 0));
+            var upDown = getGeographyAt(new Vector2Int(0, direction.y));
+            if (leftRight.HasCity() && upDown.HasCity() && Center.HasCity())
+            {
+                return Geography.City;
+            }
+            else
+            {
+                return Geography.Field;
+            }
         }
-
-        // public void resetRotation()
-        // {
-        //     rotation = 0;
-        // }
 
         /// <summary>
         ///     The method used to rotate the tile. In essence it just cycles the rotation between 1 and 3 (and returns to 0 when
@@ -293,15 +246,6 @@ namespace Carcassonne
             GameObject.Find("GameController").GetComponent<GameControllerScript>().tileControllerScript.RotateDegreesRPC();
         }
 
-
-        /// <summary>
-        ///     Returns true if the tile has a shield.
-        /// </summary>
-        /// <returns>if the tile has a shield</returns>
-        // public bool HasShield()
-        // {
-        //     return shield;
-        // }
 
         public void DisableGravity()
         {

@@ -457,9 +457,10 @@ namespace Carcassonne
                             Debug.LogWarning($"Something has gone wrong with meeple placement. {position}, {Direction} should be a valid position for your Meeple, but for some reason it is not.");
                         }
                     }
-                    else
+                    else // Cancel Meeple Placement
                     {
                         meepleControllerScript.FreeMeeple(gameState.Meeples.Current);
+                        gameState.Meeples.Current = null;
                         
                         //TODO test multiplayer on this!
                         gameState.phase = Phase.TileDown;
