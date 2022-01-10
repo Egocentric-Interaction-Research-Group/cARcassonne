@@ -153,9 +153,6 @@ namespace Carcassonne.State.Features
 
         private static BoardGraph AddAndConnectSubTile(TileScript tile, Vector2Int location, Vector2Int direction, BoardGraph g, Geography? geography)
         {
-            Debug.Assert( (Geography.City & Geography.CityRoad) == Geography.City );
-            Debug.Assert( (Geography.Road & Geography.CityRoad) == Geography.Road );
-            
             SubTile st = new SubTile(tile, location, direction);
 
             g.AddVertex(st);

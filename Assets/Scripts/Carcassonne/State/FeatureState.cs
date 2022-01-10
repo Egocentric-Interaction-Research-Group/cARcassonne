@@ -14,9 +14,9 @@ namespace Carcassonne.State
 
         public List<City> Cities = new List<City>();
         public List<Road> Roads = new List<Road>();
-        // public List<Chapel> chapels;
+        public List<Cloister> Cloisters = new List<Cloister>();
 
-        public IEnumerable<FeatureGraph> All => new List<FeatureGraph>().Concat(Cities).Concat(Roads);
+        public IEnumerable<FeatureGraph> All => new List<FeatureGraph>().Concat(Cities).Concat(Roads).Concat(Cloisters);
         public IEnumerable<FeatureGraph> Complete => All.Where(f => f.Complete);
         public IEnumerable<FeatureGraph> Incomplete => All.Where(f => !f.Complete);
 
@@ -24,8 +24,10 @@ namespace Carcassonne.State
         {
             Cities = new List<City>();
             Roads = new List<Road>();
+            Cloisters = new List<Cloister>();
             Graph = new BoardGraph();
         }
+
 
         /// <summary>
         /// 

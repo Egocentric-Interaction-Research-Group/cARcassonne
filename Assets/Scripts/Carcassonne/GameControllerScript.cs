@@ -127,6 +127,7 @@ namespace Carcassonne
             BoardGraph graph = args.graph;
             gameState.Features.Cities = City.FromBoardGraph(graph);
             gameState.Features.Roads = Road.FromBoardGraph(graph);
+            gameState.Features.Cloisters = Cloister.FromBoardGraph(graph);
 
             string debugString = "Cities: \n\n";
             foreach (var city in gameState.Features.Cities)
@@ -144,6 +145,16 @@ namespace Carcassonne
                 debugString += road.ToString();
                 debugString += "\n";
                 debugString += $"Segments: {road.Segments}, Open Sides: {road.OpenSides}, Complete: {road.Complete}";
+                debugString += "\n\n";
+            }
+            Debug.Log(debugString);
+            
+            debugString = "Cloisters: \n\n";
+            foreach (var cloister in gameState.Features.Cloisters)
+            {
+                debugString += cloister.ToString();
+                debugString += "\n";
+                debugString += $"Segments: {cloister.Segments}, Open Sides: {cloister.OpenSides}, Complete: {cloister.Complete}";
                 debugString += "\n\n";
             }
             Debug.Log(debugString);
