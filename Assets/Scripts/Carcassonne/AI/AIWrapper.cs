@@ -4,20 +4,29 @@ using UnityEngine;
 using System;
 using static Carcassonne.PointScript;
 
+
+/// <summary>
+///  The AIWrapper acts as a middle-man between the AIPlayer-class and the data it needs and actions it can perform. It separates the AI logic from the code implementation. Its specific purpose is to 
+///  allow the exact same AIPlayer-class to be used in the real environment and the training environment. This means the AIWrapper class will look different in both these project, as the code running
+///  the game differs in the two implementations.
+///  Version 1.0
+/// </summary>
+/*
+
+ */
 namespace Assets.Scripts.Carcassonne.AI
 {
     public class AIWrapper : InterfaceAIWrapper
     {
-        public GameControllerScript gc;
+        public GameControllerScript controller;
         public GameState state; //Contains TileState, MeepleState, FeatureState, PlayerState and a GameLog.
         public PlayerScript player;
         public int totalTiles;
-
-        #region "Interface methods"
+        public float previousScore;
         public AIWrapper()
         {
-            gc = GameObject.Find("GameController").GetComponent<GameControllerScript>();
-            state = gc.gameState;
+            controller = GameObject.Find("GameController").GetComponent<GameControllerScript>();
+            state = controller.gameState;
             totalTiles = state.Tiles.Remaining.Count;
         }
 
@@ -28,7 +37,7 @@ namespace Assets.Scripts.Carcassonne.AI
 
         public void PickUpTile()
         {
-            gc.PickupTileRPC();
+            controller.PickupTileRPC();
         }
 
         public int GetCurrentTileId()
@@ -41,43 +50,35 @@ namespace Assets.Scripts.Carcassonne.AI
             return state.phase;
         }
 
-        public int GetMeeplesLeft()
-        {
-            return player.AmountOfFreeMeeples();
-        }
-
         public void EndTurn()
         {
-            gc.EndTurnRPC();
+            controller.EndTurnRPC();
         }
 
         public void DrawMeeple()
         {
-            gc.meepleControllerScript.DrawMeepleRPC();
+            controller.meepleControllerScript.DrawMeepleRPC();
         }
 
         public void RotateTile()
         {
-            gc.pcRotate = true;
-            gc.RotateTileRPC();
+            controller.tileControllerScript.RotateTileRPC();
         }
 
         public void PlaceTile(int x, int z)
         {
-            gc.iTileAimX = x;
-            gc.iTileAimZ = z;
-            gc.ConfirmPlacementRPC();
+            controller.iTileAimX = x;
+            controller.iTileAimZ = z;
+            controller.ConfirmPlacementRPC();
         }
 
         public void PlaceMeeple(Direction meepleDirection)
         {
-            float meepleX = 0;
-            float meepleZ = 0;
-            if (meepleDirection == Direction.NORTH || meepleDirection == Direction.SOUTH || meepleDirection == Direction.CENTER)
-            {
-                meepleX = 0.000f;
-            }
-            else if (meepleDirection == Direction.EAST)
+            float meepleX = 0.000f;
+            float meepleZ = 0.000f;
+            
+            //If clause only changes X if it is east or west.
+            if (meepleDirection == Direction.EAST)
             {
                 meepleX = 0.011f;
             }
@@ -85,12 +86,9 @@ namespace Assets.Scripts.Carcassonne.AI
             {
                 meepleX = -0.011f;
             }
-
-            if (meepleDirection == Direction.WEST || meepleDirection == Direction.EAST || meepleDirection == Direction.CENTER)
-            {
-                meepleZ = 0.000f;
-            }
-            else if (meepleDirection == Direction.NORTH)
+            
+            //If clause only changes Z if it is north or south
+            if (meepleDirection == Direction.NORTH)
             {
                 meepleZ = 0.011f;
             }
@@ -98,44 +96,30 @@ namespace Assets.Scripts.Carcassonne.AI
             {
                 meepleZ = -0.011f;
             }
-            state.Meeples.Current.gameObject.transform.localPosition = state.Tiles.Current.transform.localPosition + new Vector3(meepleX, 0.86f, meepleZ);
-            gc.meepleControllerScript.CurrentMeepleRayCast();
-            gc.meepleControllerScript.AimMeeple(gc);
-            gc.SetMeepleSnapPos();
-            gc.ConfirmPlacementRPC();
 
-            //The two rows below are just a workaround to get meeples to stay on top of the table and not have a seemingly random Y coordinate.
-            state.Meeples.Current.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
-            state.Meeples.Current.gameObject.transform.localPosition = new Vector3(state.Meeples.Current.gameObject.transform.localPosition.x, 0.86f, state.Meeples.Current.gameObject.transform.localPosition.z);
-
+            controller.meepleControllerScript.aiMeepleX = meepleX;
+            controller.meepleControllerScript.aiMeepleZ = meepleZ;
+            controller.ConfirmPlacementRPC();
         }
 
         public void FreeCurrentMeeple()
         {
-            gc.meepleControllerScript.FreeMeeple(state.Meeples.Current.gameObject, gc);
-        }
-
-        public int GetMaxMeeples()
-        {
-            return player.meeples.Count;
+            //This is only used as a workaround for a current bug, where a meeple cannot be properly placed on a tile (e.g. when someone occupies the road/city that it connects to)
+            //but the game does not recognize this as a faulty placement either, and threfore does not return the meeple.
+            controller.meepleControllerScript.FreeMeeple(state.Meeples.Current.gameObject, controller);
         }
 
         public int GetMaxTileId()
         {
-            //This needs a better solution for expansions.
-            return 23;
+            //This needs a better solution if expansions are added. This number has just been manually taken from the game scene.
+            return 24;
         }
         public int GetMaxBoardSize()
         {
             return state.Tiles.Played.GetLength(0);
         }
 
-        public float[,] GetPlacedTiles()
-        {
-            return null;
-        }
-
-        public TileScript[,] GetTiles()
+        public object[,] GetTiles()
         {
             return state.Tiles.Played;
         }
@@ -150,24 +134,56 @@ namespace Assets.Scripts.Carcassonne.AI
             return totalTiles;
         }
 
+        public int GetMeeplesLeft()
+        {
+            return player.AmountOfFreeMeeples();
+        }
+
+        public int GetMaxMeeples()
+        {
+            return player.meeples.Count;
+        }
+
         public void Reset()
         {
-            //Reset everything and start a new game. Should this even exist in real game?
+            //In the training environment, this resets the game stage entirely before the next training session. Serves no purpose here except to make the code function.
         }
 
-        #endregion
-
-        //The methods below are only use for printing out information, used for test purposes.
-        #region "Real game specific"
-        public TileScript GetCurrentTile()
+        public int GetMinX()
         {
-            return state.Tiles.Current;
+            return controller.minX;
         }
 
-        public MeepleScript GetCurrentMeeple()
+        public int GetMaxX()
         {
-            return state.Meeples.Current;
+            return controller.maxX;
         }
-        #endregion
+
+        public int GetMinZ()
+        {
+            return controller.minZ;
+        }
+
+        public int GetMaxZ()
+        {
+            return controller.maxZ;
+        }
+
+        public float GetScore()
+        {
+            return (float)player.score;
+        }
+
+        public float GetScoreChange()
+        {
+            if ((float)player.score != previousScore)
+            {
+                Debug.Log("Player " + player.getID() + " score changed from " + previousScore + "p to " + player.score + "p");
+            }
+            float scoreChange = (float)player.score - previousScore;
+            previousScore = (float)player.score;
+            return scoreChange;
+        }
+
     }
 }

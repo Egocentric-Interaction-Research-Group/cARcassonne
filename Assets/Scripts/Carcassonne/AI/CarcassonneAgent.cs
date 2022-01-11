@@ -10,22 +10,18 @@ using Carcassonne.State;
 
 /// <summary>
 /// The AI for the player. An AI user contains both a regular PlayerScript and this AI script to observe and take actions.
+/// Version 1.0
 /// </summary>
-
-public class AIPlayer : Agent
+public class CarcassonneAgent : Agent
 {
-    public enum ObservationApproach
-    {
-        [InspectorName("Tile Ids")] TileIds,
-        Packed
-    }
+    private const int MAX_GAME_SCORE = 338; // https://boardgames.stackexchange.com/questions/7375/maximum-attainable-points-for-a-single-player-in-a-two-player-game-of-carcassonn
 
     //Enum Observations
     private Direction meepleDirection = Direction.SELF;
 
     // Observation approach
     public ObservationApproach observationApproach = ObservationApproach.TileIds;
-    private Action<VectorSensor> AddTileObservations;
+    private Action<AIWrapper, VectorSensor> AddTileObservations;
 
     //AI Specific
     public AIWrapper wrapper;
@@ -39,16 +35,20 @@ public class AIPlayer : Agent
     {
         base.Initialize();
         wrapper = new AIWrapper();
-        wrapper.player = gameObject.GetComponentInParent<PlayerScript>();
+
         // Setup delegate for tile observation approach.
         switch (observationApproach)
         {
-            case ObservationApproach.TileIds:
-                AddTileObservations = AddTileIdObservations;
+            case ObservationApproach.TileIds: // For each tile, observe the tile ID and rotation as one observation, and meeple data as another observation
+                AddTileObservations = BoardObservation.AddTileIdObservations;
                 break;
 
-            case ObservationApproach.Packed:
-                AddTileObservations = AddPackedTileObservations;
+            case ObservationApproach.Packed: // For each tile, observe the tile ID, rotation, and meeple data as one packed observation
+                AddTileObservations = BoardObservation.AddPackedTileObservations;
+                break;
+
+            case ObservationApproach.PackedIDs: // For each tile, pack all tile geographies explicitly, into one observation (instead of using tile IDs), and then meeple data as another observation
+                AddTileObservations = BoardObservation.AddPackedTileIdObservations;
                 break;
 
                 // Note: There should only ever be one tile observations function in use, hence '=', and not '+='.
@@ -74,6 +74,7 @@ public class AIPlayer : Agent
                 else
                 {
                     wrapper.EndTurn(); //End turn without taking meeple
+                    AddReward(wrapper.GetScoreChange());
                 }
                 break;
             case Phase.MeepleDrawn:
@@ -126,13 +127,12 @@ public class AIPlayer : Agent
 
             if (wrapper.GetGamePhase() == Phase.TileDown) //If the placement was successful, the phase changes to TileDown.
             {
-                AddReward(0.5f);
+                AddReward(0.05f);
             }
         }
 
-        //After choice checks to determine if AI is Out of Bounds (allowedStepsFromCenter sets the steps the AI can move in a straight line in any direction from the center).
-        int allowedStepsFromCenter = wrapper.GetNumberOfPlacedTiles();
-        if (x < 85 - allowedStepsFromCenter || x > 85 + allowedStepsFromCenter || z < 85 - allowedStepsFromCenter || z > 85 + allowedStepsFromCenter)
+        //After choice checks to determine if AI is Out of Bounds. Bounds a defined by the minimum and maximum coordinates in each axis for tiles placed
+        if (x < wrapper.GetMinX() - 1 || x > wrapper.GetMaxX() + 1 || z < wrapper.GetMinZ() - 1 || z > wrapper.GetMaxZ() + 1)
         {
             //Outside table area, reset values and add significant punishment.
             ResetAttributes();
@@ -150,32 +150,22 @@ public class AIPlayer : Agent
         if (actionBuffers.DiscreteActions[0] == 0f)
         {
             meepleDirection = Direction.NORTH;
-            //meepleX = 0.000f;
-            //meepleZ = 0.011f;
         }
         else if (actionBuffers.DiscreteActions[0] == 1f)
         {
             meepleDirection = Direction.SOUTH;
-            //meepleX = 0.000f;
-            //meepleZ = -0.011f;
         }
         else if (actionBuffers.DiscreteActions[0] == 2f)
         {
             meepleDirection = Direction.WEST;
-            //meepleX = -0.011f;
-            //meepleZ = 0.000f;
         }
         else if (actionBuffers.DiscreteActions[0] == 3f)
         {
             meepleDirection = Direction.EAST;
-            //meepleX = 0.011f;
-            //meepleZ = 0.000f;
         }
         else if (actionBuffers.DiscreteActions[0] == 4f)
         {
             meepleDirection = Direction.CENTER;
-            //meepleX = 0.000f;
-            //meepleZ = 0.000f;
         }
         else if (actionBuffers.DiscreteActions[0] == 5f)
         {
@@ -187,6 +177,8 @@ public class AIPlayer : Agent
             if (wrapper.GetGamePhase() == Phase.MeepleDown) //If meeple is placed.
             {
                 AddReward(0.1f); //Rewards successfully placing a meeple
+                wrapper.EndTurn();
+                AddReward(wrapper.GetScoreChange());
             }
             else if (wrapper.GetGamePhase() == Phase.TileDown) //If meeple gets returned.
             {
@@ -199,65 +191,6 @@ public class AIPlayer : Agent
         }
     }
 
-    private void AddTileIdObservations(VectorSensor sensor)
-    {
-        //The most reasonable approach seems to have a matrix of floats, each float representing one tile. The matrix should be the size
-        //of the entire board, padded with 0 wherever a tile has not been placed. Read the entire board or just the placed tiles.
-        float[,] playedTiles = wrapper.GetPlacedTiles();
-        if (playedTiles == null) return; //Placeholder solution until this is implemented in the real evironment.
-        foreach (float f in playedTiles)
-        {
-            sensor.AddObservation(f);
-        }
-    }
-
-    private void AddPackedTileObservations(VectorSensor sensor)
-    {
-        TileScript[,] tiles = wrapper.GetTiles();
-
-        for (int row = 0; row < tiles.GetLength(0); row++)
-        {
-            for (int col = 0; col < tiles.GetLength(1); col++)
-            {
-                TileScript tile = tiles[col, row];
-                int packedData = 0x0;
-
-                if (tile == null)
-                {
-                    packedData = unchecked((int)0xFFFFFFFF); // No data = -1.
-                    sensor.AddObservation(packedData);
-                    continue;
-                }
-
-                const int bitMask4 = 0xF; // 4-bit mask.
-                const int bitMask3 = 0x7; // 3-bit mask.
-                int meeplePlayerId = -1;   // TODO: implement when there is a way to access the meeple from a tile.
-                int meepleDirection = 0;   // TODO: see above.
-
-                packedData |= ((int)tile.Center & bitMask4);
-                packedData |= (((int)tile.East & bitMask4) << 4);
-                packedData |= (((int)tile.North & bitMask4) << 8);
-                packedData |= (((int)tile.West & bitMask4) << 12);
-                packedData |= (((int)tile.South & bitMask4) << 16);
-
-                if (meeplePlayerId >= 0) // If there IS a meeple placed on this tile.
-                {
-                    packedData |= ((int)meeplePlayerId & bitMask3) << 20; // Insert 3-bit player id for meeple. Should be between 0-7.
-                    packedData |= (((int)meepleDirection + 1) & bitMask3) << 23; // Insert 3-bit value for meeple direction.
-                }
-
-                // If there is no meeple placed on a tile, bits 23-25 should be 0b000.
-
-                // In total, 26 of 32 bits are used to store geography data and meeple placement,
-                // and the id of its owner.
-
-                sensor.AddObservation(packedData);
-            }
-        }
-
-    }
-
-
     /// <summary>
     /// When a new episode begins, reset the agent and area
     /// </summary>
@@ -265,10 +198,7 @@ public class AIPlayer : Agent
     {
         //This occurs every X steps (Max Steps). It only serves to reset tile position if AI is stuck, and for AI to process current learning
         ResetAttributes();
-        if (wrapper.state.phase != Phase.GameOver)
-        {
-            wrapper.Reset();
-        }
+        wrapper.Reset();
     }
 
     /// <summary>
@@ -277,13 +207,13 @@ public class AIPlayer : Agent
     /// <param name="sensor">The vector sensor to add observations to</param>
     public override void CollectObservations(VectorSensor sensor)
     {
-        //sensor.AddObservation(MeeplesLeft / meeplesMax); Dos not work as meeples don't seem to be implemented at all at the moment
+        sensor.AddObservation(wrapper.GetScore() / MAX_GAME_SCORE);
         sensor.AddObservation(wrapper.GetCurrentTileId() / wrapper.GetMaxTileId());
         sensor.AddObservation(rot / 3f);
         sensor.AddObservation(x / wrapper.GetMaxBoardSize());
         sensor.AddObservation(z / wrapper.GetMaxBoardSize());
-        sensor.AddObservation((int)meepleDirection);
         sensor.AddObservation(wrapper.GetNumberOfPlacedTiles() / wrapper.GetTotalTiles());
+        sensor.AddObservation(wrapper.GetMeeplesLeft() / wrapper.GetMaxMeeples());
 
         //One-Hot observations of enums (can be done with less code, but this is more readable)
         int MAX_PHASES = Enum.GetValues(typeof(Phase)).Length;
@@ -292,10 +222,10 @@ public class AIPlayer : Agent
         sensor.AddOneHotObservation((int)wrapper.GetGamePhase(), MAX_PHASES);
         sensor.AddOneHotObservation((int)meepleDirection, MAX_DIRECTIONS);
 
-
         // Call the tile observation method that was assigned at initialization,
         // using the editor-exposed 'observationApproach' field.
-        AddTileObservations?.Invoke(sensor);
+        // This will observe the entire Carcassonne game board.
+        AddTileObservations?.Invoke(wrapper, sensor);
     }
 
     /// <summary>

@@ -3,10 +3,11 @@ using Carcassonne.State;
 
 /// <summary>
 /// The AIDecisionRequester sets up the allowed number of actions for the AI and and requests a decision when needed.
+/// Version 1.0
 /// </summary>
 public class AIDecisionRequester : MonoBehaviour
 {
-    public AIPlayer ai;
+    public CarcassonneAgent ai;
     public float reward = 0; //Used for displaying the reward in the Unity editor.
 
     /// <summary>
@@ -18,7 +19,6 @@ public class AIDecisionRequester : MonoBehaviour
         {
             return;
         }
-
         switch (ai.wrapper.GetGamePhase())
         {
             case Phase.NewTurn: // Picks a new tile automatically
@@ -35,8 +35,5 @@ public class AIDecisionRequester : MonoBehaviour
                 ai.RequestDecision();
                 break;
         }
-
-        //ToDo: Add this info to some form of GUI-display instead to visualize many separate agents values concurrently.
-        reward = ai.GetCumulativeReward();
     }
 }
