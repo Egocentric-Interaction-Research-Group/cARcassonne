@@ -1,14 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Text;
 using Carcassonne.State;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
+using Newtonsoft.Json;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEditor.Scripting.Python;
+using UnityEditor;
+using System.IO;
 
 namespace Carcassonne
 {
@@ -76,6 +83,11 @@ namespace Carcassonne
 
         //public ErrorPlaneScript ErrorPlane;
 
+        private DateTimeOffset currentTime = DateTimeOffset.Now;
+        private string JsonBoundingBox;
+        public StringBuilder sb;
+        public StringWriter sw;
+        public JsonWriter writer;
 
         private int tempX;
         private int tempY;
@@ -122,6 +134,12 @@ namespace Carcassonne
 
         private void Start()
         {
+            sb = new StringBuilder();
+            sw = new StringWriter(sb);
+            writer = new JsonTextWriter(sw);
+            writer.WriteStartObject();
+            writer.WritePropertyName("bbox");
+            writer.WriteStartArray();
         }
 
         // Update is called once per frame
@@ -285,18 +303,84 @@ namespace Carcassonne
             cityIsFinished = true;
             visited = new bool[170, 170];
             RecursiveCityIsFinishedDirection(x, y, direction);
+            /*
             Debug.Log(
                 "DIRECTION__________________________CITY IS FINISHED EFTER DIRECTION REKURSIV: ___________________________" +
                 cityIsFinished + " X: " + x + " Z: " + y + " MEEPLEINCITY: " + meepleControllerScript.FindMeeple(x, y, TileScript.Geography.City, this));
+
+            */
             
             // Test code to print the bounding boxes of a completed city.
             if (cityIsFinished)
             {
                 var city = gameState.Features.Cities.Single(c => c.Contains(new Vector2Int(x, y)));
+                //Debug.Log(city.positions.Vertices.ToList()[0].tile.ToString());
+                
+
                 var limits = city.BoundingBox;
-                Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
+                //Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
+
+                //Hardcoded the length of matrix to start on X=65 in TileState.cs therefore needing to subtract with 65 to get the correct coordinates.
+                int baseLength = 170;
+                int matrixX = 65;
+                int matrixY = 65;
+
+                //Multiplying by three because the matrix is increased by 3 on every side.
+                //Debug.Log($"Modified Bounding box is: ({(limits.xMin - matrixX)*3},{(limits.yMin - matrixY)*3}) - ({(limits.xMax - matrixX)*3},{(limits.yMax - matrixY)*3}");
+
             }
             
+            return cityIsFinished;
+        }
+
+        //Method for checking if city is completed when a brick is placed.
+        public bool CheckIfCityIsFinished(int x, int y, PointScript.Direction direction) 
+        {
+            cityIsFinished = true;
+            visited = new bool[170, 170];
+            RecursiveCityIsFinishedDirection(x, y, direction);
+
+            // Test code to print the bounding boxes of a completed city.
+            if (cityIsFinished)
+            {
+                var city = gameState.Features.Cities.Single(c => c.Contains(new Vector2Int(x, y)));
+                //Debug.Log(city.positions.Vertices.ToList()[0].tile.ToString());
+
+
+                var limits = city.BoundingBox;
+                Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
+
+                //Hardcoded the length of matrix to start on X=65 in TileState.cs therefore needing to subtract with 65 to get the correct coordinates.
+                int baseLength = 170;
+                int matrixX = 65;
+                int matrixY = 65;
+
+                int modifiedX = ((limits.xMin - matrixX) * 3);
+                int modifiedY = ((limits.yMax - matrixY) * 3);
+                int height = ((limits.yMax - matrixY) * 3) - ((limits.yMin - matrixY) * 3);
+                int width = ((limits.xMax - matrixX) * 3) - ((limits.xMin - matrixX) * 3);
+
+                //TODO ADD JSON APPENDING
+
+                writer.WriteStartArray();
+                writer.WriteValue(modifiedX);
+                writer.WriteValue(modifiedY);
+                writer.WriteValue(width);
+                writer.WriteValue(height);
+                writer.WriteEndArray();
+               
+
+               
+                /*JsonBoundingBox = "{\n" +
+                    $"\"bbox: [{modifiedX},{modifiedY},{width},{height}]\n" +
+                    "}";
+                */
+              
+                //Multiplying by three because the matrix is increased by 3 on every side.
+                Debug.Log($"Modified Bounding box is: ({((limits.xMin - matrixX) * 3)-1},{((limits.yMin - matrixY) * 3)-1}) - ({((limits.xMax - matrixX) * 3)-1},{((limits.yMax - matrixY) * 3)-1}");
+                Debug.Log(JsonBoundingBox);
+            }
+
             return cityIsFinished;
         }
 
@@ -322,6 +406,7 @@ namespace Carcassonne
                 var city = gameState.Features.Cities.Single(c => c.Contains(new Vector2Int(x, y)));
                 var limits = city.BoundingBox;
                 Debug.Log($"Bounding box is: ({limits.xMin},{limits.yMin}) - ({limits.xMax},{limits.yMax}");
+
             }
             
             return cityIsFinished;
@@ -537,6 +622,22 @@ namespace Carcassonne
                 tile.transform.localPosition = stackScript.basePositionTransform.localPosition;
             }
 
+            if(tile.GetComponent<TileScript>().North == TileScript.Geography.City)
+            {
+                CheckIfCityIsFinished(x, z, PointScript.Direction.NORTH);
+            }
+            if (tile.GetComponent<TileScript>().East == TileScript.Geography.City)
+            {
+                CheckIfCityIsFinished(x, z, PointScript.Direction.EAST);
+            }
+            if (tile.GetComponent<TileScript>().West == TileScript.Geography.City)
+            {
+                CheckIfCityIsFinished(x, z, PointScript.Direction.WEST);
+            }
+            if (tile.GetComponent<TileScript>().South == TileScript.Geography.City)
+            {
+                CheckIfCityIsFinished(x, z, PointScript.Direction.SOUTH);
+            }
 
             calculatePoints(false, false);
         }
@@ -709,7 +810,8 @@ namespace Carcassonne
                 Debug.Log($"Board Matrix Dims: {gameState.Tiles.Matrix.GetLength(0)}" +
                           $"x{gameState.Tiles.Matrix.GetLength(1)}" +
                           $" ({gameState.Tiles.Matrix.Length})");
-                Debug.Log($"Board Matrix:\n{gameState.Tiles}");
+                //Debug.Log($"Board Matrix:\n{gameState.Tiles}");
+                //File.WriteAllText("Output" + currentTime.ToUnixTimeMilliseconds() + ".txt", gameState.Tiles.ToString());
             }
             else
             {
@@ -973,6 +1075,21 @@ namespace Carcassonne
         public void ChangeButtonMaterialOnRelease()
         {
         }
+
+        private void OnApplicationQuit()
+        {
+            writer.WriteEndArray();
+            writer.WriteEndObject();
+            JsonBoundingBox = sb.ToString();
+            File.WriteAllText("Assets/PythonImageGenerator/TxtFiles/"+"Output" + currentTime.ToUnixTimeMilliseconds() + ".txt", gameState.Tiles.ToString());
+            File.WriteAllText("Assets/PythonImageGenerator/TxtFiles/"+"Output" + currentTime.ToUnixTimeMilliseconds() + ".json", JsonBoundingBox);
+            RunPythonImageGenerator();
+
+        }
+        public void RunPythonImageGenerator()
+        {
+            Debug.Log("Running Python File");
+            PythonRunner.RunFile($"{Application.dataPath}/PythonImageGenerator/MatrixToGreyImage.py");
 
         public bool CurrentPlayerIsLocal
         {

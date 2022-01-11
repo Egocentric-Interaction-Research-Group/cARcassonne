@@ -689,3 +689,12 @@ Documentation/site/
 Documentation/api/
 
 Packages/docfx.console.2.58.4/
+
+# Images
+/Assets/PythonImageGenerator/Images/TxtFiles/*.png
+/Assets/PythonImageGenerator/TxtFiles/*.txt
+/Assets/PythonImageGenerator/TxtFiles/*.meta
+/Assets/PythonImageGenerator/TxtFiles/*.png
+/Assets/PythonImageGenerator/TxtFiles/*.json
+/Assets/PythonImageGenerator/Images/*.png
+/Assets/PythonImageGenerator/Images/*.meta

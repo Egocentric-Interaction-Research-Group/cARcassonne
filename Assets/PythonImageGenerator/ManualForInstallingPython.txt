@@ -1,0 +1,14 @@
+1. Add the following line your manifest.json file in /Packages/ folder.
+ "com.unity.scripting.python": "2.0.1-preview.2",
+
+2. Open up Unity. Under the Window tab, open up the package manager and find Python for Unity and update to at least 4.0.0-pre1 preview for python 3.0+ support.
+
+3. Go back to Unity. Under the Edit tab, open up project settings and find Python for Unity. Click on the "Spawn shell in environment" button to open up a shell.
+
+4. Install the "numpy" and "pillow" dependencies using pip3.
+ "pip3 install numpy"
+ "pip3 install pillow"
+ "pip3 install pathlib"
+
+5. Create a requirements.txt file with the following command.
+ "pip3 freeze > ./ProjectSettings/requirements.txt

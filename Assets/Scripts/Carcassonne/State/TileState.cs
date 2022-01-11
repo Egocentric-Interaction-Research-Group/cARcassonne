@@ -31,7 +31,12 @@ namespace Carcassonne.State
         {
             // Find min and max indices for x and 
             // Are these things that TileScript could be tracking? BoardLimits? or something?
-            var l = CalculateLimits();
+            //var l = CalculateLimits();
+            RectInt l = new RectInt();
+            l.xMin = 65;
+            l.xMax = 105;
+            l.yMin = 65;
+            l.yMax = 105;
             int xmin = l.xMin, xmax = l.xMax, ymin = l.yMin, ymax = l.yMax;
             
             //Debug.Log($"Found Limits. Tiles found from ({xmin},{ymin}) to ({xmax},{ymax})");
@@ -97,15 +102,64 @@ namespace Carcassonne.State
 
         public override string ToString()
         {
-            var s = ""; 
-            for (var j = Matrix.GetLength((1)) - 1; j >= 0; j--) // Prints from the top-left, so y coordinate needs to start from the top.
+            var s = "";
+
+
+            for (int i = 0 ; i < Matrix.GetLength(0) ; i++)
             {
-                for (var i = 0; i < Matrix.GetLength(0); i++)
+                for (int j = 0; j < Matrix.GetLength(1); j++)
                 {
-                    s += $" | {Matrix[i,j], 8}";
+                    if (j == Matrix.GetLength(0) - 1)
+                    {
+                        if (Matrix[i, j] == null)
+                        {
+                            s += $"{"0",0}";
+                        }
+                        else
+                            s += $"{Matrix[i, j],0}";
+                    }
+                    else
+                    {
+                        if (Matrix[i, j] == null)
+                        {
+                            s += $"{"0,",0}";
+                        }
+                        else
+                            s += $"{Matrix[i, j],0},";
+                    }
                 }
-                s += $" |\n";
+                s += $"\n";
+
             }
+
+            /*
+            for (int j = Matrix.GetLength(1) - 1; j >= 0; j--) // Prints from the top-left, so y coordinate needs to start from the top.
+            {
+                for (int i = 0; i < Matrix.GetLength(0); i++)
+                {
+                    if (i == Matrix.GetLength(0) - 1)
+                    {
+                        if (Matrix[i, j] == null)
+                        {
+                            s += $"{"0",0}";
+                        }
+                        else
+                            s += $"{Matrix[i, j],0}";
+                    }
+                    else
+                    {
+                        if (Matrix[i, j] == null)
+                        {
+                            s += $"{"0,",0}";
+                        }
+                        else
+                            s += $"{Matrix[i, j],0},";
+                    }
+                }
+                s += $"\n";
+
+            }
+            */
             return s;
         }
     }
