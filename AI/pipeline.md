@@ -14,6 +14,9 @@ Using the ToString method inside of TileState.cs created by David, we are able t
 
 When we first wanted to start training models we were not finished with the code for printing the annotation for the bounding boxes in Unity. Instead, once we had created the images representing the board, we used [Roboflow](https://roboflow.com/) to create annotations for the completed cities in the images. We followed [this tutorial](https://blog.roboflow.com/getting-started-with-roboflow/). Roboflow can help you create datasets with images and annotation files in several formats like COCO, YOLO etc.
 
+## Creating images with Python
+
+In [this tutorial](https://drive.google.com/drive/folders/19L0RB043LSa6-IOVK0FT7yyCbStF4qiI) the process of how the Python image generator works.
 
 ## Training the model
 
