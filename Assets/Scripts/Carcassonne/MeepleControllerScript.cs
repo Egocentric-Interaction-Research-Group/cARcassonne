@@ -311,6 +311,31 @@ namespace Carcassonne
 
             return true;
         }
+        
+        public void SetMeepleSnapPos()
+        {
+            var current = gameControllerScript.gameState.Meeples.Current;
+
+            if (current == null) throw new ArgumentException("Current Meeple is null.");
+            
+            if (meepleHitTileDirection.collider != null)
+            {
+                current.transform.position =
+                    new Vector3(gameControllerScript.SnapPosition.x, current.transform.position.y, gameControllerScript.SnapPosition.z);
+
+                if (gameControllerScript.Direction == Vector2Int.left || gameControllerScript.Direction == Vector2Int.right)
+                {
+                    if (current.transform.rotation.eulerAngles.y != 90) current.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
+                }
+                else if (gameControllerScript.Direction == Vector2Int.up || gameControllerScript.Direction == Vector2Int.down ||
+                         gameControllerScript.Direction == Vector2Int.zero)
+                {
+                    if (current.transform.rotation.eulerAngles.y == 90) current.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
+                }
+            }
+            
+            gameControllerScript.SnapPosition = current.transform.position;
+        }
 
         // public bool PlaceMeeple(GameObject meeple, Vector2Int position, Vector2Int direction)
         // {

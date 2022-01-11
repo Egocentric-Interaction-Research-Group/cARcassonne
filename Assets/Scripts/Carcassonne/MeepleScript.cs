@@ -59,7 +59,7 @@ namespace Carcassonne
 
         public void OnSnapMeeple()
         {
-            GameObject.Find("GameController").GetComponent<GameControllerScript>().SetMeepleSnapPos();
+            GameObject.Find("GameController").GetComponent<MeepleControllerScript>().SetMeepleSnapPos();
         }
         
         /// <summary>

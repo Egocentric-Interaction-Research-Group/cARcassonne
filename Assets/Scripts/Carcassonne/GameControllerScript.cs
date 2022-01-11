@@ -672,29 +672,6 @@ namespace Carcassonne
             }
         }
 
-        public void SetMeepleSnapPos()
-        {
-            if (meepleControllerScript.meepleHitTileDirection.collider != null)
-            {
-                gameState.Meeples.Current.transform.position =
-                    new Vector3(SnapPosition.x, gameState.Meeples.Current.transform.position.y, SnapPosition.z);
-
-                if (Direction == Vector2Int.left || Direction == Vector2Int.right)
-                {
-                    if (gameState.Meeples.Current.transform.rotation.eulerAngles.y != 90) gameState.Meeples.Current.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
-                }
-                else if (Direction == Vector2Int.up || Direction == Vector2Int.down ||
-                         Direction == Vector2Int.zero)
-                {
-                    if (gameState.Meeples.Current.transform.rotation.eulerAngles.y == 90) gameState.Meeples.Current.transform.Rotate(0.0f, -90.0f, 0.0f, Space.Self);
-                }
-            }
-            else
-            {
-                SnapPosition = gameState.Meeples.Current.transform.position;
-            }
-        }
-
         public bool CurrentPlayerIsLocal
         {
             //TODO This probably should not be hardcoded. See if there is a better way to do this!
