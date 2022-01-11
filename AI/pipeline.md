@@ -28,36 +28,29 @@ Training a model with YOLOv5x and our latest dataset of 743 images in total gave
 
 
 
-<p id="gdcalert1" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image1.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert2">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
 ![alt_text](results.png "image_tooltip")
 
 
-<p id="gdcalert2" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image2.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert3">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
 
 
-![alt_text](images/image2.png "image_tooltip")
+![alt_text](results2.png "image_tooltip")
 
 
 Here is some of the the labeled data:
 
 
 
-<p id="gdcalert3" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image3.jpg). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert4">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
 
-
-![alt_text](images/image3.jpg "image_tooltip")
+![alt_text](test_batch0_labels.jpg "image_tooltip")
 
 
 And here are the predictions made by the trained model for those images:
 
 
 
-<p id="gdcalert4" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image4.jpg). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert5">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
 
 
-![alt_text](images/image4.jpg "image_tooltip")
+![alt_text](test_batch0_pred.jpg "image_tooltip")
 
 
 The predictions have become more accurate the more images we have added to the dataset. An even bigger dataset with more variations in city forms is probably needed to make the model better at finding bigger and more complex cities.
@@ -74,10 +67,10 @@ So what we decided to do was to train the model outside of Unity and then use [B
 
 
 
-<p id="gdcalert5" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image5.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert6">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
 
 
-![alt_text](images/image5.png "image_tooltip")
+
+![alt_text](Errormessage.png "image_tooltip")
 
 
 We did not manage to understand or solve this problem and we do not know if this is because the YOLOv5 architecture format [is not supported by Barracuda](https://docs.unity.cn/Packages/com.unity.barracuda@1.2/manual/SupportedArchitectures.html) or if there is a problem with the model itself. A next step could be to train a model using e.g. Tiny YOLO v2 and see if that model works with Barracuda.
