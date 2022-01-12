@@ -451,7 +451,7 @@ namespace Carcassonne
                     {
                         var position = new Vector2Int(meepleControllerScript.iMeepleAimX,
                             meepleControllerScript.iMeepleAimZ);
-                        var placed = meepleControllerScript.PlaceMeeple(gameState.Meeples.Current, position, Direction);
+                        var placed = meepleControllerScript.PlaceMeeple(position, Direction);
                         if (!placed)
                         {
                             Debug.LogWarning($"Something has gone wrong with meeple placement. {position}, {Direction} should be a valid position for your Meeple, but for some reason it is not.");
@@ -459,9 +459,8 @@ namespace Carcassonne
                     }
                     else // Cancel Meeple Placement
                     {
-                        meepleControllerScript.FreeMeeple(gameState.Meeples.Current);
-                        gameState.Meeples.Current = null;
-                        
+                        meepleControllerScript.CancelPlacement();
+
                         //TODO test multiplayer on this!
                         gameState.phase = Phase.TileDown;
                     }
@@ -512,6 +511,8 @@ namespace Carcassonne
                     if (firstTurnCounter != 0) firstTurnCounter -= 1;
 
                     gameState.phase = Phase.NewTurn;
+                    gameState.Tiles.Current = null;
+                    gameState.Meeples.Current = null;
                 }
                 
                 // Debug.Log($"Board Matrix Dims: {gameState.Tiles.Matrix.GetLength(0)}" +

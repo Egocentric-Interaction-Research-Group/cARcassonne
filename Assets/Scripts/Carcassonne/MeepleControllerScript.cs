@@ -238,14 +238,38 @@ namespace Carcassonne
             }
             
             meeple.transform.position = new Vector3(20, 20, 20);
-            meeple.GetComponentInChildren<Rigidbody>().useGravity = false;
-            meeple.GetComponentInChildren<BoxCollider>().enabled = false;
-            meeple.GetComponentInChildren<MeshRenderer>().enabled = false;
+            Disable(meeple.gameObject);
         }
 
         public void FreeMeeple(GameObject meeple)
         {
             FreeMeeple(meeple.GetComponent<MeepleScript>());
+        }
+
+        private static void Enable(GameObject meepleGameObject)
+        {
+            meepleGameObject.SetActive(true);
+            meepleGameObject.GetComponent<Rigidbody>().useGravity = true;
+            meepleGameObject.GetComponent<BoxCollider>().enabled = true;
+            meepleGameObject.GetComponent<ObjectManipulator>().enabled = true;
+            meepleGameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+        }
+
+        private static void Fix(GameObject meepleGameObject)
+        {
+            meepleGameObject.GetComponent<Rigidbody>().useGravity = false;
+            meepleGameObject.GetComponent<BoxCollider>().enabled = false;
+            meepleGameObject.GetComponent<ObjectManipulator>().enabled = false;
+            meepleGameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+        }
+
+        private void Disable(GameObject meepleGameObject)
+        {
+            meepleGameObject.SetActive(false);
+            meepleGameObject.GetComponent<Rigidbody>().useGravity = false;
+            meepleGameObject.GetComponent<BoxCollider>().enabled = false;
+            meepleGameObject.GetComponent<ObjectManipulator>().enabled = false;
+            meepleGameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
         }
 
         [PunRPC]
@@ -258,18 +282,14 @@ namespace Carcassonne
                 if (meeple != null)
                 {
                     var meepleGameObject = meeple.gameObject; 
-                    meepleGameObject.SetActive(true);
-                    meepleGameObject.GetComponentInChildren<Rigidbody>().useGravity = true;
-                    meepleGameObject.GetComponentInChildren<BoxCollider>().enabled = true;
-                    meepleGameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
-                    meepleGameObject.GetComponentInChildren<ObjectManipulator>().enabled = true;
+                    Enable(meepleGameObject);
                     meepleGameObject.transform.parent = gameControllerScript.table.transform;
                     meepleGameObject.transform.position = meepleSpawnPosition.transform.position;
                     // meepleGameObject.transform.parent = GameObject.Find("MeepleDrawPosition").transform.parent;
                     // meepleGameObject.transform.localPosition = new Vector3(0,0,0);
                     // meepleGameObject.transform.SetParent(GameObject.Find("Table").transform, true);
-                        
-                    meeples.Current = meepleGameObject.GetComponent<MeepleScript>();
+
+                    meeples.Current = meeple;
                     // meepleGameObject.transform.rotation = Quaternion.identity;
 
                     gameControllerScript.UpdateDecisionButtons(true, meepleGameObject);
@@ -297,8 +317,9 @@ namespace Carcassonne
             return true;
         }
 
-        public bool PlaceMeeple(MeepleScript meeple, Vector2Int position, Vector2Int direction)
+        public bool PlaceMeeple(Vector2Int position, Vector2Int direction)
         {
+            MeepleScript meeple = gameControllerScript.gameState.Meeples.Current;
             
             // Test if Meeple placement is valid
             if (!IsValidPlacement(position, direction)) return false;
@@ -306,10 +327,19 @@ namespace Carcassonne
             // Place meeple
             gameControllerScript.gameState.Meeples.Placement.Add(position, new PlacedMeeple(meeple, direction));
             
+            // Turn off meeple collider
+            Fix(meeple.gameObject);
+
             // Move game to next phase
             gameControllerScript.gameState.phase = Phase.MeepleDown;
 
             return true;
+        }
+
+        public void CancelPlacement()
+        {
+            FreeMeeple(meeples.Current);
+            meeples.Current = null;
         }
         
         public void SetMeepleSnapPos()
