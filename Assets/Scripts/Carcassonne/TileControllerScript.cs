@@ -25,6 +25,7 @@ namespace Carcassonne
         }
 
         public GameObject drawTile;
+        // Tile Spawn position has to be on a grid with the base tile.
         public GameObject tileSpawnPosition;
         public float fTileAimX;
         public float fTileAimZ;
@@ -99,6 +100,25 @@ namespace Carcassonne
             tiles.Current.Rotate(0);
         }
 
+        /// <summary>
+        /// Move tile according to the direction.
+        /// </summary>
+        /// <param name="direction">Direction to move tile in tile coordinates.</param>
+        public void MoveTileRPC(Vector2Int direction)
+        {
+            var boardDirection = new Vector3(direction.x, 0, direction.y) * 0.033f;
+            Debug.Log($"Moving to {direction} ({boardDirection})");
+            photonView.RPC("MoveTile", RpcTarget.All, boardDirection);
+        }
+
+        [PunRPC]
+        public void MoveTile(Vector3 direction)
+        {
+            tiles.Current.transform.position += direction;
+            
+            gameControllerScript.CurrentTileRaycastPosition();
+        }
+
         public void RotateDegreesRPC()
         {
             photonView.RPC("RotateDegrees", RpcTarget.All);
@@ -131,6 +151,11 @@ namespace Carcassonne
             if (angle % 90 > 45)
                 rotate += 1;
             return rotate % 4;
+        }
+
+        public Vector3 BoardToUnity(Vector2Int board)
+        {
+            return new Vector3((board.x - GameRules.BoardSize / 2) * 0.033f, 0, (board.y - GameRules.BoardSize / 2) * 0.033f);
         }
     }
 }

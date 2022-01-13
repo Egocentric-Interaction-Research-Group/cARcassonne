@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.State;
 using Carcassonne.State.Features;
+using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Carcassonne
 {
@@ -68,6 +70,7 @@ namespace Carcassonne
         private bool isPunEnabled;
         //float xOffset, zOffset, yOffset;
 
+        private Vector2Int iTileAim => new Vector2Int(iTileAimX, iTileAimZ);
         private int iTileAimX, iTileAimZ;
 
 
@@ -160,6 +163,44 @@ namespace Carcassonne
             Debug.Log(debugString);
         }
 
+        private void Update()
+        {
+            var keyboard = Keyboard.current;
+            if( keyboard != null && photonView.IsMine)
+            {
+                if (keyboard.rKey.wasReleasedThisFrame) tileControllerScript.RotateTileRPC();
+
+                if (keyboard.pKey.wasReleasedThisFrame) EndTurnRPC();
+
+                if (keyboard.tKey.wasReleasedThisFrame) {
+                    
+                    meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject); //FIXME: Throws error when no meeple assigned!}
+                
+                    gameState.phase = Phase.TileDown;
+                }
+
+                if (keyboard.bKey.wasReleasedThisFrame) GameOver();
+
+                // Keyboard based movements.
+                var direction = Vector2Int.zero;
+                if (keyboard.jKey.wasPressedThisFrame) direction += Vector2Int.left;
+                if (keyboard.lKey.wasPressedThisFrame) direction += Vector2Int.right;
+                if (keyboard.iKey.wasPressedThisFrame) direction += Vector2Int.up;
+                if (keyboard.kKey.wasPressedThisFrame) direction += Vector2Int.down;
+
+                if (gameState.phase == Phase.TileDrawn & direction != Vector2Int.zero)
+                {
+                    Debug.Log($"Moving the current tile in {direction}. Sending RPC.");
+                    tileControllerScript.MoveTileRPC(direction);
+                } /*else if (gameState.phase == Phase.MeepleDrawn)
+                {
+                    meepleControllerScript.MoveMeepleRPC(direction);
+                }*/
+            }
+            
+            
+        }
+
         // Update is called once per frame
         private void FixedUpdate()
         {
@@ -173,9 +214,8 @@ namespace Carcassonne
                 else
                     ChangeConfirmButtonApperance(false);
 
-                SnapPosition = new Vector3
-                (stackScript.basePositionTransform.localPosition.x + (iTileAimX - GameRules.BoardSize / 2) * 0.033f, tileControllerScript.currentTile.transform.localPosition.y,
-                    stackScript.basePositionTransform.localPosition.z + (iTileAimZ - GameRules.BoardSize / 2) * 0.033f);
+                SnapPosition = tileControllerScript.BoardToUnity(iTileAim) + stackScript.basePositionTransform.localPosition;
+                SnapPosition.y = gameState.Tiles.Current.transform.localPosition.y;
             }
 
             if (startGame)
@@ -183,19 +223,6 @@ namespace Carcassonne
                 NewGame();
                 startGame = false;
             }
-
-            if (Input.GetKeyDown(KeyCode.P)) EndTurn();
-            if (Input.GetKeyDown(KeyCode.R) && PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-                    tileControllerScript.RotateTileRPC();
-
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject); //FIXME: Throws error when no meeple assigned!}
-                
-                gameState.phase = Phase.TileDown;
-            }
-
-            if (Input.GetKeyDown(KeyCode.B)) GameOver(); //FIXME Doesn't work/no effect
 
             switch (gameState.phase)
             {
@@ -314,7 +341,7 @@ namespace Carcassonne
         }
 
         [PunRPC]
-        private void CurrentTileRaycastPosition()
+        public void CurrentTileRaycastPosition()
         {
             RaycastHit hit;
             var layerMask = 1 << 8;
@@ -616,6 +643,7 @@ namespace Carcassonne
 
         private void GameOver()
         {
+            Debug.Log("Game Over.");
             var features = gameState.Features.Incomplete;
             ScoreFeatures(features);
             

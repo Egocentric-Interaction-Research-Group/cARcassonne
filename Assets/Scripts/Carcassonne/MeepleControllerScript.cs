@@ -5,12 +5,13 @@ using Carcassonne.State;
 using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Carcassonne
 {
     public class MeepleControllerScript : MonoBehaviourPun
     {
-    
+
         [SerializeField]
         internal GameControllerScript gameControllerScript;
         [HideInInspector] public List<MeepleScript> MeeplesInCity;
