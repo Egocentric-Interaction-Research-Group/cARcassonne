@@ -7,6 +7,8 @@ namespace Carcassonne
 {
     public class TileControllerScript : MonoBehaviourPun
     {
+        public static float BoardToUnityScale = 0.033f;
+        
         [SerializeField]
         internal GameControllerScript gameControllerScript;
         public ParticleSystem drawTileEffect;
@@ -106,7 +108,7 @@ namespace Carcassonne
         /// <param name="direction">Direction to move tile in tile coordinates.</param>
         public void MoveTileRPC(Vector2Int direction)
         {
-            var boardDirection = new Vector3(direction.x, 0, direction.y) * 0.033f;
+            var boardDirection = new Vector3(direction.x, 0, direction.y) * BoardToUnityScale;
             Debug.Log($"Moving to {direction} ({boardDirection})");
             photonView.RPC("MoveTile", RpcTarget.All, boardDirection);
         }
@@ -153,9 +155,9 @@ namespace Carcassonne
             return rotate % 4;
         }
 
-        public Vector3 BoardToUnity(Vector2Int board)
+        public static Vector3 BoardToUnity(Vector2Int board)
         {
-            return new Vector3((board.x - GameRules.BoardSize / 2) * 0.033f, 0, (board.y - GameRules.BoardSize / 2) * 0.033f);
+            return new Vector3((board.x - GameRules.BoardSize / 2) * BoardToUnityScale, 0, (board.y - GameRules.BoardSize / 2) * BoardToUnityScale);
         }
     }
 }
