@@ -1,15 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Text;
 using Carcassonne.State;
 using Carcassonne.State.Features;
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
+using Newtonsoft.Json;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEditor.Scripting.Python;
+using UnityEditor;
+using System.IO;
 using UnityEngine.InputSystem;
 
 namespace Carcassonne
@@ -70,12 +78,30 @@ namespace Carcassonne
         private bool isPunEnabled;
         //float xOffset, zOffset, yOffset;
 
-        private Vector2Int iTileAim => new Vector2Int(iTileAimX, iTileAimZ);
-        private int iTileAimX, iTileAimZ;
+        public Vector2Int iTileAim = new Vector2Int();
+        public int iTileAimX
+        {
+            get { return iTileAim.x; }
+            set { iTileAim.x = value;}
+        }
+
+        public int iTileAimZ
+        {
+            get { return iTileAim.y; }
+            set { iTileAim.y = value;}
+        }
+        
+        [HideInInspector]
+        public int minX, maxX, minZ, maxZ; //These are only used for limiting AI agents movement.
 
 
         //public ErrorPlaneScript ErrorPlane;
 
+        private DateTimeOffset currentTime = DateTimeOffset.Now;
+        private string JsonBoundingBox;
+        public StringBuilder sb;
+        public StringWriter sw;
+        public JsonWriter writer;
 
         private int tempX;
         private int tempY;
@@ -123,6 +149,13 @@ namespace Carcassonne
         private void Start()
         {
             gameState.Features.Graph.Changed += UpdateFeatures;
+            
+            sb = new StringBuilder();
+            sw = new StringWriter(sb);
+            writer = new JsonTextWriter(sw);
+            writer.WriteStartObject();
+            writer.WritePropertyName("bbox");
+            writer.WriteStartArray();
         }
         
         public void UpdateFeatures(object sender, BoardChangedEventArgs args)
@@ -197,8 +230,6 @@ namespace Carcassonne
                     meepleControllerScript.MoveMeepleRPC(direction);
                 }*/
             }
-            
-            
         }
 
         // Update is called once per frame
@@ -214,7 +245,7 @@ namespace Carcassonne
                 else
                     ChangeConfirmButtonApperance(false);
 
-                SnapPosition = tileControllerScript.BoardToUnity(iTileAim) + stackScript.basePositionTransform.localPosition;
+                SnapPosition = TileControllerScript.BoardToUnity(iTileAim) + stackScript.basePositionTransform.localPosition;
                 SnapPosition.y = gameState.Tiles.Current.transform.localPosition.y;
             }
 
@@ -317,6 +348,11 @@ namespace Carcassonne
                 playerHuds[1].transform.GetChild(3).gameObject.GetComponent<TextMeshPro>().text = "Player 2    (You)";
 
             VertexItterator = 1;
+            //Variables used for AI placing boundary. It starts at the starting tiles coordinates which would be [20,20] 
+            minX = GameRules.BoardSize / 2;
+            minZ = GameRules.BoardSize / 2;
+            maxX = GameRules.BoardSize / 2;
+            maxZ = GameRules.BoardSize / 2;
 
             PlaceTile(tileControllerScript.currentTile, GameRules.BoardSize / 2, GameRules.BoardSize / 2, true);
 
@@ -380,14 +416,9 @@ namespace Carcassonne
         {
             tempX = x;
             tempY = z;
-            // tile.GetComponent<TileScript>().vIndex = placedTiles.Count; //VertexItterator; // COUNT OF THE TILES
 
-            // GetComponent<PointScript>().placeVertex(VertexItterator, placedTiles.GetNeighbors(tempX, tempY),
-            //     placedTiles.getWeights(tempX, tempY), tileControllerScript.currentTile.GetComponent<TileScript>().getCenter(),
-            //     placedTiles.getCenters(tempX, tempY), placedTiles.getDirections(tempX, tempY));
-            //
-            // VertexItterator++;
-
+            UpdateAIBoundary(x, z);
+            
             tile.GetComponent<BoxCollider>().enabled = false;
             tile.GetComponent<Rigidbody>().useGravity = false;
             tile.GetComponent<ObjectManipulator>().enabled = false;
@@ -397,7 +428,15 @@ namespace Carcassonne
             {
                 placedTiles.PlaceTile(x, z, tile);
 
-                tileControllerScript.currentTile.transform.localPosition = SnapPosition;
+                if (gameState.Players.Current.controlledByAI) //The snapposition cannot be used for the AI as it does not move the tile. It uses iTileAim instead.
+                {
+                    tileControllerScript.currentTile.transform.localPosition = new Vector3(stackScript.basePositionTransform.localPosition.x + (iTileAimX - GameRules.BoardSize/2) * 0.033f,
+                        tileControllerScript.currentTile.transform.localPosition.y, stackScript.basePositionTransform.localPosition.z + (iTileAimZ - GameRules.BoardSize/2) * 0.033f);
+                }
+                else
+                {
+                    tileControllerScript.currentTile.transform.localPosition = SnapPosition;
+                }
             }
             else
             {
@@ -405,8 +444,6 @@ namespace Carcassonne
                 tile.transform.localPosition = stackScript.basePositionTransform.localPosition;
             }
 
-
-            //calculatePoints(false, false);
         }
 
 
@@ -445,17 +482,62 @@ namespace Carcassonne
                 deniedSound.Play();
             }
         }
-
+        
+        //TODO This needs to be separated into a confirmMeeplePlacement and confirmTilePlacement
         public void ConfirmPlacementRPC()
         {
             if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-                photonView.RPC("ConfirmPlacement", RpcTarget.All);
+            {
+                if (currentPlayer.controlledByAI) //This section is only used by the AI. As it does not move the tile physically, the aim has to be set manually before the call.
+                {
+                    photonView.RPC("ConfirmPlacementAI", RpcTarget.All, iTileAimX, iTileAimZ, meepleControllerScript.aiMeepleX, meepleControllerScript.aiMeepleZ);
+                }
+                else
+                {
+                    photonView.RPC("ConfirmPlacement", RpcTarget.All);
+                }
+            }
+        }
+
+        //This method replaces the ConfirmPLacementRPC method for the AI agent, which does not move the game objects. The placements has to be explicitly set before ConfirmPlacement()-call.
+        [PunRPC]
+        public void ConfirmPlacementAI(int tileX, int tileZ, float meepleX, float meepleZ)
+        {
+            if (gameState.phase == Phase.TileDrawn)
+            {
+                iTileAimX = tileX;
+                iTileAimZ = tileZ;
+                ConfirmPlacement();
+            } else if (gameState.phase == Phase.MeepleDrawn) //TODO: Replace the complex meeple placement code with something less tied to the gameObjects physical position. Something more AI Friendly.
+            {
+                //The following code is needed as the meeple placement is heavily tied to the physical position of the meeple. May be better with a separate and simpler AI method for this as it may not
+                //work in multiplayer when the meeple position needs to be updated.
+
+                System.Diagnostics.Debug.Assert(gameState.Meeples.Current != null, "gameState.Meeples.Current != null");
+                var meepleGameObject = gameState.Meeples.Current.gameObject; 
+                
+                meepleGameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(meepleX, 0.86f, meepleZ);
+                meepleControllerScript.CurrentMeepleRayCast();
+                meepleControllerScript.AimMeeple();
+                meepleControllerScript.SetMeepleSnapPos();
+                ConfirmPlacement();
+
+                //The two rows below are just a workaround to get meeples to stay on top of the table and not have a seemingly random Y coordinate. This may need a mode solid fix for multiplayer mode.
+                meepleGameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
+                meepleGameObject.transform.localPosition = new Vector3(meepleGameObject.transform.localPosition.x, 0.86f, meepleGameObject.transform.localPosition.z);
+            }
+            
         }
 
         [PunRPC]
         public void ConfirmPlacement()
         {
-            CurrentTileRaycastPosition();
+            //The raycast should only happen for base tile and human players. AI does not move the tile. Why this tile raycast call was done outside phase check I dont know, but I left it there.
+            if (currentPlayer == null || !currentPlayer.controlledByAI) 
+            {
+                CurrentTileRaycastPosition();
+            }
+            
             if (gameState.phase == Phase.TileDrawn)
             {
                 if (placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
@@ -464,10 +546,8 @@ namespace Carcassonne
 
                     confirmButton.SetActive(false);
                     gameState.phase = Phase.TileDown;
-                }
-                else if (!placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
-                {
-                    Debug.Log("Tile cant be placed");
+
+                    Debug.Log("Tile placed in (" + iTileAimX + ", " + iTileAimZ + ")");
                 }
             }
             else if (gameState.phase == Phase.MeepleDrawn)
@@ -542,12 +622,12 @@ namespace Carcassonne
                     gameState.Meeples.Current = null;
                 }
                 
-                // Debug.Log($"Board Matrix Dims: {gameState.Tiles.Matrix.GetLength(0)}" +
-                //           $"x{gameState.Tiles.Matrix.GetLength(1)}" +
-                //           $" ({gameState.Tiles.Matrix.Length})\n" +
-                //           $"Board Matrix Origin: {gameState.Tiles.MatrixOrigin}\n" +
-                //           $"Board Matrix:\n{gameState.Tiles}\n" +
-                //           $"City Bounds: {gameState.Features.Cities[0]}");
+                Debug.Log($"Board Matrix Dims: {gameState.Tiles.Matrix.GetLength(0)}" +
+                          $"x{gameState.Tiles.Matrix.GetLength(1)}" +
+                          $" ({gameState.Tiles.Matrix.Length})\n" +
+                          $"Board Matrix Origin: {gameState.Tiles.MatrixOrigin}\n" +
+                          $"Board Matrix:\n{gameState.Tiles}\n" +
+                          $"City Bounds: {gameState.Features.Cities[0]}");
             }
             else
             {
@@ -701,6 +781,23 @@ namespace Carcassonne
             }
         }
 
+        private void OnApplicationQuit()
+        {
+            writer.WriteEndArray();
+            writer.WriteEndObject();
+            JsonBoundingBox = sb.ToString();
+            File.WriteAllText("Assets/PythonImageGenerator/TxtFiles/"+"Output" + currentTime.ToUnixTimeMilliseconds() + ".txt", gameState.Tiles.ToString());
+            File.WriteAllText("Assets/PythonImageGenerator/TxtFiles/"+"Output" + currentTime.ToUnixTimeMilliseconds() + ".json", JsonBoundingBox);
+            RunPythonImageGenerator();
+
+        }
+
+        public void RunPythonImageGenerator()
+        {
+            Debug.Log("Running Python File");
+            PythonRunner.RunFile($"{Application.dataPath}/PythonImageGenerator/MatrixToGreyImage.py");
+        }
+
         public bool CurrentPlayerIsLocal
         {
             //TODO This probably should not be hardcoded. See if there is a better way to do this!
@@ -708,6 +805,32 @@ namespace Carcassonne
             {
                 return PhotonNetwork.LocalPlayer.NickName ==
                        (currentPlayer.getID() + 1).ToString();
+            }
+        }
+
+        /// <summary>
+        /// Update the boundaries that the AI can place tiles within. Variablesare based on the
+        /// on tiles furthest in each direction on the grid
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="z"></param>
+        public void UpdateAIBoundary(int x, int z)
+        {
+            if (x < minX)
+            {
+                minX = x;
+            }
+            if (z < minZ)
+            {
+                minZ = z;
+            }
+            if (x > maxX)
+            {
+                maxX = x;
+            }
+            if (z > maxZ)
+            {
+                maxZ = z;
             }
         }
     }

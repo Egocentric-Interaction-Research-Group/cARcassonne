@@ -14,8 +14,10 @@ public class UpdateNumberOfPlayers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        numberOfPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
-        GetComponent<TextMeshPro>().text = numberOfPlayers.ToString();
+        if (PhotonNetwork.CurrentRoom != null)
+        {
+            numberOfPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
+            GetComponent<TextMeshPro>().text = numberOfPlayers.ToString();
+        }
     }
 }

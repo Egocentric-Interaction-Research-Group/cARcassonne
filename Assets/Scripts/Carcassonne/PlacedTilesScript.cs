@@ -37,7 +37,7 @@ namespace Carcassonne
             var ts = tile.GetComponent<TileScript>();
             var pos = new Vector2Int(x, z);
             // Update the Tile State
-            tiles.Played[x, z] = ts;
+            tiles.Placement.Add(pos, ts);
             tiles.lastPlayedPosition = pos;
             
             // Update Feature States

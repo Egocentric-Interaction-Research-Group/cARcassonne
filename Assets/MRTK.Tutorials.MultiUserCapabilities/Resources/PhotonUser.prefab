@@ -286,6 +286,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nMeeples: 7
+  score: 0
+  ai: {fileID: 3647413094652461655, guid: 3dc100a985eddd14597fc5aff3893402, type: 3}
+  controlledByAI: 1
   meepleState: {fileID: 11400000, guid: a97cad862442a428da06ca3536ae1163, type: 2}
 --- !u!1 &6218267280101589944
 GameObject:

@@ -17,6 +17,8 @@ namespace Carcassonne
         [HideInInspector] public List<MeepleScript> MeeplesInCity;
         internal float fMeepleAimX; //TODO Make Private
         internal float fMeepleAimZ; //TODO Make Private
+        public float aiMeepleX;
+        public float aiMeepleZ;
 
         public MeepleState meeples;
         public PlayerState players;

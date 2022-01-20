@@ -1,20 +1,54 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Carcassonne.State
 {
+    public class TileIdComparer : IComparer<TileScript>
+    {
+        public int Compare(TileScript x, TileScript y)
+        {
+            if (x == y) return 0;
+            if (x == null) return -1;
+            if (y == null) return 1;
+            
+            return x.id - y.id;
+        }
+    }
+
     [CreateAssetMenu(fileName = "TileState", menuName = "States/TileState")]
     public class TileState : ScriptableObject, IGamePieceState<TileScript>//,TileScript.Geography>
     {
         public List<TileScript> Remaining => _remaining;
         [CanBeNull] public TileScript Current { get; set; }
-        public TileScript[,] Played => _played; //TODO Default representation should be a dictionary with a position and a tile.
+        public TileScript[,] Played => CalculatePlayed();
+        
+        public Dictionary<Vector2Int, TileScript> Placement = new Dictionary<Vector2Int, TileScript>();
 
         public Vector2 lastPlayedPosition;
 
         private List<TileScript> _remaining;
-        private TileScript[,] _played;
+
+        private static readonly TileIdComparer tileIdComparer = new TileIdComparer();
+        public SortedDictionary<TileScript, Vector2Int?> TilePlacement
+        {
+            get
+            {
+                // Add all placed tiles to the sorted dict
+                var d = new SortedDictionary<TileScript, Vector2Int?>(
+                    Placement.Keys.ToDictionary(p => Placement[p],p => (Vector2Int?)p),
+                    tileIdComparer);
+
+                foreach (var tile in Remaining)
+                {
+                    d.Add(tile, null);
+                }
+
+                return d;
+            }
+        }
 
         /// <summary>
         /// The position of the bottom-left corner of the representation returned by Matrix in Subtile space.
@@ -96,15 +130,30 @@ namespace Carcassonne.State
             return lim;
         }
 
+        private TileScript[,] CalculatePlayed()
+        {
+            var played = new TileScript[GameRules.BoardSize, GameRules.BoardSize];
+
+            foreach (var tilePosition in Placement)
+            {
+                var position = tilePosition.Key;
+                var tile = tilePosition.Value;
+
+                played[position.x, position.y] = tile;
+            }
+                
+            return played;
+        }
+
         private void Awake()
         {
-            _played = new TileScript[GameRules.BoardSize, GameRules.BoardSize];
+            Placement = new Dictionary<Vector2Int, TileScript>();
             _remaining = new List<TileScript>();
         }
 
         private void OnEnable()
         {
-            _played = new TileScript[GameRules.BoardSize, GameRules.BoardSize];
+            Placement = new Dictionary<Vector2Int, TileScript>();
             _remaining = new List<TileScript>();
         }
 
@@ -115,9 +164,9 @@ namespace Carcassonne.State
             {
                 for (var i = 0; i < Matrix.GetLength(0); i++)
                 {
-                    s += $" | ({i},{j}): {Matrix[i,j], 8}";
+                    s += $"{Matrix[i,j], 8}, ";
                 }
-                s += " |\n";
+                s += $"\n";
             }
             return s;
         }

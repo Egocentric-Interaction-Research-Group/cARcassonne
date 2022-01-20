@@ -180,17 +180,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 4
   rotation: 0
-  meeple: 0
-  vIndex: 0
   northCollider: {fileID: 525546310555120947}
   southCollider: {fileID: 6426416281469545657}
   westCollider: {fileID: 5288395650411316110}
   eastCollider: {fileID: 3835965522676774654}
-  northOcupied: 0
-  southOcupied: 0
-  eastOcupied: 0
-  westOcupied: 0
-  centerOcupied: 0
   textures:
   - {fileID: 2800000, guid: 4c10d4b8e16436149b160a7c8b259b02, type: 3}
   - {fileID: 2800000, guid: a21f7b02632bdd840accc678630d7a89, type: 3}
