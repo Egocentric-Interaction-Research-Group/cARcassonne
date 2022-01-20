@@ -369,6 +369,10 @@ namespace Carcassonne
 
         private void BaseTileCreation()
         {
+            //These two lines are only a workaround for an unknown bug making the basetile spawn not in the center, as the BaseSpawnPosition GameObject is not set to the center.
+            GameObject tileSpawn = GameObject.Find("BaseSpawnPosition");
+            tileSpawn.transform.localPosition = new Vector3(0, tileSpawn.transform.localPosition.y, 0);
+
             tileControllerScript.currentTile = stackScript.firstTile;
             // tileControllerScript.currentTile.name = "BaseTile";
             tileControllerScript.currentTile.transform.parent = table.transform;

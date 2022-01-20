@@ -85,5 +85,15 @@ namespace Carcassonne
             }
             return count;
         }
+
+        public int AmountOfFreeMeeples()
+        {
+            int count = 0;
+            foreach (MeepleScript meeple in meeples)
+            {
+                if (meeple.free) { count++; }
+            }
+            return count;
+        }
     }
 }
