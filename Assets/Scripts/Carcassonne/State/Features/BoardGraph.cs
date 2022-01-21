@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Carcassonne.Meeple;
+using Carcassonne.Tile;
+using Carcassonne.Utilities;
 using JetBrains.Annotations;
 using QuikGraph;
 using QuikGraph.Algorithms;

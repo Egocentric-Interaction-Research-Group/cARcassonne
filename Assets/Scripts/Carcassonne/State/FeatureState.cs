@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.State.Features;
+using Carcassonne.Tile;
+using Carcassonne.Utilities;
 using UnityEngine;
 
 namespace Carcassonne.State

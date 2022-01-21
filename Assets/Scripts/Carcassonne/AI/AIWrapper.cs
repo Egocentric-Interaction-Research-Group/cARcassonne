@@ -2,6 +2,8 @@
 using Carcassonne;
 using UnityEngine;
 using System;
+using Carcassonne.Controller;
+using Carcassonne.Player;
 
 /// <summary>
 ///  The AIWrapper acts as a middle-man between the AIPlayer-class and the data it needs and actions it can perform. It separates the AI logic from the code implementation. Its specific purpose is to 

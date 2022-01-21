@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Carcassonne.Tile;
 using QuikGraph;
 using QuikGraph.Graphviz;
 using QuikGraph.Graphviz.Dot;
