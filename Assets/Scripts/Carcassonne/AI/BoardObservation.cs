@@ -9,7 +9,9 @@ using Assets.Scripts.Carcassonne.AI;
 using Carcassonne;
 using System.Collections.Generic;
 using System.Linq;
+using Carcassonne.Meeple;
 using Carcassonne.State;
+using Carcassonne.Tile;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
 
