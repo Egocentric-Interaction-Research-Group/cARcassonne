@@ -106,57 +106,6 @@ namespace Carcassonne.Controller
             }
         }
     
-    
-        // Start is called before the first frame update
-        // void Start()
-        // {
-        //
-        // }
-        //
-        // // Update is called once per frame
-        // void Update()
-        // {
-        //
-        // }
-        //
-        /// <summary>
-        /// Find a meeple at the specified position, on the specified geography, in the specified direction.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="geography"></param>
-        /// <param name="direction"></param>
-        /// <returns></returns>
-        // public MeepleScript FindMeeple(int x, int y, Geography geography, Vector2Int? direction = null)
-        // {
-        //     var position = new Vector2Int(x, y);
-        //
-        //     if (gameControllerScript.gameState.Meeples.Placement.ContainsKey(position))
-        //     {
-        //         var tile = gameControllerScript.gameState.Tiles.Played[position.x, position.y];
-        //         Debug.Assert(tile != null, $"There is a meeple at position {position}, so the tile there should not be null.");
-        //         var geo = tile.SubTileDictionary[position]; 
-        //
-        //         var meeplePlacement = gameControllerScript.gameState.Meeples.Placement[position];
-        //         var dir = meeplePlacement.Direction;
-        //         var meep = meeplePlacement.Meeple;
-        //
-        //         // If there is no direction passed, we just want dir == direction to be true
-        //         if (direction == null)
-        //         {
-        //             direction = dir;
-        //         }
-        //
-        //         // Test for meeple.
-        //             if (dir == direction && geo == geography)
-        //         {
-        //             return meep;
-        //         }
-        //     }
-        //
-        //     return null;
-        // }
-
         public void AimMeeple()
         {
             try
