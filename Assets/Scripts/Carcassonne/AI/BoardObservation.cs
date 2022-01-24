@@ -73,7 +73,7 @@ public static class BoardObservation
             // meepleData |= ((int)meep.direction & bitMask3) << 3; // Insert 3-bit value for meeple direction.
             throw new NotImplementedException();
 
-            mappedMeeps[new Vector2Int(meep.x, meep.z)] = meepleData;
+            // mappedMeeps[new Vector2Int(meep.x, meep.z)] = meepleData;
         }
 
         return mappedMeeps;

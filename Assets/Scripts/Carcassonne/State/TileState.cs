@@ -19,8 +19,7 @@ namespace Carcassonne.State
         }
     }
 
-    [CreateAssetMenu(fileName = "TileState", menuName = "States/TileState")]
-    public class TileState : ScriptableObject, IGamePieceState<TileScript>//,TileScript.Geography>
+    public class TileState : IGamePieceState<TileScript>
     {
         public List<TileScript> Remaining => _remaining;
         [CanBeNull] public TileScript Current { get; set; }
@@ -71,43 +70,26 @@ namespace Carcassonne.State
 
         private Geography?[,] CalculateMatrix()
         {
-            // Find min and max indices for x and 
-            // Are these things that TileScript could be tracking? BoardLimits? or something?
-            //var l = CalculateLimits();
-            RectInt l = new RectInt();
-            l.xMin = 65;
-            l.xMax = 105;
-            l.yMin = 65;
-            l.yMax = 105;
-            int xmin = l.xMin, xmax = l.xMax, ymin = l.yMin, ymax = l.yMax;
-            
-            //Debug.Log($"Found Limits. Tiles found from ({xmin},{ymin}) to ({xmax},{ymax})");
-            
             // Create a new matrix that is 3 * (xmax-xmin) x 3 * (ymax - ymin);
-            var GeographyMatrix = new Geography?[3 * (xmax - xmin), 3 * (ymax - ymin)];
-            
-            for (var i = 0; i < xmax - xmin; i++)
+            var geographyMatrix = new Geography?[3 * (GameRules.BoardLimits.xMax - GameRules.BoardLimits.xMin),
+                3 * (GameRules.BoardLimits.yMax - GameRules.BoardLimits.yMin)];
+
+            foreach (var kvp in Placement)
             {
-                for (int j = 0; j < ymax - ymin; j++)
+                var position = kvp.Key;
+                var tile = kvp.Value;
+                
+                for (int a = 0; a < 3; a++)
                 {
-                    for (int a = 0; a < 3; a++)
+                    for (int b = 0; b < 3; b++)
                     {
-                        for (int b = 0; b < 3; b++)
-                        {
-                            if (Played[i + xmin, j + ymin] is null)
-                            {
-                                GeographyMatrix[i * 3 + a, j * 3 + b] = null;
-                            }
-                            else
-                            {
-                                GeographyMatrix[i * 3 + a, j * 3 + b] = Played[i + xmin, j + ymin].Matrix[a, b];
-                            }
-                        }
+                        geographyMatrix[position.x * 3 + a, position.y * 3 + b] =
+                            tile.Matrix[a, b];
                     }
                 }
             }
             
-            return GeographyMatrix;
+            return geographyMatrix;
         }
 
         private RectInt CalculateLimits()
@@ -151,17 +133,23 @@ namespace Carcassonne.State
             return played;
         }
 
-        private void Awake()
+        public TileState()
         {
             Placement = new Dictionary<Vector2Int, TileScript>();
             _remaining = new List<TileScript>();
         }
-
-        private void OnEnable()
-        {
-            Placement = new Dictionary<Vector2Int, TileScript>();
-            _remaining = new List<TileScript>();
-        }
+        
+        // private void Awake()
+        // {
+        //     Placement = new Dictionary<Vector2Int, TileScript>();
+        //     _remaining = new List<TileScript>();
+        // }
+        //
+        // private void OnEnable()
+        // {
+        //     Placement = new Dictionary<Vector2Int, TileScript>();
+        //     _remaining = new List<TileScript>();
+        // }
 
         public override string ToString()
         {

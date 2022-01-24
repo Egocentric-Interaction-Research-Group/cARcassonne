@@ -26,11 +26,10 @@ namespace Carcassonne.State
     /// MeepleState hold all of the information about the position, availability, and ownership of meeples.
     /// Player meeple list derive from this information store.
     /// </summary>
-    [CreateAssetMenu(fileName = "MeepleState", menuName = "States/MeepleState")]
-    public class MeepleState : ScriptableObject, IGamePieceState<MeepleScript>
+    public class MeepleState : IGamePieceState<MeepleScript>
     {
-        List<MeepleScript> IGamePieceState<MeepleScript>.Remaining => _remaining;
-        
+        List<MeepleScript> IGamePieceState<MeepleScript>.Remaining { get; } = new List<MeepleScript>();
+
         /// <summary>
         /// The current Meeple being played.
         /// </summary>
@@ -62,22 +61,14 @@ namespace Carcassonne.State
         /// <summary>
         /// The set of all Meeples in the game.
         /// </summary>
-        public List<MeepleScript> All = new List<MeepleScript>();
+        public List<MeepleScript> All;
         
-        /// <summary>
-        /// The free meeples remaining for each player 
-        /// </summary>
-        // public Dictionary<PlayerScript, MeepleScript> Remaining => null;
 
-        private List<MeepleScript> _remaining;
-
-        private void OnEnable()
+        public MeepleState()
         {
-            All.Clear();
-
+            All = new List<MeepleScript>();
             Current = null;
         }
-
 
         public List<MeepleScript> MeeplesForPlayer(PlayerScript p)
         {

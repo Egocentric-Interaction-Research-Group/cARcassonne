@@ -21,13 +21,8 @@ namespace Carcassonne.Controller
         public float aiMeepleX;
         public float aiMeepleZ;
 
-        public MeepleState meeples;
-        public PlayerState players;
-
-        public MeepleControllerScript(GameControllerScript gameControllerScript)
-        {
-            this.gameControllerScript = gameControllerScript;
-        }
+        public MeepleState meeples => gameControllerScript.gameState.Meeples;
+        public PlayerState players => gameControllerScript.gameState.Players;
         
         // Instantiation Stuff
         public GameObject prefab;

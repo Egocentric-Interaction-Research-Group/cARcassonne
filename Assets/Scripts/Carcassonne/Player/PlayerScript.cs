@@ -25,7 +25,8 @@ namespace Carcassonne.Player
         public GameObject ai;
         public bool controlledByAI = false;
 
-        public MeepleState meepleState;
+        public GameState gameState;
+        public MeepleState meepleState => gameState.Meeples;
 
         /// <summary>
         /// Set up the player.

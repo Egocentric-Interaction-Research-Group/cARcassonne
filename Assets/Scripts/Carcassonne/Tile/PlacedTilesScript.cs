@@ -13,8 +13,9 @@ namespace Carcassonne.Tile
     {
         public Vector3 BasePosition;
 
-        public TileState tiles;
-        public FeatureState features;
+        public GameState state;
+        public TileState tiles => state.Tiles;
+        public FeatureState features => state.Features;
 
         public int Count => _count;
         private int _count;

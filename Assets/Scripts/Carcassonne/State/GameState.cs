@@ -1,3 +1,4 @@
+using System;
 using Carcassonne.Utilities;
 using UnityEngine;
 
@@ -21,7 +22,28 @@ namespace Carcassonne.State
 
         public GameState()
         {
+            Reset();
+        }
+
+        private void Awake()
+        {
+            Reset();
+        }
+
+        private void Reset()
+        {
+            Debug.Log("Resetting Game State...");
+            
             Rules = new GameRules();
+            Tiles = new TileState();
+            Meeples = new MeepleState();
+            Features = new FeatureState(Meeples);
+            Players = new PlayerState();
+        }
+
+        private void OnEnable()
+        {
+            Reset();
         }
     }
 }

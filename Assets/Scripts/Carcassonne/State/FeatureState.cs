@@ -8,23 +8,24 @@ using UnityEngine;
 
 namespace Carcassonne.State
 {
-    [CreateAssetMenu(fileName = "FeatureState", menuName = "States/FeatureState")]
-    public class FeatureState : ScriptableObject
+    public class FeatureState
     {
         public MeepleState Meeples;
         
-        public BoardGraph Graph = new BoardGraph();
-
-        public List<City> Cities = new List<City>();
-        public List<Road> Roads = new List<Road>();
-        public List<Cloister> Cloisters = new List<Cloister>();
+        public BoardGraph Graph;
+        public List<City> Cities;
+        public List<Road> Roads;
+        public List<Cloister> Cloisters;
 
         public IEnumerable<FeatureGraph> All => new List<FeatureGraph>().Concat(Cities).Concat(Roads).Concat(Cloisters);
         public IEnumerable<FeatureGraph> Complete => All.Where(f => f.Complete);
         public IEnumerable<FeatureGraph> Incomplete => All.Where(f => !f.Complete);
 
-        private void Awake()
+
+        public FeatureState(MeepleState meeples)
         {
+            Meeples = meeples;
+            
             Cities = new List<City>();
             Roads = new List<Road>();
             Cloisters = new List<Cloister>();

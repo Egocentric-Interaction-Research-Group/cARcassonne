@@ -33,7 +33,8 @@ namespace Carcassonne.Stack
 
         public GameObject firstTile;
         
-        [SerializeField] public TileState tiles;
+        public GameState state;
+        public TileState tiles => state.Tiles;
 
         /// <summary>
         /// A field where you can add tiles in a fixed order for testing purposes.

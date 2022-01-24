@@ -5,16 +5,15 @@ using UnityEngine;
 
 namespace Carcassonne.State
 {
-    [CreateAssetMenu(fileName = "PlayerState", menuName = "States/PlayerState")]
-    public class PlayerState : ScriptableObject
+    public class PlayerState
     {
         public List<PlayerScript> All = new List<PlayerScript>();
         public PlayerScript Current;
         
         // Derived Properties
         public List<MeepleScript> Meeples => new List<MeepleScript>();
-        
-        private void OnEnable()
+
+        public PlayerState()
         {
             All.Clear();
             Current = null;

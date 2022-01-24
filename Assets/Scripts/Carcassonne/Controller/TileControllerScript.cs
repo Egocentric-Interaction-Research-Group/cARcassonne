@@ -13,7 +13,9 @@ namespace Carcassonne.Controller
         [SerializeField]
         internal GameControllerScript gameControllerScript;
         public ParticleSystem drawTileEffect;
-        public TileState tiles;
+        
+        public GameState state;
+        public TileState tiles => state.Tiles;
         
         [CanBeNull]
         public GameObject currentTile
