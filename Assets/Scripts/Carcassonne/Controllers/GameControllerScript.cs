@@ -1,40 +1,29 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using Carcassonne.Player;
-using Carcassonne.Stack;
+using Carcassonne.Players;
 using Carcassonne.State;
 using Carcassonne.State.Features;
-using Carcassonne.Tile;
+using Carcassonne.Tiles;
+using Carcassonne.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
-using Newtonsoft.Json;
 using Photon.Pun;
 using PunTabletop;
 using TMPro;
-using UnityEditor.Scripting.Python;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Carcassonne.Controller
+namespace Carcassonne.Controllers
 {
     public class GameControllerScript : MonoBehaviourPun
     {
-        // private void OnEnable()
-        // {
-        //     gameState.game = this;
-        // }
-
         /// <summary>
         /// Stores the full state of the game for processing.
         /// </summary>
-        public GameState gameState; 
+        public GameState state; 
         
-        // Add Meeple Down state functionality
-
         public bool gravity;
         public bool startGame;
 
@@ -66,50 +55,24 @@ namespace Carcassonne.Controller
         [Obsolete("Points to gameState.Players.Current for backwards compatibility. Please use gameState.Players.Current directly instead.")]
         public PlayerScript currentPlayer
         {
-            get => gameState.Players.Current;
-            set => gameState.Players.Current = value;
+            get => state.Players.Current;
+            set => state.Players.Current = value;
         }
 
         private GameObject decisionButtons;
 
         private int firstTurnCounter;
 
-        private bool isPunEnabled;
-        //float xOffset, zOffset, yOffset;
-
-        public Vector2Int iTileAim = new Vector2Int();
-        public int iTileAimX
-        {
-            get { return iTileAim.x; }
-            set { iTileAim.x = value;}
-        }
-
-        public int iTileAimZ
-        {
-            get { return iTileAim.y; }
-            set { iTileAim.y = value;}
-        }
-        
         [HideInInspector]
         public int minX, maxX, minZ, maxZ; //These are only used for limiting AI agents movement.
 
-
-        //public ErrorPlaneScript ErrorPlane;
-
-        private DateTimeOffset currentTime = DateTimeOffset.Now;
-        private string JsonBoundingBox;
-        public StringBuilder sb;
-        public StringWriter sw;
-        public JsonWriter writer;
-
-        private int tempX;
-        private int tempY;
-
-        // private TurnScript turnScript;
-
-        private int VertexItterator;
-
         private bool[,] visited;
+
+        #region PhotonVariables
+
+        private bool isPunEnabled;
+
+        #endregion
     
         /* SCRIPTS */
 
@@ -145,27 +108,28 @@ namespace Carcassonne.Controller
         [SerializeField]
         public TileControllerScript tileControllerScript;
 
+        [SerializeField]
+        public MatrixRepresentationController matrixRepresentationController;
+        
+        [SerializeField]
+        public TileUIControllerScript tileUIController;
+
         private void Start()
         {
-            gameState.Features.Graph.Changed += UpdateFeatures;
-            
-            sb = new StringBuilder();
-            sw = new StringWriter(sb);
-            writer = new JsonTextWriter(sw);
-            writer.WriteStartObject();
-            writer.WritePropertyName("bbox");
-            writer.WriteStartArray();
+            state.Features.Graph.Changed += UpdateFeatures;
+
+            matrixRepresentationController.Start();
         }
         
         public void UpdateFeatures(object sender, BoardChangedEventArgs args)
         {
             BoardGraph graph = args.graph;
-            gameState.Features.Cities = City.FromBoardGraph(graph);
-            gameState.Features.Roads = Road.FromBoardGraph(graph);
-            gameState.Features.Cloisters = Cloister.FromBoardGraph(graph);
+            state.Features.Cities = City.FromBoardGraph(graph);
+            state.Features.Roads = Road.FromBoardGraph(graph);
+            state.Features.Cloisters = Cloister.FromBoardGraph(graph);
 
             string debugString = "Cities: \n\n";
-            foreach (var city in gameState.Features.Cities)
+            foreach (var city in state.Features.Cities)
             {
                 debugString += city.ToString();
                 debugString += "\n";
@@ -175,7 +139,7 @@ namespace Carcassonne.Controller
             Debug.Log(debugString);
             
             debugString = "Roads: \n\n";
-            foreach (var road in gameState.Features.Roads)
+            foreach (var road in state.Features.Roads)
             {
                 debugString += road.ToString();
                 debugString += "\n";
@@ -185,7 +149,7 @@ namespace Carcassonne.Controller
             Debug.Log(debugString);
             
             debugString = "Cloisters: \n\n";
-            foreach (var cloister in gameState.Features.Cloisters)
+            foreach (var cloister in state.Features.Cloisters)
             {
                 debugString += cloister.ToString();
                 debugString += "\n";
@@ -206,9 +170,9 @@ namespace Carcassonne.Controller
 
                 if (keyboard.tKey.wasReleasedThisFrame) {
                     
-                    meepleControllerScript.FreeMeeple(gameState.Meeples.Current.gameObject); //FIXME: Throws error when no meeple assigned!}
+                    meepleControllerScript.FreeMeeple(state.Meeples.Current.gameObject); //FIXME: Throws error when no meeple assigned!}
                 
-                    gameState.phase = Phase.TileDown;
+                    state.phase = Phase.TileDown;
                 }
 
                 if (keyboard.bKey.wasReleasedThisFrame) GameOver();
@@ -220,7 +184,7 @@ namespace Carcassonne.Controller
                 if (keyboard.iKey.wasPressedThisFrame) direction += Vector2Int.up;
                 if (keyboard.kKey.wasPressedThisFrame) direction += Vector2Int.down;
 
-                if (gameState.phase == Phase.TileDrawn & direction != Vector2Int.zero)
+                if (state.phase == Phase.TileDrawn & direction != Vector2Int.zero)
                 {
                     Debug.Log($"Moving the current tile in {direction}. Sending RPC.");
                     tileControllerScript.MoveTileRPC(direction);
@@ -235,17 +199,18 @@ namespace Carcassonne.Controller
         private void FixedUpdate()
         {
             // I think this creates problems for meeples. This is the wrong check. 
-            if (gameState.Tiles.Current != null)
+            if (state.Tiles.Current != null)
             {
-                CurrentTileRaycastPosition();
+                tileUIController.position = tileUIController.RaycastPosition();
+                tileControllerScript.position = tileUIController.BoardPosition(tileUIController.position);
 
-                if (placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
+                if (placedTiles.TilePlacementIsValid(state.Tiles.Current, tileControllerScript.position.x, tileControllerScript.position.y))
                     ChangeConfirmButtonApperance(true);
                 else
                     ChangeConfirmButtonApperance(false);
 
-                SnapPosition = TileControllerScript.BoardToUnity(iTileAim) + stackScript.basePositionTransform.localPosition;
-                SnapPosition.y = gameState.Tiles.Current.transform.localPosition.y;
+                SnapPosition = Coordinates.BoardToUnity(tileControllerScript.position) + stackScript.basePositionTransform.localPosition;
+                SnapPosition.y = state.Tiles.Current.transform.localPosition.y;
             }
 
             if (startGame)
@@ -254,7 +219,7 @@ namespace Carcassonne.Controller
                 startGame = false;
             }
 
-            switch (gameState.phase)
+            switch (state.phase)
             {
                 case Phase.NewTurn:
                     bellSparkleEffect.Stop();
@@ -277,18 +242,17 @@ namespace Carcassonne.Controller
                     if (firstTurnCounter != 0)
                     {
                         meepleControllerScript.drawMeepleEffect.Play();
-                        tileControllerScript.currentTile.transform.localPosition = new Vector3
-                        (stackScript.basePositionTransform.localPosition.x + (iTileAimX - GameRules.BoardSize / 2) * 0.033f, 0.5900002f,
-                            stackScript.basePositionTransform.localPosition.z + (iTileAimZ - GameRules.BoardSize / 2) * 0.033f);
+                        
+                        var localPosition = stackScript.basePositionTransform.localPosition;
+                        state.Tiles.Current.gameObject.transform.localPosition = new Vector3
+                        (localPosition.x + (tileControllerScript.position.x - GameRules.BoardSize / 2) * 0.033f, 0.5900002f,
+                            localPosition.z + (tileControllerScript.position.y - GameRules.BoardSize / 2) * 0.033f);
                         endButtonBackplate.GetComponent<MeshRenderer>().material = buttonMaterials[1];
                     }
 
                     break;
                 case Phase.MeepleDrawn:
 
-                    //confirmButton.SetActive(true);
-                    //confirmButton.transform.position = new Vector3(currentMeeple.transform.position.x + 0.05f, currentMeeple.transform.position.y + 0.05f, currentMeeple.transform.position.z + 0.07f);
-                    ////confirmButton.transform.up = table.transform.forward;
                     meepleControllerScript.drawMeepleEffect.Stop();
                     meepleControllerScript.CurrentMeepleRayCast();
                     meepleControllerScript.AimMeeple();
@@ -330,7 +294,7 @@ namespace Carcassonne.Controller
                 var newPhotonUser = GameObject.Find("User" + (i + 1));
                 var newPlayer = newPhotonUser.GetComponent<PlayerScript>();
                 newPlayer.Setup(i, "player " + i, playerMaterials[i]);
-                gameState.Players.All.Add(newPlayer);
+                state.Players.All.Add(newPlayer);
                 
                 playerHuds[i].SetActive(true);
                 playerHuds[i].GetComponentInChildren<TextMeshPro>().text = "Score: 0";
@@ -346,79 +310,42 @@ namespace Carcassonne.Controller
             else
                 playerHuds[1].transform.GetChild(3).gameObject.GetComponent<TextMeshPro>().text = "Player 2    (You)";
 
-            VertexItterator = 1;
             //Variables used for AI placing boundary. It starts at the starting tiles coordinates which would be [20,20] 
             minX = GameRules.BoardSize / 2;
             minZ = GameRules.BoardSize / 2;
             maxX = GameRules.BoardSize / 2;
             maxZ = GameRules.BoardSize / 2;
 
-            PlaceTile(tileControllerScript.currentTile, GameRules.BoardSize / 2, GameRules.BoardSize / 2, true);
+            PlaceTile(state.Tiles.Current, GameRules.BoardSize / 2, GameRules.BoardSize / 2, true);
 
-            currentPlayer = gameState.Players.All[0];
+            currentPlayer = state.Players.All[0];
 
             Debug.Log("Denna spelarese namn: " + PhotonNetwork.LocalPlayer.NickName);
-            Debug.Log("Current " + (currentPlayer.getID() + 1));
+            Debug.Log("Current " + (currentPlayer.id + 1));
 
             playerHuds[0].GetComponentInChildren<MeshRenderer>().material = playerMaterials[0];
             meepleInButton.GetComponent<MeshRenderer>().material = buttonMaterials[3];
 
-            gameState.phase = Phase.NewTurn;
+            state.phase = Phase.NewTurn;
         }
 
         private void BaseTileCreation()
         {
-            //These two lines are only a workaround for an unknown bug making the basetile spawn not in the center, as the BaseSpawnPosition GameObject is not set to the center.
             GameObject tileSpawn = GameObject.Find("BaseSpawnPosition");
             tileSpawn.transform.localPosition = new Vector3(0, tileSpawn.transform.localPosition.y, 0);
 
-            tileControllerScript.currentTile = stackScript.firstTile;
+            state.Tiles.Current = stackScript.firstTile.GetComponent<TileScript>();
             // tileControllerScript.currentTile.name = "BaseTile";
-            tileControllerScript.currentTile.transform.parent = table.transform;
-            tileControllerScript.currentTile.GetComponent<ObjectManipulator>().enabled = false;
-            tileControllerScript.currentTile.GetComponent<NearInteractionGrabbable>().enabled = false;
-        }
-
-        [PunRPC]
-        public void CurrentTileRaycastPosition()
-        {
-            RaycastHit hit;
-            var layerMask = 1 << 8;
-
-            Physics.Raycast(tileControllerScript.currentTile.transform.position, tileControllerScript.currentTile.transform.TransformDirection(Vector3.down), out hit,
-                Mathf.Infinity, layerMask);
-
-
-            var local = table.transform.InverseTransformPoint(hit.point);
-
-            tileControllerScript.fTileAimX = local.x;
-            tileControllerScript.fTileAimZ = local.z;
-
-
-            if (tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x > 0)
-            {
-                iTileAimX = (int) ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale + 1f) / 2 + GameRules.BoardSize / 2;
-            }
-            else
-            {
-                iTileAimX = (int) ((tileControllerScript.fTileAimX - stackScript.basePositionTransform.localPosition.x) * scale - 1f) / 2 + GameRules.BoardSize / 2;
-            }
-
-            if (tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z > 0)
-            {
-                iTileAimZ = (int) ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale + 1f) / 2 + GameRules.BoardSize / 2;
-            }
-            else
-            {
-                iTileAimZ = (int) ((tileControllerScript.fTileAimZ - stackScript.basePositionTransform.localPosition.z) * scale - 1f) / 2 + GameRules.BoardSize / 2;
-            }
+            state.Tiles.Current.gameObject.transform.parent = table.transform;
+            state.Tiles.Current.gameObject.GetComponent<ObjectManipulator>().enabled = false;
+            state.Tiles.Current.gameObject.GetComponent<NearInteractionGrabbable>().enabled = false;
         }
 
         //Metod för att placera en tile på brädan
-        public void PlaceTile(GameObject tile, int x, int z, bool firstTile)
+        public void PlaceTile(TileScript tileScript, int x, int z, bool firstTile)
         {
-            tempX = x;
-            tempY = z;
+            var tile = tileScript.gameObject;
+            
 
             UpdateAIBoundary(x, z);
             
@@ -431,14 +358,15 @@ namespace Carcassonne.Controller
             {
                 placedTiles.PlaceTile(x, z, tile);
 
-                if (gameState.Players.Current.controlledByAI) //The snapposition cannot be used for the AI as it does not move the tile. It uses iTileAim instead.
+                if (state.Players.Current.controlledByAI) //The snapposition cannot be used for the AI as it does not move the tile. It uses iTileAim instead.
                 {
-                    tileControllerScript.currentTile.transform.localPosition = new Vector3(stackScript.basePositionTransform.localPosition.x + (iTileAimX - GameRules.BoardSize/2) * 0.033f,
-                        tileControllerScript.currentTile.transform.localPosition.y, stackScript.basePositionTransform.localPosition.z + (iTileAimZ - GameRules.BoardSize/2) * 0.033f);
+                    var localPosition = stackScript.basePositionTransform.localPosition;
+                    tile.transform.localPosition = new Vector3(localPosition.x + (tileControllerScript.position.x - GameRules.BoardSize/2) * 0.033f,
+                        tile.transform.localPosition.y, localPosition.z + (tileControllerScript.position.y - GameRules.BoardSize/2) * 0.033f);
                 }
                 else
                 {
-                    tileControllerScript.currentTile.transform.localPosition = SnapPosition;
+                    tile.transform.localPosition = SnapPosition;
                 }
             }
             else
@@ -449,23 +377,16 @@ namespace Carcassonne.Controller
 
         }
 
-
-        public void PickupTileRPC()
-        {
-            if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-                photonView.RPC("PickupTile", RpcTarget.All);
-        }
-
         //Metod för att plocka upp en ny tile
         [PunRPC]
         public void PickupTile()
         {
-            if (gameState.phase == Phase.NewTurn)
+            if (state.phase == Phase.NewTurn)
             {
                 var currentTileGameObject = stackScript.Pop();
                 UpdateDecisionButtons(true, currentTileGameObject);
-                tileControllerScript.ActivateCurrentTile();
-                var currentTile = gameState.Tiles.Current;
+                tileControllerScript.ActivateCurrent();
+                var currentTile = state.Tiles.Current;
                 
                 if (!PlacedTiles.TileCanBePlaced(currentTile, this))
                 {
@@ -476,7 +397,7 @@ namespace Carcassonne.Controller
                 else
                 {
                     tileControllerScript.ResetTileRotation();
-                    gameState.phase = Phase.TileDrawn;
+                    state.phase = Phase.TileDrawn;
                 }
             }
             else
@@ -485,41 +406,25 @@ namespace Carcassonne.Controller
                 deniedSound.Play();
             }
         }
-        
-        //TODO This needs to be separated into a confirmMeeplePlacement and confirmTilePlacement
-        public void ConfirmPlacementRPC()
-        {
-            if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-            {
-                if (currentPlayer.controlledByAI) //This section is only used by the AI. As it does not move the tile physically, the aim has to be set manually before the call.
-                {
-                    photonView.RPC("ConfirmPlacementAI", RpcTarget.All, iTileAimX, iTileAimZ, meepleControllerScript.aiMeepleX, meepleControllerScript.aiMeepleZ);
-                }
-                else
-                {
-                    photonView.RPC("ConfirmPlacement", RpcTarget.All);
-                }
-            }
-        }
 
         //This method replaces the ConfirmPLacementRPC method for the AI agent, which does not move the game objects. The placements has to be explicitly set before ConfirmPlacement()-call.
         [PunRPC]
         public void ConfirmPlacementAI(int tileX, int tileZ, float meepleX, float meepleZ)
         {
-            if (gameState.phase == Phase.TileDrawn)
+            if (state.phase == Phase.TileDrawn)
             {
-                iTileAimX = tileX;
-                iTileAimZ = tileZ;
+                tileControllerScript.position.x = tileX;
+                tileControllerScript.position.y = tileZ;
                 ConfirmPlacement();
-            } else if (gameState.phase == Phase.MeepleDrawn) //TODO: Replace the complex meeple placement code with something less tied to the gameObjects physical position. Something more AI Friendly.
+            } else if (state.phase == Phase.MeepleDrawn) //TODO: Replace the complex meeple placement code with something less tied to the gameObjects physical position. Something more AI Friendly.
             {
                 //The following code is needed as the meeple placement is heavily tied to the physical position of the meeple. May be better with a separate and simpler AI method for this as it may not
                 //work in multiplayer when the meeple position needs to be updated.
 
-                System.Diagnostics.Debug.Assert(gameState.Meeples.Current != null, "gameState.Meeples.Current != null");
-                var meepleGameObject = gameState.Meeples.Current.gameObject; 
+                System.Diagnostics.Debug.Assert(state.Meeples.Current != null, "gameState.Meeples.Current != null");
+                var meepleGameObject = state.Meeples.Current.gameObject; 
                 
-                meepleGameObject.transform.localPosition = gameState.Tiles.Current.transform.localPosition + new Vector3(meepleX, 0.86f, meepleZ);
+                meepleGameObject.transform.localPosition = state.Tiles.Current.transform.localPosition + new Vector3(meepleX, 0.86f, meepleZ);
                 meepleControllerScript.CurrentMeepleRayCast();
                 meepleControllerScript.AimMeeple();
                 meepleControllerScript.SetMeepleSnapPos();
@@ -538,24 +443,25 @@ namespace Carcassonne.Controller
             //The raycast should only happen for base tile and human players. AI does not move the tile. Why this tile raycast call was done outside phase check I dont know, but I left it there.
             if (currentPlayer == null || !currentPlayer.controlledByAI) 
             {
-                CurrentTileRaycastPosition();
+                tileUIController.position = tileUIController.RaycastPosition();
+                tileControllerScript.position = tileUIController.BoardPosition(tileUIController.position);
             }
             
-            if (gameState.phase == Phase.TileDrawn)
+            if (state.phase == Phase.TileDrawn)
             {
-                if (placedTiles.TilePlacementIsValid(tileControllerScript.currentTile, iTileAimX, iTileAimZ))
+                if (placedTiles.TilePlacementIsValid(state.Tiles.Current, tileControllerScript.position.x, tileControllerScript.position.y))
                 {
-                    PlaceTile(tileControllerScript.currentTile, iTileAimX, iTileAimZ, false);
+                    PlaceTile(state.Tiles.Current, tileControllerScript.position.x, tileControllerScript.position.y, false);
 
                     confirmButton.SetActive(false);
-                    gameState.phase = Phase.TileDown;
+                    state.phase = Phase.TileDown;
 
-                    Debug.Log("Tile placed in (" + iTileAimX + ", " + iTileAimZ + ")");
+                    Debug.Log("Tile placed in (" + tileControllerScript.position.x + ", " + tileControllerScript.position.y + ")");
                 }
             }
-            else if (gameState.phase == Phase.MeepleDrawn)
+            else if (state.phase == Phase.MeepleDrawn)
             {
-                if (gameState.Meeples.Current != null)
+                if (state.Meeples.Current != null)
                 {
                     if (CanConfirm)
                     {
@@ -572,32 +478,27 @@ namespace Carcassonne.Controller
                         meepleControllerScript.CancelPlacement();
 
                         //TODO test multiplayer on this!
-                        gameState.phase = Phase.TileDown;
+                        state.phase = Phase.TileDown;
                     }
                 }
             }
         }
 
-        public void EndTurnRPC()
-        {
-            if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.getID() + 1).ToString())
-            {
-                photonView.RPC("EndTurn", RpcTarget.All);
-                photonView.RPC("DebugStuff", RpcTarget.All);
-            }
-        }
-
-        //Avslutar nuvarande spelares runda
+        /// <summary>
+        /// End the current players turn. Calculate any points acquired by placement of tile and/or meeple and move
+        /// from phase TileDown or MeepleDown to either NewTurn or if there are no more tiles that can be drawn, end the game through
+        /// GameOver()
+        /// </summary>
         [PunRPC]
         public void EndTurn()
         {
-            if (gameState.phase == Phase.TileDown || gameState.phase == Phase.MeepleDown)
+            if (state.phase == Phase.TileDown || state.phase == Phase.MeepleDown)
             {
                 
-                gameState.Log.LogTurn();
+                state.Log.LogTurn();
                 
                 // Check finished features
-                var features = gameState.Features.CompleteWithMeeples;
+                var features = state.Features.CompleteWithMeeples;
                 ScoreFeatures(features);
                 
                 if (stackScript.isEmpty())
@@ -606,31 +507,31 @@ namespace Carcassonne.Controller
                 }
                 else
                 {
-                    if (gameState.Players.All.Count > 1)
+                    if (state.Players.All.Count > 1)
                     {
-                        if (currentPlayer == gameState.Players.All[0])
-                            currentPlayer = gameState.Players.All[1];
+                        if (currentPlayer == state.Players.All[0])
+                            currentPlayer = state.Players.All[1];
                         else
-                            currentPlayer = gameState.Players.All[0];
+                            currentPlayer = state.Players.All[0];
                     }
 
 
-                    Debug.Log("CurrentPlayer = " + currentPlayer.getID());
+                    Debug.Log("CurrentPlayer = " + currentPlayer.id);
                     ChangePlayerHud();
 
                     if (firstTurnCounter != 0) firstTurnCounter -= 1;
 
-                    gameState.phase = Phase.NewTurn;
-                    gameState.Tiles.Current = null;
-                    gameState.Meeples.Current = null;
+                    state.phase = Phase.NewTurn;
+                    state.Tiles.Current = null;
+                    state.Meeples.Current = null;
                 }
                 
-                Debug.Log($"Board Matrix Dims: {gameState.Tiles.Matrix.GetLength(0)}" +
-                          $"x{gameState.Tiles.Matrix.GetLength(1)}" +
-                          $" ({gameState.Tiles.Matrix.Length})\n" +
-                          $"Board Matrix Origin: {gameState.Tiles.MatrixOrigin}\n" +
-                          $"Board Matrix:\n{gameState.Tiles}\n" +
-                          $"City Bounds: {gameState.Features.Cities[0]}");
+                Debug.Log($"Board Matrix Dims: {state.Tiles.Matrix.GetLength(0)}" +
+                          $"x{state.Tiles.Matrix.GetLength(1)}" +
+                          $" ({state.Tiles.Matrix.Length})\n" +
+                          $"Board Matrix Origin: {state.Tiles.MatrixOrigin}\n" +
+                          $"Board Matrix:\n{state.Tiles}\n" +
+                          $"City Bounds: {state.Features.Cities[0]}");
             }
             else
             {
@@ -641,12 +542,12 @@ namespace Carcassonne.Controller
 
         private void ChangePlayerHud()
         {
-            for (var i = 0; i < gameState.Players.All.Count; i++)
+            for (var i = 0; i < state.Players.All.Count; i++)
                 playerHuds[i].GetComponentInChildren<TextMeshPro>().text =
-                    "Score: " + gameState.Players.All[i].Score;
+                    "Score: " + state.Players.All[i].Score;
 
 
-            if (currentPlayer.getID() == 0)
+            if (currentPlayer.id == 0)
             {
                 playerHuds[0].GetComponentInChildren<MeshRenderer>().material = playerMaterials[0];
                 meepleInButton.GetComponent<MeshRenderer>().material = buttonMaterials[3];
@@ -655,7 +556,7 @@ namespace Carcassonne.Controller
                 playerHuds[2].GetComponentInChildren<MeshRenderer>().material = playerMaterials[6];
                 playerHuds[3].GetComponentInChildren<MeshRenderer>().material = playerMaterials[7];
             }
-            else if (currentPlayer.getID() == 1)
+            else if (currentPlayer.id == 1)
             {
                 playerHuds[1].GetComponentInChildren<MeshRenderer>().material = playerMaterials[1];
                 meepleInButton.GetComponent<MeshRenderer>().material = buttonMaterials[4];
@@ -694,7 +595,7 @@ namespace Carcassonne.Controller
         {
             foreach( var f in features)
             {
-                var meeples = gameState.Meeples.InFeature(f).ToList();
+                var meeples = state.Meeples.InFeature(f).ToList();
 
                 var playerMeeples = meeples.GroupBy(m => m.player);
                 var playerMeepleCount = playerMeeples.ToDictionary(g => g.Key, g => g.Count());
@@ -727,11 +628,11 @@ namespace Carcassonne.Controller
         private void GameOver()
         {
             Debug.Log("Game Over.");
-            var features = gameState.Features.Incomplete;
+            var features = state.Features.Incomplete;
             ScoreFeatures(features);
             
             ChangePlayerHud();
-            gameState.phase = Phase.GameOver;
+            state.phase = Phase.GameOver;
         }
 
         [PunRPC]
@@ -759,7 +660,7 @@ namespace Carcassonne.Controller
 
         public void SetCurrentTileSnapPosition()
         {
-            tileControllerScript.currentTile.transform.localPosition = SnapPosition;
+            state.Tiles.Current.gameObject.transform.localPosition = SnapPosition;
         }
 
 
@@ -786,19 +687,7 @@ namespace Carcassonne.Controller
 
         private void OnApplicationQuit()
         {
-            writer.WriteEndArray();
-            writer.WriteEndObject();
-            JsonBoundingBox = sb.ToString();
-            File.WriteAllText("Assets/PythonImageGenerator/TxtFiles/"+"Output" + currentTime.ToUnixTimeMilliseconds() + ".txt", gameState.Tiles.ToString());
-            File.WriteAllText("Assets/PythonImageGenerator/TxtFiles/"+"Output" + currentTime.ToUnixTimeMilliseconds() + ".json", JsonBoundingBox);
-            RunPythonImageGenerator();
-
-        }
-
-        public void RunPythonImageGenerator()
-        {
-            Debug.Log("Running Python File");
-            PythonRunner.RunFile($"{Application.dataPath}/PythonImageGenerator/MatrixToGreyImage.py");
+            matrixRepresentationController.OnApplicationQuit();
         }
 
         public bool CurrentPlayerIsLocal
@@ -807,7 +696,7 @@ namespace Carcassonne.Controller
             get
             {
                 return PhotonNetwork.LocalPlayer.NickName ==
-                       (currentPlayer.getID() + 1).ToString();
+                       (currentPlayer.id + 1).ToString();
             }
         }
 
@@ -836,5 +725,40 @@ namespace Carcassonne.Controller
                 maxZ = z;
             }
         }
+
+        #region Proton
+        
+        public void PickupTileRPC()
+        {
+            if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.id + 1).ToString())
+                photonView.RPC("PickupTile", RpcTarget.All);
+        }
+        
+        //TODO This needs to be separated into a confirmMeeplePlacement and confirmTilePlacement
+        public void ConfirmPlacementRPC()
+        {
+            if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.id + 1).ToString())
+            {
+                if (currentPlayer.controlledByAI) //This section is only used by the AI. As it does not move the tile physically, the aim has to be set manually before the call.
+                {
+                    photonView.RPC("ConfirmPlacementAI", RpcTarget.All, tileControllerScript.position.x, tileControllerScript.position.y, meepleControllerScript.aiMeepleX, meepleControllerScript.aiMeepleZ);
+                }
+                else
+                {
+                    photonView.RPC("ConfirmPlacement", RpcTarget.All);
+                }
+            }
+        }
+        
+        public void EndTurnRPC()
+        {
+            if (PhotonNetwork.LocalPlayer.NickName == (currentPlayer.id + 1).ToString())
+            {
+                photonView.RPC("EndTurn", RpcTarget.All);
+                photonView.RPC("DebugStuff", RpcTarget.All);
+            }
+        }
+
+        #endregion
     }
 }

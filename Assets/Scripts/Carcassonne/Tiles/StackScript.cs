@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.State;
-using Carcassonne.Tile;
 using Photon.Pun;
 using UnityEngine;
 using Random = System.Random;
@@ -10,7 +9,7 @@ using Random = System.Random;
 
 // Game State requires a count of Tiles.Remaining tiles, and a list of Tiles.Remaining tiles. Possible search by criteria?
 
-namespace Carcassonne.Stack
+namespace Carcassonne.Tiles
 {
     /// <summary>
     ///     The Stack of tiles.

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Carcassonne.Meeple;
-using Carcassonne.Player;
+using Carcassonne.Meeples;
+using Carcassonne.Players;
 using UnityEngine;
 
 namespace Carcassonne.State

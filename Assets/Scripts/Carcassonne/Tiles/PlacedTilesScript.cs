@@ -1,18 +1,16 @@
 ﻿using System;
-using Carcassonne.Controller;
+using Carcassonne.Controllers;
 using Carcassonne.State;
 using Carcassonne.State.Features;
 using UnityEngine;
 
-namespace Carcassonne.Tile
+namespace Carcassonne.Tiles
 {
     /// <summary>
     /// Class encapsulating information about tiles that have been played on the board.
     /// </summary>
     public class PlacedTilesScript : MonoBehaviour
     {
-        public Vector3 BasePosition;
-
         public GameState state;
         public TileState tiles => state.Tiles;
         public FeatureState features => state.Features;
@@ -90,11 +88,6 @@ namespace Carcassonne.Tile
                 return true;
             
             return false;
-        }
-        
-        public bool TilePlacementIsValid(GameObject tile, int x, int z)
-        {
-            return TilePlacementIsValid(tile.GetComponent<TileScript>(), x, z);
         }
         
         public bool TilePlacementIsValid(TileScript tile, int x, int z)

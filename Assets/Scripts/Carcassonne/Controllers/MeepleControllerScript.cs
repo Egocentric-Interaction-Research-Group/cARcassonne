@@ -1,32 +1,59 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Carcassonne.Meeple;
+using Carcassonne.Meeples;
 using Carcassonne.State;
-using Carcassonne.Tile;
+using Carcassonne.Tiles;
 using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;
 using UnityEngine;
 
-namespace Carcassonne.Controller
+namespace Carcassonne.Controllers
 {
+    /// <summary>
+    /// Controller script for meeples. It handles everything with 
+    /// regards to meeple control from drawing to placement
+    /// </summary>
     public class MeepleControllerScript : MonoBehaviourPun
     {
 
         [SerializeField]
         internal GameControllerScript gameControllerScript;
         [HideInInspector] public List<MeepleScript> MeeplesInCity;
-        internal float fMeepleAimX; //TODO Make Private
-        internal float fMeepleAimZ; //TODO Make Private
-        public float aiMeepleX;
-        public float aiMeepleZ;
 
-        public MeepleState meeples => gameControllerScript.gameState.Meeples;
-        public PlayerState players => gameControllerScript.gameState.Players;
+        internal float fMeepleAimX
+        {
+            get { return fMeepleAim.x; }
+            set { fMeepleAim.x = value;  }
+        }
+        internal float fMeepleAimZ
+        {
+            get { return fMeepleAim.y; }
+            set { fMeepleAim.y = value;  }
+        }
+        public float aiMeepleX
+        {
+            get { return aiMeeple.x; }
+            set { fMeepleAim.x = value;  }
+        }
+        public float aiMeepleZ
+        {
+            get { return aiMeeple.y; }
+            set { fMeepleAim.y = value;  }
+        }
+
+        internal Vector2 fMeepleAim;
+        public Vector2 aiMeeple;
+
+        private GameState state => gameControllerScript.state;
+        private MeepleState meeples => state.Meeples;
+        private PlayerState players => state.Players;
         
         // Instantiation Stuff
         public GameObject prefab;
         public GameObject parent;
+
+        #region Photon
         
         /// <summary>
         /// Instantiate a new Meeple with the chosen prefab and parent object in the hierarchy.
@@ -37,18 +64,13 @@ namespace Carcassonne.Controller
             // return Instantiate(prefab, meepleSpawnPosition.transform.position, Quaternion.identity, GameObject.Find("Table").transform).GetComponent<MeepleScript>();
             GameObject newMeeple = PhotonNetwork.Instantiate(prefab.name, parent.transform.position, Quaternion.identity);//, GameObject.Find("Table").transform);
             newMeeple.gameObject.transform.parent = parent.transform;
-            newMeeple.gameObject.name = $"Meeple {gameControllerScript.gameState.Meeples.InPlay.Count()}";
+            newMeeple.gameObject.name = $"Meeple {gameControllerScript.state.Meeples.InPlay.Count()}";
             newMeeple.SetActive(false);
 
             return newMeeple.GetComponent<MeepleScript>();
         }
 
-        public void DrawMeepleRPC()
-        {
-            if (PhotonNetwork.LocalPlayer.NickName == (players.Current.getID() + 1).ToString())
-                this.photonView.RPC("DrawMeeple",
-                    RpcTarget.All);
-        }
+        #endregion
     
         public ParticleSystem drawMeepleEffect;
         [HideInInspector] public GameObject meepleMesh;
@@ -105,7 +127,7 @@ namespace Carcassonne.Controller
         {
             try
             {
-                if (gameControllerScript.PlacedTiles.GetPlacedTile(this.iMeepleAimX, this.iMeepleAimZ) == gameControllerScript.tileControllerScript.currentTile)
+                if (gameControllerScript.PlacedTiles.GetPlacedTile(this.iMeepleAimX, this.iMeepleAimZ) == state.Meeples.Current.gameObject)
                 {
                     var tile = gameControllerScript.PlacedTiles.GetPlacedTile(this.iMeepleAimX, this.iMeepleAimZ);
                     var tileScript = tile.GetComponent<TileScript>();
@@ -178,11 +200,11 @@ namespace Carcassonne.Controller
         public void FreeMeeple(MeepleScript meeple)
         {
             // If this is a meeple that has already been played on a tile (as opposed to one that is being placed).
-            if(gameControllerScript.gameState.Meeples.InPlay.Contains(meeple)){
+            if(gameControllerScript.state.Meeples.InPlay.Contains(meeple)){
                 var position = meeple.position;
                 Debug.Log($"Meeple at position {position} has been freed.");
                 // meeple.GetComponent<MeepleScript>().free = true;
-                gameControllerScript.gameState.Meeples.Placement.Remove(position);
+                gameControllerScript.state.Meeples.Placement.Remove(position);
             }
             
             meeple.transform.position = new Vector3(20, 20, 20);
@@ -223,9 +245,9 @@ namespace Carcassonne.Controller
         [PunRPC]
         public void DrawMeeple()
         {
-            if (gameControllerScript.gameState.phase == Phase.TileDown)
+            if (gameControllerScript.state.phase == Phase.TileDown)
             {
-                var meeple = players.Current.meeples.FirstOrDefault(m => !gameControllerScript.gameState.Meeples.InPlay.Contains(m));
+                var meeple = players.Current.meeples.FirstOrDefault(m => !gameControllerScript.state.Meeples.InPlay.Contains(m));
                 
                 if (meeple != null)
                 {
@@ -241,7 +263,7 @@ namespace Carcassonne.Controller
                     // meepleGameObject.transform.rotation = Quaternion.identity;
 
                     gameControllerScript.UpdateDecisionButtons(true, meepleGameObject);
-                    gameControllerScript.gameState.phase = Phase.MeepleDrawn;
+                    gameControllerScript.state.phase = Phase.MeepleDrawn;
                 }
             }
             else
@@ -253,7 +275,7 @@ namespace Carcassonne.Controller
 
         public bool IsValidPlacement(Vector2Int position, Vector2Int direction)
         {
-            var feature = gameControllerScript.gameState.Features.GetFeatureAt(position, direction);
+            var feature = gameControllerScript.state.Features.GetFeatureAt(position, direction);
             
             // Placement is invalid if not on a type of feature that can have a meeple
             if (feature == null) return false;
@@ -267,19 +289,19 @@ namespace Carcassonne.Controller
 
         public bool PlaceMeeple(Vector2Int position, Vector2Int direction)
         {
-            MeepleScript meeple = gameControllerScript.gameState.Meeples.Current;
+            MeepleScript meeple = gameControllerScript.state.Meeples.Current;
             
             // Test if Meeple placement is valid
             if (!IsValidPlacement(position, direction)) return false;
             
             // Place meeple
-            gameControllerScript.gameState.Meeples.Placement.Add(position, new PlacedMeeple(meeple, direction));
+            gameControllerScript.state.Meeples.Placement.Add(position, new PlacedMeeple(meeple, direction));
             
             // Turn off meeple collider
             Fix(meeple.gameObject);
 
             // Move game to next phase
-            gameControllerScript.gameState.phase = Phase.MeepleDown;
+            gameControllerScript.state.phase = Phase.MeepleDown;
 
             return true;
         }
@@ -292,7 +314,7 @@ namespace Carcassonne.Controller
         
         public void SetMeepleSnapPos()
         {
-            var current = gameControllerScript.gameState.Meeples.Current;
+            var current = gameControllerScript.state.Meeples.Current;
 
             if (current == null) throw new ArgumentException("Current Meeple is null.");
             
@@ -321,5 +343,17 @@ namespace Carcassonne.Controller
         //
         //     return PlaceMeeple(meepleScript, position, direction);
         // }
+
+        #region Photon
+
+        public void DrawMeepleRPC()
+        {
+            if (PhotonNetwork.LocalPlayer.NickName == (players.Current.id + 1).ToString())
+                this.photonView.RPC("DrawMeeple",
+                    RpcTarget.All);
+        }
+        
+
+        #endregion
     }
 }

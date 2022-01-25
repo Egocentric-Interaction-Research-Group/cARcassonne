@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using Carcassonne.Controller;
-using Carcassonne.Meeple;
+using Carcassonne.AI;
+using Carcassonne.Controllers;
+using Carcassonne.Meeples;
 using Carcassonne.State;
 using UnityEngine;
 
-namespace Carcassonne.Player
+namespace Carcassonne.Players
 {
 
     /// <summary>
@@ -15,7 +16,7 @@ namespace Carcassonne.Player
     {
         public int nMeeples = 7;
         
-        private int _id;
+        public int id;
         private Material mat;
         public List<MeepleScript> meeples => meepleState.MeeplesForPlayer(this);
         public GameObject photonUser => gameObject;
@@ -40,7 +41,7 @@ namespace Carcassonne.Player
         /// <param name="playerMat"></param>
         public void Setup(int id, string name, Material playerMat)
         {
-            _id = id;
+            this.id = id;
             playerName = name;
             mat = playerMat;
             mat.name = playerName;
@@ -68,10 +69,6 @@ namespace Carcassonne.Player
             
         }
 
-        public int getID()
-        {
-            return _id;
-        }
 
         public int Score
         {

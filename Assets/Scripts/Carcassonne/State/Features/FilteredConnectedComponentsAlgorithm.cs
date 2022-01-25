@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using QuikGraph;
+using QuikGraph.Algorithms;
+using QuikGraph.Algorithms.ConnectedComponents;
 using QuikGraph.Algorithms.Search;
 using QuikGraph.Algorithms.Services;
 
-namespace QuikGraph.Algorithms.ConnectedComponents
+namespace Carcassonne.State.Features
 {
     /// <summary>
     /// Algorithm that computes connected components of a graph.

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Carcassonne.Controller;
-using Carcassonne.Player;
-using Carcassonne.Tile;
+using Carcassonne.Controllers;
+using Carcassonne.Players;
+using Carcassonne.Tiles;
 using Photon.Pun;
 using UnityEngine;
 
-namespace Carcassonne.Meeple
+namespace Carcassonne.Meeples
 {
     public class MeepleScript : MonoBehaviourPun
     {
@@ -24,18 +24,18 @@ namespace Carcassonne.Meeple
 
         [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
         public Vector2Int direction => GameObject.Find("GameController").GetComponent<GameControllerScript>().
-            gameState.Meeples.Placement.Single(kvp => kvp.Value.Meeple == this).Value.Direction;
+            state.Meeples.Placement.Single(kvp => kvp.Value.Meeple == this).Value.Direction;
 
         [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
-        public Vector2Int position => GameObject.Find("GameController").GetComponent<GameControllerScript>().gameState
+        public Vector2Int position => GameObject.Find("GameController").GetComponent<GameControllerScript>().state
             .Meeples.Placement.Single(kvp => kvp.Value.Meeple == this).Key;
         
         [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
-        public Geography geography => GameObject.Find("GameController").GetComponent<GameControllerScript>().gameState.
+        public Geography geography => GameObject.Find("GameController").GetComponent<GameControllerScript>().state.
             Tiles.Played[position.x, position.y].getGeographyAt(direction);
         
         [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
-        public bool free => !GameObject.Find("GameController").GetComponent<GameControllerScript>().gameState.Meeples
+        public bool free => !GameObject.Find("GameController").GetComponent<GameControllerScript>().state.Meeples
             .InPlay.Contains(this);
 
         [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]

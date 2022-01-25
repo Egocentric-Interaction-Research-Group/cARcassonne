@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Carcassonne.Controller;
+using Carcassonne.Controllers;
 using Photon.Pun;
 using UnityEngine;
 
-namespace Carcassonne.Tile
+namespace Carcassonne.Tiles
 {
     public class TileScript : MonoBehaviourPun
     {
@@ -36,8 +36,6 @@ namespace Carcassonne.Tile
         // public int vIndex;
 
         public GameObject northCollider, southCollider, westCollider, eastCollider;
-
-        // public bool northOcupied, southOcupied, eastOcupied, westOcupied, centerOcupied; //TODO Fix Spelling
 
         /// <summary>
         ///     The list of textures. All tile instances have a reference of all the textures so it can assign it to itself
@@ -170,11 +168,6 @@ namespace Carcassonne.Tile
             return d;
         }
 
-        private void Awake()
-        {
-            UpdateMatrix();
-        }
-
         public Geography getGeographyAt(Vector2Int direction)
         {
             if (direction == Vector2Int.up) return North;
@@ -211,8 +204,6 @@ namespace Carcassonne.Tile
         {
             rotation++;
             if (rotation > 3) rotation = 0;
-            //this.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
-
             var res = North;
             North = West;
             West = South;
@@ -239,6 +230,18 @@ namespace Carcassonne.Tile
             }
         }
 
+        #region UnityEvents
+
+        private void Awake()
+        {
+            UpdateMatrix();
+        }
+
+        #endregion
+        
+        #region GameObjectManipulations
+
+        
         /// <summary>
         /// Called on Tile:Manipulation Ended (set in Unity Inspector)
         /// </summary>
@@ -270,6 +273,8 @@ namespace Carcassonne.Tile
         {
             photonView.TransferOwnership(PhotonNetwork.PlayerList[currentPlayerID]);
         }
+
+        #endregion
 
         public override string ToString()
         {

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Carcassonne.Meeple;
-using Carcassonne.Player;
+using Carcassonne.Meeples;
+using Carcassonne.Players;
 using Carcassonne.State.Features;
 using Carcassonne.Utilities;
 using JetBrains.Annotations;

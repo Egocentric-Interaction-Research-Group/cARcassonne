@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Carcassonne.Player;
+using Carcassonne.Players;
 using Carcassonne.State;
-using Carcassonne.Tile;
+using Carcassonne.Tiles;
 using UnityEngine;
 
 namespace Carcassonne.Utilities

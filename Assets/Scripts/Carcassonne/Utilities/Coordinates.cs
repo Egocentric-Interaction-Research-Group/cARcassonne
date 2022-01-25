@@ -1,3 +1,4 @@
+using Carcassonne.State;
 using UnityEngine;
 
 namespace Carcassonne.Utilities
@@ -33,7 +34,13 @@ namespace Carcassonne.Utilities
 
             return (position, direction);
         }
-        
-        
+
+
+        public static float BoardToUnityScale = 0.033f;
+
+        public static Vector3 BoardToUnity(Vector2Int board)
+        {
+            return new Vector3((board.x - GameRules.BoardSize / 2) * BoardToUnityScale, 0, (board.y - GameRules.BoardSize / 2) * BoardToUnityScale);
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Carcassonne.State;
 using UnityEngine;
 
-namespace Assets.Scripts.Carcassonne.AI
+namespace Carcassonne.AI
 {
     /// <summary>
     ///  This interfaced is used by the AIWrapper class, which acts as a middle-man between the AIPlayer-class and the data it needs and actions it can perform. 

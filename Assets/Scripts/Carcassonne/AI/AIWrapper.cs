@@ -1,21 +1,16 @@
-﻿using Carcassonne.State;
-using Carcassonne;
+﻿using Carcassonne.Controllers;
+using Carcassonne.Players;
+using Carcassonne.State;
 using UnityEngine;
-using System;
-using Carcassonne.Controller;
-using Carcassonne.Player;
 
-/// <summary>
-///  The AIWrapper acts as a middle-man between the AIPlayer-class and the data it needs and actions it can perform. It separates the AI logic from the code implementation. Its specific purpose is to 
-///  allow the exact same AIPlayer-class to be used in the real environment and the training environment. This means the AIWrapper class will look different in both these project, as the code running
-///  the game differs in the two implementations.
-///  Version 1.0
-/// </summary>
-/*
-
- */
-namespace Assets.Scripts.Carcassonne.AI
+namespace Carcassonne.AI
 {
+    /// <summary>
+    ///  The AIWrapper acts as a middle-man between the AIPlayer-class and the data it needs and actions it can perform. It separates the AI logic from the code implementation. Its specific purpose is to 
+    ///  allow the exact same AIPlayer-class to be used in the real environment and the training environment. This means the AIWrapper class will look different in both these project, as the code running
+    ///  the game differs in the two implementations.
+    ///  Version 1.0
+    /// </summary>
     public class AIWrapper : InterfaceAIWrapper
     {
         public GameControllerScript controller;
@@ -23,16 +18,17 @@ namespace Assets.Scripts.Carcassonne.AI
         public PlayerScript player;
         public int totalTiles;
         public float previousScore;
+        
         public AIWrapper()
         {
             controller = GameObject.Find("GameController").GetComponent<GameControllerScript>();
-            state = controller.gameState;
+            state = controller.state;
             totalTiles = state.Tiles.Remaining.Count;
         }
 
         public bool IsAITurn()
         {
-            return player.getID() == state.Players.Current.getID();
+            return player.id == state.Players.Current.id;
         }
 
         public void PickUpTile()
@@ -67,7 +63,7 @@ namespace Assets.Scripts.Carcassonne.AI
 
         public void PlaceTile(int x, int z)
         {
-            controller.iTileAim = new Vector2Int(x, z);
+            controller.tileControllerScript.position = new Vector2Int(x, z);
             controller.ConfirmPlacementRPC();
         }
 
@@ -115,7 +111,7 @@ namespace Assets.Scripts.Carcassonne.AI
         }
         public int GetMaxBoardSize()
         {
-            return state.Tiles.Played.GetLength(0);
+            return GameRules.BoardSize;
         }
 
         public object[,] GetTiles()
@@ -175,10 +171,10 @@ namespace Assets.Scripts.Carcassonne.AI
 
         public float GetScoreChange()
         {
-            if ((float)player.score != previousScore)
-            {
-                Debug.Log("Player " + player.getID() + " score changed from " + previousScore + "p to " + player.score + "p");
-            }
+            // if ((float)player.score != previousScore)
+            // {
+            //     Debug.Log("Player " + player.id + " score changed from " + previousScore + "p to " + player.score + "p");
+            // }
             float scoreChange = (float)player.score - previousScore;
             previousScore = (float)player.score;
             return scoreChange;
