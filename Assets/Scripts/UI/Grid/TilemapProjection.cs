@@ -2,6 +2,7 @@ using System;
 using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 
 namespace UI.Grid
@@ -41,7 +42,6 @@ namespace UI.Grid
                 
                 var newCell = tilemap.WorldToCell(raycast.point);
                 tilemap.SetTile(newCell, tile);
-                // tilemap.RefreshAllTiles();
                 
                 tile.transform = Matrix4x4.Scale(tileScale);
             }

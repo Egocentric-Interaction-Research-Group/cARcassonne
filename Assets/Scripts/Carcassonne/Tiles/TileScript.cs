@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Carcassonne.Controllers;
 using Photon.Pun;
+using UI.Grid;
 using UnityEngine;
 
 namespace Carcassonne.Tiles
@@ -280,6 +281,26 @@ namespace Carcassonne.Tiles
         {
             return $"{Up.ToString()[0]}{Right.ToString()[0]}{Down.ToString()[0]}{Left.ToString()[0]}";
         }
+
+        #region Debug
+
+        public void DebugRotate(int rotation)
+        {
+            Debug.Log($"Rotated Tile {rotation}");
+        }
+        
+        public void DebugCell(Vector2Int cell)
+        {
+            Debug.Log($"Tile cell changed {cell}");
+        }
+        
+        public void DebugPlace(Vector2Int cell, int rotation)
+        {
+            Debug.Log($"Placed Tile {cell}, {rotation}");
+        }
+        
+
+        #endregion
     }
     
 
