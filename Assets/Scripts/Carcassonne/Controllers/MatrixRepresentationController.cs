@@ -3,12 +3,13 @@ using System.IO;
 using System.Text;
 using Carcassonne.State;
 using Newtonsoft.Json;
+using Photon.Pun;
 using UnityEditor.Scripting.Python;
 using UnityEngine;
 
 namespace Carcassonne.Controllers
 {
-    public class MatrixRepresentationController
+    public class MatrixRepresentationController : MonoBehaviourPun
     {   
         public GameControllerScript GameController;
         private GameState state => GameController.state;

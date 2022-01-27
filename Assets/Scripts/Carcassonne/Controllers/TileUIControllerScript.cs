@@ -1,5 +1,7 @@
+using System;
 using Carcassonne.State;
 using Carcassonne.Tiles;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Carcassonne.Controllers
@@ -8,9 +10,10 @@ namespace Carcassonne.Controllers
     /// Maintains the UI of a tile in play. Responsible for maintaining the position, rotation, etc. of a tile in the
     /// Unity UI.
     /// </summary>
-    public class TileUIControllerScript
+    public class TileUIControllerScript : MonoBehaviourPun
     {
-        private readonly GameControllerScript gameControllerScript;
+        [SerializeField]
+        internal GameControllerScript gameControllerScript;
         
         /// <summary>
         /// Position of the current tile in Unity coordinates
@@ -18,11 +21,6 @@ namespace Carcassonne.Controllers
         public Vector2 position = new Vector2();
 
         private TileScript tile => gameControllerScript.state.Tiles.Current;
-
-        public TileUIControllerScript(GameControllerScript gameControllerScript)
-        {
-            this.gameControllerScript = gameControllerScript;
-        }
 
         public Vector2 RaycastPosition()
         {

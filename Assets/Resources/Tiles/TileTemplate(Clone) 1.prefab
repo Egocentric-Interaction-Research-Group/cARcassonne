@@ -106,17 +106,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   rotation: 0
-  meeple: 0
-  vIndex: 0
   northCollider: {fileID: 1148376720355062410}
   southCollider: {fileID: 2285857490070998162}
   westCollider: {fileID: 8905052574983810760}
   eastCollider: {fileID: 4331095629211377180}
-  northOcupied: 0
-  southOcupied: 0
-  eastOcupied: 0
-  westOcupied: 0
-  centerOcupied: 0
   textures:
   - {fileID: 2800000, guid: 4c10d4b8e16436149b160a7c8b259b02, type: 3}
   - {fileID: 2800000, guid: a21f7b02632bdd840accc678630d7a89, type: 3}
@@ -201,8 +194,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 4409884983241091243, guid: 87149045a2f36004a8ad321cba62ceb3,
-    type: 3}
+  constraintsManager: {fileID: 7397718152356828724}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:

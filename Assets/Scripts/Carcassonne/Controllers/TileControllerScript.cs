@@ -3,6 +3,7 @@ using Carcassonne.State;
 using Carcassonne.Utilities;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -16,6 +17,9 @@ namespace Carcassonne.Controllers
     {
         [SerializeField]
         internal GameControllerScript gameControllerScript;
+
+        [SerializeField]
+        public Tilemap tilemap;
         
         public GameState state;
         public TileState tiles => state.Tiles;
