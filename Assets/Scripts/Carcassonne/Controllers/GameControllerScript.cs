@@ -48,7 +48,7 @@ namespace Carcassonne.Controllers
 
         //private int xs, zs;
 
-        private float aimX = 0, aimZ = 0;
+        // private float aimX = 0, aimZ = 0;
 
         private bool cityIsFinished;
 
@@ -177,41 +177,26 @@ namespace Carcassonne.Controllers
 
                 if (keyboard.bKey.wasReleasedThisFrame) GameOver();
 
-                // Keyboard based movements.
-                var direction = Vector2Int.zero;
-                if (keyboard.jKey.wasPressedThisFrame) direction += Vector2Int.left;
-                if (keyboard.lKey.wasPressedThisFrame) direction += Vector2Int.right;
-                if (keyboard.iKey.wasPressedThisFrame) direction += Vector2Int.up;
-                if (keyboard.kKey.wasPressedThisFrame) direction += Vector2Int.down;
-
-                if (state.phase == Phase.TileDrawn & direction != Vector2Int.zero)
-                {
-                    Debug.Log($"Moving the current tile in {direction}. Sending RPC.");
-                    tileControllerScript.MoveTileRPC(direction);
-                } /*else if (gameState.phase == Phase.MeepleDrawn)
-                {
-                    meepleControllerScript.MoveMeepleRPC(direction);
-                }*/
             }
         }
 
         // Update is called once per frame
         private void FixedUpdate()
         {
-            // I think this creates problems for meeples. This is the wrong check. 
-            if (state.Tiles.Current != null)
-            {
-                tileUIController.position = tileUIController.RaycastPosition();
-                tileControllerScript.position = tileUIController.BoardPosition(tileUIController.position);
-
-                if (placedTiles.TilePlacementIsValid(state.Tiles.Current, tileControllerScript.position.x, tileControllerScript.position.y))
-                    ChangeConfirmButtonApperance(true);
-                else
-                    ChangeConfirmButtonApperance(false);
-
-                SnapPosition = Coordinates.BoardToUnity(tileControllerScript.position) + stackScript.basePositionTransform.localPosition;
-                SnapPosition.y = state.Tiles.Current.transform.localPosition.y;
-            }
+            // // I think this creates problems for meeples. This is the wrong check. 
+            // if (state.Tiles.Current != null)
+            // {
+            //     tileUIController.position = tileUIController.RaycastPosition();
+            //     tileControllerScript.position = tileUIController.BoardPosition(tileUIController.position);
+            //
+            //     if (placedTiles.TilePlacementIsValid(state.Tiles.Current, tileControllerScript.position.x, tileControllerScript.position.y))
+            //         ChangeConfirmButtonApperance(true);
+            //     else
+            //         ChangeConfirmButtonApperance(false);
+            //
+            //     SnapPosition = Coordinates.BoardToUnity(tileControllerScript.position) + stackScript.basePositionTransform.localPosition;
+            //     SnapPosition.y = state.Tiles.Current.transform.localPosition.y;
+            // }
 
             if (startGame)
             {
@@ -441,11 +426,11 @@ namespace Carcassonne.Controllers
         public void ConfirmPlacement()
         {
             //The raycast should only happen for base tile and human players. AI does not move the tile. Why this tile raycast call was done outside phase check I dont know, but I left it there.
-            if (currentPlayer == null || !currentPlayer.controlledByAI) 
-            {
-                tileUIController.position = tileUIController.RaycastPosition();
-                tileControllerScript.position = tileUIController.BoardPosition(tileUIController.position);
-            }
+            // if (currentPlayer == null || !currentPlayer.controlledByAI) 
+            // {
+            //     tileUIController.position = tileUIController.RaycastPosition();
+            //     tileControllerScript.position = tileUIController.BoardPosition(tileUIController.position);
+            // }
             
             if (state.phase == Phase.TileDrawn)
             {
@@ -657,11 +642,11 @@ namespace Carcassonne.Controllers
 
             //}
         }
-
-        public void SetCurrentTileSnapPosition()
-        {
-            state.Tiles.Current.gameObject.transform.localPosition = SnapPosition;
-        }
+        //
+        // public void SetCurrentTileSnapPosition()
+        // {
+        //     state.Tiles.Current.gameObject.transform.localPosition = SnapPosition;
+        // }
 
 
         public void UpdateDecisionButtons(bool confirm, GameObject tileOrMeeple)

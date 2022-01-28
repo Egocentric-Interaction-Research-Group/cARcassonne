@@ -9,6 +9,8 @@ namespace UI.Grid
 {
     /// <summary>
     /// Maps a manipulated object to a tilemap grid below.
+    ///
+    /// THIS CLASS IS NOT USED RIGHT NOW.
     /// </summary>
     public class TilemapProjection : MonoBehaviourPun
     {

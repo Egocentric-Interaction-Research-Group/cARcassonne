@@ -68,15 +68,6 @@ namespace Carcassonne.Controllers
             tiles.Current.Rotate(0);
         }
 
-        [PunRPC]
-        public void MoveTile(Vector3 direction)
-        {
-            tiles.Current.transform.position += direction;
-            
-            gameControllerScript.tileUIController.position = gameControllerScript.tileUIController.RaycastPosition();
-            gameControllerScript.tileControllerScript.position = gameControllerScript.tileUIController.BoardPosition(gameControllerScript.tileUIController.position);
-        }
-
         #region Photon
         /// <summary>
         /// Called on Tile:Manipulation Started (set in Unity Inspector)
@@ -102,17 +93,6 @@ namespace Carcassonne.Controllers
         {
             if (gameControllerScript.CurrentPlayerIsLocal)
                 photonView.RPC("RotateTile", RpcTarget.All);
-        }
-
-        /// <summary>
-        /// Move tile according to the direction.
-        /// </summary>
-        /// <param name="direction">Direction to move tile in tile coordinates.</param>
-        public void MoveTileRPC(Vector2Int direction)
-        {
-            var boardDirection = new Vector3(direction.x, 0, direction.y) * Coordinates.BoardToUnityScale;
-            Debug.Log($"Moving to {direction} ({boardDirection})");
-            photonView.RPC("MoveTile", RpcTarget.All, boardDirection);
         }
         
         public void RotateDegreesRPC()

@@ -18,7 +18,7 @@ namespace Carcassonne.Controllers
         /// <summary>
         /// Position of the current tile in Unity coordinates
         /// </summary>
-        public Vector2 position = new Vector2();
+        // public Vector2 position = new Vector2();
 
         private TileScript tile => gameControllerScript.state.Tiles.Current;
 

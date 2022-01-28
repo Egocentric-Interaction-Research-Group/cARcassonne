@@ -265,10 +265,10 @@ namespace Carcassonne.Tiles
         /// <summary>
         /// Called on Tile:Manipulation Ended (set in Unity Inspector)
         /// </summary>
-        public void SetSnapPosForCurrentTile()
-        {
-            GameObject.Find("GameController").GetComponent<GameControllerScript>().SetCurrentTileSnapPosition();
-        }
+        // public void SetSnapPosForCurrentTile()
+        // {
+        //     GameObject.Find("GameController").GetComponent<GameControllerScript>().SetCurrentTileSnapPosition();
+        // }
 
         public void transferTileOwnership(int currentPlayerID)
         {
