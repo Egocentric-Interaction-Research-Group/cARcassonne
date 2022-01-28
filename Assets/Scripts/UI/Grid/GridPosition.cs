@@ -41,7 +41,7 @@ namespace UI.Grid
         public void MoveTo(Vector2 direction)
         {
             cell = Vector2Int.RoundToInt(direction);
-            transform.position = grid.CellToWorld((Vector3Int) cell);
+            transform.position = grid.GetCellCenterWorld((Vector3Int) cell);
             
             OnChangeCell.Invoke(cell);
         }
