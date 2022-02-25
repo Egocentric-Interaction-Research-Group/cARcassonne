@@ -202,6 +202,7 @@ GameObject:
   - component: {fileID: 6218267279869655303}
   - component: {fileID: 6218267279869655302}
   - component: {fileID: 6218267279869655301}
+  - component: {fileID: 1065623262941548343}
   - component: {fileID: 6499101751387526074}
   m_Layer: 0
   m_Name: PhotonUser
@@ -237,6 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72285be076877864eb84ddea73a678a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  username: 
 --- !u!114 &6218267279869655302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,6 +275,22 @@ MonoBehaviour:
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1065623262941548343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6218267279869655300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c25afe90b9394f1f890d5523484fcdbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  name: 
+  isAI: 0
+  score: 0
 --- !u!114 &6499101751387526074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,12 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfdfbde6308e13642b8203f26237f09f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nMeeples: 7
-  id: 0
-  score: 0
   ai: {fileID: 3647413094652461655, guid: 3dc100a985eddd14597fc5aff3893402, type: 3}
-  controlledByAI: 0
-  gameState: {fileID: 11400000, guid: 484eca7d253584fb2bc2132eea5905f4, type: 2}
 --- !u!1 &6218267280101589944
 GameObject:
   m_ObjectHideFlags: 0

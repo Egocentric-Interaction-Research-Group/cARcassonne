@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Carcassonne.Meeples;
-using Carcassonne.Tiles;
-using Carcassonne.Utilities;
 using JetBrains.Annotations;
 using QuikGraph;
 using QuikGraph.Algorithms;
 using UnityEngine;
-using WebSocketSharp;
+using Carcassonne.Models;
 
 namespace Carcassonne.State.Features
 {
@@ -38,22 +35,22 @@ namespace Carcassonne.State.Features
     
     public class SubTile : IComparable<SubTile>
         {
-            public TileScript tile;
+            public Tile tile;
             public Vector2Int location;
             public Geography geography;
 
             /// <summary>
             /// Create a new SubTile
             /// </summary>
-            /// <param name="tile">Reference to the TileScript</param>
+            /// <param name="tile">Reference to the Tile</param>
             /// <param name="tilePosition">Position of the tile in board matrix space</param>
             /// <param name="direction">Direction of the SubTile space. Valid arguments are Vector2Int.[up|down|left|right|zero]</param>
-            /// <param name="meeple">Reference to MeepleScript, if Meeple is present.</param>
-            public SubTile(TileScript tile, Vector2Int tilePosition, Vector2Int direction, [CanBeNull] MeepleScript meeple = null)
+            /// <param name="meeple">Reference to Meeple, if Meeple is present.</param>
+            public SubTile(Tile tile, Vector2Int tilePosition, Vector2Int direction, [CanBeNull] Meeple meeple = null)
             {
                 this.tile = tile;
                 this.location = Coordinates.TileToSubTile(tilePosition, direction); // The centre of the tile is at the tile's position + [1,1] to leave room for the -1 movement.
-                this.geography = tile.getGeographyAt(direction);
+                this.geography = tile.GetGeographyAt(direction);
                 // Debug.Log($"GEOGRAPHY 44: {tile} @ {direction} = {geography}");
             }
 
@@ -128,7 +125,7 @@ namespace Carcassonne.State.Features
         /// </summary>
         /// <param name="tile"></param>
         /// <returns></returns>
-        public static BoardGraph FromTile(TileScript tile, Vector2Int location)
+        public static BoardGraph FromTile(Tile tile, Vector2Int location)
         {
             BoardGraph g = new BoardGraph();
     
@@ -142,7 +139,7 @@ namespace Carcassonne.State.Features
             }
             
             // Add a centre vertex IF it is a cloister
-            if (tile.Center == Geography.Cloister)
+            if (tile.Center != null && tile.Center == Geography.Cloister)
             {
                 var direction = Vector2Int.zero;
                 g = AddAndConnectSubTile(tile, location, direction, g, null);
@@ -164,7 +161,7 @@ namespace Carcassonne.State.Features
             return g;
         }
 
-        private static BoardGraph AddAndConnectSubTile(TileScript tile, Vector2Int location, Vector2Int direction,
+        private static BoardGraph AddAndConnectSubTile(Tile tile, Vector2Int location, Vector2Int direction,
             BoardGraph g, Geography? geography)
         {
             SubTile st = new SubTile(tile, location, direction);

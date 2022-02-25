@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Carcassonne.Tiles;
+using Carcassonne.Models;
 using UnityEngine;
 using QuikGraph;
-using QuikGraph.Algorithms.ConnectedComponents;
 
 namespace Carcassonne.State.Features
 {

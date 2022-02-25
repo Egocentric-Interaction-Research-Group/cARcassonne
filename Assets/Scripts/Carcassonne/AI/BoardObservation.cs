@@ -7,8 +7,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Carcassonne;
-using Carcassonne.Meeples;
 using Carcassonne.State;
 using Carcassonne.Tiles;
 using Unity.MLAgents.Sensors;
@@ -66,7 +64,7 @@ namespace Carcassonne.AI
             Dictionary<Vector2Int, int> mappedMeeps = new Dictionary<Vector2Int, int>(allMeeps.Count);
             foreach (var meep in allMeeps)
             {
-                if (meep.free)
+                if (wrapper.state.Meeples.IsFree(meep))
                     continue;
 
                 int meepleData = 0x0;
@@ -109,7 +107,7 @@ namespace Carcassonne.AI
                         continue;
                     }
 
-                    float obs = tile.id + tile.rotation * 100; // Note that tile ids must not exceed 99.
+                    float obs = tile.tile.id + tile.rotation * 100; // Note that tile ids must not exceed 99.
                     sensor.AddObservation(obs);
 
                     // Add meeple data as a seperate observation.
@@ -165,7 +163,7 @@ namespace Carcassonne.AI
                     const int bitMask2 = 0x03; // 2-bit mask.
 
                     int packedData = 0x0;
-                    packedData |= (tile.id & bitMask6);             // Tile id       = 6 bits
+                    packedData |= (tile.tile.id & bitMask6);             // Tile id       = 6 bits
                     packedData |= (tile.rotation & bitMask2) << 6;  // Tile rotation = 2 bits
                     packedData |= (meepleData & bitMask7) << 8;     // Meeple data   = 7 bits
 
@@ -212,11 +210,11 @@ namespace Carcassonne.AI
 
                     const int bitMask4 = 0xF; // 4-bit mask.
 
-                    tileData |= ((int)tile.Center & bitMask4);
-                    tileData |= (((int)tile.East & bitMask4) << 4);
-                    tileData |= (((int)tile.North & bitMask4) << 8);
-                    tileData |= (((int)tile.West & bitMask4) << 12);
-                    tileData |= (((int)tile.South & bitMask4) << 16);
+                    tileData |= ((int)tile.tile.Center & bitMask4);
+                    tileData |= (((int)tile.tile.East & bitMask4) << 4);
+                    tileData |= (((int)tile.tile.North & bitMask4) << 8);
+                    tileData |= (((int)tile.tile.West & bitMask4) << 12);
+                    tileData |= (((int)tile.tile.South & bitMask4) << 16);
 
                     // Load the meeple data into "meepleData" if there is a meeple on this tile.
                     if (!meepleMap.TryGetValue(new Vector2Int(col, row), out meepleData))
@@ -251,12 +249,13 @@ namespace Carcassonne.AI
                 if (iPosition == null) position = -Vector2.one;
                 else position = (Vector2)iPosition / (float)GameRules.BoardSize;
             
-                sensor.AddObservation(tile.rotation / 3.0f); // Rotation Information
+                sensor.AddObservation(tile.Rotations / 3.0f); // Rotation Information
                 sensor.AddObservation(position); // Position information
             }
 
             // Meeple locations in subtile coordinates
-            var subtileLocations = wrapper.state.Meeples.SubTilePlacement;
+            throw new NotImplementedException();
+            var subtileLocations = wrapper.state.Meeples.Placement;//wrapper.state.Meeples.SubTilePlacement;
 
             foreach (var player in wrapper.state.Players.All)
             {

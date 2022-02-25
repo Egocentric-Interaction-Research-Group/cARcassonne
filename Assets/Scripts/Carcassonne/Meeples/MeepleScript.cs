@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq;
+using Carcassonne.AR;
+using Carcassonne.Models;
 using Carcassonne.Controllers;
 using Carcassonne.Players;
 using Carcassonne.Tiles;
+using MRTK.Tutorials.MultiUserCapabilities;
 using Photon.Pun;
 using UnityEngine;
 
@@ -18,39 +21,41 @@ namespace Carcassonne.Meeples
         //
         // public int x, z;
 
-        #region Legacy
-
-        private const bool LegacyDepricationError = false;
-
-        [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
-        public Vector2Int direction => GameObject.Find("GameController").GetComponent<GameControllerScript>().
-            state.Meeples.Placement.Single(kvp => kvp.Value.Meeple == this).Value.Direction;
-
-        [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
-        public Vector2Int position => GameObject.Find("GameController").GetComponent<GameControllerScript>().state
-            .Meeples.Placement.Single(kvp => kvp.Value.Meeple == this).Key;
+        // #region Legacy
+        //
+        // private const bool LegacyDepricationError = false;
+        //
+        // // [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
+        // // public Vector2Int direction => GameObject.Find("GameController").GetComponent<GameControllerScript>().gameController.
+        // //     state.Meeples.Placement.Single(kvp => kvp.Value.Meeple == this).Value.Direction;
+        // //
+        // // [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
+        // // public Vector2Int position => GameObject.Find("GameController").GetComponent<GameControllerScript>().gameController.state
+        // //     .Meeples.Placement.Single(kvp => kvp.Value.Meeple == this).Key;
+        //
+        // // [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
+        // // public Geography geography => GameObject.Find("GameController").GetComponent<GameControllerScript>().gameController.state.
+        // //     Tiles.Played[position.x, position.y].GetGeographyAt(direction);
+        // //
+        // // [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
+        // // public bool free => !GameObject.Find("GameController").GetComponent<GameControllerScript>().gameController.state.Meeples
+        // //     .InPlay.Contains(meeple);
+        //
+        // // [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
+        // // public int x => position.x;
+        // // public int z=> position.y;
+        //
+        // #endregion
         
-        [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
-        public Geography geography => GameObject.Find("GameController").GetComponent<GameControllerScript>().state.
-            Tiles.Played[position.x, position.y].getGeographyAt(direction);
-        
-        [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
-        public bool free => !GameObject.Find("GameController").GetComponent<GameControllerScript>().state.Meeples
-            .InPlay.Contains(this);
 
-        [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
-        public int x => position.x;
-        public int z=> position.y;
-
-        #endregion
-        
-
-        private PlayerScript _player;
-        public PlayerScript player
+        private Player _player;
+        public Player player
         {
             get => _player;
             set => _player = SetPlayer(value);
         }
+
+        public Meeple meeple => GetComponent<Meeple>();
 
         private void Start()
         {
@@ -60,10 +65,10 @@ namespace Carcassonne.Meeples
             // id = 1;
         }
 
-        public void OnSnapMeeple()
-        {
-            GameObject.Find("GameController").GetComponent<MeepleControllerScript>().SetMeepleSnapPos();
-        }
+        // public void OnSnapMeeple()
+        // {
+        //     GameObject.Find("GameController").GetComponent<MeepleControllerScript>().SetMeepleSnapPos();
+        // }
         
         /// <summary>
         /// Sets a meeple as being placed at a specific point.
@@ -108,18 +113,27 @@ namespace Carcassonne.Meeples
         // }
 
         //TODO Looks like this could be problematic for more than 2 users. Does this ownership mean meeple possession?
-        private PlayerScript SetPlayer(PlayerScript p)
+        private Player SetPlayer(Player p)
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
-                if (tag == "Meeple 1")
-                {
-                    Debug.Log("PLATER: " + p.photonUser.name);
-                    // Debug.Log("ÄGARE INNAN: " + photonView.Owner.NickName);
-                    photonView.TransferOwnership(PhotonNetwork.PlayerList[1]);
-                    // Debug.Log("ÄGARE EFTER: " + photonView.Owner.NickName);
-                }
-
+            // if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
+            //     if (tag == "Meeple 1")
+            //     {
+            //         // Debug.Log("PLATER: " + p.Name);
+            //         // Debug.Log("ÄGARE INNAN: " + photonView.Owner.NickName);
+            //         photonView.TransferOwnership(PhotonNetwork.PlayerList[1]);
+            //         // Debug.Log("ÄGARE EFTER: " + photonView.Owner.NickName);
+            //     }
+            //
+            // return p;
+            
+            photonView.TransferOwnership(p.GetComponent<PhotonUser>().player);
+            GetComponent<Meeple>().player = p;
             return p;
+        }
+
+        public static MeepleScript Get(Meeple m)
+        {
+            return m.GetComponent<MeepleScript>();
         }
 
     }

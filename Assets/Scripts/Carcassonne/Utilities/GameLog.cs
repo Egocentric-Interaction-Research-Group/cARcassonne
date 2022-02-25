@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Carcassonne.Models;
 using Carcassonne.Players;
 using Carcassonne.State;
 using Carcassonne.Tiles;
@@ -14,10 +16,10 @@ namespace Carcassonne.Utilities
     [System.Serializable]
     public struct Turn
     {
-        public PlayerScript Player;
-        public TileScript Tile;
-        public Vector2 Location;
-        public Vector2Int? MeeplePlacement; // The `?` means that it can be null, if no Meeple was placed.
+        public Player Player;
+        public Tile Tile;
+        public Vector2Int Cell;
+        public Vector2Int? MeeplePlacement; // The position in Meeple space
         
         public bool MeeplePlayed => MeeplePlacement != null;
     }
@@ -27,25 +29,27 @@ namespace Carcassonne.Utilities
     /// </summary>
     /// <remarks>Turns are stored in a <see cref="Stack{T}"/> which is built as the game progresses.</remarks>
     [System.Serializable]
-    [CreateAssetMenu(fileName = "GameLog", menuName = "GameLog")]
-    public class GameLog : ScriptableObject
+    // [CreateAssetMenu(fileName = "GameLog", menuName = "GameLog")]
+    public class GameLog : MonoBehaviour
     {
         public Stack<Turn> Turns = new Stack<Turn>();
         public GameState state;
+        public GridMapper grid => GetComponent<GridMapper>();
 
         public void LogTurn()
         {
+            var position = state.Tiles.Placement.Single(kvp => kvp.Value == state.Tiles.Current).Key;
             var t = new Turn
             {
                 Player = state.Players.Current,
                 Tile = state.Tiles.Current,
-                Location = state.Tiles.lastPlayedPosition,
-                MeeplePlacement = state.Meeples.Current?.direction
+                Cell = position,
+                MeeplePlacement = state.Meeples.Placement.Keys.SingleOrDefault(mCell => grid.MeepleToTile(mCell) == position)
             };
 
             Turns.Push(t);
             
-            Debug.Log($"Turn {Turns.Count}: Player {t.Player.name} | Tile ID {t.Tile.id}, Rotation ({t.Tile.rotation}), Position: {t.Location.x},{t.Location.y} | Meeple: {t.MeeplePlacement}");
+            Debug.Log($"Turn {Turns.Count}: Player {t.Player.name} | Tile ID {t.Tile.id}, Rotation ({t.Tile.Rotations}), Position: {t.Cell.x},{t.Cell.y} | Meeple: {t.MeeplePlacement}");
         }
         
         private void OnEnable()

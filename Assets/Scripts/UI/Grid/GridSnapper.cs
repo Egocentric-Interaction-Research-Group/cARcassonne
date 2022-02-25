@@ -1,3 +1,4 @@
+using Carcassonne.Models;
 using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;
 using UnityEngine;
@@ -19,12 +20,6 @@ namespace UI.Grid
             set { position.cell = value; }
         }
 
-        private int rotation
-        {
-            get { return position.rotation; }
-            set { position.rotation = value; }
-        }
-
         public RaycastHit raycast;
         public LayerMask tableLayerMask;
 
@@ -32,6 +27,11 @@ namespace UI.Grid
 
         private void Start()
         {
+            if (manipulator == null)
+            {
+                manipulator = GetComponent<ObjectManipulator>();
+            }
+            
             manipulator.OnManipulationStarted.AddListener(StartProjection);
             manipulator.OnManipulationEnded.AddListener(StopProjection);
 
@@ -48,9 +48,6 @@ namespace UI.Grid
 
                 // Update Cell Snap
                 UpdateCell();
-
-                // Update Rotation Snap
-                UpdateRotation();
             }
         }
 
@@ -64,15 +61,13 @@ namespace UI.Grid
             IsActive = false;
 
             UpdateCell();
-            UpdateRotation();
             
             position.MoveToRPC(cell);
-            // position.RotateToRPC(rotation);
-            position.OnPlace.Invoke(cell, rotation);
+            position.OnPlace.Invoke(cell);
         }
 
         /// <summary>
-        /// Update the cell snapping of a tile
+        /// Update the snapped cell position of a tile as the tile is being manipulated. 
         /// </summary>
         private void UpdateCell()
         {
@@ -83,22 +78,6 @@ namespace UI.Grid
             if (cell != oldCell)
             {
                 position.OnChangeCell.Invoke(cell);
-            }
-        }
-
-        private void UpdateRotation()
-        {
-            var oldRotation = rotation;
-            var angles = transform.localEulerAngles;
-
-            rotation = (int)(angles.y) / 90;
-            if (angles.y % 90 > 45)
-                rotation += 1;
-            rotation = (rotation % 4) * 90;
-
-            if (rotation != oldRotation)
-            {
-                position.OnChangeRotation.Invoke(rotation);
             }
         }
     }

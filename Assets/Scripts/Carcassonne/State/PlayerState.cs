@@ -1,22 +1,26 @@
 using System.Collections.Generic;
-using Carcassonne.Meeples;
-using Carcassonne.Players;
-using UnityEngine;
+using Carcassonne.Models;
 
 namespace Carcassonne.State
 {
     public class PlayerState
     {
-        public List<PlayerScript> All = new List<PlayerScript>();
-        public PlayerScript Current;
-        
-        // Derived Properties
-        public List<MeepleScript> Meeples => new List<MeepleScript>();
+        public IList<Player> All = new List<Player>();
+        public Player Current => All[_currentIndex];
 
+        private int _currentIndex;
+        
         public PlayerState()
         {
             All.Clear();
-            Current = null;
+            _currentIndex = -1;
         }
+
+        public Player Next()
+        {
+            _currentIndex = (_currentIndex + 1) % All.Count;
+            return Current;
+        }
+        
     }
 }

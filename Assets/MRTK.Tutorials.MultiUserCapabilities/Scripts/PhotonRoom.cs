@@ -86,14 +86,14 @@ namespace MRTK.Tutorials.MultiUserCapabilities
         {
             CreatPlayer();
 
-            if (!PhotonNetwork.IsMasterClient)
-            {
-                return;
-            }
-            else
-            {
+            // if (!PhotonNetwork.IsMasterClient)
+            // {
+            //     return;
+            // }
+            // else
+            // {
                 CreateInteractableObjects();
-            }
+            // }
 
             if (TableAnchor.Instance != null)
             {

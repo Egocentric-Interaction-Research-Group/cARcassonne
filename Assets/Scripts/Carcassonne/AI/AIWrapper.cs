@@ -1,6 +1,8 @@
-﻿using Carcassonne.Controllers;
+﻿using Carcassonne.AR;
+using Carcassonne.Controllers;
 using Carcassonne.Players;
 using Carcassonne.State;
+using UI.Grid;
 using UnityEngine;
 
 namespace Carcassonne.AI
@@ -19,26 +21,44 @@ namespace Carcassonne.AI
         public int totalTiles;
         public float previousScore;
         
+        public MeepleController meepleController;
+        
         public AIWrapper()
         {
             controller = GameObject.Find("GameController").GetComponent<GameControllerScript>();
-            state = controller.state;
+            state = controller.gameController.state;
             totalTiles = state.Tiles.Remaining.Count;
         }
+
+        #region Game Actions
+
+        public void PickUpTile()
+        {
+            controller.tileController.Draw();
+        }
+        
+        public void DrawMeeple()
+        {
+            controller.meepleControllerScript.DrawMeepleRPC();
+        }
+        
+        public void EndTurn()
+        {
+            controller.EndTurnRPC();
+        }
+        
+        public void Reset()
+        {
+            //In the training environment, this resets the game stage entirely before the next training session. Serves no purpose here except to make the code function.
+        }
+
+        #endregion
+        
+        #region Game Info
 
         public bool IsAITurn()
         {
             return player.id == state.Players.Current.id;
-        }
-
-        public void PickUpTile()
-        {
-            controller.PickupTileRPC();
-        }
-
-        public int GetCurrentTileId()
-        {
-            return state.Tiles.Current.id;
         }
 
         public Phase GetGamePhase()
@@ -46,26 +66,97 @@ namespace Carcassonne.AI
             return state.phase;
         }
 
-        public void EndTurn()
+        public int GetMaxBoardSize()
         {
-            controller.EndTurnRPC();
+            return GameRules.BoardSize;
         }
 
-        public void DrawMeeple()
+        public int GetMinX()
         {
-            controller.meepleControllerScript.DrawMeepleRPC();
+            return state.Tiles.Limits.xMin;
         }
+
+        public int GetMaxX()
+        {
+            return state.Tiles.Limits.xMax;
+        }
+
+        public int GetMinZ()
+        {
+            return state.Tiles.Limits.yMin;
+        }
+
+        public int GetMaxZ()
+        {
+            return state.Tiles.Limits.yMax;
+        }
+
+        public float GetScore()
+        {
+            return (float)player.score;
+        }
+
+        public float GetScoreChange()
+        {
+            // if ((float)player.score != previousScore)
+            // {
+            //     Debug.Log("Player " + player.id + " score changed from " + previousScore + "p to " + player.score + "p");
+            // }
+            float scoreChange = (float)player.score - previousScore;
+            previousScore = (float)player.score;
+            return scoreChange;
+        }
+
+        #endregion
+        
+        #region Tile Actions
 
         public void RotateTile()
         {
-            controller.tileControllerScript.RotateTileRPC();
+            GridOrientation gp = state.Tiles.Current.GetComponent<GridOrientation>();
+            gp.OrientToRPC(gp.direction + 90);
         }
 
         public void PlaceTile(int x, int z)
         {
-            controller.tileControllerScript.position = new Vector2Int(x, z);
+            controller.tileController.position = new Vector2Int(x, z);
             controller.ConfirmPlacementRPC();
         }
+        
+        #endregion
+
+        #region Tile Info
+
+        public int GetCurrentTileId()
+        {
+            return state.Tiles.Current.id;
+        }
+        
+        
+        public object[,] GetTiles()
+        {
+            return state.Tiles.Played;
+        }
+
+        public int GetNumberOfPlacedTiles()
+        {
+            return totalTiles - state.Tiles.Remaining.Count;
+        }
+        
+        public int GetTotalTiles()
+        {
+            return totalTiles;
+        }
+        
+        public int GetMaxTileId()
+        {
+            //This needs a better solution if expansions are added. This number has just been manually taken from the game scene.
+            return 24;
+        }
+
+        #endregion
+
+        #region Meeple Actions
 
         public void PlaceMeeple(Vector2Int meepleDirection)
         {
@@ -92,8 +183,8 @@ namespace Carcassonne.AI
                 meepleZ = -0.011f;
             }
 
-            controller.meepleControllerScript.aiMeepleX = meepleX;
-            controller.meepleControllerScript.aiMeepleZ = meepleZ;
+            // controller.meepleControllerScript.aiMeepleX = meepleX;
+            // controller.meepleControllerScript.aiMeepleZ = meepleZ;
             controller.ConfirmPlacementRPC();
         }
 
@@ -101,34 +192,14 @@ namespace Carcassonne.AI
         {
             //This is only used as a workaround for a current bug, where a meeple cannot be properly placed on a tile (e.g. when someone occupies the road/city that it connects to)
             //but the game does not recognize this as a faulty placement either, and threfore does not return the meeple.
-            controller.meepleControllerScript.FreeMeeple(state.Meeples.Current);
+            meepleController.Free(state.Meeples.Current);
         }
 
-        public int GetMaxTileId()
-        {
-            //This needs a better solution if expansions are added. This number has just been manually taken from the game scene.
-            return 24;
-        }
-        public int GetMaxBoardSize()
-        {
-            return GameRules.BoardSize;
-        }
+        #endregion
 
-        public object[,] GetTiles()
-        {
-            return state.Tiles.Played;
-        }
+        #region Meeple
 
-        public int GetNumberOfPlacedTiles()
-        {
-            return totalTiles - state.Tiles.Remaining.Count;
-        }
-
-        public int GetTotalTiles()
-        {
-            return totalTiles;
-        }
-
+        
         public int GetMeeplesLeft()
         {
             return player.AmountOfFreeMeeples();
@@ -139,46 +210,8 @@ namespace Carcassonne.AI
             return player.meeples.Count;
         }
 
-        public void Reset()
-        {
-            //In the training environment, this resets the game stage entirely before the next training session. Serves no purpose here except to make the code function.
-        }
+        #endregion
 
-        public int GetMinX()
-        {
-            return controller.minX;
-        }
-
-        public int GetMaxX()
-        {
-            return controller.maxX;
-        }
-
-        public int GetMinZ()
-        {
-            return controller.minZ;
-        }
-
-        public int GetMaxZ()
-        {
-            return controller.maxZ;
-        }
-
-        public float GetScore()
-        {
-            return (float)player.score;
-        }
-
-        public float GetScoreChange()
-        {
-            // if ((float)player.score != previousScore)
-            // {
-            //     Debug.Log("Player " + player.id + " score changed from " + previousScore + "p to " + player.score + "p");
-            // }
-            float scoreChange = (float)player.score - previousScore;
-            previousScore = (float)player.score;
-            return scoreChange;
-        }
 
     }
 }

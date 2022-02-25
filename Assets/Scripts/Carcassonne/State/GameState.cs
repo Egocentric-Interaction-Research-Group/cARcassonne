@@ -1,11 +1,11 @@
 using System;
-using Carcassonne.Utilities;
+using Carcassonne.Models;
 using UnityEngine;
 
 namespace Carcassonne.State
 {
-    [CreateAssetMenu(fileName = "GameState", menuName = "States/GameState")]
-    public class GameState : ScriptableObject
+    // [CreateAssetMenu(fileName = "GameState", menuName = "States/GameState")]
+    public class GameState : MonoBehaviour
     {
         public GameRules Rules;
 
@@ -18,32 +18,28 @@ namespace Carcassonne.State
         public MeepleState Meeples;
         public FeatureState Features;
         public PlayerState Players;
-        public GameLog Log;
 
-        public GameState()
-        {
-            Reset();
-        }
+        public GridMapper grid;
 
-        private void Awake()
-        {
-            Reset();
-        }
+        // private void Awake()
+        // {
+        //     Reset();
+        // }
 
-        private void Reset()
+        public void Reset()
         {
             Debug.Log("Resetting Game State...");
             
             Rules = new GameRules();
             Tiles = new TileState();
             Meeples = new MeepleState();
-            Features = new FeatureState(Meeples);
+            Features = new FeatureState(Meeples, grid);
             Players = new PlayerState();
         }
 
-        private void OnEnable()
-        {
-            Reset();
-        }
+        // private void OnEnable()
+        // {
+        //     Reset();
+        // }
     }
 }

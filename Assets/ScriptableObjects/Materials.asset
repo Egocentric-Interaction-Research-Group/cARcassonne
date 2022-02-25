@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 214e3430154d4088b031e83bd3014eeb, type: 3}
+  m_Name: Materials
+  m_EditorClassIdentifier: 
+  playerMaterials:
+  - {fileID: 2100000, guid: 6f9b113b96bd1c14b9715001ccb273cf, type: 2}
+  - {fileID: 2100000, guid: 0496ef0168668b84a83a57e6db41954a, type: 2}
+  - {fileID: 2100000, guid: a0a4b487801ad3c4a8f86ef6f19135fa, type: 2}
+  - {fileID: 2100000, guid: fb6404d03230aab4f82df8873ae0eb77, type: 2}
+  - {fileID: 2100000, guid: d5884245c277a7544a0b8d85b2fb3379, type: 2}
+  - {fileID: 2100000, guid: 402a5fb212669cb48a9a759474539440, type: 2}
+  - {fileID: 2100000, guid: 73e32059bf2d6084d89a7e798f3091d1, type: 2}
+  - {fileID: 2100000, guid: 1ed0d8bd50271654785e941cc4624bdf, type: 2}
+  buttonMaterials:
+  - {fileID: 2100000, guid: 876a25c8c6dc72b4f96a0c2c0ce90960, type: 2}
+  - {fileID: 2100000, guid: 7be561c353f18494394dc8fa5dd4b0fa, type: 2}
+  - {fileID: 2100000, guid: 51f4a76041b8e134f9da30e6b2d6d32d, type: 2}

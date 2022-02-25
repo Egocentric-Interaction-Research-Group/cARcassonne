@@ -178,8 +178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a04f9e27f75133c4c88cf1170aea8add, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 4
-  rotation: 0
   northCollider: {fileID: 525546310555120947}
   southCollider: {fileID: 6426416281469545657}
   westCollider: {fileID: 5288395650411316110}
@@ -218,12 +216,6 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 98f290ddde7a6eb4fae69793f3e07620, type: 3}
   - {fileID: 2800000, guid: 6a5dc6ba82bbba941abc126b392750ff, type: 3}
   - {fileID: 2800000, guid: cb40f6c67066ce44582c39cb9ff79704, type: 3}
-  North: 3
-  South: 2
-  West: 2
-  East: 3
-  Center: 2
-  tileSet: 0
 --- !u!114 &7166200312293997902
 MonoBehaviour:
   m_ObjectHideFlags: 0

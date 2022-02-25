@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Carcassonne.Tiles;
+using Carcassonne.Models;
 using QuikGraph;
 using UnityEngine;
 

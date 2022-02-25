@@ -1,35 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using Carcassonne.AR;
+using Carcassonne.Models;
 using Carcassonne.Controllers;
+using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;
 using UI.Grid;
 using UnityEngine;
+using UnityEngine.iOS;
 
 namespace Carcassonne.Tiles
 {
+    [RequireComponent(typeof(Tile))]
     public class TileScript : MonoBehaviourPun
     {
-
-        public const int SubtTileDimension = 3; 
-    
-        /// <summary>
-        ///     Describes the different set of game tiles (used in different versions of gameplay).
-        /// </summary>
-        public enum TileSet
-        {
-            Base,
-            River
-        }
-
-        /// <summary>
-        ///     The ID decides which type of tile this tile is. Refer to the ID graph for exact results.
-        /// </summary>
-        public int id;
-
+        public Tile tile => GetComponent<Tile>();
+        public TileController tileController => FindObjectOfType<TileController>();
+        
         /// <summary>
         ///     How many times the tile has been rotated. In standard the rotation is 0, and rotated 4 times it returns to 0.
         /// </summary>
-        public int rotation;
+        public int rotation => GetRotation();
 
         /// <summary>
         ///     The vIndex of the tile. Is applied when placed on the board
@@ -44,158 +35,14 @@ namespace Carcassonne.Tiles
         /// </summary>
         public Texture[] textures;
 
-        /// <summary>
-        ///     These are closely related to the Up, Down, Left and Right geographies. When the tile is rotated the values shift to
-        ///     correlate to the new rotation:
-        ///     If Up is road, but the rotation is 1 then East gets the value of Up, since it's rotated 90 degrees clockwise. If
-        ///     rotation is 0 then North is equal to Up.
-        /// </summary>
-        public Geography North, South, West, East, Center;
-
-        /// <summary>
-        ///     A list of the sides in clockwise order, starting from North.
-        /// </summary>
-        // public Geography[] Sides => new[] { North, East, South, West };
-        public Dictionary<Vector2Int, Geography> Sides => new Dictionary<Vector2Int, Geography>
+        public void OnPlace(Tile tile, Vector2Int cell)
         {
-            {Vector2Int.up, North},
-            {Vector2Int.right, East},
-            {Vector2Int.down, South},
-            {Vector2Int.left, West} 
-        };
-
-        /// <summary>
-        ///     Defines whether the tile is a member of the base set or one of the expansions or alternate tile sets.
-        /// </summary>
-        public TileSet tileSet = TileSet.Base;
-
-        /// <summary>
-        ///     Decides whether this tile has a shield or not
-        /// </summary>
-        private bool shield;
-
-        /// <summary>
-        /// Public property detailing whether this tile has a shield
-        /// </summary>
-        public bool Shield => shield;
-
-        /// <summary>
-        ///     Geography locations set to different local directions.
-        /// </summary>
-        private Geography Up, Down, Left, Right;
-        
-        private void Start()
-        {
-            // This is just so we have a static name for the Tile representing it's sides ar rotation == 0. 
-            Up = North;
-            Right = East;
-            Down = South;
-            Left = West;
+            GetComponent<BoxCollider>().enabled = false;
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<ObjectManipulator>().enabled = false;
+            GetComponent<Rigidbody>().isKinematic = true;
         }
 
-        /// <summary>
-        ///     Simple getter for the centerGeography
-        /// </summary>
-        /// <returns>The center geography</returns>
-        public Geography getCenter()
-        {
-            return Center;
-        }
-
-        private Geography[,] matrix = new Geography[3, 3];
-        
-        /// <summary>
-        /// The sub-tile matrix representation of this tile. The bottom corner (Left-Down) is 0,0 and the top (Right, Top is (2,2).
-        /// This is done to match the representation used in the game. I don't know if it lines up with other image representations.
-        /// Coordinates are represented [Horiz, Vert]
-        /// </summary>
-        public Geography[,] Matrix
-        {
-            get => matrix;
-            // private set => matrix = value;
-        }
-        
-        private void UpdateMatrix()
-        {
-            matrix[1, 0] = South;
-            matrix[0, 1] = West;
-            matrix[2, 1] = East;
-            matrix[1, 2] = North;
-            
-            // Set corners and middle. This is not a great way of doing this, but it avoids repeating a bunch of work...
-            switch (Center)
-            {
-                // If the middle is a simple geography, set that, and set the corners to grass.
-                // TODO Check the logic here.
-                case Geography.City:
-                case Geography.Cloister:
-                case Geography.Field:
-                case Geography.Road:
-                case Geography.Stream:
-                case Geography.Village:
-                    matrix[1, 1] = Center;
-                    matrix[0, 0] = Geography.Field; // NB: Grass here doesn't necessarily mean grass IF you were playing with Farmers. But because we are not considering farmers, it is an easy shortcut.
-                    matrix[2, 0] = Geography.Field;
-                    matrix[0, 2] = Geography.Field;
-                    matrix[2, 2] = Geography.Field;
-                    break;
-                case Geography.CityRoad:
-                case Geography.CityStream:
-                case Geography.RoadStream:
-                    matrix[1, 1] = Geography.Field;
-                    matrix[0, 0] = matrix[0, 1] == matrix[1, 0] ? matrix[0, 1] : Geography.Field;
-                    matrix[2, 0] = matrix[2, 1] == matrix[1, 0] ? matrix[2, 1] : Geography.Field;
-                    matrix[0, 2] = matrix[0, 1] == matrix[1, 2] ? matrix[0, 1] : Geography.Field;
-                    matrix[2, 2] = matrix[2, 1] == matrix[1, 2] ? matrix[2, 1] : Geography.Field;
-                    break;
-            }
-            
-            // Log debug statement here.
-        }
-
-        public Dictionary<Vector2Int, Geography> SubTileDictionary => getSubTileDictionary();
-
-        private Dictionary<Vector2Int, Geography> getSubTileDictionary()
-        {
-            Dictionary<Vector2Int, Geography> d = new Dictionary<Vector2Int, Geography>();
-            for (var i = 0; i < SubtTileDimension; i++)
-            {
-                for (var j = 0; j < SubtTileDimension; j++)
-                {
-                    d.Add(new Vector2Int(i, j) - Vector2Int.one, Matrix[i,j]);
-                }
-            }
-
-            return d;
-        }
-
-        public Geography getGeographyAt(Vector2Int direction)
-        {
-            if (direction == Vector2Int.up) return North;
-            if (direction == Vector2Int.down) return South;
-            if (direction == Vector2Int.right) return East;
-            if (direction == Vector2Int.left) return West;
-            if (direction == Vector2Int.zero) return Center;
-
-            if (direction.x > 1 || direction.y > 1)
-            {
-                throw new ArgumentOutOfRangeException(
-                    "Direction should be in [-1,-1] - [1,1]." +
-                    $"{direction} is out of range.");
-            }
-            
-            // Handle corner geographies
-            var leftRight = getGeographyAt(new Vector2Int(direction.x, 0));
-            var upDown = getGeographyAt(new Vector2Int(0, direction.y));
-            if (leftRight.HasCity() && upDown.HasCity() && Center.HasCity())
-            {
-                return Geography.City;
-            }
-            else
-            {
-                return Geography.Field;
-            }
-        }
 
         /// <summary>
         ///     The method used to rotate the tile. In essence it just cycles the rotation between 1 and 3 (and returns to 0 when
@@ -203,65 +50,87 @@ namespace Carcassonne.Tiles
         /// </summary>
         public void Rotate()
         {
-            rotation++;
-            if (rotation > 3) rotation = 0;
-            var res = North;
-            North = West;
-            West = South;
-            South = East;
-            East = res;
+            tileController.Rotate();
+            transform.Rotate(0, 90, 0);
 
-            var temp = northCollider.transform.position;
-            northCollider.transform.position = westCollider.transform.position;
-            westCollider.transform.position = southCollider.transform.position;
-            southCollider.transform.position = eastCollider.transform.position;
-            eastCollider.transform.position = temp;
-            
-            // TODO rotate matrix view as well
-            UpdateMatrix();
+            // var temp = northCollider.transform.position;
+            // northCollider.transform.position = westCollider.transform.position;
+            // westCollider.transform.position = southCollider.transform.position;
+            // southCollider.transform.position = eastCollider.transform.position;
+            // eastCollider.transform.position = temp;
         }
 
-        public void Rotate(int position)
+        public void Rotate(int rotations)
         {
-            Debug.Assert(position < 4);
+            Debug.Assert(rotations < 4, $"Position ({rotations}) must be < 4");
 
-            while (rotation != position)
+            for (int i = 0; i < 4 && rotation != rotations; i++)
             {
                 Rotate();
+                Debug.Log($"Rotation: {rotation}, Position {rotations}");
             }
+            
+            Debug.Assert(rotation == rotations, $"The rotation ({rotation}) has not been changed to the specified position ({rotations})");
         }
 
-        #region UnityEvents
-
-        private void Awake()
+        public void RotateTo(int orientation)
         {
-            UpdateMatrix();
+            Debug.Assert(orientation < 4, $"Position ({orientation}) must be < 4");
+            Debug.Log($"Rotating to orientation {orientation}");
+
+            tileController.RotateTo(orientation);
+            transform.rotation = Quaternion.Euler(0, orientation * 90, 0); /// It is possible that this is supposed to be in the X direction, not Y.
+            
+            Debug.Assert(rotation == orientation, $"The rotation ({rotation}) has not been changed to the specified position ({orientation})");
         }
 
-        #endregion
-        
+        /// <summary>
+        /// Get the rotation of the tile object by comparing the positioning of the North, South, East, and West colliders.
+        /// </summary>
+        /// <returns></returns>
+        private int GetRotation()
+        {
+            var north2D = new Vector2(northCollider.transform.position.x, northCollider.transform.position.z);
+            var south2D = new Vector2(southCollider.transform.position.x, southCollider.transform.position.z);
+
+            var angle = Vector2.SignedAngle(Vector2.right, north2D-south2D);
+            Debug.Log($"Angle between South ({south2D}, {southCollider.transform.position}) and North ({north2D}, {northCollider.transform.position}) {angle}");
+            
+            if(angle % 90 > 5 && angle % 90 < 85)
+                Debug.LogWarning($"The tile is not square to the board. The angle between the North and South colliders is {angle} and should be a multiple of 90.");
+
+            if (angle > 45 && angle <= 135)
+                return 0;
+            if (angle > -45 && angle <= 45)
+                return 1;
+            if (angle > -135 && angle <= -45)
+                return 2;
+            return 3;
+        }
+
         #region GameObjectManipulations
 
         
         /// <summary>
         /// Called on Tile:Manipulation Ended (set in Unity Inspector)
         /// </summary>
-        public void SetCorrectRotation()
-        {
-            GameObject.Find("GameController").GetComponent<GameControllerScript>().tileControllerScript.RotateDegreesRPC();
-        }
+        // public void SetCorrectRotation()
+        // {
+        //     // GameObject.Find("GameController").GetComponent<GameControllerScript>().tileController.RotateDegreesRPC();
+        //     throw new NotImplementedException();
+        // }
+        //
+        //
+        // public void DisableGravity()
+        // {
+        //     GetComponent<Rigidbody>().useGravity = false;
+        // }
+        //
+        // public void EnableGravity()
+        // {
+        //     GetComponent<Rigidbody>().useGravity = true;
+        // }
 
-
-        public void DisableGravity()
-        {
-            GetComponent<Rigidbody>().useGravity = false;
-        }
-
-        public void EnableGravity()
-        {
-            GetComponent<Rigidbody>().useGravity = true;
-        }
-        
         /// <summary>
         /// Called on Tile:Manipulation Ended (set in Unity Inspector)
         /// </summary>
@@ -269,17 +138,17 @@ namespace Carcassonne.Tiles
         // {
         //     GameObject.Find("GameController").GetComponent<GameControllerScript>().SetCurrentTileSnapPosition();
         // }
-
-        public void transferTileOwnership(int currentPlayerID)
-        {
-            photonView.TransferOwnership(PhotonNetwork.PlayerList[currentPlayerID]);
-        }
+        //
+        // public void transferTileOwnership(int currentPlayerID)
+        // {
+        //     photonView.TransferOwnership(PhotonNetwork.PlayerList[currentPlayerID]);
+        // }
 
         #endregion
-
+        
         public override string ToString()
         {
-            return $"{Up.ToString()[0]}{Right.ToString()[0]}{Down.ToString()[0]}{Left.ToString()[0]}";
+            return tile.ToString();
         }
 
         #region Debug
@@ -301,63 +170,5 @@ namespace Carcassonne.Tiles
         
 
         #endregion
-    }
-    
-
-    public static class Extensions
-    {
-        public static bool HasCity(this Geography geography) => (geography & Geography.City) == Geography.City;
-        public static bool HasRoad(this Geography geography) => (geography & Geography.Road) == Geography.Road;
-        public static bool HasCityOrRoad(this Geography geography) => (geography & Geography.City) == Geography.City ||
-                                                                      (geography & Geography.Road) == Geography.Road;
-    
-        /// <summary>
-        /// Get the simple feature that the subtile represents if a meeple is on it. For example, if a subtile is
-        /// CityRoad, a meeple placed on the subtile is on the city.
-        /// </summary>
-        /// <param name="geography"></param>
-        /// <returns></returns>
-        public static Geography Simple(this Geography geography)
-        {
-            // If it is a compound geography with a city, its simple representation is City
-            if (geography.HasCity()) return Geography.City;
-            
-            // If it is a compound geography with a road that DOESN'T have a city, its simple representation is a Road
-            if (geography.HasRoad()) return Geography.Road;
-
-            return geography;
-        }
-
-        /// <summary>
-        /// Is this subtile a feature. Only cities, roads, and cloisters are features.
-        /// </summary>
-        /// <param name="geography"></param>
-        /// <returns></returns>
-        public static bool IsFeature(this Geography geography)
-        {
-            if ((geography & (Geography.City | Geography.Road | Geography.Cloister)) == geography) return true;
-
-            return false;
-        }
-    }
-
-    /// <summary>
-    ///     Geography decides what is contained within each direction. If there is a road going out to the right and the
-    ///     rotation is 0 then east will become "road".
-    ///
-    ///     Represented as a bitmask so that combination tiles (CityRoad) can be tested as City & X == City,
-    ///     which returns True for X in [City, CityStream, CityRoad].
-    /// </summary>
-    [Flags] public enum Geography
-    {
-        Cloister,
-        Village,
-        Road,
-        Field,
-        City,
-        Stream,
-        CityStream = City + Stream,
-        RoadStream = Road + Stream,
-        CityRoad = City + Road
     }
 }

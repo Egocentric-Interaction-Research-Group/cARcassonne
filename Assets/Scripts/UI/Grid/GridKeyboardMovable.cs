@@ -17,12 +17,6 @@ namespace UI.Grid
             set { position.cell = value; }
         }
 
-        private int rotation
-        {
-            get { return position.rotation; }
-            set { position.rotation = value; }
-        }
-        
         private void Update()
         {
             var keyboard = Keyboard.current;
