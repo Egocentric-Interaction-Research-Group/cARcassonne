@@ -10,9 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1798396970713721370}
   - component: {fileID: 1798396970713721374}
-  - component: {fileID: 1798396970713721369}
-  - component: {fileID: 1798396970713721368}
-  - component: {fileID: 1798396970713721371}
   m_Layer: 0
   m_Name: TableAnchor
   m_TagString: Untagged
@@ -46,51 +43,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be98ac4c5d0cfbe449727358153517da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1798396970713721369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1798396970713721365}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ef4e40d29b7a564f86f3d2f0abca194, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  authenticationMode: 0
-  spatialAnchorsAccountId: 6a3ab730-6454-43c7-86d6-44e58c2894fa
-  spatialAnchorsAccountKey: +uS1h9Q0ufg7rAnTAahvU07b6R9487sIPqOcqps+9vg=
-  spatialAnchorsAccountDomain: northeurope.mixedreality.azure.com
-  clientId: 
-  tenantId: 
-  logLevel: 5
---- !u!114 &1798396970713721368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1798396970713721365}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcbd141a0cfae6a4e813b9fd7b3b748c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  publicSharingPin: 1982734901747
-  currentAzureAnchorID: 
---- !u!114 &1798396970713721371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1798396970713721365}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ffefba4979f182469406b2cbaeb721b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1798396970807544956
