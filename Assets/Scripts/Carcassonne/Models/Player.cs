@@ -6,7 +6,7 @@ namespace Carcassonne.Models
     public class Player : MonoBehaviour
     {
         public int id;
-        public string name;
+        public new string name;
         public bool isAI;
         public int score;
         

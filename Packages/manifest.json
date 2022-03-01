@@ -1,7 +1,5 @@
 {
   "dependencies": {
-    "com.microsoft.azure.remote-rendering": "file:com.microsoft.azure.remote-rendering-1.0.25.tgz",
-    "com.microsoft.azure.spatial-anchors-sdk.core": "file:com.microsoft.azure.spatial-anchors-sdk.core-2.10.2.tgz",
     "com.microsoft.mixedreality.openxr": "file:com.microsoft.mixedreality.openxr-1.0.3.tgz",
     "com.microsoft.mixedreality.toolkit.extensions": "file:com.microsoft.mixedreality.toolkit.extensions-2.7.2.tgz",
     "com.microsoft.mixedreality.toolkit.foundation": "file:com.microsoft.mixedreality.toolkit.foundation-2.7.2.tgz",
@@ -23,7 +21,6 @@
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.4.8",
     "com.unity.ugui": "1.0.0",
-    "com.unity.ui.builder": "1.0.0-preview.18",
     "com.unity.xr.arfoundation": "4.1.7",
     "com.unity.xr.legacyinputhelpers": "2.1.8",
     "com.unity.xr.management": "4.0.7",
