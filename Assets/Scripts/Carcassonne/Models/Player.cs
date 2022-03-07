@@ -9,10 +9,17 @@ namespace Carcassonne.Models
         public new string name;
         public bool isAI;
         public int score;
+        public int previousScore = 0;
+        public int scoreChange => score - previousScore;
         
         private void Awake()
         {
             score = 0;
+        }
+
+        public void OnNewTurn()
+        {
+            previousScore = score;
         }
     }
 }

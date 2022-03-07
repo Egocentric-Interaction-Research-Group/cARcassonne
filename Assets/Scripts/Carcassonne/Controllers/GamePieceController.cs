@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -30,5 +31,16 @@ namespace Carcassonne.Controllers
         public UnityEvent<T> OnFree = new UnityEvent<T>();
         public UnityEvent<T, Vector2Int> OnPlace = new UnityEvent<T, Vector2Int>();
         public UnityEvent<T, Vector2Int> OnInvalidPlace = new UnityEvent<T, Vector2Int>();
+        
+        public List<UnityEventBase> Events => new List<UnityEventBase>()
+        {
+            OnDraw,
+            OnInvalidDraw,
+            OnRotate,
+            OnDiscard,
+            OnFree,
+            OnPlace,
+            OnInvalidPlace
+        };
     }
 }

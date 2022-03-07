@@ -38,7 +38,7 @@ namespace Carcassonne.State
         public Vector2Int MatrixOrigin { get; }
 
         /// <summary>
-        /// Dictionary of meeple placement. Key is coordinate in Tile coordinate system.
+        /// Dictionary of meeple placement. Key is coordinate in Meeple coordinate system.
         /// </summary>
         public Dictionary<Vector2Int, Meeple> Placement = new Dictionary<Vector2Int, Meeple>();
         public IEnumerable<Meeple> InPlay => Placement.Select(p => p.Value);

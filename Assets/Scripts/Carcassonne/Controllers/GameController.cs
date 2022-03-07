@@ -25,6 +25,7 @@ namespace Carcassonne.Controllers
         /// </summary>
         public GameState state => GetComponent<GameState>();
         private MeepleController meepleController => GetComponent<MeepleController>();
+        private TileController tileController => GetComponent<TileController>();
 
         public UnityEvent OnGameStart = new UnityEvent();
         public UnityEvent OnTurnEnd = new UnityEvent();
@@ -32,6 +33,18 @@ namespace Carcassonne.Controllers
         public UnityEvent<FeatureGraph> OnFeatureCompleted = new UnityEvent<FeatureGraph>();
         public UnityEvent OnGameOver = new UnityEvent();
         public UnityEvent OnScoreChanged = new UnityEvent();
+
+        public List<UnityEventBase> Events => new List<UnityEventBase>()
+        {
+            OnGameStart,
+            OnTurnEnd,
+            OnTurnStart,
+            OnFeatureCompleted,
+            OnGameOver,
+            OnScoreChanged
+        };
+
+        public List<UnityEventBase> AllEvents => Events.Concat(tileController.Events).Concat(meepleController.Events).ToList();
 
         #region ConvenienceProperties
 
@@ -41,25 +54,6 @@ namespace Carcassonne.Controllers
 
         #endregion
 
-        /// <summary>
-        /// Starts a new game of Carcassonne.
-        /// </summary>
-        public void NewGame(int nPlayers)
-        {
-            // Clear the board
-            state.Reset();
-            
-            // Shuffle the deck
-            // CreateAndShuffleDeck();
-            
-            // Set up players
-            throw new NotImplementedException();
-            
-            // Setup meeples
-            
-            OnGameStart.Invoke();
-        }
-        
         /// <summary>
         /// Starts a new game of Carcassonne.
         /// </summary>
@@ -78,8 +72,6 @@ namespace Carcassonne.Controllers
             
             // Setup meeples
             state.Meeples.All = meeples;
-            
-            // Place first tile
             
             OnGameStart.Invoke();
 
@@ -202,34 +194,34 @@ namespace Carcassonne.Controllers
         /// <param name="features"></param>
         public void ScoreFeatures(IEnumerable<FeatureGraph> features)
         {
-                foreach (var f in features)
+            foreach (var f in features)
+            {
+                var meeples = this.state.Meeples.InFeature(f).ToList();
+
+                var playerMeeples = meeples.GroupBy(m => m.player);
+                var playerMeepleCount = playerMeeples.ToDictionary(g => g.Key, g => g.Count());
+
+                var scoringPlayers = playerMeepleCount.Where(kvp => kvp.Value == playerMeepleCount.Values.Max())
+                    .Select((kvp => kvp.Key));
+
+                // Calculate points for those that are finished
+                foreach (var p in scoringPlayers)
                 {
-                    var meeples = this.state.Meeples.InFeature(f).ToList();
-
-                    var playerMeeples = meeples.GroupBy(m => m.player);
-                    var playerMeepleCount = playerMeeples.ToDictionary(g => g.Key, g => g.Count());
-
-                    var scoringPlayers = playerMeepleCount.Where(kvp => kvp.Value == playerMeepleCount.Values.Max())
-                        .Select((kvp => kvp.Key));
-
-                    // Calculate points for those that are finished
-                    foreach (var p in scoringPlayers)
-                    {
-                        p.score += f.Points;
-                    }
-
-                    if (scoringPlayers.Count() > 0)
-                    {
-                        OnScoreChanged.Invoke();
-                    }
-                    
-                    // Free meeples
-                    foreach (var m in meeples)
-                    {
-                        Debug.LogWarning("Rethink this. GameController should not reference MeepleController");
-                        meepleController.Free(m);
-                    }
+                    p.score += f.Points;
                 }
+
+                if (scoringPlayers.Count() > 0)
+                {
+                    OnScoreChanged.Invoke();
+                }
+                
+                // Free meeples
+                foreach (var m in meeples)
+                {
+                    Debug.LogWarning("Rethink this. GameController should not reference MeepleController");
+                    meepleController.Free(m);
+                }
+            }
         }
     }
 }

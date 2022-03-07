@@ -269,20 +269,31 @@ namespace Carcassonne.AR
 
         public void OnDraw(Meeple meeple)
         {
+            // var meepleGameObject = meeple.gameObject; 
+            Enable(meeple);
+            // meepleGameObject.transform.parent = gameControllerScript.table.transform;
+            // meepleGameObject.transform.position = meepleSpawnPosition.transform.position;
+            
             meeple.transform.SetParent(meepleGrid.transform);
             meeple.gameObject.SetActive(true);
-            meeple.GetComponent<BoxCollider>().enabled = true;
+            // meeple.GetComponent<BoxCollider>().enabled = true;
             meeple.GetComponent<GridKeyboardMovable>().enabled = true;
-            meeple.GetComponent<Rigidbody>().useGravity = true;
-            meeple.GetComponent<ObjectManipulator>().enabled = true;
+            // meeple.GetComponent<Rigidbody>().useGravity = true;
+            // meeple.GetComponent<ObjectManipulator>().enabled = true;
             meeple.GetComponent<Rigidbody>().isKinematic = false;
-            meeple.GetComponentInChildren<MeshRenderer>().enabled = true;
+            // meeple.GetComponentInChildren<MeshRenderer>().enabled = true;
             
             meeple.GetComponent<GridPosition>().MoveToRPC(new Vector2Int(startingPosition, startingPosition));
             
             gameControllerScript.gameController.state.phase = Phase.MeepleDrawn;
             
             Debug.Log(state.Features.Graph);
+        }
+
+        public void OnInvalidDraw()
+        {
+            var deniedSound = gameObject.GetComponent<AudioSource>();
+            deniedSound.Play();
         }
         
         public void OnPlace(Meeple meeple, Vector2Int cell)
@@ -326,32 +337,31 @@ namespace Carcassonne.AR
         [PunRPC]
         public void DrawMeeple()
         {
-            if (gameControllerScript.gameController.state.phase == Phase.TileDown)
-            {
-                var meeple = state.Meeples.ForPlayer(players.Current).FirstOrDefault(m => state.Meeples.IsFree(m));
-                
-                if (meeple != null)
-                {
-                    var meepleGameObject = meeple.gameObject; 
-                    Enable(meeple);
-                    meepleGameObject.transform.parent = gameControllerScript.table.transform;
-                    meepleGameObject.transform.position = meepleSpawnPosition.transform.position;
-                    // meepleGameObject.transform.parent = GameObject.Find("MeepleDrawPosition").transform.parent;
-                    // meepleGameObject.transform.localPosition = new Vector3(0,0,0);
-                    // meepleGameObject.transform.SetParent(GameObject.Find("Table").transform, true);
+            var meepleController = GetComponent<MeepleController>();
+            meepleController.Draw();
 
-                    meeples.Current = meeple;
-                    // meepleGameObject.transform.rotation = Quaternion.identity;
-
-                    // gameControllerScript.UpdateDecisionButtons(true, meepleGameObject);
-                    gameControllerScript.gameController.state.phase = Phase.MeepleDrawn;
-                }
-            }
-            else
-            {
-                var deniedSound = gameObject.GetComponent<AudioSource>();
-                deniedSound.Play();
-            }
+            // if (gameControllerScript.gameController.state.phase == Phase.TileDown)
+            // {
+            //     var meeple = state.Meeples.ForPlayer(players.Current).FirstOrDefault(m => state.Meeples.IsFree(m));
+            //     
+            //     if (meeple != null)
+            //     {
+            //         
+            //         // meepleGameObject.transform.parent = GameObject.Find("MeepleDrawPosition").transform.parent;
+            //         // meepleGameObject.transform.localPosition = new Vector3(0,0,0);
+            //         // meepleGameObject.transform.SetParent(GameObject.Find("Table").transform, true);
+            //
+            //         meeples.Current = meeple;
+            //         // meepleGameObject.transform.rotation = Quaternion.identity;
+            //
+            //         // gameControllerScript.UpdateDecisionButtons(true, meepleGameObject);
+            //         gameControllerScript.gameController.state.phase = Phase.MeepleDrawn;
+            //     }
+            // }
+            // else
+            // {
+            //     
+            // }
         }
         
         // public void SetMeepleSnapPos()

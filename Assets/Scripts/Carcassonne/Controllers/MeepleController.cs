@@ -91,6 +91,12 @@ namespace Carcassonne.Controllers
 
         public override bool Place(Vector2Int cell)
         {
+            if (state.phase != Phase.MeepleDrawn)
+            {
+                OnInvalidPlace.Invoke(meeple, cell);
+                return false;
+            }
+            
             // Test if Meeple placement is valid
             if (!IsPlacementValid(cell))
             {
@@ -113,11 +119,18 @@ namespace Carcassonne.Controllers
 
         public override void Draw()
         {
+            if (state.phase == Phase.TileDown)
+            {
+                OnInvalidDraw.Invoke();
+                return;
+            }
+            
             Debug.Log("Drawing new Meeple.");
             // Can't draw if a meeple is in play or a player has none left.
             if (RemainingForCurrentPlayer.Count() < 1 || state.Meeples.Current != null)
             {
                 OnInvalidDraw.Invoke();
+                return;
             }
             
             // Get a new current tile

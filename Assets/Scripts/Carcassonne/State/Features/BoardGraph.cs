@@ -49,6 +49,7 @@ namespace Carcassonne.State.Features
             public SubTile(Tile tile, Vector2Int tilePosition, Vector2Int direction, [CanBeNull] Meeple meeple = null)
             {
                 this.tile = tile;
+                //TODO Change this to use the grid system.
                 this.location = Coordinates.TileToSubTile(tilePosition, direction); // The centre of the tile is at the tile's position + [1,1] to leave room for the -1 movement.
                 this.geography = tile.GetGeographyAt(direction);
                 // Debug.Log($"GEOGRAPHY 44: {tile} @ {direction} = {geography}");

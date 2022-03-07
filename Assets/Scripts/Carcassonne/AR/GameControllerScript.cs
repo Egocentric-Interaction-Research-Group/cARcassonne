@@ -6,6 +6,7 @@ using Carcassonne.State;
 using Carcassonne.State.Features;
 using Carcassonne.Tiles;
 using Carcassonne.Controllers;
+using Carcassonne.Interfaces;
 using Carcassonne.Models;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
@@ -27,7 +28,7 @@ namespace Carcassonne.AR
         typeof(GameState),
         typeof(MeepleController)
         )]
-    public class GameControllerScript : MonoBehaviourPun
+    public class GameControllerScript : MonoBehaviourPun, IGameControllerInterface
     {
         #region Controllers
 
@@ -120,58 +121,12 @@ namespace Carcassonne.AR
 
         public string ErrorOutput { set; get; } = "";
 
-        private void Start()
-        {
-            state.Features.Graph.Changed += UpdateFeatures;
-
-            // matrixRepresentationController.Start();
-            
-        }
-
         private void OnEnable()
         {
             Debug.Log("Game Enabled. Starting new game.");
             startingTile = GameObject.Find("BaseTile").GetComponent<Tile>(); //tiles.First(t => t.id == state.Rules.GetStartingTileID()));
             
             NewGame();
-        }
-
-        public void UpdateFeatures(object sender, BoardChangedEventArgs args)
-        {
-            BoardGraph graph = args.graph;
-            state.Features.Cities = City.FromBoardGraph(graph);
-            state.Features.Roads = Road.FromBoardGraph(graph);
-            state.Features.Cloisters = Cloister.FromBoardGraph(graph);
-
-            string debugString = "Cities: \n\n";
-            foreach (var city in state.Features.Cities)
-            {
-                debugString += city.ToString();
-                debugString += "\n";
-                debugString += $"Segments: {city.Segments}, Open Sides: {city.OpenSides}, Complete: {city.Complete}";
-                debugString += "\n\n";
-            }
-            Debug.Log(debugString);
-            
-            debugString = "Roads: \n\n";
-            foreach (var road in state.Features.Roads)
-            {
-                debugString += road.ToString();
-                debugString += "\n";
-                debugString += $"Segments: {road.Segments}, Open Sides: {road.OpenSides}, Complete: {road.Complete}";
-                debugString += "\n\n";
-            }
-            Debug.Log(debugString);
-            
-            debugString = "Cloisters: \n\n";
-            foreach (var cloister in state.Features.Cloisters)
-            {
-                debugString += cloister.ToString();
-                debugString += "\n";
-                debugString += $"Segments: {cloister.Segments}, Open Sides: {cloister.OpenSides}, Complete: {cloister.Complete}";
-                debugString += "\n\n";
-            }
-            Debug.Log(debugString);
         }
 
         // Update is called once per frame
@@ -608,7 +563,11 @@ namespace Carcassonne.AR
                 deniedAudio.Play();
             }
         }
-        
+
+        public void Reset()
+        {
+        }
+
         #endregion
 
         #region Meeple Things To Change
@@ -620,34 +579,34 @@ namespace Carcassonne.AR
         internal bool CanConfirm;
 
         //This method replaces the ConfirmPLacementRPC method for the AI agent, which does not move the game objects. The placements has to be explicitly set before ConfirmPlacement()-call.
-        [PunRPC]
-        public void ConfirmPlacementAI(int tileX, int tileZ, float meepleX, float meepleZ)
-        {
-            if (state.phase == Phase.TileDrawn)
-            {
-                tileController.position.x = tileX;
-                tileController.position.y = tileZ;
-                ConfirmPlacement();
-            } else if (state.phase == Phase.MeepleDrawn) //TODO: Replace the complex meeple placement code with something less tied to the gameObjects physical position. Something more AI Friendly.
-            {
-                //The following code is needed as the meeple placement is heavily tied to the physical position of the meeple. May be better with a separate and simpler AI method for this as it may not
-                //work in multiplayer when the meeple position needs to be updated.
-
-                System.Diagnostics.Debug.Assert(state.Meeples.Current != null, "gameState.Meeples.Current != null");
-                var meepleGameObject = state.Meeples.Current.gameObject; 
-                
-                meepleGameObject.transform.localPosition = state.Tiles.Current.transform.localPosition + new Vector3(meepleX, 0.86f, meepleZ);
-                // meepleControllerScript.CurrentMeepleRayCast();
-                // meepleControllerScript.AimMeeple();
-                // meepleControllerScript.SetMeepleSnapPos();
-                ConfirmPlacement();
-
-                //The two rows below are just a workaround to get meeples to stay on top of the table and not have a seemingly random Y coordinate. This may need a mode solid fix for multiplayer mode.
-                meepleGameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
-                meepleGameObject.transform.localPosition = new Vector3(meepleGameObject.transform.localPosition.x, 0.86f, meepleGameObject.transform.localPosition.z);
-            }
-            
-        }
+        // [PunRPC]
+        // public void ConfirmPlacementAI(int tileX, int tileZ, float meepleX, float meepleZ)
+        // {
+        //     if (state.phase == Phase.TileDrawn)
+        //     {
+        //         tileController.position.x = tileX;
+        //         tileController.position.y = tileZ;
+        //         ConfirmPlacement();
+        //     } else if (state.phase == Phase.MeepleDrawn) //TODO: Replace the complex meeple placement code with something less tied to the gameObjects physical position. Something more AI Friendly.
+        //     {
+        //         //The following code is needed as the meeple placement is heavily tied to the physical position of the meeple. May be better with a separate and simpler AI method for this as it may not
+        //         //work in multiplayer when the meeple position needs to be updated.
+        //
+        //         System.Diagnostics.Debug.Assert(state.Meeples.Current != null, "gameState.Meeples.Current != null");
+        //         var meepleGameObject = state.Meeples.Current.gameObject; 
+        //         
+        //         meepleGameObject.transform.localPosition = state.Tiles.Current.transform.localPosition + new Vector3(meepleX, 0.86f, meepleZ);
+        //         // meepleControllerScript.CurrentMeepleRayCast();
+        //         // meepleControllerScript.AimMeeple();
+        //         // meepleControllerScript.SetMeepleSnapPos();
+        //         ConfirmPlacement();
+        //
+        //         //The two rows below are just a workaround to get meeples to stay on top of the table and not have a seemingly random Y coordinate. This may need a mode solid fix for multiplayer mode.
+        //         meepleGameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
+        //         meepleGameObject.transform.localPosition = new Vector3(meepleGameObject.transform.localPosition.x, 0.86f, meepleGameObject.transform.localPosition.z);
+        //     }
+        //     
+        // }
 
         [PunRPC]
         public void ConfirmPlacement()

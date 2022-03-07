@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Carcassonne.Models;
 using Carcassonne.State;
 using Carcassonne.Tiles;
 using Unity.MLAgents.Sensors;
@@ -35,8 +36,8 @@ namespace Carcassonne.AI
                  "as another observation.")]
         Packed,
     
-        [Tooltip("Observation size: ??\nFor each tile, add an entry with the position, " +
-                 "rotation, and meeple status.")]
+        [Tooltip("Observation size: (72 tiles x 2 (rotation+cell) + 7 x nPlayers meeples) = 151 (1 player)\n" +
+                 "For each tile, add an entry with the position and rotation, for each meeple, add position.")]
         TileWise
     }
 
@@ -93,7 +94,7 @@ namespace Carcassonne.AI
         {
             Dictionary<Vector2Int, int> meepleMap = BuildMeepleMap(wrapper);
             // var meepleMap = wrapper.state.Meeples.SubTilePlacement;
-            TileScript[,] tiles = (TileScript[,])wrapper.GetTiles();
+            var tiles = (Tile[,])wrapper.GetTiles();
 
             for (int row = 0; row < tiles.GetLength(0); row++)
             {
@@ -107,7 +108,7 @@ namespace Carcassonne.AI
                         continue;
                     }
 
-                    float obs = tile.tile.id + tile.rotation * 100; // Note that tile ids must not exceed 99.
+                    float obs = tile.ID + tile.Rotations * 100; // Note that tile ids must not exceed 99.
                     sensor.AddObservation(obs);
 
                     // Add meeple data as a seperate observation.
@@ -139,7 +140,7 @@ namespace Carcassonne.AI
         public static void AddPackedTileIdObservations(AIWrapper wrapper, VectorSensor sensor)
         {
             Dictionary<Vector2Int, int> meepleMap = BuildMeepleMap(wrapper);
-            var tiles = (TileScript[,])wrapper.GetTiles();
+            var tiles = (Tile[,])wrapper.GetTiles();
 
             for (int row = 0; row < tiles.GetLength(0); row++)
             {
@@ -163,8 +164,8 @@ namespace Carcassonne.AI
                     const int bitMask2 = 0x03; // 2-bit mask.
 
                     int packedData = 0x0;
-                    packedData |= (tile.tile.id & bitMask6);             // Tile id       = 6 bits
-                    packedData |= (tile.rotation & bitMask2) << 6;  // Tile rotation = 2 bits
+                    packedData |= (tile.ID & bitMask6);             // Tile id       = 6 bits
+                    packedData |= (tile.Rotations & bitMask2) << 6;  // Tile rotation = 2 bits
                     packedData |= (meepleData & bitMask7) << 8;     // Meeple data   = 7 bits
 
                     // If there is no meeple, the last 7 bits are '0b100 0000'.
@@ -191,7 +192,7 @@ namespace Carcassonne.AI
         public static void AddPackedTileObservations(AIWrapper wrapper, VectorSensor sensor)
         {
             Dictionary<Vector2Int, int> meepleMap = BuildMeepleMap(wrapper);
-            var tiles = (TileScript[,])wrapper.GetTiles();
+            var tiles = (Tile[,])wrapper.GetTiles();
 
             for (int row = 0; row < tiles.GetLength(0); row++)
             {
@@ -210,11 +211,11 @@ namespace Carcassonne.AI
 
                     const int bitMask4 = 0xF; // 4-bit mask.
 
-                    tileData |= ((int)tile.tile.Center & bitMask4);
-                    tileData |= (((int)tile.tile.East & bitMask4) << 4);
-                    tileData |= (((int)tile.tile.North & bitMask4) << 8);
-                    tileData |= (((int)tile.tile.West & bitMask4) << 12);
-                    tileData |= (((int)tile.tile.South & bitMask4) << 16);
+                    tileData |= ((int)tile.Center & bitMask4);
+                    tileData |= (((int)tile.East & bitMask4) << 4);
+                    tileData |= (((int)tile.North & bitMask4) << 8);
+                    tileData |= (((int)tile.West & bitMask4) << 12);
+                    tileData |= (((int)tile.South & bitMask4) << 16);
 
                     // Load the meeple data into "meepleData" if there is a meeple on this tile.
                     if (!meepleMap.TryGetValue(new Vector2Int(col, row), out meepleData))
@@ -239,39 +240,50 @@ namespace Carcassonne.AI
 
         public static void AddTileWiseObservations(AIWrapper wrapper, VectorSensor sensor)
         {
+            var obsCount = 0;
+            
             // Add all tiles
             foreach (var tilePosition in wrapper.state.Tiles.TilePlacement)
             {
                 var tile = tilePosition.Key;
                 var iPosition = tilePosition.Value;
             
-                Vector2 position; // Vector2 which is (-1,-1) (not on board) or between (0,0) --- (1,1)
+                Vector2 position; // Vector2 which is (-1,-1) (not on board) or between (0,0) --- (1,1) !!! NOT TRUE ANYMORE. CELLS CAN BE NEGATIVE.
                 if (iPosition == null) position = -Vector2.one;
                 else position = (Vector2)iPosition / (float)GameRules.BoardSize;
             
                 sensor.AddObservation(tile.Rotations / 3.0f); // Rotation Information
+                obsCount += 1;
+                
                 sensor.AddObservation(position); // Position information
+                obsCount += 2;
             }
+            
+            Debug.Log($"Added {obsCount} tile observations ({wrapper.state.Tiles.TilePlacement.Count} tiles).");
+            obsCount = 0;
 
             // Meeple locations in subtile coordinates
-            throw new NotImplementedException();
-            var subtileLocations = wrapper.state.Meeples.Placement;//wrapper.state.Meeples.SubTilePlacement;
+            var meeplePlacement = wrapper.state.Meeples.Placement;//wrapper.state.Meeples.SubTilePlacement;
 
             foreach (var player in wrapper.state.Players.All)
             {
                 foreach (var meeple in wrapper.state.Meeples.MeeplesForPlayer(player))
                 {
-                    if (subtileLocations.ContainsValue(meeple)) // Add meeple location to observations
+                    if (meeplePlacement.ContainsValue(meeple)) // Add meeple location to observations
                     {
-                        var location = subtileLocations.Single(kvp => kvp.Value.Equals(meeple)).Key;
+                        var location = meeplePlacement.Single(kvp => kvp.Value.Equals(meeple)).Key;
                         sensor.AddObservation((Vector2)location / (GameRules.BoardSize * 3.0f));
+                        obsCount += 2;
                     }
                     else // Meeple is not placed. Set as (-1,-1)
                     {
                         sensor.AddObservation(-Vector2.one);
+                        obsCount += 2;
                     }
                 }
             }
+            
+            Debug.Log($"Added {obsCount} meeple observations ({wrapper.state.Players.All.Count} player).");
         }
     }
 }

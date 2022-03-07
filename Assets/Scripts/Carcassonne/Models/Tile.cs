@@ -39,8 +39,21 @@ namespace Carcassonne.Models
 
         /// <summary>
         ///     The ID decides which type of tile this tile is. Refer to the ID graph for exact results.
+        ///
+        /// THIS IS ONLY NEEDED FOR Inspector-EDITED ID VALUES.
         /// </summary>
-        public int id;
+        // [Obsolete("Only here to support Inspector-defined IDs.", error:false)]
+        // public int id;
+        
+        public int ID
+        {
+            get => m_id;
+
+            set => m_id = SetupAttributes(value);
+        }
+
+        // Has been initialized with Geography.
+        public bool IsReady { get; private set; }
 
         /// <summary>
         ///     Defines whether the tile is a member of the base set or one of the expansions or alternate tile sets.
@@ -59,6 +72,7 @@ namespace Carcassonne.Models
         }
 
         private int m_Rotations;
+        private int m_id;
 
         /// <summary>
         ///     Public property detailing whether this tile has a shield
@@ -211,7 +225,7 @@ namespace Carcassonne.Models
         ///     ID's in tiles are not unique and they share them with other tiles who also recieve the same attributes.
         /// </summary>
         /// <param name="id"></param>
-        public static Dictionary<Vector2Int, Geography>  GetGeographies(int id)
+        public static Dictionary<Vector2Int, Geography> GetGeographies(int id)
         {
             var Up = new Geography();
             var Down = new Geography();
@@ -269,12 +283,59 @@ namespace Carcassonne.Models
             return geographies;
         }
 
-        private void Start()
+        public static Dictionary<int, int> GetIDDistribution()
         {
-            Geographies = Tile.GetGeographies(id);
-            Shield = Tile.GetShield(id);
+            var distribution = new Dictionary<int, int>()
+            {
+                {1,4},
+                {2,2},
+                {3,8},
+                {4,9},
+                {5,4},
+                {6,1},
+                {7,5},
+                {8,4},
+                {9,3},
+                {10,3},
+                {11,3},
+                {12,1},
+                {13,3},
+                {14,3},
+                {15,2},
+                {16,3},
+                {17,2},
+                {18,2},
+                {19,2},
+                {20,3},
+                {21,1},
+                {22,1},
+                {23,2},
+                {24,1},
+            };
+            
+            return distribution;
         }
 
+        // private void Awake()
+        // {
+        //     IsReady = false;
+        // }
+        //
+        // // This is only needed if we are setting ID in the editor
+        // private void Start()
+        // {
+        //     SetupAttributes(id);
+        //     IsReady = true;
+        // }
+
+        private int SetupAttributes(int i)
+        {
+            Geographies = GetGeographies(i);
+            Shield = GetShield(i);
+            // id = ID;
+            return i;
+        }
+        
         private static bool GetShield(int id)
         {
             if (id == 17 || id == 18 || id == 19 || id == 22 || id == 23 || id == 24)

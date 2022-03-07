@@ -14,8 +14,11 @@ namespace Carcassonne.State
             if (x == y) return 0;
             if (x == null) return -1;
             if (y == null) return 1;
+
+            if (x.ID - y.ID != 0)
+                return x.ID - y.ID;
             
-            return x.id - y.id;
+            return x.gameObject.GetInstanceID() - y.gameObject.GetInstanceID();
         }
     }
 
@@ -25,11 +28,17 @@ namespace Carcassonne.State
         [CanBeNull] public Tile Current { get; set; }
         public Tile[,] Played => CalculatePlayed();
         
+        public List<Tile> Discarded { get; set; }
+        
         public Dictionary<Vector2Int, Tile> Placement = new Dictionary<Vector2Int, Tile>();
 
         public Vector2Int? lastPlayedPosition => Placement.SingleOrDefault(kvp => kvp.Value == Current).Key;
 
         private static readonly TileIdComparer tileIdComparer = new TileIdComparer();
+        
+        /// <summary>
+        /// Dictionary of <Tile, Vector2Int?> with entries sorted by tile ID.
+        /// </summary>
         public SortedDictionary<Tile, Vector2Int?> TilePlacement
         {
             get
@@ -38,8 +47,17 @@ namespace Carcassonne.State
                 var d = new SortedDictionary<Tile, Vector2Int?>(
                     Placement.Keys.ToDictionary(p => Placement[p],p => (Vector2Int?)p),
                     tileIdComparer);
+                
+                if( Current != null && !d.ContainsKey(Current) )
+                    d.Add(Current, null);
 
                 foreach (var tile in Remaining)
+                {
+                    d.Add(tile, null);
+                }
+                
+                //TODO Should I differentiate between discarded and not picked? It doesn't happen very often...
+                foreach (var tile in Discarded)
                 {
                     d.Add(tile, null);
                 }
@@ -150,6 +168,7 @@ namespace Carcassonne.State
         {
             Placement = new Dictionary<Vector2Int, Tile>();
             Remaining = new Stack<Tile>();
+            Discarded = new List<Tile>();
         }
         
         // private void Awake()

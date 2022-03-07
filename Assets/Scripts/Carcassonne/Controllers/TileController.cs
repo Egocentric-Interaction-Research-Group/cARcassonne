@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Carcassonne.State;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,8 +25,8 @@ namespace Carcassonne.Controllers
         /// <summary>
         /// Position of the current tile in board coordinates.
         /// </summary>
-        public Vector2Int position = new Vector2Int();
-        public int rotation = 0;
+        // public Vector2Int position = new Vector2Int();
+        // public int rotation = 0;
         // private bool _isstateNotNull;
 
         // Tile Spawn position has to be on a grid with the base tile.
@@ -44,6 +45,9 @@ namespace Carcassonne.Controllers
         private void Awake()
         {
             Debug.Assert(state != null, "TileController: The state is null.");
+            
+            // Call Draw if a tile has to be discarded.
+            OnDiscard.AddListener(delegate(Tile t) { Draw(); });
         }
 
         /// <summary>
@@ -53,15 +57,23 @@ namespace Carcassonne.Controllers
         /// </summary>
         public override void Draw()
         {
+            // TODO Should this check phase validity??? Probably, right?
             Debug.Log("Drawing new Tile.");
-            Debug.Assert(state.Tiles.Remaining.Count > 0, "TileController: The stack is empty.");
+            // Debug.Assert(state.Tiles.Remaining.Count > 0, "TileController: The stack is empty.");
+            
+            // This can happen if Draw is called twice because of a Discard, for example.
+            if (state.Tiles.Remaining.Count == 0){
+                GetComponent<GameController>().GameOver();
+                return;
+            }
+
             // Get a new current tile
             state.Tiles.Current = state.Tiles.Remaining.Pop();
-            Debug.Log($"Drew Tile id {tile.id} {state.Tiles.Current.id}");
+            Debug.Log($"Drew Tile id {tile.ID} ({tile})");
             
             if (!CanBePlaced())
             {
-                Debug.Log($"Tile (ID: {tile.id}) not possible to place: discarding and drawing a new one.");
+                Debug.Log($"Tile (ID: {tile.ID}) not possible to place: discarding and drawing a new one.");
                 Discard();
                 
                 // Draw();
@@ -77,15 +89,26 @@ namespace Carcassonne.Controllers
             Debug.Assert(state != null, "TileController: The state is null.");
             
             var t = state.Tiles.Remaining.Pop();
+            Debug.Log($"Starting tile: ({t.ID}) {t}");
 
             state.Tiles.Placement.Add(Vector2Int.zero, t);
-            state.Features.Graph.Add(BoardGraph.FromTile(t, Vector2Int.zero));
+
+            var bg = BoardGraph.FromTile(t, Vector2Int.zero);
+            Debug.Log($"Starting graph has {bg.VertexCount} vertices and {bg.EdgeCount} edges.");
+            
+            state.Features.Graph.Add(bg);
 
             Debug.Log($"First tile graph: {BoardGraph.FromTile(t, Vector2Int.zero)}");
         }
 
         public override bool Place(Vector2Int cell)
         {
+            if(state.phase != Phase.TileDrawn)
+            {
+                OnInvalidPlace.Invoke(tile, cell);
+                return false;
+            }
+            
             if (!IsPlacementValid(cell))
             {
                 OnInvalidPlace.Invoke(tile, cell);
@@ -104,7 +127,9 @@ namespace Carcassonne.Controllers
         public override void Discard()
         {
             //TODO: Is this right?
-            Destroy(tile);
+            // Destroy(tile);
+            state.Tiles.Discarded.Add(tile);
+            tile.gameObject.SetActive(false);
                 
             OnDiscard.Invoke(tile);
         }
@@ -168,12 +193,7 @@ namespace Carcassonne.Controllers
             return hasNeigbour;
         }
 
-        public bool CellIsOccupied(Vector2Int cell)
-        {
-            if (tiles.Placement.ContainsKey(cell)) return true;
-
-            return false;
-        }
+        public bool CellIsOccupied(Vector2Int cell) => tiles.Placement.ContainsKey(cell);
 
         public override bool CanBePlaced()
         {
@@ -233,7 +253,7 @@ namespace Carcassonne.Controllers
             //     }
             // }
 
-            Debug.LogWarning($"Tile ID {tile.id} cannot be placed.");
+            Debug.LogWarning($"Tile ID {tile.ID} cannot be placed.");
             return false;
         }
 
@@ -260,7 +280,7 @@ namespace Carcassonne.Controllers
         /// <param name="dir"></param>
         /// <param name="geography"></param>
         /// <returns></returns>
-        public bool DirectionIsEmptyOrMatchesGeography(Vector2Int cell, Vector2Int dir, Geography geography)
+        internal bool DirectionIsEmptyOrMatchesGeography(Vector2Int cell, Vector2Int dir, Geography geography)
         {
             // if (!PositionIsInBounds(cell))
             // {

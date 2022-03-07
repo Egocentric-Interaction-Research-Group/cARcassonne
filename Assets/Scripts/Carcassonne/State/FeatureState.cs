@@ -32,6 +32,8 @@ namespace Carcassonne.State
             Cloisters = new List<Cloister>();
             Graph = new BoardGraph();
             
+            Graph.Changed += UpdateFeatures;
+            
             this.grid = grid;
         }
 
@@ -96,6 +98,44 @@ namespace Carcassonne.State
             var features = subtileMeeples.Select(pm => GetFeatureAt(pm.Key));
             
             return features.Distinct();
+        }
+        
+        public void UpdateFeatures(object sender, BoardChangedEventArgs args)
+        {
+            BoardGraph graph = args.graph;
+            Cities = City.FromBoardGraph(graph);
+            Roads = Road.FromBoardGraph(graph);
+            Cloisters = Cloister.FromBoardGraph(graph);
+
+            string debugString = "Cities: \n\n";
+            foreach (var city in Cities)
+            {
+                debugString += city.ToString();
+                debugString += "\n";
+                debugString += $"Segments: {city.Segments}, Open Sides: {city.OpenSides}, Complete: {city.Complete}";
+                debugString += "\n\n";
+            }
+            Debug.Log(debugString);
+            
+            debugString = "Roads: \n\n";
+            foreach (var road in Roads)
+            {
+                debugString += road.ToString();
+                debugString += "\n";
+                debugString += $"Segments: {road.Segments}, Open Sides: {road.OpenSides}, Complete: {road.Complete}";
+                debugString += "\n\n";
+            }
+            Debug.Log(debugString);
+            
+            debugString = "Cloisters: \n\n";
+            foreach (var cloister in Cloisters)
+            {
+                debugString += cloister.ToString();
+                debugString += "\n";
+                debugString += $"Segments: {cloister.Segments}, Open Sides: {cloister.OpenSides}, Complete: {cloister.Complete}";
+                debugString += "\n\n";
+            }
+            Debug.Log(debugString);
         }
     }
 }

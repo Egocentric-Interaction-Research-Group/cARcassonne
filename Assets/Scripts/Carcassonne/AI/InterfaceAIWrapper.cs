@@ -114,7 +114,7 @@ namespace Carcassonne.AI
         /// <summary>
         /// Resets the game for another session. May not be useful in real implementation, but needed in training environment.
         /// </summary>
-        public void Reset();
+        public void Restart();
         
         /// <summary>
         /// Returns the minimum allowed X coordinate for the AI agent to move in to before it is forced to restart from the base tile.

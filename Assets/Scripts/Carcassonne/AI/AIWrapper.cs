@@ -1,7 +1,11 @@
-﻿using Carcassonne.AR;
+﻿using System;
+using System.Linq;
+using Carcassonne.AR;
 using Carcassonne.Controllers;
+using Carcassonne.Models;
 using Carcassonne.Players;
 using Carcassonne.State;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UI.Grid;
 using UnityEngine;
 
@@ -13,43 +17,72 @@ namespace Carcassonne.AI
     ///  the game differs in the two implementations.
     ///  Version 1.0
     /// </summary>
-    public class AIWrapper : InterfaceAIWrapper
+    public class AIWrapper : MonoBehaviour, InterfaceAIWrapper
     {
-        public GameControllerScript controller;
-        public GameState state; //Contains TileState, MeepleState, FeatureState, PlayerState and a GameLog.
-        public PlayerScript player;
-        public int totalTiles;
-        public float previousScore;
-        
+        public AIGameController aiController;
+        public GameController controller;
         public MeepleController meepleController;
+        public TileController tileController;
         
-        public AIWrapper()
+        public GameState state; //Contains TileState, MeepleState, FeatureState, PlayerState and a GameLog.
+        public Player player;
+        // public int totalTiles;
+        // public float previousScore;
+        
+        
+        // public AIWrapper()
+        // {
+        //     controller = GameObject.Find("GameController").GetComponent<AIGameController>();
+        //     state = controller.gameController.state;
+        //     // totalTiles = state.Tiles.Remaining.Count;
+        // }
+
+        private void Start()
         {
-            controller = GameObject.Find("GameController").GetComponent<GameControllerScript>();
-            state = controller.gameController.state;
-            totalTiles = state.Tiles.Remaining.Count;
+            //TODO this won't work for multiple boards. try GetComponentInParent
+            aiController = GetComponentInParent<AIGameController>();
+            controller = GetComponentInParent<GameController>();
+            meepleController = GetComponentInParent<MeepleController>();
+            tileController = GetComponentInParent<TileController>();
+            state = GetComponentInParent<GameState>();
+            
+            player = GetComponent<Player>();
+            
+            Debug.Assert(aiController != null);
+            Debug.Assert(controller != null);
+            Debug.Assert(meepleController != null);
+            Debug.Assert(tileController != null);
+            Debug.Assert(state != null);
+            Debug.Assert(player != null);
         }
 
         #region Game Actions
 
         public void PickUpTile()
         {
-            controller.tileController.Draw();
+            tileController.Draw();
         }
         
         public void DrawMeeple()
         {
-            controller.meepleControllerScript.DrawMeepleRPC();
+            meepleController.Draw();
         }
         
         public void EndTurn()
         {
-            controller.EndTurnRPC();
+            controller.EndTurn();
         }
         
-        public void Reset()
+        public void Restart()
         {
-            //In the training environment, this resets the game stage entirely before the next training session. Serves no purpose here except to make the code function.
+            try
+            {
+                aiController.Restart();
+            }
+            catch (NullReferenceException e)
+            {
+                Debug.LogWarning("AIGameController not set. Could not invoke GameOver. If this is at the beginning of a new run, this isn't a problem.");
+            }
         }
 
         #endregion
@@ -58,7 +91,7 @@ namespace Carcassonne.AI
 
         public bool IsAITurn()
         {
-            return player.id == state.Players.Current.id;
+            return state != null && state.Players != null && state.Players.Current != null && player.id == state.Players.Current.id;
         }
 
         public Phase GetGamePhase()
@@ -98,13 +131,7 @@ namespace Carcassonne.AI
 
         public float GetScoreChange()
         {
-            // if ((float)player.score != previousScore)
-            // {
-            //     Debug.Log("Player " + player.id + " score changed from " + previousScore + "p to " + player.score + "p");
-            // }
-            float scoreChange = (float)player.score - previousScore;
-            previousScore = (float)player.score;
-            return scoreChange;
+            return (float)player.scoreChange;
         }
 
         #endregion
@@ -113,14 +140,13 @@ namespace Carcassonne.AI
 
         public void RotateTile()
         {
-            GridOrientation gp = state.Tiles.Current.GetComponent<GridOrientation>();
-            gp.OrientToRPC(gp.direction + 90);
+            tileController.Rotate();
         }
 
         public void PlaceTile(int x, int z)
         {
-            controller.tileController.position = new Vector2Int(x, z);
-            controller.ConfirmPlacementRPC();
+            var cell = new Vector2Int(x, z);
+            tileController.Place(cell);
         }
         
         #endregion
@@ -129,7 +155,7 @@ namespace Carcassonne.AI
 
         public int GetCurrentTileId()
         {
-            return state.Tiles.Current.id;
+            return state.Tiles.Current.ID;
         }
         
         
@@ -140,18 +166,18 @@ namespace Carcassonne.AI
 
         public int GetNumberOfPlacedTiles()
         {
-            return totalTiles - state.Tiles.Remaining.Count;
+            return GetTotalTiles() - state.Tiles.Remaining.Count;
         }
         
         public int GetTotalTiles()
         {
-            return totalTiles;
+            return Tile.GetIDDistribution().Values.Sum();
         }
         
         public int GetMaxTileId()
         {
             //This needs a better solution if expansions are added. This number has just been manually taken from the game scene.
-            return 24;
+            return Tile.GetIDDistribution().Keys.Max();
         }
 
         #endregion
@@ -160,39 +186,43 @@ namespace Carcassonne.AI
 
         public void PlaceMeeple(Vector2Int meepleDirection)
         {
-            float meepleX = 0.000f;
-            float meepleZ = 0.000f;
-            
-            //If clause only changes X if it is east or west.
-            if (meepleDirection == Vector2Int.right)
-            {
-                meepleX = 0.011f;
-            }
-            else if (meepleDirection == Vector2Int.left)
-            {
-                meepleX = -0.011f;
-            }
-            
-            //If clause only changes Z if it is north or south
-            if (meepleDirection == Vector2Int.up)
-            {
-                meepleZ = 0.011f;
-            }
-            else if (meepleDirection == Vector2Int.down)
-            {
-                meepleZ = -0.011f;
-            }
+            // float meepleX = 0.000f;
+            // float meepleZ = 0.000f;
+            //
+            // //If clause only changes X if it is east or west.
+            // if (meepleDirection == Vector2Int.right)
+            // {
+            //     meepleX = 0.011f;
+            // }
+            // else if (meepleDirection == Vector2Int.left)
+            // {
+            //     meepleX = -0.011f;
+            // }
+            //
+            // //If clause only changes Z if it is north or south
+            // if (meepleDirection == Vector2Int.up)
+            // {
+            //     meepleZ = 0.011f;
+            // }
+            // else if (meepleDirection == Vector2Int.down)
+            // {
+            //     meepleZ = -0.011f;
+            // }
 
             // controller.meepleControllerScript.aiMeepleX = meepleX;
             // controller.meepleControllerScript.aiMeepleZ = meepleZ;
-            controller.ConfirmPlacementRPC();
+            Debug.Assert(state.Tiles.lastPlayedPosition != null, "State.Tiles.lastPlayedPosition should not be null, but it is.");
+            // controller.PlaceMeeple(state.grid.TileToMeeple((Vector2Int)state.Tiles.lastPlayedPosition, meepleDirection));
+            meepleController.Place(state.grid.TileToMeeple((Vector2Int)state.Tiles.lastPlayedPosition,
+                meepleDirection));
         }
 
         public void FreeCurrentMeeple()
         {
             //This is only used as a workaround for a current bug, where a meeple cannot be properly placed on a tile (e.g. when someone occupies the road/city that it connects to)
             //but the game does not recognize this as a faulty placement either, and threfore does not return the meeple.
-            meepleController.Free(state.Meeples.Current);
+            // meepleController.Free(state.Meeples.Current);
+            meepleController.Discard();
         }
 
         #endregion
@@ -202,12 +232,12 @@ namespace Carcassonne.AI
         
         public int GetMeeplesLeft()
         {
-            return player.AmountOfFreeMeeples();
+            return state.Meeples.ForPlayer(player).Count();
         }
 
         public int GetMaxMeeples()
         {
-            return player.meeples.Count;
+            return GameRules.MeeplesPerPlayer;
         }
 
         #endregion

@@ -49,7 +49,7 @@ namespace Carcassonne.Utilities
 
             Turns.Push(t);
             
-            Debug.Log($"Turn {Turns.Count}: Player {t.Player.name} | Tile ID {t.Tile.id}, Rotation ({t.Tile.Rotations}), Position: {t.Cell.x},{t.Cell.y} | Meeple: {t.MeeplePlacement}");
+            Debug.Log($"Turn {Turns.Count}: Player {t.Player.name} | Tile ID {t.Tile.ID}, Rotation ({t.Tile.Rotations}), Position: {t.Cell.x},{t.Cell.y} | Meeple: {t.MeeplePlacement}");
         }
         
         private void OnEnable()

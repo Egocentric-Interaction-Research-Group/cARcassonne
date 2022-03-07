@@ -25,7 +25,7 @@ namespace Carcassonne.AI
         //AI Specific
         public AIWrapper wrapper;
         private const int maxBranchSize = 6;
-        public int x = GameRules.BoardSize/2, z = GameRules.BoardSize/2, rot = 0;
+        public int x = 0, z = 0, rot = 0;
 
         /// <summary>
         /// Initial setup which gets the scripts needed to AI calls and observations, called only once when the agent is enabled.
@@ -33,7 +33,7 @@ namespace Carcassonne.AI
         public override void Initialize()
         {
             base.Initialize();
-            wrapper = new AIWrapper();
+            wrapper = GetComponent<AIWrapper>();
 
             // Setup delegate for tile observation approach.
             switch (observationApproach)
@@ -179,7 +179,7 @@ namespace Carcassonne.AI
                 if (wrapper.GetGamePhase() == Phase.MeepleDown) //If meeple is placed.
                 {
                     AddReward(0.1f); //Rewards successfully placing a meeple
-                    wrapper.EndTurn();
+                    wrapper.controller.EndTurn();
                     AddReward(wrapper.GetScoreChange());
                 }
                 else if (wrapper.GetGamePhase() == Phase.TileDown) //If meeple gets returned.
@@ -188,7 +188,7 @@ namespace Carcassonne.AI
                 }
                 else //Workaround for a bug where you can draw an unconfirmable meeple and never be able to change phase.
                 {
-                    wrapper.FreeCurrentMeeple();
+                    wrapper.meepleController.Discard();
                 }
             }
         }
@@ -200,7 +200,7 @@ namespace Carcassonne.AI
         {
             //This occurs every X steps (Max Steps). It only serves to reset tile position if AI is stuck, and for AI to process current learning
             ResetAttributes();
-            wrapper.Reset();
+            wrapper.Restart();
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Carcassonne.AI
         {
             sensor.AddObservation(wrapper.GetScore() / MAX_GAME_SCORE);
             //TODO: I think this should be a onehot observation
-            sensor.AddObservation(wrapper.GetCurrentTileId() / wrapper.GetMaxTileId());
+            sensor.AddOneHotObservation(wrapper.GetCurrentTileId(),wrapper.GetMaxTileId());
             sensor.AddObservation(rot / 3f);
             sensor.AddObservation(x / wrapper.GetMaxBoardSize());
             sensor.AddObservation(z / wrapper.GetMaxBoardSize());
@@ -226,7 +226,7 @@ namespace Carcassonne.AI
             //TODO: DIRECTION DEPRICATION CHANGE -sensor.AddOneHotObservation((int)meepleDirection, MAX_DIRECTIONS);
             // if (meepleDirection != null) sensor.AddObservation((Vector2)meepleDirection); //FIXME This not going to work. Can't be conditional.
             sensor.AddOneHotObservation(MeepleDirectionToOneHot(meepleDirection), nDirections);
-
+            
             // Call the tile observation method that was assigned at initialization,
             // using the editor-exposed 'observationApproach' field.
             // This will observe the entire Carcassonne game board.
@@ -268,8 +268,8 @@ namespace Carcassonne.AI
         /// </summary>
         internal void ResetAttributes()
         {
-            x = GameRules.BoardSize/2;
-            z = GameRules.BoardSize/2;
+            x = 0;//GameRules.BoardSize/2;
+            z = 0;//GameRules.BoardSize/2;
             rot = 0;
             meepleDirection = null;
         }
@@ -290,7 +290,13 @@ namespace Carcassonne.AI
             if (direction == null) return 0;
             if (direction == Vector2Int.zero) return nDirections-1;
 
-            return (int)(Vector2.Angle(Vector2.zero, (Vector2)direction) / 90.0) + angleAdjustment;
+            var oneHotAngle = (int)(Vector2.Angle(Vector2.zero, (Vector2)direction) / 90.0) + angleAdjustment;
+
+            Debug.Assert(oneHotAngle < nDirections - 1 && oneHotAngle > 0, 
+                $"The meeple direction is neither null (not placed) nor the centre and should be" +
+                $"0 < direction < {nDirections}, but is {oneHotAngle}.");
+            
+            return oneHotAngle;
         }
     }
 }

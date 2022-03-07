@@ -68,7 +68,7 @@ namespace Carcassonne.Players
             if (player.isAI)
             {
                 GameObject aiObj = Instantiate(ai, transform);
-                aiObj.GetComponent<CarcassonneAgent>().wrapper.player = this;
+                aiObj.GetComponent<CarcassonneAgent>().wrapper.player = GetComponent<Player>();
                 aiObj.SetActive(true);
             }
         }
