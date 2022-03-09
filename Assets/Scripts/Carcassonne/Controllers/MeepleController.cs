@@ -33,10 +33,9 @@ namespace Carcassonne.Controllers
         {
             // If this is a meeple that has already been played on a tile (as opposed to one that is being placed).
             if(state.Meeples.InPlay.Contains(meeple)){
-                var placements = state.Meeples.Placement;
-                var position = placements.Single(kvp => kvp.Value == meeple).Key;
+                var position = state.Meeples.Placement.Single(kvp => kvp.Value == meeple).Key;
                 Debug.Log($"Meeple at position {position} has been freed.");
-                placements.Remove(position);
+                state.Meeples.Placement.Remove(position);
             }
             
             OnFree.Invoke(meeple);
@@ -107,8 +106,17 @@ namespace Carcassonne.Controllers
             // var position = grid.MeepleToTile(cell);
             // var direction = grid.MeepleToDirection(cell);
             
+            Debug.Assert(meeple != null, "Cannot place a null Meeple");
+            Debug.Assert(!state.Meeples.Placement.ContainsValue(meeple), $"Cannot place a meeple that is already placed.");
+            Debug.Assert(!state.Meeples.Placement.ContainsKey(cell), $"Cannot place a meeple in a cell that is already occupies.");
+            
+            Debug.Log($"Placing meeple {meeple} (player {meeple.player.id}={state.Players.Current.id}) at position {cell} ({grid.MeepleToTile(cell)}, {grid.MeepleToDirection(cell)})");
+            
             // Place meeple
             state.Meeples.Placement.Add(cell, meeple); //position, new PlacedMeeple(meeple, direction));
+            
+            //Not every valid cell for a Meeple will have a graph vertex
+            // state.Features.Graph.Vertices.Single(subtile => subtile.location == cell).meeple = meeple;
 
             // Move game to next phase
             state.phase = Phase.MeepleDown;
@@ -119,8 +127,9 @@ namespace Carcassonne.Controllers
 
         public override void Draw()
         {
-            if (state.phase == Phase.TileDown)
+            if (state.phase != Phase.TileDown)
             {
+                Debug.LogWarning($"Can't draw meeple. Wrong game phase ({state.phase}).");
                 OnInvalidDraw.Invoke();
                 return;
             }
@@ -129,12 +138,15 @@ namespace Carcassonne.Controllers
             // Can't draw if a meeple is in play or a player has none left.
             if (RemainingForCurrentPlayer.Count() < 1 || state.Meeples.Current != null)
             {
+                Debug.LogWarning($"Can't draw meeple. Too few remaining ({RemainingForCurrentPlayer.Count()}) or Meeple already drawn.");
                 OnInvalidDraw.Invoke();
                 return;
             }
             
             // Get a new current tile
             state.Meeples.Current = RemainingForCurrentPlayer.First();
+            
+            Debug.Assert(!state.Meeples.Placement.ContainsValue(state.Meeples.Current), $"Cannot draw a meeple that is already in play.");
             
             state.phase = Phase.MeepleDrawn;
             
@@ -143,6 +155,8 @@ namespace Carcassonne.Controllers
 
         public override void Discard()
         {
+            state.phase = Phase.TileDown; // Go back to the tile down phase.
+            
             OnDiscard.Invoke(meeple);
             
             meeples.Current = null;
@@ -170,6 +184,6 @@ namespace Carcassonne.Controllers
         /// Meeples that have not been played for the current player
         /// </summary>
         private IEnumerable<Meeple> RemainingForCurrentPlayer =>
-            state.Meeples.Remaining.Where(meeple => meeple.player == state.Players.Current);
+            state.Meeples.Remaining.Where(m => m.player == state.Players.Current);
     }
 }

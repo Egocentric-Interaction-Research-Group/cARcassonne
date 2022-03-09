@@ -93,12 +93,12 @@ namespace Carcassonne.Controllers
 
             state.Tiles.Placement.Add(Vector2Int.zero, t);
 
-            var bg = BoardGraph.FromTile(t, Vector2Int.zero);
+            var bg = BoardGraph.FromTile(t, Vector2Int.zero, state.grid);
             Debug.Log($"Starting graph has {bg.VertexCount} vertices and {bg.EdgeCount} edges.");
             
             state.Features.Graph.Add(bg);
 
-            Debug.Log($"First tile graph: {BoardGraph.FromTile(t, Vector2Int.zero)}");
+            Debug.Log($"First tile graph: {BoardGraph.FromTile(t, Vector2Int.zero, state.grid)}");
         }
 
         public override bool Place(Vector2Int cell)
@@ -114,9 +114,11 @@ namespace Carcassonne.Controllers
                 OnInvalidPlace.Invoke(tile, cell);
                 return false;
             }
+
+            Debug.Log($"Placing tile {tile} at position {cell} with rotation {tile.Rotations}");
             
             state.Tiles.Placement.Add(cell, tile);
-            state.Features.Graph.Add(BoardGraph.FromTile(tile, cell));
+            state.Features.Graph.Add(BoardGraph.FromTile(tile, cell, state.grid));
 
             state.phase = Phase.TileDown;
             
@@ -282,21 +284,15 @@ namespace Carcassonne.Controllers
         /// <returns></returns>
         internal bool DirectionIsEmptyOrMatchesGeography(Vector2Int cell, Vector2Int dir, Geography geography)
         {
-            // if (!PositionIsInBounds(cell))
-            // {
-            //     Debug.Log($"Position {cell} is not in bounds.");
-            //     return true;
-            // }
-            
             if (!tiles.Placement.ContainsKey(cell))
             {
-                Debug.Log($"No tile at {cell}");
+                // Debug.Log($"No tile at {cell}");
                 return true;
             }
             
             if (tiles.Placement[cell].GetGeographyAt(dir) == geography)
             {
-                Debug.Log($"Tile at {cell} matches {geography} in the direction {dir}");
+                // Debug.Log($"Tile at {cell} matches {geography} in the direction {dir}");
                 return true;
             }
             

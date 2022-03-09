@@ -104,25 +104,25 @@ namespace Carcassonne.AI
             return GameRules.BoardSize;
         }
 
-        public int GetMinX()
-        {
-            return state.Tiles.Limits.xMin;
-        }
-
-        public int GetMaxX()
-        {
-            return state.Tiles.Limits.xMax;
-        }
-
-        public int GetMinZ()
-        {
-            return state.Tiles.Limits.yMin;
-        }
-
-        public int GetMaxZ()
-        {
-            return state.Tiles.Limits.yMax;
-        }
+        // public int GetMinX()
+        // {
+        //     return state.Tiles.Limits.xMin;
+        // }
+        //
+        // public int GetMaxX()
+        // {
+        //     return state.Tiles.Limits.xMax;
+        // }
+        //
+        // public int GetMinZ()
+        // {
+        //     return state.Tiles.Limits.yMin;
+        // }
+        //
+        // public int GetMaxZ()
+        // {
+        //     return state.Tiles.Limits.yMax;
+        // }
 
         public float GetScore()
         {
@@ -143,9 +143,9 @@ namespace Carcassonne.AI
             tileController.Rotate();
         }
 
-        public void PlaceTile(int x, int z)
+        public void PlaceTile(Vector2Int cell)
         {
-            var cell = new Vector2Int(x, z);
+            // var cell = new Vector2Int(x, z);
             tileController.Place(cell);
         }
         
@@ -158,6 +158,10 @@ namespace Carcassonne.AI
             return state.Tiles.Current.ID;
         }
         
+        public int GetCurrentTileRotations()
+        {
+            return state.Tiles.Current.Rotations;
+        }
         
         public object[,] GetTiles()
         {
@@ -178,6 +182,11 @@ namespace Carcassonne.AI
         {
             //This needs a better solution if expansions are added. This number has just been manually taken from the game scene.
             return Tile.GetIDDistribution().Keys.Max();
+        }
+
+        public RectInt GetLimits()
+        {
+            return state.Tiles.Limits;
         }
 
         #endregion
@@ -229,6 +238,10 @@ namespace Carcassonne.AI
 
         #region Meeple
 
+        public bool CanBePlaced()
+        {
+            return meepleController.CanBePlaced();
+        }
         
         public int GetMeeplesLeft()
         {

@@ -27,11 +27,11 @@ namespace Carcassonne.AI
                     ai.ResetAttributes();
                     ai.wrapper.PickUpTile();
                     break;
-                case Phase.MeepleDown: //Ends turn automatically and resets AI for next move.
-                    ai.wrapper.EndTurn();
-                    break;
+                // case Phase.MeepleDown: //Ends turn automatically and resets AI for next move.
+                //     ai.wrapper.EndTurn();
+                //     break;
                 case Phase.GameOver: //ToDo: Add reinforcement based on score
-                    ai.EndEpisode();
+                    // ai.EndEpisode();
                     break;
                 default: //Calls for one AI action repeatedly with each FixedUpdate until the phase changes.
                     ai.RequestDecision();

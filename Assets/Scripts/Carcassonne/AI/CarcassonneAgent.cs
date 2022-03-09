@@ -1,22 +1,46 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Carcassonne.State;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Policies;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace Carcassonne.AI
 {
+    //TODO need a default mask on each branch.
+    public enum Actions
+    {
+        TileUpDown,         // 0, 1, 2
+        TileLeftRight,      // 0, 1, 2
+        TileRotate,         // 0, 1, 2, 3
+        TilePlace,          // 0, 1
+        MeeplePosition,     // 0, 1, 2, 3, 4
+        MeepleDiscardPlace, // 0, 1, 2
+        Decision            // 0, 1
+    }
+
+    public enum DecisionAction
+    {
+        DrawMeeple,
+        EndTurn
+    }
+
     /// <summary>
     /// The AI for the player. An AI user contains both a regular PlayerScript and this AI script to observe and take actions.
     /// Version 1.0
     /// </summary>
     public class CarcassonneAgent : Agent
     {
+        private static readonly int[] DefaultActions = new int[] {1, 1, 0, 0, 0, 0, 0};
+
         private const int MAX_GAME_SCORE = 338; // https://boardgames.stackexchange.com/questions/7375/maximum-attainable-points-for-a-single-player-in-a-two-player-game-of-carcassonn
 
         //Enum Observations
-        private Vector2Int? meepleDirection = null;
+        private Vector2Int meepleDirection;
 
         // Observation approach
         public ObservationApproach observationApproach = ObservationApproach.TileIds;
@@ -25,7 +49,8 @@ namespace Carcassonne.AI
         //AI Specific
         public AIWrapper wrapper;
         private const int maxBranchSize = 6;
-        public int x = 0, z = 0, rot = 0;
+        // public int x = 0, z = 0;//, rot = 0;
+        public Vector2Int cell;
 
         /// <summary>
         /// Initial setup which gets the scripts needed to AI calls and observations, called only once when the agent is enabled.
@@ -63,132 +88,131 @@ namespace Carcassonne.AI
         /// <param name="actionBuffers">The struct of actions to take</param>
         public override void OnActionReceived(ActionBuffers actionBuffers)
         {
+            Debug.Log(String.Join(", ", actionBuffers.DiscreteActions.Array.Select(p => p.ToString()).ToArray()));
             switch (wrapper.GetGamePhase())
             {
                 case Phase.TileDrawn:
-                    TileDrawnAction(actionBuffers);
+                    var upDown = actionBuffers.DiscreteActions[(int)Actions.TileUpDown];
+                    var leftRight = actionBuffers.DiscreteActions[(int)Actions.TileLeftRight];
+                    var rotate = actionBuffers.DiscreteActions[(int)Actions.TileRotate] % 4;
+                    var tPlace = actionBuffers.DiscreteActions[(int)Actions.TilePlace] == 1;
+                    TileDrawnAction(upDown, leftRight, rotate, tPlace);
                     break;
                 case Phase.TileDown:
-                    if (actionBuffers.DiscreteActions[0] == 0f)
+                    var decision = actionBuffers.DiscreteActions[(int)Actions.Decision];
+                    Debug.Log("Decision Time.");
+                    
+                    if (decision == (int)DecisionAction.DrawMeeple)
                     {
+                        Debug.Log("Decided to draw a meeple.");
                         wrapper.DrawMeeple(); //Take meeple
                     }
-                    else
+                    else if (decision == (int)DecisionAction.EndTurn)
                     {
+                        Debug.Log("Decided to end the turn.");
                         wrapper.EndTurn(); //End turn without taking meeple
                         AddReward(wrapper.GetScoreChange());
                     }
                     break;
                 case Phase.MeepleDrawn:
-                    MeepleDrawnAction(actionBuffers);
+                    var position = actionBuffers.DiscreteActions[(int)Actions.MeeplePosition];
+                    var mPlace = actionBuffers.DiscreteActions[(int)Actions.MeepleDiscardPlace] == 1;
+                    var mDiscard = actionBuffers.DiscreteActions[(int)Actions.MeepleDiscardPlace] == 2;
+                    MeepleDrawnAction(position, mPlace, mDiscard);
                     break;
             }
         }
 
-        private void TileDrawnAction(ActionBuffers actionBuffers)
+        private void TileDrawnAction(int upDown, int leftRight, int rotate, bool place)
         {
             AddReward(-0.001f); //Each call to this method comes with a very minor penalty to promote performing quick actions.
-            if (actionBuffers.DiscreteActions[0] == 0f)
+            cell += new Vector2Int(leftRight, upDown) - Vector2Int.one;
+            // x += leftRight - 2;
+            // z += upDown - 2;
+            // rot = (rot + rotate) % 4;
+            
+            //Rotates the tile the amount of times AI has chosen (0-3).
+            for (int i = 0; i <= rotate; i++)
             {
-                z += 1; //Up
+                wrapper.RotateTile();
             }
-            else if (actionBuffers.DiscreteActions[0] == 1f)
+            
+            if (place) //Place tile
             {
-                z -= 1; //Down
-            }
-            else if (actionBuffers.DiscreteActions[0] == 2f)
-            {
-                x -= 1; //Left
-            }
-            else if (actionBuffers.DiscreteActions[0] == 3f)
-            {
-                x += 1; //Right
-            }
-            else if (actionBuffers.DiscreteActions[0] == 4f)
-            {
-                //Each step in rot represents a 90 degree rotation of the tile.
-                rot++;
-                if (rot == 4)
-                {
-                    rot = 0;
-
-                    //Punishment for rotating more than needed, i.e. returning back to default rotation state.
-                    //AddReward(-0.01f); 
-                }
-            }
-            else if (actionBuffers.DiscreteActions[0] == 5f) //Place tile
-            {
-                //Rotates the tile the amount of times AI has chosen (0-3).
-                for (int i = 0; i <= rot; i++)
-                {
-                    wrapper.RotateTile();
-                }
-
                 //Values are loaded into GameController that are used in the ConfirmPlacementRPC call.
-                wrapper.PlaceTile(x, z);
+                wrapper.PlaceTile(cell);
 
                 if (wrapper.GetGamePhase() == Phase.TileDown) //If the placement was successful, the phase changes to TileDown.
                 {
                     AddReward(0.05f);
                 }
+                else
+                {
+                    AddReward(-0.001f); // Demerit for failed placement.
+                }
             }
 
-            //After choice checks to determine if AI is Out of Bounds. Bounds a defined by the minimum and maximum coordinates in each axis for tiles placed
-            if (x < wrapper.GetMinX() - 1 || x > wrapper.GetMaxX() + 1 || z < wrapper.GetMinZ() - 1 || z > wrapper.GetMaxZ() + 1)
-            {
-                //Outside table area, reset values and add significant punishment.
-                ResetAttributes();
-                AddReward(-0.05f);
-            }
+            // //After choice checks to determine if AI is Out of Bounds. Bounds a defined by the minimum and maximum coordinates in each axis for tiles placed
+            // if (x < wrapper.GetMinX() - 1 || x > wrapper.GetMaxX() + 1 || z < wrapper.GetMinZ() - 1 || z > wrapper.GetMaxZ() + 1)
+            // {
+            //     //Outside table area, reset values and add significant punishment.
+            //     ResetAttributes();
+            //     AddReward(-0.05f);
+            // }
         }
 
         /// <summary>
         /// Places the meeple on one of the 5 places available on the tile (Uses the tile to find the positions).
         /// </summary>
         /// <param name="actionBuffers"></param>
-        private void MeepleDrawnAction(ActionBuffers actionBuffers)
+        private void MeepleDrawnAction(int position, bool place, bool discard)
         {
             AddReward(-0.01f); //Each call gets a negative reward to avoid getting stuck just moving the meeple around in this stage.
-            if (actionBuffers.DiscreteActions[0] == 0f)
+            if (discard || !wrapper.CanBePlaced())
+            {
+                AddReward(-0.001f); // Don't want people picking up and discarding meeples for no reason.
+                wrapper.meepleController.Discard();
+                return;
+            }
+            
+            if (position == 1)
             {
                 meepleDirection = Vector2Int.up;
             }
-            else if (actionBuffers.DiscreteActions[0] == 1f)
+            else if (position == 2)
             {
                 meepleDirection = Vector2Int.down;
             }
-            else if (actionBuffers.DiscreteActions[0] == 2f)
+            else if (position == 3)
             {
                 meepleDirection = Vector2Int.left;
             }
-            else if (actionBuffers.DiscreteActions[0] == 3f)
+            else if (position == 4)
             {
                 meepleDirection = Vector2Int.right;
             }
-            else if (actionBuffers.DiscreteActions[0] == 4f)
+            else if (position == 0)
             {
                 meepleDirection = Vector2Int.zero;
             }
-            else if (actionBuffers.DiscreteActions[0] == 5f)
-            {
-                if (meepleDirection != null) //Checks so that a placement choice has been made since meeple was drawn.
-                {
-                    wrapper.PlaceMeeple((Vector2Int)meepleDirection);  //Either confirms and places the meeple if possible, or returns meeple and goes back to phase TileDown.
-                }
 
+            if (place)
+            {
+                wrapper.PlaceMeeple(meepleDirection);  //Either confirms and places the meeple if possible, or returns meeple and goes back to phase TileDown.
+                
                 if (wrapper.GetGamePhase() == Phase.MeepleDown) //If meeple is placed.
                 {
                     AddReward(0.1f); //Rewards successfully placing a meeple
-                    wrapper.controller.EndTurn();
+                    wrapper.EndTurn();
                     AddReward(wrapper.GetScoreChange());
                 }
-                else if (wrapper.GetGamePhase() == Phase.TileDown) //If meeple gets returned.
+                else if (wrapper.GetGamePhase() == Phase.MeepleDrawn) //If meeple gets returned.
                 {
                     AddReward(-0.1f); //Punishes returning a meeple & going back a phase (note: no punishment for never drawing a meeple).
                 }
-                else //Workaround for a bug where you can draw an unconfirmable meeple and never be able to change phase.
+                else
                 {
-                    wrapper.meepleController.Discard();
+                    Debug.LogWarning($"Unexpected game phase {wrapper.GetGamePhase()} on Meeple placement attempt.");
                 }
             }
         }
@@ -212,9 +236,10 @@ namespace Carcassonne.AI
             sensor.AddObservation(wrapper.GetScore() / MAX_GAME_SCORE);
             //TODO: I think this should be a onehot observation
             sensor.AddOneHotObservation(wrapper.GetCurrentTileId(),wrapper.GetMaxTileId());
-            sensor.AddObservation(rot / 3f);
-            sensor.AddObservation(x / wrapper.GetMaxBoardSize());
-            sensor.AddObservation(z / wrapper.GetMaxBoardSize());
+            sensor.AddObservation(wrapper.GetCurrentTileRotations() / 3f);
+            // sensor.AddObservation(x / wrapper.GetMaxBoardSize());
+            // sensor.AddObservation(z / wrapper.GetMaxBoardSize());
+            sensor.AddObservation(cell / wrapper.GetMaxBoardSize());
             sensor.AddObservation(wrapper.GetNumberOfPlacedTiles() / wrapper.GetTotalTiles());
             sensor.AddObservation(wrapper.GetMeeplesLeft() / wrapper.GetMaxMeeples());
 
@@ -239,27 +264,72 @@ namespace Carcassonne.AI
         /// <param name="actionMask">The actions (related to ActionBuffer actioons) to disable or enable</param>
         public override void WriteDiscreteActionMask(IDiscreteActionMask actionMask)
         {
-            int allowedActions = 0;
+            List<Actions> allowedActions = new List<Actions>();
             switch (wrapper.GetGamePhase())
             {
                 case Phase.TileDrawn:
                     //AI can choose to step one tile place in either of the 4 directions (-X, X, -Z, Z), rotate 90 degrees, or confirm place.
-                    allowedActions = 6;
+                    allowedActions = new List<Actions> { Actions.TileUpDown, Actions.TileLeftRight, Actions.TileRotate, Actions.TilePlace};
+                    
+                    // Disallow moves that go far outside the bounds of the board.
+                    DisallowWandering(ref actionMask);
+
                     break;
                 case Phase.TileDown:
                     //AI can choose to take or not take a meeple.
-                    allowedActions = 2;
+                    allowedActions = new List<Actions> { Actions.Decision };
                     break;
                 case Phase.MeepleDrawn:
                     //AI can choose to place a drawn meeple in 5 different places (N, S, W, E, C) or confirm/deny current placement.
-                    allowedActions = 6;
+                    allowedActions = new List<Actions> { Actions.MeeplePosition, Actions.MeepleDiscardPlace };
                     break;
             }
 
+            var branchSizes = GetComponent<BehaviorParameters>().BrainParameters.ActionSpec.BranchSizes;
+
             //Disables all actions of branch 0, index i (on that branch) for any i larger than the allowed actions.
-            for (int i = allowedActions; i < maxBranchSize; i++)
+            foreach (Actions action in Enum.GetValues(typeof(Actions)))
             {
-                actionMask.SetActionEnabled(0, i, false); //The rest are enabled by default, as it resets to all enabled after a decision.
+                if (!allowedActions.Contains(action))
+                {
+                    for (int i = 0; i < branchSizes[(int)action]; i++)
+                    {
+                        var isEnabled = DefaultActions[(int)action] == i; // Enable the default action for each branch
+                        actionMask.SetActionEnabled((int)action, i, isEnabled);
+                    }
+                }
+            }
+        }
+
+        private void DisallowWandering(ref IDiscreteActionMask actionMask)
+        {
+            var limits = wrapper.GetLimits();
+            
+            // Extend the limits by one cell on every side
+            limits.height += 2;
+            limits.width += 2;
+            limits.position -= Vector2Int.one;
+
+            // Do nothing if the tile is within the limits
+            if (limits.Contains(cell))
+            {
+                return;
+            }
+
+            var fromCentre = cell - limits.center;
+            
+            // Disable left/right if it is too far from centre
+            if (Math.Abs(fromCentre.x) > limits.width / 2f)
+            {
+                var actionIndex = fromCentre.x > 0 ? 2 : 0;
+                actionMask.SetActionEnabled((int)Actions.TileLeftRight, actionIndex, false);
+            }
+            
+            // Disable up/down if it is too far from centre
+            if (Math.Abs(fromCentre.y) > limits.height / 2f)
+            {
+                var actionIndex = fromCentre.y > 0 ? 2 : 0;
+                actionMask.SetActionEnabled((int)Actions.TileUpDown, actionIndex, false);
             }
         }
 
@@ -268,10 +338,11 @@ namespace Carcassonne.AI
         /// </summary>
         internal void ResetAttributes()
         {
-            x = 0;//GameRules.BoardSize/2;
-            z = 0;//GameRules.BoardSize/2;
-            rot = 0;
-            meepleDirection = null;
+            // x = 0;//GameRules.BoardSize/2;
+            // z = 0;//GameRules.BoardSize/2;
+            // rot = 0;
+            cell = Vector2Int.zero;
+            meepleDirection = Vector2Int.zero;
         }
 
         private const int nDirections = 6;

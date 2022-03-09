@@ -8,18 +8,6 @@ using UnityEngine;
 
 namespace Carcassonne.State
 {
-    public struct PlacedMeeple
-    {
-        public PlacedMeeple(Meeple meeple, Vector2Int direction)
-        {
-            Meeple = meeple;
-            Direction = direction;
-        }
-
-        public Meeple Meeple { get; }
-        public Vector2Int Direction { get; }
-    }
-    
     /// <summary>
     /// MeepleState hold all of the information about the position, availability, and ownership of meeples.
     /// Player meeple list derive from this information store.
@@ -41,7 +29,7 @@ namespace Carcassonne.State
         /// Dictionary of meeple placement. Key is coordinate in Meeple coordinate system.
         /// </summary>
         public Dictionary<Vector2Int, Meeple> Placement = new Dictionary<Vector2Int, Meeple>();
-        public IEnumerable<Meeple> InPlay => Placement.Select(p => p.Value);
+        public IEnumerable<Meeple> InPlay => Placement.Values;
         
         // public Dictionary<Vector2Int, Meeple> Placement => getSubTilePlacement();
         //

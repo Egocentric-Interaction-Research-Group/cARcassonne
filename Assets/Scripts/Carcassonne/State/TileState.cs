@@ -117,6 +117,9 @@ namespace Carcassonne.State
         private RectInt CalculateLimits()
         {
             RectInt lim = new RectInt();
+
+            if (Placement.Count == 0) return lim;
+            
             var xValues = Placement.Keys.Select(cell => cell.x);
             var yValues = Placement.Keys.Select(cell => cell.y);
             
@@ -125,26 +128,6 @@ namespace Carcassonne.State
             lim.yMin = yValues.Min();
             lim.yMax = yValues.Max();
             
-            // for (var i = 0; i < Played.GetLength(0); i++)
-            // {
-            //     for (var j = 0; j < Played.GetLength(1); j++)
-            //     {
-            //         if (Played[i, j] != null)
-            //         {
-            //             if (lim.size == Vector2Int.zero)
-            //             {
-            //                 lim = new RectInt(i, j, 1, 1);
-            //             } else
-            //             {
-            //                 if (i <  lim.xMin){ lim.xMin = i;}
-            //                 if (i >= lim.xMax){ lim.xMax = i + 1;}
-            //                 if (j <  lim.yMin){ lim.yMin = j;}
-            //                 if (j >= lim.yMax){ lim.yMax = j + 1;}
-            //             }
-            //         }
-            //     }
-            // }
-
             return lim;
         }
 

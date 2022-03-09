@@ -563,6 +563,7 @@ MonoBehaviour:
   minZ: 0
   maxX: 0
   maxZ: 0
+  nPlayers: 2
   state: {fileID: 188465451}
   aiPrefab: {fileID: 2598782832212889485, guid: c9686d6fa98efc2468f526b4b37003b2,
     type: 3}

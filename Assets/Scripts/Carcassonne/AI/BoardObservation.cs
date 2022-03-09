@@ -271,7 +271,7 @@ namespace Carcassonne.AI
                 {
                     if (meeplePlacement.ContainsValue(meeple)) // Add meeple location to observations
                     {
-                        var location = meeplePlacement.Single(kvp => kvp.Value.Equals(meeple)).Key;
+                        var location = meeplePlacement.Single(kvp => kvp.Value == meeple).Key;
                         sensor.AddObservation((Vector2)location / (GameRules.BoardSize * 3.0f));
                         obsCount += 2;
                     }

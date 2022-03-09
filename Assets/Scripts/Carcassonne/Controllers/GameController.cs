@@ -218,7 +218,6 @@ namespace Carcassonne.Controllers
                 // Free meeples
                 foreach (var m in meeples)
                 {
-                    Debug.LogWarning("Rethink this. GameController should not reference MeepleController");
                     meepleController.Free(m);
                 }
             }

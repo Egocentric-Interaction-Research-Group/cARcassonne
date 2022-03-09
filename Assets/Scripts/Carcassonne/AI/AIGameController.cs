@@ -1,12 +1,16 @@
 using System;
 using Carcassonne;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Carcassonne.AI;
 using Carcassonne.Controllers;
 using Carcassonne.Interfaces;
 using Carcassonne.Models;
 using Carcassonne.State;
 using Carcassonne.State.Features;
+using Unity.MLAgents.Policies;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -22,6 +26,11 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     
     public int minX, minZ, maxX, maxZ;
 
+    public int nPlayers;
+
+    public int turn => state.Tiles.Placement.Count - 1;
+    private DateTime gameStart;
+
     public GameState state;
 
     private CarcassonneVisualization shader;
@@ -34,6 +43,8 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     public Transform playerParent;
     public Transform tileParent;
     public Transform meepleParent;
+
+    private List<Player> m_players = new List<Player>();
 
     #region NewParams
 
@@ -55,14 +66,6 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     /// </summary>
     private void Start()
     {
-        // Instantiate AI Players
-        for (int i = 0; i < 1; i++) // Creates all the players
-        {
-            GameObject Agent = Instantiate(aiPrefab, playerParent); // Initiate AI prefab 
-            Player player = Agent.GetComponent<Player>();
-            player.id = i;
-        }
-
         // Initialize the shader visualization in order to set the max array
         // size for upcoming shader data.
         shader = visualizationBoard.GetComponent<CarcassonneVisualization>();
@@ -73,8 +76,12 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
 
     public void Restart()
     {
-        gameController.GameOver();
-        
+        // if (state.phase != Phase.GameOver)
+        // {
+        //     Debug.Log($"Caught restart with game phase {state.phase}. Calling Game Over.");
+        //     gameController.GameOver();
+        // }
+
         foreach (var tile in GetComponentsInChildren<Tile>())
         {
             Destroy(tile.gameObject);
@@ -93,6 +100,8 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     /// </summary>
     public void NewGame()
     {
+        gameStart = DateTime.Now;
+        
         // List of Tiles
         var tiles = CreateDeck();
         
@@ -127,6 +136,8 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
         {
             Debug.Log($"Turn End ({state.Tiles.Placement.Count - 1}): Tile {kvp.Value} at {kvp.Key}.");
         }
+
+        WriteGraphToFile(state.Features.Graph);
     }
 
     /// <summary>
@@ -134,10 +145,33 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     /// </summary>
     public void OnGameOver()
     {
+        //TODO THIS IS BEING CALLED MULTIPLE TIMES! WHAT GIVES?
+        
         foreach (Player p in state.Players.All)
         {
             Debug.Log("Player " + p.id + " achieved " + p.score + " points!");
         }
+
+        WriteGraphToFile(state.Features.Graph);
+
+        var playersByScore = state.Players.All.OrderByDescending(p => p.score);
+        
+        playersByScore.First().GetComponent<CarcassonneAgent>().SetReward(1f);
+        playersByScore.First().GetComponent<CarcassonneAgent>().EndEpisode();
+        
+        foreach (var player in playersByScore.Where(p => p != playersByScore.First()))
+        {
+            player.GetComponent<CarcassonneAgent>().SetReward(-1f);
+            player.GetComponent<CarcassonneAgent>().EndEpisode();
+        }
+        
+    }
+    
+    public void WriteGraphToFile(BoardGraph g)
+    {
+        string gv = g.ToString();
+
+        File.WriteAllText($"Learning/{gameStart.ToString("yyyyMMdd_HHmmss")}_{turn}.graphviz", gv);
     }
 
     /// <summary>
@@ -208,8 +242,32 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
 
     private List<Player> CreatePlayers()
     {
-        var players = FindObjectsOfType<Player>().OrderBy(p => p.id);
-        return players.ToList();
+        if (m_players.Count == 0) // First new game, create players
+        {
+            // Instantiate AI Players
+            for (int i = 0; i < nPlayers; i++) // Creates all the players
+            {
+                GameObject Agent = Instantiate(aiPrefab, playerParent); // Initiate AI prefab 
+                Player player = Agent.GetComponent<Player>();
+                player.id = i;
+                player.isAI = true;
+                Agent.GetComponent<BehaviorParameters>().TeamId = i;
+                
+                gameController.OnTurnStart.AddListener(player.OnNewTurn);
+
+                m_players.Add(player);
+            }
+        }
+        else // New game, same players
+        {
+            foreach (var p in m_players)
+            {
+                p.score = 0;
+                p.previousScore = 0;
+            }
+        }
+
+        return m_players;
     }
 
     private List<Meeple> CreateMeeples(List<Player> players)

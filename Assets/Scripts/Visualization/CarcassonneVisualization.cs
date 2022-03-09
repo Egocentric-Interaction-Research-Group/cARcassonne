@@ -56,6 +56,15 @@ namespace Carcassonne
     {
         internal const int MAX_BOARD_DIMENSION = 31; // The maximum nbr of tiles in each axis. This is limited by the shader.
 
+        internal static readonly Dictionary<Vector2Int, int> DIRECTION_MULTIPLIER = new Dictionary<Vector2Int, int>()
+        {
+            {Vector2Int.zero,  1},//tile.Center
+            {Vector2Int.right, 10},//tile.East  
+            {Vector2Int.up,    100},//tile.North 
+            {Vector2Int.left,  1000},//tile.West  
+            {Vector2Int.down,  10000},//tile.South 
+        };
+
         private Material m_mat;
         public GameState state;
 
@@ -95,7 +104,7 @@ namespace Carcassonne
             Tile[,] allTiles = tiles.Played;
                 
             // Get boundaries of the played tiles so as to only bother with placed tiles.
-            (Vector2Int size, Vector2Int offset) = GetPlayedTileBounds(allTiles);
+            // (Vector2Int size, Vector2Int offset) = GetPlayedTileBounds(state.Tiles);
 
             // Create a wrapper for the tiles, which checks and handles erroneous array sizes.
             VisualizationInputTiles inputTiles = new VisualizationInputTiles(allTiles);
@@ -106,50 +115,54 @@ namespace Carcassonne
             //
             // Note: the inputTiles parameter still expects the entire grid of tiles, but they
             // are culled off by the size and offset parameters.
-            UpdateMaterial(inputTiles, size, offset, meeples);
+            UpdateMaterial(inputTiles, state.Tiles.Limits.size, state.Tiles.Limits.position, meeples);
         }
 
-        /// <summary>
-        /// Gets the boundaries of existing tiles in the given array.
-        /// The offset is the left-most and upper-most existing tiles.
-        /// The size how many tiles the boundary spans in each direction
-        /// from that offset.
-        /// </summary>
-        /// <param name="allTiles">A 2d array of null and/or valid Tile instances.</param>
-        /// <returns>size (width, height), and offset (x, y).</returns>
-        public static (Vector2Int, Vector2Int) GetPlayedTileBounds(Tile[,] allTiles)
-        {
-            Vector2Int dims = new Vector2Int(allTiles.GetLength(0), allTiles.GetLength(1));
-
-            int minRow = int.MaxValue;
-            int minCol = int.MaxValue;
-            int maxRow = int.MinValue;
-            int maxCol = int.MinValue;
-            for (int row = 0; row < dims.y; row++)
-            {
-                for (int col = 0; col < dims.x; col++)
-                {
-                    if (allTiles[col, row] == null) // Valid tile
-                        continue;
-
-                    if (minRow == int.MaxValue) // Has not yet found upper-most
-                        minRow = row;
-
-                    if (col < minCol)
-                        minCol = col;
-
-                    if (row >= maxRow)
-                        maxRow = row + 1;
-
-                    if (col >= maxCol)
-                        maxCol = col + 1;
-                }
-            }
-
-            Vector2Int size = new Vector2Int(maxCol - minCol, maxRow - minRow);
-            Vector2Int offset = new Vector2Int(minCol, minRow);
-            return (size, offset);
-        }
+        // /// <summary>
+        // /// Gets the boundaries of existing tiles in the given array.
+        // /// The offset is the left-most and upper-most existing tiles.
+        // /// The size how many tiles the boundary spans in each direction
+        // /// from that offset.
+        // /// </summary>
+        // /// <param name="tiles">The tile state.</param>
+        // /// <returns>size (width, height), and offset (x, y).</returns>
+        // public static (Vector2Int, Vector2Int) GetPlayedTileBounds(TileState tiles)
+        // {
+        //     return (tiles.Limits.size, tiles.Limits.position);
+        // }
+        // public static (Vector2Int, Vector2Int) GetPlayedTileBounds(Tile[,] allTiles)
+        // {
+        //     Vector2Int dims = new Vector2Int(allTiles.GetLength(0), allTiles.GetLength(1));
+        //
+        //     int minRow = int.MaxValue;
+        //     int minCol = int.MaxValue;
+        //     int maxRow = int.MinValue;
+        //     int maxCol = int.MinValue;
+        //     for (int row = 0; row < dims.y; row++)
+        //     {
+        //         for (int col = 0; col < dims.x; col++)
+        //         {
+        //             if (allTiles[col, row] == null) // Valid tile
+        //                 continue;
+        //
+        //             if (minRow == int.MaxValue) // Has not yet found upper-most
+        //                 minRow = row;
+        //
+        //             if (col < minCol)
+        //                 minCol = col;
+        //
+        //             if (row >= maxRow)
+        //                 maxRow = row + 1;
+        //
+        //             if (col >= maxCol)
+        //                 maxCol = col + 1;
+        //         }
+        //     }
+        //
+        //     Vector2Int size = new Vector2Int(maxCol - minCol, maxRow - minRow);
+        //     Vector2Int offset = new Vector2Int(minCol, minRow);
+        //     return (size, offset);
+        // }
 
         /// <summary>
         /// Gets a subsection of the specified 2-dimensional array.
@@ -159,15 +172,15 @@ namespace Carcassonne
         /// <param name="size">The size of the subsection.</param>
         /// <param name="offset">Where in arr2d to begin slicing.</param>
         /// <returns>A new 2D array of the specified size.</returns>
-        public static T[,] Get2DSubSection<T>(T[,] arr2d, Vector2Int size, Vector2Int offset)
-        {
-            T[,] section = new T[size.x, size.y];
-            for (int y = 0; y < size.y; y++)
-                for (int x = 0; x < size.x; x++)
-                    section[x, y] = arr2d[x + offset.x, y + offset.y];
-
-            return section;
-        }
+        // public static T[,] Get2DSubSection<T>(T[,] arr2d, Vector2Int size, Vector2Int offset)
+        // {
+        //     T[,] section = new T[size.x, size.y];
+        //     for (int y = 0; y < size.y; y++)
+        //         for (int x = 0; x < size.x; x++)
+        //             section[x, y] = arr2d[x + offset.x, y + offset.y];
+        //
+        //     return section;
+        // }
 
         /// <summary>
         /// Updates the material to display the given section of tiles.
@@ -185,9 +198,9 @@ namespace Carcassonne
             // IReadOnlyList<Meeple> allMeeples)
             MeepleState meeples)
         {
-            Tile[,] allTiles = inputTiles.tiles;
-            Vector2Int updateDim = new Vector2Int(
-                allTiles.GetLength(0), allTiles.GetLength(1));
+            // Tile[,] allTiles = inputTiles.tiles;
+            // Vector2Int updateDim = new Vector2Int(
+            //     allTiles.GetLength(0), allTiles.GetLength(1));
 
             // Make sure to always display 1:1 column-row ratio.
             if (displaySize.x < displaySize.y)
@@ -201,10 +214,10 @@ namespace Carcassonne
             m_mat.SetInt("_DisplayRows", displaySize.y);
 
             // Send the offsets to the shader.
-            m_mat.SetInt("_ColumnOffset", displayOffset.x);
-            m_mat.SetInt("_RowOffset", displayOffset.y);
+            // m_mat.SetInt("_ColumnOffset", displayOffset.x);
+            // m_mat.SetInt("_RowOffset", displayOffset.y);
 
-            var playerMeeples = CreateMeepleDictionary(displaySize, displayOffset, meeples);
+            // var playerMeeples = CreateMeepleDictionary(displaySize, displayOffset, meeples);
 
             // Prepare two arrays to send to the shader. One array contains the geographies of each,
             // while the other contains the player id associated with each direction of each tile
@@ -215,57 +228,111 @@ namespace Carcassonne
             //   internally anyway, and there is no interface for sending int arrays.
             float[] tileArray   = new float[MAX_BOARD_DIMENSION * MAX_BOARD_DIMENSION];
             float[] meeplesArray = new float[MAX_BOARD_DIMENSION * MAX_BOARD_DIMENSION];
-            for (int row = 0; row < MAX_BOARD_DIMENSION; row++)
+            RectInt bbox = new RectInt(0, 0, MAX_BOARD_DIMENSION, MAX_BOARD_DIMENSION);
+            
+            for (int i = 0; i < tileArray.Length; i++) // Fill arrays with default values
             {
-                for (int col = 0; col < MAX_BOARD_DIMENSION; col++)
-                {
-                    int idx = col + row * MAX_BOARD_DIMENSION;
-
-                    // Handle if the inputted size is exceeded. This should not happen, btw.
-                    if (col >= updateDim.x || row >= updateDim.y)
-                    {
-                        tileArray[idx] = -1.0f;
-                        meeplesArray[idx] = 0.0f;
-                        continue;
-                    }
-
-                    // Only set values for existing tiles.
-                    if (allTiles.GetValue(col, row) is Tile t)
-                    {
-                        // Combine all 5 tile geographies into a single float.
-                        float tileGeography = (float)t.Center;
-                        tileGeography      += (float)t.East  * 10;
-                        tileGeography      += (float)t.North * 100;
-                        tileGeography      += (float)t.West  * 1000;
-                        tileGeography      += (float)t.South * 10000;
-
-                        int[] playersIds;
-                        float tileMeeple;
-                        if (!playerMeeples.TryGetValue((col, row), out playersIds))
-                        {
-                            tileMeeple = 0; // Default to no meeple in any direction.
-                        }
-                        else
-                        {
-                            // Combine all meeple placement on this tile into a single float.
-                            tileMeeple  = playersIds[0];
-                            tileMeeple += playersIds[1] * 10;
-                            tileMeeple += playersIds[2] * 100;
-                            tileMeeple += playersIds[3] * 1000;
-                            tileMeeple += playersIds[4] * 10000;
-                        }
-
-                        // Store in the arrays that will be sent to the shader.
-                        tileArray[idx]   = tileGeography;
-                        meeplesArray[idx] = tileMeeple;
-                    }
-                    else // Invalid or non-existent Tile.
-                    {
-                        tileArray[idx] = -1.0f;
-                        meeplesArray[idx] = 0.0f;
-                    }
-                }
+                tileArray[i] = -1.0f;
+                meeplesArray[i] = 0.0f;
             }
+
+            foreach ( var kvp in state.Tiles.Placement)
+            {
+                var cell = kvp.Key - displayOffset;
+                var tile = kvp.Value;
+
+                if (!bbox.Contains(cell))
+                {
+                    Debug.LogWarning($"Tile cell {cell} is outside of the bounding box {bbox}");
+                    continue;
+                }
+
+                var idx = cell.x + cell.y * MAX_BOARD_DIMENSION;
+                
+                float tileGeography = (float)tile.Center;
+                tileGeography      += (float)tile.East  * 10;
+                tileGeography      += (float)tile.North * 100;
+                tileGeography      += (float)tile.West  * 1000;
+                tileGeography      += (float)tile.South * 10000;
+                
+                // Store in the arrays that will be sent to the shader.
+                tileArray[idx]   = tileGeography;
+            }
+            
+            foreach ( var kvp in state.Meeples.Placement)
+            {
+                var meepleCell = kvp.Key;
+                var meeple = kvp.Value;
+                (var cell, var direction) = state.grid.MeepleToTileDirection(meepleCell);
+                cell -= displayOffset;
+                
+                if (!bbox.Contains(cell))
+                {
+                    Debug.LogWarning($"Meeple cell {cell} is outside of the bounding box {bbox}");
+                    continue;
+                }
+
+                var idx = cell.x + cell.y * MAX_BOARD_DIMENSION;
+                
+                // playerMeeples = {(x,y): [0, 0, 2, 0, 0]} -> [0, 0, 200, 0, 0] -> 200
+                // Set tileMeeple value. If meeple belongs to player 1, 10; player 2, 100; player 3, 1000; etc.
+                // float tileMeeple = (float)Math.Pow(10, meeple.player.id);
+                float tileMeeple = (meeple.player.id + 1) * DIRECTION_MULTIPLIER[direction];
+
+                // Store in the arrays that will be sent to the shader.
+                meeplesArray[idx] = tileMeeple;
+            }
+            // for (int row = 0; row < MAX_BOARD_DIMENSION; row++)
+            // {
+            //     for (int col = 0; col < MAX_BOARD_DIMENSION; col++)
+            //     {
+            //         int idx = col + row * MAX_BOARD_DIMENSION;
+            //
+            //         // Handle if the inputted size is exceeded. This should not happen, btw.
+            //         if (col >= updateDim.x || row >= updateDim.y)
+            //         {
+            //             tileArray[idx] = -1.0f;
+            //             meeplesArray[idx] = 0.0f;
+            //             continue;
+            //         }
+            //
+            //         // Only set values for existing tiles.
+            //         if (allTiles.GetValue(col, row) is Tile t)
+            //         {
+            //             // Combine all 5 tile geographies into a single float.
+            //             float tileGeography = (float)t.Center;
+            //             tileGeography      += (float)t.East  * 10;
+            //             tileGeography      += (float)t.North * 100;
+            //             tileGeography      += (float)t.West  * 1000;
+            //             tileGeography      += (float)t.South * 10000;
+            //
+            //             int[] playersIds;
+            //             float tileMeeple;
+            //             if (!playerMeeples.TryGetValue((col, row), out playersIds))
+            //             {
+            //                 tileMeeple = 0; // Default to no meeple in any direction.
+            //             }
+            //             else
+            //             {
+            //                 // Combine all meeple placement on this tile into a single float.
+            //                 tileMeeple  = playersIds[0];
+            //                 tileMeeple += playersIds[1] * 10;
+            //                 tileMeeple += playersIds[2] * 100;
+            //                 tileMeeple += playersIds[3] * 1000;
+            //                 tileMeeple += playersIds[4] * 10000;
+            //             }
+            //
+            //             // Store in the arrays that will be sent to the shader.
+            //             tileArray[idx]   = tileGeography;
+            //             meeplesArray[idx] = tileMeeple;
+            //         }
+            //         else // Invalid or non-existent Tile.
+            //         {
+            //             tileArray[idx] = -1.0f;
+            //             meeplesArray[idx] = 0.0f;
+            //         }
+            //     }
+            // }
 
             m_mat.SetFloatArray("_TileGeography", tileArray);
             m_mat.SetFloatArray("_MeeplePlacement", meeplesArray);
@@ -284,6 +351,10 @@ namespace Carcassonne
                 var meeple = kvp.Value;
 
                 (var cell, var direction) = state.grid.MeepleToTileDirection(meepleCell);
+                cell -= displayOffset;
+                
+                Debug.Assert(meeple != null, "Meeple is null");
+                Debug.Assert(meeple.player != null, "Meeple player is null");;
                 
                 int[] playersAtDirections = new int[5];
                 if (direction == Vector2Int.zero) playersAtDirections[0] = meeple.player.id + 1;

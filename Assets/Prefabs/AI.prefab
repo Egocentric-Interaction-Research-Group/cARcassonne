@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  name: 
+  username: 
   isAI: 0
   score: 0
   previousScore: 0
@@ -65,12 +65,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 272
+    VectorObservationSize: 286
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
-      BranchSizes: 06000000
-    VectorActionSize: 06000000
+      BranchSizes: 03000000030000000400000002000000050000000300000002000000
+    VectorActionSize: 03000000030000000400000002000000050000000300000002000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
@@ -100,9 +100,7 @@ MonoBehaviour:
   MaxStep: 0
   observationApproach: 3
   wrapper: {fileID: 0}
-  x: 0
-  z: 0
-  rot: 0
+  cell: {x: 0, y: 0}
 --- !u!114 &2096977710434309626
 MonoBehaviour:
   m_ObjectHideFlags: 0
