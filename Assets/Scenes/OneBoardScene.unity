@@ -123,553 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &188465446
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 188465448}
-  - component: {fileID: 188465452}
-  - component: {fileID: 188465451}
-  - component: {fileID: 188465450}
-  - component: {fileID: 188465449}
-  - component: {fileID: 188465447}
-  - component: {fileID: 188465453}
-  - component: {fileID: 188465454}
-  - component: {fileID: 188465455}
-  m_Layer: 0
-  m_Name: GameController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &188465447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188465446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7419720491545798a7b8c2fb3b3d5c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnDraw:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnInvalidDraw:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnRotate:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDiscard:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnFree:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnPlace:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnInvalidPlace:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!4 &188465448
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188465446}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.1229429, y: -0.58050156, z: 1.0685024}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1987822447}
-  - {fileID: 396758905}
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &188465449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188465446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46a87ef1a4f54958bbeef17c9dbdfcef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnDraw:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnInvalidDraw:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnRotate:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDiscard:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnFree:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnPlace:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 188465452}
-        m_TargetAssemblyTypeName: AIGameController, Assembly-CSharp
-        m_MethodName: OnPlace
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnInvalidPlace:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &188465450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188465446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d39c9a2e4114b18b26262c071e1e0ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnGameStart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 188465452}
-        m_TargetAssemblyTypeName: AIGameController, Assembly-CSharp
-        m_MethodName: OnNewGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnTurnEnd:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 188465452}
-        m_TargetAssemblyTypeName: AIGameController, Assembly-CSharp
-        m_MethodName: OnEndTurn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 188465454}
-        m_TargetAssemblyTypeName: Carcassonne.Utilities.GameLog, Assembly-CSharp
-        m_MethodName: LogTurn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnTurnStart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnFeatureCompleted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnGameOver:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 188465452}
-        m_TargetAssemblyTypeName: AIGameController, Assembly-CSharp
-        m_MethodName: OnGameOver
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 188465454}
-        m_TargetAssemblyTypeName: Carcassonne.Utilities.GameLog, Assembly-CSharp
-        m_MethodName: OnGameOver
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 188465455}
-        m_TargetAssemblyTypeName: Carcassonne.AI.Training.GameStatsRecorder, Assembly-CSharp
-        m_MethodName: OnGameOver
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnScoreChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 385950215}
-        m_TargetAssemblyTypeName: Carcassonne.CarcassonneVisualization, Assembly-CSharp
-        m_MethodName: VisualizeBoard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &188465451
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188465446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2537e24168594e0dabf93da86c6138b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  phase: 0
-  grid: {fileID: 188465453}
---- !u!114 &188465452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188465446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ebb9c4e25d3a4955a4bf33c7d8a8831, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minX: 0
-  minZ: 0
-  maxX: 0
-  maxZ: 0
-  nPlayers: 2
-  state: {fileID: 188465451}
-  aiPrefab: {fileID: 2598782832212889485, guid: c9686d6fa98efc2468f526b4b37003b2,
-    type: 3}
-  visualizationBoard: {fileID: 385950214}
-  playerParent: {fileID: 188465448}
-  tileParent: {fileID: 1987822447}
-  meepleParent: {fileID: 396758905}
-  gameController: {fileID: 188465450}
-  tileController: {fileID: 188465449}
-  meepleController: {fileID: 188465447}
-  tilePrefab: {fileID: 6442621515791572897, guid: 1520a28ad20db4112a4bd065fdae7565,
-    type: 3}
-  meeplePrefab: {fileID: 8035640656606495781, guid: 367210c165e1e415bba2d9f8637968ae,
-    type: 3}
-  startingTileID: 8
---- !u!114 &188465453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188465446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1097425d203c24510bf4611f91cb6e3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tile: {fileID: 1987822448}
-  meeple: {fileID: 396758906}
---- !u!114 &188465454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188465446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdaeb030054d410fb147aa6599a1e2bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: {fileID: 188465451}
---- !u!114 &188465455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188465446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a802901396b4053928ef9cce5c923d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: {fileID: 188465451}
-  log: {fileID: 188465454}
 --- !u!1 &316142578
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,68 +207,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!1 &385950214 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7944492466515630070, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
-    type: 3}
-  m_PrefabInstance: {fileID: 1827274522}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &385950215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 385950214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d54911d3cce4c49905ebddf28e2829a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: {fileID: 188465451}
---- !u!1 &396758904
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 396758905}
-  - component: {fileID: 396758906}
-  m_Layer: 0
-  m_Name: MeepleGrid
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &396758905
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 396758904}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1229429, y: 0.58050156, z: -1.0685024}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 188465448}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!156049354 &396758906
-Grid:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 396758904}
-  m_Enabled: 1
-  m_CellSize: {x: 0.033333335, y: 0.033333335, z: 0.033333335}
-  m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
-  m_CellSwizzle: 1
 --- !u!1 &712794083
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,116 +300,72 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!1001 &1827274522
+--- !u!1001 &8493484197687228217
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7944492466515630066, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    - target: {fileID: 8493484197406953609, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7944492466515630066, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    - target: {fileID: 8493484197406953609, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.1229429
       objectReference: {fileID: 0}
-    - target: {fileID: 7944492466515630066, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    - target: {fileID: 8493484197406953609, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.58050156
       objectReference: {fileID: 0}
-    - target: {fileID: 7944492466515630066, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    - target: {fileID: 8493484197406953609, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1.0685024
       objectReference: {fileID: 0}
-    - target: {fileID: 7944492466515630066, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    - target: {fileID: 8493484197406953609, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7944492466515630066, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    - target: {fileID: 8493484197406953609, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7944492466515630066, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    - target: {fileID: 8493484197406953609, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7944492466515630066, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    - target: {fileID: 8493484197406953609, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7944492466515630066, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    - target: {fileID: 8493484197406953609, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7944492466515630066, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    - target: {fileID: 8493484197406953609, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7944492466515630066, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    - target: {fileID: 8493484197406953609, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7944492466515630070, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    - target: {fileID: 8493484197406953622, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: m_Name
-      value: VisualizationBoard
+      value: Game
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7944492466515630067, guid: 2fd50dbd8ce6cb440be4e85937bc8608, type: 3}
-  m_SourcePrefab: {fileID: 100100000, guid: 2fd50dbd8ce6cb440be4e85937bc8608, type: 3}
---- !u!1 &1987822446
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1987822447}
-  - component: {fileID: 1987822448}
-  m_Layer: 0
-  m_Name: TileGrid
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1987822447
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1987822446}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1229429, y: 0.58050156, z: -1.0685024}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 188465448}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!156049354 &1987822448
-Grid:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1987822446}
-  m_Enabled: 1
-  m_CellSize: {x: 0.1, y: 0.1, z: 0.1}
-  m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
-  m_CellSwizzle: 1
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 22829c5994e7e4b9b8a46d4f738987ec, type: 3}

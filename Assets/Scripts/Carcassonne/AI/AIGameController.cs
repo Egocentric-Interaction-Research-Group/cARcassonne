@@ -76,12 +76,6 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
 
     public void Restart()
     {
-        // if (state.phase != Phase.GameOver)
-        // {
-        //     Debug.Log($"Caught restart with game phase {state.phase}. Calling Game Over.");
-        //     gameController.GameOver();
-        // }
-
         foreach (var tile in GetComponentsInChildren<Tile>())
         {
             Destroy(tile.gameObject);
@@ -171,7 +165,7 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     {
         string gv = g.ToString();
 
-        File.WriteAllText($"Learning/{state.Timestamp.ToString("yyyyMMdd_HHmmss")}_{turn}.gv", gv);
+        File.WriteAllText($"Learning/{state.Timestamp.ToString("yyyyMMdd_HHmmss")}_{state.GameID.ToString()}_{turn}.gv", gv);
     }
 
     /// <summary>

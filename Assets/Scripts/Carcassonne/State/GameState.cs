@@ -25,6 +25,8 @@ namespace Carcassonne.State
 
         public GridMapper grid;
 
+        public Guid GameID = Guid.NewGuid();
+
         // private void Awake()
         // {
         //     Reset();
@@ -41,6 +43,7 @@ namespace Carcassonne.State
             Players = new PlayerState();
             
             Timestamp = DateTime.Now;
+            GameID = Guid.NewGuid();
         }
 
         // private void OnEnable()

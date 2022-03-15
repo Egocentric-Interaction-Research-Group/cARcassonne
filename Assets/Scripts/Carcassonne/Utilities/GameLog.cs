@@ -79,7 +79,7 @@ namespace Carcassonne.Utilities
             "Turn, Player, ID, Rot, X, Y, X, Y, Remain, Score, Unscored, Potential, Score, Unscored, Potential"
         };
 
-        private string filepath => $"Learning/{state.Timestamp.ToString("yyyyMMdd_HHmmss")}.csv";
+        private string filepath => $"Learning/{state.Timestamp.ToString("yyyyMMdd_HHmmss")}_{state.GameID.ToString()}.csv";
 
         public void LogTurn()
         {
