@@ -1,34 +1,40 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Carcassonne.Models;
 using Carcassonne.State.Features;
-using Carcassonne.Tile;
-using Carcassonne.Utilities;
 using UnityEngine;
 
 namespace Carcassonne.State
 {
-    [CreateAssetMenu(fileName = "FeatureState", menuName = "States/FeatureState")]
-    public class FeatureState : ScriptableObject
+    public class FeatureState
     {
         public MeepleState Meeples;
         
-        public BoardGraph Graph = new BoardGraph();
+        public BoardGraph Graph;
+        public List<City> Cities;
+        public List<Road> Roads;
+        public List<Cloister> Cloisters;
 
-        public List<City> Cities = new List<City>();
-        public List<Road> Roads = new List<Road>();
-        public List<Cloister> Cloisters = new List<Cloister>();
+        public GridMapper grid;
 
         public IEnumerable<FeatureGraph> All => new List<FeatureGraph>().Concat(Cities).Concat(Roads).Concat(Cloisters);
         public IEnumerable<FeatureGraph> Complete => All.Where(f => f.Complete);
         public IEnumerable<FeatureGraph> Incomplete => All.Where(f => !f.Complete);
 
-        private void Awake()
+
+        public FeatureState(MeepleState meeples, GridMapper grid)
         {
+            Meeples = meeples;
+            
             Cities = new List<City>();
             Roads = new List<Road>();
             Cloisters = new List<Cloister>();
             Graph = new BoardGraph();
+            
+            Graph.Changed += UpdateFeatures;
+            
+            this.grid = grid;
         }
 
 
@@ -40,18 +46,19 @@ namespace Carcassonne.State
         /// <returns></returns>
         public FeatureGraph GetFeatureAt(Vector2Int location)
         {
-            (var position, var direction) = Coordinates.SubTileToBoard(location);
+            (var position, var direction) = grid.MeepleToTileDirection(location);
             
-            Debug.Assert(location == Coordinates.TileToSubTile(position, direction), 
+            Debug.Assert(location == grid.TileToMeeple(position, direction), 
                 $"Subtile Location {location} converted to Board coordinates is {position} and {direction}," +
-                $"but this converts back to {Coordinates.TileToSubTile(position, direction)}");
+                $"but this converts back to {grid.TileToMeeple(position, direction)}");
 
             return GetFeatureAt(position, direction);
         }
 
         public FeatureGraph GetFeatureAt(Vector2Int position, Vector2Int direction)
         {
-            var location = Coordinates.TileToSubTile(position, direction);
+            var location = grid.TileToMeeple(position, direction);
+            // Find a feature with a vertex at the specified location.
             var feature = All.SingleOrDefault(c =>
                 c.Vertices.Count(v => v.location == location) == 1);
 
@@ -59,18 +66,19 @@ namespace Carcassonne.State
             {
                 return feature;
             }
+            // Feature is null if we reach here.
             
             // Handle centre roads/cities and corner cities
             var subtileUp = Graph.Vertices.Single(t=> 
-                t.location == Coordinates.TileToSubTile(position, direction + Vector2Int.up)); 
-            var tile = subtileUp.tile;
-            var geography = tile.getGeographyAt(direction);
-
-
+                t.location == grid.TileToMeeple(position, Vector2Int.up));  //direction + Vector2Int.up)); 
+            var tile = subtileUp.tile; // Get the tile in question
+            var geography = tile.GetGeographyAt(direction); // Get the geography in the specified direction.
+            
+            // We don't need to check for Cidatels because they always have a vertex associated with them
             if (geography.HasCityOrRoad())
             {
                 var newDirection = tile.Sides.First(kvp => kvp.Value == geography.Simple()).Key;
-                var newLocation = Coordinates.TileToSubTile(position, newDirection);
+                var newLocation = grid.TileToMeeple(position, newDirection);
                 feature = All.SingleOrDefault(c =>
                     c.Vertices.Count(v => v.location == newLocation) == 1);
             }
@@ -87,12 +95,66 @@ namespace Carcassonne.State
         private IEnumerable<FeatureGraph> GetCompleteWithMeeples()
         {
             // Subtile placement dictionary of meeples in complete features
-            var subtileMeeples = Meeples.SubTilePlacement.Where(pm => GetFeatureAt(pm.Key).Complete);
+            var subtileMeeples = Meeples.Placement.Where(pm => GetFeatureAt(pm.Key).Complete);
             
             // Features for those Meeples
             var features = subtileMeeples.Select(pm => GetFeatureAt(pm.Key));
             
             return features.Distinct();
+        }
+
+        /// <summary>
+        /// An enumerable list of cities that are incomplete, and have meeples registered on them.
+        /// </summary>
+        public IEnumerable<FeatureGraph> IncompleteWithMeeples => GetIncompleteWithMeeples();
+
+        private IEnumerable<FeatureGraph> GetIncompleteWithMeeples()
+        {
+            // Subtile placement dictionary of meeples in complete features
+            var subtileMeeples = Meeples.Placement.Where(pm => !GetFeatureAt(pm.Key).Complete);
+            
+            // Features for those Meeples
+            var features = subtileMeeples.Select(pm => GetFeatureAt(pm.Key));
+            
+            return features.Distinct();
+        }
+        
+        public void UpdateFeatures(object sender, BoardChangedEventArgs args)
+        {
+            BoardGraph graph = args.graph;
+            Cities = City.FromBoardGraph(graph);
+            Roads = Road.FromBoardGraph(graph);
+            Cloisters = Cloister.FromBoardGraph(graph);
+
+            string debugString = "Cities: \n\n";
+            foreach (var city in Cities)
+            {
+                debugString += city.ToString();
+                debugString += "\n";
+                debugString += $"Segments: {city.Segments}, Open Sides: {city.OpenSides}, Complete: {city.Complete}";
+                debugString += "\n\n";
+            }
+            Debug.Log(debugString);
+            
+            debugString = "Roads: \n\n";
+            foreach (var road in Roads)
+            {
+                debugString += road.ToString();
+                debugString += "\n";
+                debugString += $"Segments: {road.Segments}, Open Sides: {road.OpenSides}, Complete: {road.Complete}";
+                debugString += "\n\n";
+            }
+            Debug.Log(debugString);
+            
+            debugString = "Cloisters: \n\n";
+            foreach (var cloister in Cloisters)
+            {
+                debugString += cloister.ToString();
+                debugString += "\n";
+                debugString += $"Segments: {cloister.Segments}, Open Sides: {cloister.OpenSides}, Complete: {cloister.Complete}";
+                debugString += "\n\n";
+            }
+            Debug.Log(debugString);
         }
     }
 }

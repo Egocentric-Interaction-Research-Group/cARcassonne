@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Carcassonne.Meeple;
-using Carcassonne.Tile;
-using Carcassonne.Utilities;
 using JetBrains.Annotations;
 using QuikGraph;
 using QuikGraph.Algorithms;
 using UnityEngine;
-using WebSocketSharp;
+using Carcassonne.Models;
 
 namespace Carcassonne.State.Features
 {
@@ -38,24 +35,36 @@ namespace Carcassonne.State.Features
     
     public class SubTile : IComparable<SubTile>
         {
-            public TileScript tile;
+            public Tile tile;
             public Vector2Int location;
             public Geography geography;
+            [CanBeNull] public Meeple meeple;
+            [CanBeNull] public Player player;
+            public int turn;
 
             /// <summary>
             /// Create a new SubTile
             /// </summary>
-            /// <param name="tile">Reference to the TileScript</param>
+            /// <param name="tile">Reference to the Tile</param>
             /// <param name="tilePosition">Position of the tile in board matrix space</param>
             /// <param name="direction">Direction of the SubTile space. Valid arguments are Vector2Int.[up|down|left|right|zero]</param>
-            /// <param name="meeple">Reference to MeepleScript, if Meeple is present.</param>
-            public SubTile(TileScript tile, Vector2Int tilePosition, Vector2Int direction, [CanBeNull] MeepleScript meeple = null)
+            /// <param name="meeple">Reference to Meeple, if Meeple is present.</param>
+            public SubTile(Tile tile, Vector2Int cell, Geography geography)//, [CanBeNull] Meeple meeple = null)
             {
                 this.tile = tile;
-                this.location = Coordinates.TileToSubTile(tilePosition, direction); // The centre of the tile is at the tile's position + [1,1] to leave room for the -1 movement.
-                this.geography = tile.getGeographyAt(direction);
-                // Debug.Log($"GEOGRAPHY 44: {tile} @ {direction} = {geography}");
+                this.location = cell;
+                this.geography = geography;
+                // this.meeple = meeple;
             }
+            
+            // public SubTile(Tile tile, Vector2Int tilePosition, Vector2Int direction)//, [CanBeNull] Meeple meeple = null)
+            // {
+            //     this.tile = tile;
+            //     //TODO Change this to use the grid system.
+            //     this.location = Coordinates.TileToSubTile(tilePosition, direction); // The centre of the tile is at the tile's position + [1,1] to leave room for the -1 movement.
+            //     this.geography = tile.GetGeographyAt(direction);
+            //     // this.meeple = meeple;
+            // }
 
             public int CompareTo(SubTile other)
             {
@@ -128,7 +137,7 @@ namespace Carcassonne.State.Features
         /// </summary>
         /// <param name="tile"></param>
         /// <returns></returns>
-        public static BoardGraph FromTile(TileScript tile, Vector2Int location)
+        public static BoardGraph FromTile(Tile tile, Vector2Int location, GridMapper grid)
         {
             BoardGraph g = new BoardGraph();
     
@@ -136,16 +145,19 @@ namespace Carcassonne.State.Features
             {
                 // Add connection to neighbouring subtile
                 var direction = side.Key;
+                var cell = grid.TileToMeeple(location, direction);
                 var geography = side.Value;
                 // Debug.Log($"GEOGRAPHY 140: {tile} @ {direction} = {geography}");
-                g = AddAndConnectSubTile(tile, location, direction, g, geography);
+                g = AddAndConnectSubTile(tile, cell, g, geography);
+                // g = AddAndConnectSubTile(tile, location, direction, g, geography);
             }
             
             // Add a centre vertex IF it is a cloister
-            if (tile.Center == Geography.Cloister)
+            if (tile.Center != null && tile.Center == Geography.Cloister)
             {
                 var direction = Vector2Int.zero;
-                g = AddAndConnectSubTile(tile, location, direction, g, null);
+                var cell = grid.TileToMeeple(location, direction);
+                g = AddAndConnectSubTile(tile, cell, g, Geography.Cloister);
                 
                 // Remove connections between NORTH/SOUTH and EAST/WEST. They are redundant now that the centre is connected.
                 // var edgesToRemove =
@@ -164,10 +176,12 @@ namespace Carcassonne.State.Features
             return g;
         }
 
-        private static BoardGraph AddAndConnectSubTile(TileScript tile, Vector2Int location, Vector2Int direction,
-            BoardGraph g, Geography? geography)
+        private static BoardGraph AddAndConnectSubTile(Tile tile, Vector2Int cell, BoardGraph g, Geography geography)
+        // private static BoardGraph AddAndConnectSubTile(Tile tile, Vector2Int location, Vector2Int direction,
+        //     BoardGraph g, Geography? geography)
         {
-            SubTile st = new SubTile(tile, location, direction);
+            // SubTile st = new SubTile(tile, location, direction);
+            SubTile st = new SubTile(tile, cell, geography);
 
             g.AddVertex(st);
             
@@ -212,6 +226,22 @@ namespace Carcassonne.State.Features
             }
 
             return new CarcassonneEdge(a, b, t);
+        }
+
+        public void SetTurn(int turn)
+        {
+            foreach (var vertex in Vertices)
+            {
+                vertex.turn = turn;
+            }
+        }
+
+        public void SetPlayer(Player p)
+        {
+            foreach (var vertex in Vertices)
+            {
+                vertex.player = p;
+            }
         }
 
         public event EventHandler<BoardChangedEventArgs> Changed;

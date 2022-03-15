@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Carcassonne.Tile;
+using Carcassonne.Models;
 using UnityEngine;
 using QuikGraph;
-using QuikGraph.Algorithms.ConnectedComponents;
 
 namespace Carcassonne.State.Features
 {
@@ -62,6 +61,8 @@ namespace Carcassonne.State.Features
         }
         
         public override int Points => Vertices.Count() - IntraTileFeatureConnections;
+
+        public override int PotentialPoints => Points;
 
     }
 }

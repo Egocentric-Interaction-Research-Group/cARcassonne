@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:Label text="UI Builder Label" display-tooltip-when-elided="true" />
+    <uie:PropertyField binding-path="North" label="North" name="North" />
+    <uie:PropertyField />
+    <ui:TextField picking-mode="Ignore" label="Text Field" value="filler text" text="filler text" binding-path="South" />
+    <ui:Foldout text="Default Inspector" name="Default_Inspector" />
+</ui:UXML>

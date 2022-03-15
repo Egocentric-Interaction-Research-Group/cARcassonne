@@ -1,7 +1,7 @@
 ﻿using Carcassonne.State;
 using UnityEngine;
 
-namespace Assets.Scripts.Carcassonne.AI
+namespace Carcassonne.AI
 {
     /// <summary>
     ///  This interfaced is used by the AIWrapper class, which acts as a middle-man between the AIPlayer-class and the data it needs and actions it can perform. 
@@ -56,7 +56,7 @@ namespace Assets.Scripts.Carcassonne.AI
         /// </summary>
         /// <param name="x"></param>
         /// <param name="z"></param>
-        public void PlaceTile(int x, int z);
+        public void PlaceTile(Vector2Int cell);
 
         /// <summary>
         /// Places the meeple on the specified direction of tile placed in this turn.
@@ -114,31 +114,31 @@ namespace Assets.Scripts.Carcassonne.AI
         /// <summary>
         /// Resets the game for another session. May not be useful in real implementation, but needed in training environment.
         /// </summary>
-        public void Reset();
+        public void Restart();
         
-        /// <summary>
-        /// Returns the minimum allowed X coordinate for the AI agent to move in to before it is forced to restart from the base tile.
-        /// </summary>
-        /// <returns></returns>
-        public int GetMinX();
-
-        /// <summary>
-        /// Returns the maximum allowed X coordinate for the AI agent to move in to before it is forced to restart from the base tile.
-        /// </summary>
-        /// <returns></returns>
-        public int GetMaxX();
-
-        /// <summary>
-        /// Returns the minimum allowed Z coordinate for the AI agent to move in to before it is forced to restart from the base tile.
-        /// </summary>
-        /// <returns></returns>
-        public int GetMinZ();
-
-        /// <summary>
-        /// Returns the maximum allowed Z coordinate for the AI agent to move in to before it is forced to restart from the base tile.
-        /// </summary>
-        /// <returns></returns>
-        public int GetMaxZ();
+        // /// <summary>
+        // /// Returns the minimum allowed X coordinate for the AI agent to move in to before it is forced to restart from the base tile.
+        // /// </summary>
+        // /// <returns></returns>
+        // public int GetMinX();
+        //
+        // /// <summary>
+        // /// Returns the maximum allowed X coordinate for the AI agent to move in to before it is forced to restart from the base tile.
+        // /// </summary>
+        // /// <returns></returns>
+        // public int GetMaxX();
+        //
+        // /// <summary>
+        // /// Returns the minimum allowed Z coordinate for the AI agent to move in to before it is forced to restart from the base tile.
+        // /// </summary>
+        // /// <returns></returns>
+        // public int GetMinZ();
+        //
+        // /// <summary>
+        // /// Returns the maximum allowed Z coordinate for the AI agent to move in to before it is forced to restart from the base tile.
+        // /// </summary>
+        // /// <returns></returns>
+        // public int GetMaxZ();
 
         /// <summary>
         /// Gets the current score of the AI agent player.

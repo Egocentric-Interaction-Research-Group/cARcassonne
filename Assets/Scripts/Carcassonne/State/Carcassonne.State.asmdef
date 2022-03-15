@@ -1,0 +1,6 @@
+{
+    "name": "Carcassonne.State",
+    "references": [
+        "Carcassonne.Models"
+    ]
+}

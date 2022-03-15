@@ -1,4 +1,6 @@
-﻿using Photon.Pun;
+﻿using JetBrains.Annotations;
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 namespace MRTK.Tutorials.MultiUserCapabilities
@@ -6,7 +8,8 @@ namespace MRTK.Tutorials.MultiUserCapabilities
     public class PhotonUser : MonoBehaviour
     {
         private PhotonView pv;
-        private string username;
+        public string username;
+        [CanBeNull] public Player player { get; private set; }
 
         private void Start()
         {
@@ -20,7 +23,11 @@ namespace MRTK.Tutorials.MultiUserCapabilities
             }
             username = "User" + PhotonNetwork.NickName;
             pv.RPC("PunRPC_SetNickName", RpcTarget.AllBuffered, username);
+
+            player = PhotonNetwork.LocalPlayer;
         }
+
+        public bool IsLocal => player != null && player.IsLocal;
 
         [PunRPC]
         private void PunRPC_SetNickName(string nName)

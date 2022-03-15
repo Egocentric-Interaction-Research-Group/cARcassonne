@@ -6,9 +6,9 @@ namespace Carcassonne.State
 {
     public interface IGamePieceState<TGamePiece>//,TMatrix>
     {
-        List<TGamePiece> Remaining { get; }
+        // public Stack<TGamePiece> Remaining { get; }
         [CanBeNull] public TGamePiece Current { get; set; }
-        TGamePiece[,] Played { get; }
+        public TGamePiece[,] Played { get; }
 
         /// <summary>
         /// The position of the bottom-left corner of the representation returned by Matrix in Subtile space.
@@ -18,7 +18,7 @@ namespace Carcassonne.State
         /// MatrixOrigin would return (30,45). This can be added to the positions found in Matrix so that the
         /// data from Matrix line up with the bounding boxes returned by City.BoundingBox.
         /// </remarks>
-        Vector2Int MatrixOrigin { get; }
+        public Vector2Int MatrixOrigin { get; }
 
         /// <summary>
         /// The subtile matrix representation of the board. The bottom corner (Bottom-Left) is 0,0 and the top corner

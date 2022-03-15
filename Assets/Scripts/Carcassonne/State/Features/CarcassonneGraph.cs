@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using Carcassonne.Tile;
 using QuikGraph;
 using QuikGraph.Graphviz;
 using QuikGraph.Graphviz.Dot;
 using UnityEngine;
+using Carcassonne.Models;
 
 namespace Carcassonne.State.Features
 {
@@ -31,8 +31,10 @@ namespace Carcassonne.State.Features
             {
                 algorithm.FormatVertex += (sender, args) =>
                 {
+                    args.VertexFormat.Style = GraphvizVertexStyle.Filled;
                     var p = args.Vertex.location - Bounds.min;
                     args.VertexFormat.Label = $"{args.Vertex.geography.ToString().Substring(0,2)}";
+                    if (args.Vertex.meeple != null) args.VertexFormat.Label += $" {args.Vertex.meeple.player.id}"; 
                     args.VertexFormat.Position = new GraphvizPoint(p.x, p.y);
                     switch (args.Vertex.geography)
                     {

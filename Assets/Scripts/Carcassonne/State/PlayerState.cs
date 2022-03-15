@@ -1,23 +1,26 @@
 using System.Collections.Generic;
-using Carcassonne.Meeple;
-using Carcassonne.Player;
-using UnityEngine;
+using Carcassonne.Models;
 
 namespace Carcassonne.State
 {
-    [CreateAssetMenu(fileName = "PlayerState", menuName = "States/PlayerState")]
-    public class PlayerState : ScriptableObject
+    public class PlayerState
     {
-        public List<PlayerScript> All = new List<PlayerScript>();
-        public PlayerScript Current;
+        public IList<Player> All = new List<Player>();
+        public Player Current => All[_currentIndex];
+
+        private int _currentIndex;
         
-        // Derived Properties
-        public List<MeepleScript> Meeples => new List<MeepleScript>();
-        
-        private void OnEnable()
+        public PlayerState()
         {
             All.Clear();
-            Current = null;
+            _currentIndex = -1;
         }
+
+        public Player Next()
+        {
+            _currentIndex = (_currentIndex + 1) % All.Count;
+            return Current;
+        }
+        
     }
 }

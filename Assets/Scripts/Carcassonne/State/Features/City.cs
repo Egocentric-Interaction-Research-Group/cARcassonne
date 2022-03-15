@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Carcassonne.Tile;
+using Carcassonne.Models;
 using UnityEngine;
 using QuikGraph;
-using QuikGraph.Algorithms.ConnectedComponents;
 
 namespace Carcassonne.State.Features
 {
@@ -70,6 +69,15 @@ namespace Carcassonne.State.Features
             int points = Segments + Shields;
             
             return Complete ? points * 2 : points;
+        }
+        
+        public override int PotentialPoints => getPotentialPoints();
+
+        private int getPotentialPoints()
+        {
+            int points = Segments + Shields;
+
+            return points * 2;
         }
 
     }

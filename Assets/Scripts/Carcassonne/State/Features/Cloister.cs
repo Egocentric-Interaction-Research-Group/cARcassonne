@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Carcassonne.Tile;
+using Carcassonne.Models;
 using QuikGraph;
 using UnityEngine;
 
@@ -18,6 +18,8 @@ namespace Carcassonne.State.Features
         public override int Segments => NumSides - _openSides;
 
         public override int Points => Segments;
+
+        public override int PotentialPoints => Points;
 
         public override int OpenSides => _openSides;
         private int _openSides = NumSides;

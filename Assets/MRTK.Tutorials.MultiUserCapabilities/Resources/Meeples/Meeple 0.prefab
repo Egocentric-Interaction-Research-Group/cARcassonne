@@ -56,21 +56,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a165a2ea34c65f44b236e779fe60bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materials:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  direction: 0
-  geography: 3
-  free: 1
-  material: {fileID: 0}
-  x: 0
-  z: 0
-  vertex: -1
-  id: 0
-  playerId: 0
 --- !u!65 &670826663988635419
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -134,6 +119,9 @@ MonoBehaviour:
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: 3
+  transformSmoothingLogicType:
+    reference: Microsoft.MixedReality.Toolkit.Utilities.DefaultTransformSmoothingLogic,
+      Microsoft.MixedReality.Toolkit.SDK
   smoothingFar: 1
   smoothingNear: 1
   moveLerpTime: 0.001
@@ -149,6 +137,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: -2923535743316136271}
+        m_TargetAssemblyTypeName: 
         m_MethodName: OnSnapMeeple
         m_Mode: 1
         m_Arguments:
@@ -315,6 +304,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 620031ea53b77544682d175eacfa4607,
         type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 620031ea53b77544682d175eacfa4607,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -330,6 +324,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 620031ea53b77544682d175eacfa4607,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 620031ea53b77544682d175eacfa4607,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -342,16 +341,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 620031ea53b77544682d175eacfa4607,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 620031ea53b77544682d175eacfa4607,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 620031ea53b77544682d175eacfa4607,
         type: 3}
@@ -371,18 +360,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 620031ea53b77544682d175eacfa4607,
         type: 3}
       propertyPath: m_Name
-      value: Meeple 1
+      value: Body
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170970068873931921, guid: 620031ea53b77544682d175eacfa4607,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1170970068873931921, guid: 620031ea53b77544682d175eacfa4607,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 95a85abbbe99f864785b79bde8cb6743, type: 2}
-    - target: {fileID: 1170970068873931921, guid: 620031ea53b77544682d175eacfa4607,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 620031ea53b77544682d175eacfa4607, type: 3}
 --- !u!4 &169480459315001198 stripped

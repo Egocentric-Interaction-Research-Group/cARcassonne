@@ -1,4 +1,5 @@
-﻿using Carcassonne.Controller;
+﻿using Carcassonne.AR;
+using Carcassonne.Controllers;
 using Carcassonne.State;
 using Photon.Pun;
 using UnityEngine;
@@ -15,10 +16,10 @@ namespace PunTabletop
 
         public void StartAniRPC()
         {
-            if(gameController.GetComponent<GameControllerScript>().gameState.phase == Phase.TileDown || 
-               gameController.GetComponent<GameControllerScript>().gameState.phase == Phase.MeepleDown)
+            if(gameController.GetComponent<GameControllerScript>().gameController.state.phase == Phase.TileDown || 
+               gameController.GetComponent<GameControllerScript>().gameController.state.phase == Phase.MeepleDown)
             {
-                if(PhotonNetwork.LocalPlayer.NickName == (gameController.GetComponent<GameControllerScript>().currentPlayer.getID() + 1).ToString())
+                if(PhotonNetwork.LocalPlayer.NickName == (gameController.GetComponent<GameControllerScript>().currentPlayer.id + 1).ToString())
                 {
                     photonView.RPC("StartAni", RpcTarget.All);
                 }

@@ -1,48 +1,63 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Carcassonne.Tile;
+using Carcassonne.Models;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Carcassonne.State
 {
-    public class TileIdComparer : IComparer<TileScript>
+    public class TileIdComparer : IComparer<Tile>
     {
-        public int Compare(TileScript x, TileScript y)
+        public int Compare(Tile x, Tile y)
         {
             if (x == y) return 0;
             if (x == null) return -1;
             if (y == null) return 1;
+
+            if (x.ID - y.ID != 0)
+                return x.ID - y.ID;
             
-            return x.id - y.id;
+            return x.gameObject.GetInstanceID() - y.gameObject.GetInstanceID();
         }
     }
 
-    [CreateAssetMenu(fileName = "TileState", menuName = "States/TileState")]
-    public class TileState : ScriptableObject, IGamePieceState<TileScript>//,TileScript.Geography>
+    public class TileState : IGamePieceState<Tile>
     {
-        public List<TileScript> Remaining => _remaining;
-        [CanBeNull] public TileScript Current { get; set; }
-        public TileScript[,] Played => CalculatePlayed();
+        public Stack<Tile> Remaining { get; set; }
+        [CanBeNull] public Tile Current { get; set; }
+        public Tile[,] Played => CalculatePlayed();
         
-        public Dictionary<Vector2Int, TileScript> Placement = new Dictionary<Vector2Int, TileScript>();
+        public List<Tile> Discarded { get; set; }
+        
+        public Dictionary<Vector2Int, Tile> Placement = new Dictionary<Vector2Int, Tile>();
 
-        public Vector2 lastPlayedPosition;
-
-        private List<TileScript> _remaining;
+        public Vector2Int? lastPlayedPosition => Placement.SingleOrDefault(kvp => kvp.Value == Current).Key;
 
         private static readonly TileIdComparer tileIdComparer = new TileIdComparer();
-        public SortedDictionary<TileScript, Vector2Int?> TilePlacement
+        
+        /// <summary>
+        /// Dictionary of <Tile, Vector2Int?> with entries sorted by tile ID.
+        /// </summary>
+        public SortedDictionary<Tile, Vector2Int?> TilePlacement
         {
             get
             {
                 // Add all placed tiles to the sorted dict
-                var d = new SortedDictionary<TileScript, Vector2Int?>(
+                var d = new SortedDictionary<Tile, Vector2Int?>(
                     Placement.Keys.ToDictionary(p => Placement[p],p => (Vector2Int?)p),
                     tileIdComparer);
+                
+                if( Current != null && !d.ContainsKey(Current) )
+                    d.Add(Current, null);
 
                 foreach (var tile in Remaining)
+                {
+                    d.Add(tile, null);
+                }
+                
+                //TODO Should I differentiate between discarded and not picked? It doesn't happen very often...
+                foreach (var tile in Discarded)
                 {
                     d.Add(tile, null);
                 }
@@ -50,6 +65,8 @@ namespace Carcassonne.State
                 return d;
             }
         }
+
+        public RectInt Limits => CalculateLimits();
 
         /// <summary>
         /// The position of the bottom-left corner of the representation returned by Matrix in Subtile space.
@@ -69,80 +86,59 @@ namespace Carcassonne.State
         /// </summary>
         public Geography?[,] Matrix => CalculateMatrix();
 
+        /// <summary>
+        /// Right now, this is a fixed-dimension matrix. That could change. It could grow with the board.
+        /// </summary>
+        /// <returns></returns>
         private Geography?[,] CalculateMatrix()
         {
-            // Find min and max indices for x and 
-            // Are these things that TileScript could be tracking? BoardLimits? or something?
-            //var l = CalculateLimits();
-            RectInt l = new RectInt();
-            l.xMin = 65;
-            l.xMax = 105;
-            l.yMin = 65;
-            l.yMax = 105;
-            int xmin = l.xMin, xmax = l.xMax, ymin = l.yMin, ymax = l.yMax;
-            
-            //Debug.Log($"Found Limits. Tiles found from ({xmin},{ymin}) to ({xmax},{ymax})");
-            
             // Create a new matrix that is 3 * (xmax-xmin) x 3 * (ymax - ymin);
-            var GeographyMatrix = new Geography?[3 * (xmax - xmin), 3 * (ymax - ymin)];
-            
-            for (var i = 0; i < xmax - xmin; i++)
+            var geographyMatrix = new Geography?[3 * (GameRules.BoardLimits.xMax - GameRules.BoardLimits.xMin),
+                3 * (GameRules.BoardLimits.yMax - GameRules.BoardLimits.yMin)];
+
+            foreach (var kvp in Placement)
             {
-                for (int j = 0; j < ymax - ymin; j++)
+                var position = kvp.Key + Vector2Int.FloorToInt(GameRules.BoardLimits.center);
+                var tile = kvp.Value;
+                
+                for (int a = 0; a < 3; a++)
                 {
-                    for (int a = 0; a < 3; a++)
+                    for (int b = 0; b < 3; b++)
                     {
-                        for (int b = 0; b < 3; b++)
-                        {
-                            if (Played[i + xmin, j + ymin] is null)
-                            {
-                                GeographyMatrix[i * 3 + a, j * 3 + b] = null;
-                            }
-                            else
-                            {
-                                GeographyMatrix[i * 3 + a, j * 3 + b] = Played[i + xmin, j + ymin].Matrix[a, b];
-                            }
-                        }
+                        geographyMatrix[position.x * 3 + a, position.y * 3 + b] =
+                            tile.Matrix[a, b];
                     }
                 }
             }
             
-            return GeographyMatrix;
+            return geographyMatrix;
         }
 
         private RectInt CalculateLimits()
         {
             RectInt lim = new RectInt();
-            for (var i = 0; i < Played.GetLength(0); i++)
-            {
-                for (var j = 0; j < Played.GetLength(1); j++)
-                {
-                    if (Played[i, j] != null)
-                    {
-                        if (lim.size == Vector2Int.zero)
-                        {
-                            lim = new RectInt(i, j, 1, 1);
-                        } else
-                        {
-                            if (i <  lim.xMin){ lim.xMin = i;}
-                            if (i >= lim.xMax){ lim.xMax = i + 1;}
-                            if (j <  lim.yMin){ lim.yMin = j;}
-                            if (j >= lim.yMax){ lim.yMax = j + 1;}
-                        }
-                    }
-                }
-            }
 
+            if (Placement.Count == 0) return lim;
+            
+            var xValues = Placement.Keys.Select(cell => cell.x);
+            var yValues = Placement.Keys.Select(cell => cell.y);
+            
+            lim.xMin = xValues.Min();
+            lim.xMax = xValues.Max();
+            lim.yMin = yValues.Min();
+            lim.yMax = yValues.Max();
+            
             return lim;
         }
 
-        private TileScript[,] CalculatePlayed()
+        //TODO I think this is wrong. It uses a static board size, which does not map to the cell positioning.
+        private Tile[,] CalculatePlayed()
         {
-            var played = new TileScript[GameRules.BoardSize, GameRules.BoardSize];
+            var played = new Tile[GameRules.BoardLimits.width, GameRules.BoardLimits.height];
 
             foreach (var tilePosition in Placement)
             {
-                var position = tilePosition.Key;
+                var position = tilePosition.Key + Vector2Int.FloorToInt(GameRules.BoardLimits.center);
                 var tile = tilePosition.Value;
 
                 played[position.x, position.y] = tile;
@@ -151,17 +147,24 @@ namespace Carcassonne.State
             return played;
         }
 
-        private void Awake()
+        public TileState()
         {
-            Placement = new Dictionary<Vector2Int, TileScript>();
-            _remaining = new List<TileScript>();
+            Placement = new Dictionary<Vector2Int, Tile>();
+            Remaining = new Stack<Tile>();
+            Discarded = new List<Tile>();
         }
-
-        private void OnEnable()
-        {
-            Placement = new Dictionary<Vector2Int, TileScript>();
-            _remaining = new List<TileScript>();
-        }
+        
+        // private void Awake()
+        // {
+        //     Placement = new Dictionary<Vector2Int, Tile>();
+        //     _remaining = new List<Tile>();
+        // }
+        //
+        // private void OnEnable()
+        // {
+        //     Placement = new Dictionary<Vector2Int, Tile>();
+        //     _remaining = new List<Tile>();
+        // }
 
         public override string ToString()
         {

@@ -1,0 +1,4 @@
+{
+  "name": "Carcassonne.Controllers",
+  "references": ["Carcassonne.Models","Carcassonne.State"]
+}

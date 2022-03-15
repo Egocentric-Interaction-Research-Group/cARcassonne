@@ -1,4 +1,5 @@
-﻿using Carcassonne.Controller;
+﻿using Carcassonne.AR;
+using Carcassonne.Controllers;
 using Photon.Pun;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ namespace PunTabletop
         public void LoadScene()
         {
             Game.SetActive(true);
-            Game.GetComponentInChildren<GameControllerScript>().startGame = true;
+            // Game.GetComponentInChildren<GameControllerScript>().startGame = true;
             gameObject.SetActive(false);
         }
 
