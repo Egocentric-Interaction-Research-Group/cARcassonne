@@ -22,12 +22,23 @@ namespace Carcassonne.State.Features
         {
             get;
         }
+        
+        public int PotentialPoints
+        {
+            get;
+        }
 
     }
     
     public abstract class FeatureGraph : CarcassonneGraph, IFeature{
         public virtual int Segments => Vertices.Count() - IntraTileFeatureConnections;
         public abstract int Points { get; }
+        
+        /// <summary>
+        /// How many points would the current tiles be worth, if the feature were complete? This captures the expanded
+        /// value of city tiles, which double if the city is completed.
+        /// </summary>
+        public abstract int PotentialPoints { get; }
         public virtual int OpenSides => ComputeOpenSides();
         public virtual bool Complete => OpenSides == 0;
 

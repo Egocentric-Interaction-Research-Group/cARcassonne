@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Carcassonne.Models;
+using Carcassonne.State.Features;
 using UnityEngine;
 
 namespace Carcassonne.State
@@ -8,6 +9,8 @@ namespace Carcassonne.State
     // [CreateAssetMenu(fileName = "GameState", menuName = "States/GameState")]
     public class GameState : MonoBehaviour
     {
+        public DateTime Timestamp;
+        
         public GameRules Rules;
 
         /// <summary>
@@ -36,6 +39,8 @@ namespace Carcassonne.State
             Meeples = new MeepleState();
             Features = new FeatureState(Meeples, grid);
             Players = new PlayerState();
+            
+            Timestamp = DateTime.Now;
         }
 
         // private void OnEnable()
@@ -54,14 +59,17 @@ namespace Carcassonne.State
         /// <returns></returns>
         public Vector2Int GetGraphLocationForMeeple(Meeple m)
         {
+            return GetGraphVertexForMeeple(m).location;
+        }
+        
+        public SubTile GetGraphVertexForMeeple(Meeple m)
+        {
             var meepleCell = Meeples.Placement.Single(kvp => kvp.Value == m).Key;
             var feature = Features.GetFeatureAt(meepleCell);
             var vertex = feature.Vertices.First(tile => grid.MeepleToTile(tile.location) == grid.MeepleToTile(meepleCell));
 
-            return vertex.location;
+            return vertex;
         }
-
-        
 
         #endregion
     }

@@ -11,7 +11,9 @@ namespace Carcassonne.Models
         public bool isAI;
         public int score;
         public int previousScore = 0;
-
+        public int unscoredPoints;
+        public int potentialPoints;
+        
         public int scoreChange => score - previousScore;
         
         private void Awake()

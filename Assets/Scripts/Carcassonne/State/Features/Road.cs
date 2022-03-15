@@ -62,5 +62,7 @@ namespace Carcassonne.State.Features
         
         public override int Points => Vertices.Count() - IntraTileFeatureConnections;
 
+        public override int PotentialPoints => Points;
+
     }
 }

@@ -38,7 +38,9 @@ namespace Carcassonne.State.Features
             public Tile tile;
             public Vector2Int location;
             public Geography geography;
-            // public Meeple meeple;
+            [CanBeNull] public Meeple meeple;
+            [CanBeNull] public Player player;
+            public int turn;
 
             /// <summary>
             /// Create a new SubTile
@@ -55,14 +57,14 @@ namespace Carcassonne.State.Features
                 // this.meeple = meeple;
             }
             
-            public SubTile(Tile tile, Vector2Int tilePosition, Vector2Int direction)//, [CanBeNull] Meeple meeple = null)
-            {
-                this.tile = tile;
-                //TODO Change this to use the grid system.
-                this.location = Coordinates.TileToSubTile(tilePosition, direction); // The centre of the tile is at the tile's position + [1,1] to leave room for the -1 movement.
-                this.geography = tile.GetGeographyAt(direction);
-                // this.meeple = meeple;
-            }
+            // public SubTile(Tile tile, Vector2Int tilePosition, Vector2Int direction)//, [CanBeNull] Meeple meeple = null)
+            // {
+            //     this.tile = tile;
+            //     //TODO Change this to use the grid system.
+            //     this.location = Coordinates.TileToSubTile(tilePosition, direction); // The centre of the tile is at the tile's position + [1,1] to leave room for the -1 movement.
+            //     this.geography = tile.GetGeographyAt(direction);
+            //     // this.meeple = meeple;
+            // }
 
             public int CompareTo(SubTile other)
             {
@@ -224,6 +226,22 @@ namespace Carcassonne.State.Features
             }
 
             return new CarcassonneEdge(a, b, t);
+        }
+
+        public void SetTurn(int turn)
+        {
+            foreach (var vertex in Vertices)
+            {
+                vertex.turn = turn;
+            }
+        }
+
+        public void SetPlayer(Player p)
+        {
+            foreach (var vertex in Vertices)
+            {
+                vertex.player = p;
+            }
         }
 
         public event EventHandler<BoardChangedEventArgs> Changed;

@@ -19,6 +19,7 @@ namespace Carcassonne.Controllers
         // [SerializeField] internal StackScript stack;
 
         private GameState state => GetComponent<GameState>(); //null?
+        private GameController controller => GetComponent<GameController>(); //null?
         private TileState tiles => state.Tiles;
         private Tile tile => state.Tiles.Current;
 
@@ -94,7 +95,8 @@ namespace Carcassonne.Controllers
             state.Tiles.Placement.Add(Vector2Int.zero, t);
 
             var bg = BoardGraph.FromTile(t, Vector2Int.zero, state.grid);
-            Debug.Log($"Starting graph has {bg.VertexCount} vertices and {bg.EdgeCount} edges.");
+            Debug.Log($"Starting graph has {bg.VertexCount} vertices and {bg.EdgeCount} edges.");;
+            bg.SetTurn(0);
             
             state.Features.Graph.Add(bg);
 
@@ -118,7 +120,10 @@ namespace Carcassonne.Controllers
             Debug.Log($"Placing tile {tile} at position {cell} with rotation {tile.Rotations}");
             
             state.Tiles.Placement.Add(cell, tile);
-            state.Features.Graph.Add(BoardGraph.FromTile(tile, cell, state.grid));
+            var bg = BoardGraph.FromTile(tile, cell, state.grid);
+            bg.SetPlayer(state.Players.Current);
+            bg.SetTurn(controller.Turn);
+            state.Features.Graph.Add(bg);
 
             state.phase = Phase.TileDown;
             

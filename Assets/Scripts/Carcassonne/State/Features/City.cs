@@ -70,6 +70,15 @@ namespace Carcassonne.State.Features
             
             return Complete ? points * 2 : points;
         }
+        
+        public override int PotentialPoints => getPotentialPoints();
+
+        private int getPotentialPoints()
+        {
+            int points = Segments + Shields;
+
+            return points * 2;
+        }
 
     }
 }

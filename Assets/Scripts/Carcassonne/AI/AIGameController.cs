@@ -10,6 +10,7 @@ using Carcassonne.Interfaces;
 using Carcassonne.Models;
 using Carcassonne.State;
 using Carcassonne.State.Features;
+using Carcassonne.Utilities;
 using Unity.MLAgents.Policies;
 using UnityEngine;
 using UnityEngine.Events;
@@ -29,7 +30,6 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     public int nPlayers;
 
     public int turn => state.Tiles.Placement.Count - 1;
-    private DateTime gameStart;
 
     public GameState state;
 
@@ -91,6 +91,8 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
         {
             Destroy(meeple.gameObject);
         }
+        
+        GetComponent<GameLog>().Reset();
 
         NewGame();
     }
@@ -100,8 +102,6 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     /// </summary>
     public void NewGame()
     {
-        gameStart = DateTime.Now;
-        
         // List of Tiles
         var tiles = CreateDeck();
         
@@ -171,7 +171,7 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     {
         string gv = g.ToString();
 
-        File.WriteAllText($"Learning/{gameStart.ToString("yyyyMMdd_HHmmss")}_{turn}.graphviz", gv);
+        File.WriteAllText($"Learning/{state.Timestamp.ToString("yyyyMMdd_HHmmss")}_{turn}.gv", gv);
     }
 
     /// <summary>

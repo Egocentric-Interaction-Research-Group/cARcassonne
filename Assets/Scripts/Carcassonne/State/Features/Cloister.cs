@@ -19,6 +19,8 @@ namespace Carcassonne.State.Features
 
         public override int Points => Segments;
 
+        public override int PotentialPoints => Points;
+
         public override int OpenSides => _openSides;
         private int _openSides = NumSides;
 

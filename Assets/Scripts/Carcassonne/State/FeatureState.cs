@@ -58,6 +58,7 @@ namespace Carcassonne.State
         public FeatureGraph GetFeatureAt(Vector2Int position, Vector2Int direction)
         {
             var location = grid.TileToMeeple(position, direction);
+            // Find a feature with a vertex at the specified location.
             var feature = All.SingleOrDefault(c =>
                 c.Vertices.Count(v => v.location == location) == 1);
 
@@ -65,13 +66,15 @@ namespace Carcassonne.State
             {
                 return feature;
             }
+            // Feature is null if we reach here.
             
             // Handle centre roads/cities and corner cities
             var subtileUp = Graph.Vertices.Single(t=> 
-                t.location == grid.TileToMeeple(position, direction + Vector2Int.up)); 
-            var tile = subtileUp.tile;
-            var geography = tile.GetGeographyAt(direction);
-
+                t.location == grid.TileToMeeple(position, Vector2Int.up));  //direction + Vector2Int.up)); 
+            var tile = subtileUp.tile; // Get the tile in question
+            var geography = tile.GetGeographyAt(direction); // Get the geography in the specified direction.
+            
+            // We don't need to check for Cidatels because they always have a vertex associated with them
             if (geography.HasCityOrRoad())
             {
                 var newDirection = tile.Sides.First(kvp => kvp.Value == geography.Simple()).Key;
@@ -93,6 +96,22 @@ namespace Carcassonne.State
         {
             // Subtile placement dictionary of meeples in complete features
             var subtileMeeples = Meeples.Placement.Where(pm => GetFeatureAt(pm.Key).Complete);
+            
+            // Features for those Meeples
+            var features = subtileMeeples.Select(pm => GetFeatureAt(pm.Key));
+            
+            return features.Distinct();
+        }
+
+        /// <summary>
+        /// An enumerable list of cities that are incomplete, and have meeples registered on them.
+        /// </summary>
+        public IEnumerable<FeatureGraph> IncompleteWithMeeples => GetIncompleteWithMeeples();
+
+        private IEnumerable<FeatureGraph> GetIncompleteWithMeeples()
+        {
+            // Subtile placement dictionary of meeples in complete features
+            var subtileMeeples = Meeples.Placement.Where(pm => !GetFeatureAt(pm.Key).Complete);
             
             // Features for those Meeples
             var features = subtileMeeples.Select(pm => GetFeatureAt(pm.Key));

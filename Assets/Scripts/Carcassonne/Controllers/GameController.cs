@@ -52,6 +52,8 @@ namespace Carcassonne.Controllers
 
         public RectInt bounds => throw new NotImplementedException();
 
+        public int Turn { get; private set; }
+
         #endregion
 
         /// <summary>
@@ -62,6 +64,9 @@ namespace Carcassonne.Controllers
             // Clear the board
             state.Reset();
             
+            // Reset turns
+            Turn = 0;
+
             // Shuffle the deck
             // CreateAndShuffleDeck();
             state.Tiles.Remaining = tiles;
@@ -78,34 +83,6 @@ namespace Carcassonne.Controllers
             NewTurn();
         }
 
-        // private void CreateAndShuffleDeck()
-        // {
-        //     List<Tile> tiles = new List<Tile>();
-        //     foreach (var kvp in state.Rules.GetTileIDCounts())
-        //     {
-        //         var id = kvp.Key;
-        //         var count = kvp.Value;
-        //         Debug.Log($"Creating {count} tiles with ID {id}. {state.Tiles.Remaining.Count} tiles in the deck.");
-        //         
-        //         // Create representations of all of the tiles
-        //         for (int i = 0; i < count; i++)
-        //         {
-        //             tiles.Add(Tile.CreateTile(id));
-        //         }
-        //
-        //         // Shuffle and add to the remaining tiles deck
-        //         while (tiles.Count > 0)
-        //         {
-        //             var idx = Random.Range(0, tiles.Count);
-        //             state.Tiles.Remaining.Push(tiles[idx]);
-        //             tiles.RemoveAt(idx);
-        //         }
-        //         
-        //         // Push the starting tile
-        //         state.Tiles.Remaining.Push(Tile.CreateTile(state.Rules.GetStartingTileID()));
-        //     }
-        // }
-
         /// <summary>
         /// End the current players turn. Calculate any points acquired by placement of tile and/or meeple and move
         /// from phase TileDown or MeepleDown to either NewTurn or if there are no more tiles that can be drawn, end the game through
@@ -120,7 +97,20 @@ namespace Carcassonne.Controllers
 
                 // Check finished features
                 var features = state.Features.CompleteWithMeeples.ToList();
-                ScoreFeatures(features);
+                var scores = ScoreFeatures(features);
+                UpdateScores(scores);
+                FreeMeeplesInFeatures(features);
+                
+                //Update potential scores
+                var incompleteFeatures = state.Features.IncompleteWithMeeples.ToList();
+                var unscoredPoints = ScoreFeatures(incompleteFeatures);
+                var potentialPoints = ScoreFeatures(incompleteFeatures, potential: true);
+
+                foreach (var player in unscoredPoints.Keys)
+                {
+                    player.unscoredPoints = unscoredPoints[player];
+                    player.potentialPoints = potentialPoints[player];
+                }
 
                 foreach (var feature in features)
                 {
@@ -129,7 +119,7 @@ namespace Carcassonne.Controllers
                 
                 OnTurnEnd.Invoke();
 
-                LogTurn();
+                // PrintTurnToLogWindow();
 
                 if (state.Tiles.Remaining.Count == 0)
                 {
@@ -140,29 +130,28 @@ namespace Carcassonne.Controllers
                 NewTurn();
 
                 return true;
-
             }
             
             // Couldn't end turn.
             return false;
         }
 
-        private void LogTurn()
-        {
-            var _dims0 = state.Tiles.Matrix.GetLength(0);
-            var _dims1 = state.Tiles.Matrix.GetLength(1);
-            var _length = state.Tiles.Matrix.Length;
-            var _origin = state.Tiles.MatrixOrigin;
-            // var _tiles = state.Tiles;
-            var _cityBounds = state.Features.Cities;//[0]; //TODO Something is broken here.
-            
-            Debug.Log($"Board Matrix Dims: {_dims0}" +
-                      $"x{_dims1}" +
-                      $" ({_length})\n" +
-                      $"Board Matrix Origin: {_origin}\n" +
-                      // $"Board Matrix:\n{_tiles}\n" +
-                      $"City Bounds: {_cityBounds}");
-        }
+        // private void PrintTurnToLogWindow()
+        // {
+        //     var _dims0 = state.Tiles.Matrix.GetLength(0);
+        //     var _dims1 = state.Tiles.Matrix.GetLength(1);
+        //     var _length = state.Tiles.Matrix.Length;
+        //     var _origin = state.Tiles.MatrixOrigin;
+        //     // var _tiles = state.Tiles;
+        //     var _cityBounds = state.Features.Cities;//[0]; //TODO Something is broken here.
+        //     
+        //     Debug.Log($"Board Matrix Dims: {_dims0}" +
+        //               $"x{_dims1}" +
+        //               $" ({_length})\n" +
+        //               $"Board Matrix Origin: {_origin}\n" +
+        //               // $"Board Matrix:\n{_tiles}\n" +
+        //               $"City Bounds: {_cityBounds}");
+        // }
 
         public void NewTurn()
         {
@@ -172,6 +161,8 @@ namespace Carcassonne.Controllers
             state.Tiles.Current = null;
             state.Meeples.Current = null;
 
+            Turn += 1;
+
             OnTurnStart.Invoke();
         }
 
@@ -179,7 +170,9 @@ namespace Carcassonne.Controllers
         {
             Debug.Log("Game Over.");
             var features = state.Features.Incomplete;
-            ScoreFeatures(features);
+            var scores = ScoreFeatures(features);
+            UpdateScores(scores);
+            FreeMeeplesInFeatures(features);
 
             state.phase = Phase.GameOver;
 
@@ -192,8 +185,11 @@ namespace Carcassonne.Controllers
         /// incomplete features.
         /// </summary>
         /// <param name="features"></param>
-        public void ScoreFeatures(IEnumerable<FeatureGraph> features)
+        /// <param name="potential"></param>
+        internal IDictionary<Player, int> ScoreFeatures(IEnumerable<FeatureGraph> features, bool potential=false)
         {
+            Dictionary<Player, int> scores = state.Players.All.ToDictionary(p => p, p=> 0);
+            
             foreach (var f in features)
             {
                 var meeples = this.state.Meeples.InFeature(f).ToList();
@@ -201,20 +197,49 @@ namespace Carcassonne.Controllers
                 var playerMeeples = meeples.GroupBy(m => m.player);
                 var playerMeepleCount = playerMeeples.ToDictionary(g => g.Key, g => g.Count());
 
+                // Select all players with the number of meeples in the feature equal to the top number of meeples.
                 var scoringPlayers = playerMeepleCount.Where(kvp => kvp.Value == playerMeepleCount.Values.Max())
                     .Select((kvp => kvp.Key));
 
                 // Calculate points for those that are finished
                 foreach (var p in scoringPlayers)
                 {
-                    p.score += f.Points;
+                    if (potential)
+                    {
+                        scores[p] += f.PotentialPoints;
+                    }
+                    else
+                    {
+                        scores[p] += f.Points;
+                    }
                 }
+            }
+            
+            return scores;
+        }
 
-                if (scoringPlayers.Count() > 0)
-                {
-                    OnScoreChanged.Invoke();
-                }
-                
+        public void UpdateScores(IDictionary<Player, int> scoringPlayers)
+        {
+            // Calculate points for those that are finished
+            foreach (var kvp in scoringPlayers)
+            {
+                var player = kvp.Key;
+                var score = kvp.Value;
+                player.score += score;
+            }
+        
+            if (scoringPlayers.Any())
+            {
+                OnScoreChanged.Invoke();
+            }
+        }
+        
+        public void FreeMeeplesInFeatures(IEnumerable<FeatureGraph> features)
+        {
+            foreach (var f in features)
+            {
+                var meeples = this.state.Meeples.InFeature(f).ToList();
+        
                 // Free meeples
                 foreach (var m in meeples)
                 {

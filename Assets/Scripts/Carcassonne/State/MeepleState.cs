@@ -56,18 +56,35 @@ namespace Carcassonne.State
             All = new List<Meeple>();
             Current = null;
         }
-
+    
+        /// <summary>
+        /// All of the meeples (in play and remaining) for Player p.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public List<Meeple> MeeplesForPlayer(Player p)
         {
             return (from meeple in All where meeple.player == p select meeple).ToList();
         }
 
+        public IEnumerable<Meeple> ForPlayer(Player p)
+        {
+            return All.Where(m => m.player == p);
+        }
+
+        public IEnumerable<Meeple> RemainingForPlayer(Player p) => ForPlayer(p).Where(m => IsFree(m));
+        
         public IEnumerable<Meeple> InFeature(CarcassonneGraph feature)
         {
-            var inFeature = Placement.Where(locationMeeple => feature.Locations.Contains(locationMeeple.Key));
-            var meeples = inFeature.Select(locationMeeple => locationMeeple.Value);
-
-            return meeples;
+            //FIXME: This won't find meeples placed on the middle of a feature, where there is no vertex.
+            //Use Vertex.meeple to search instead.
+            // var inFeature = Placement.Where(locationMeeple => feature.Locations.Contains(locationMeeple.Key));
+            // var meeples = inFeature.Select(locationMeeple => locationMeeple.Value);
+            var meeplesVertices = feature.Vertices.Where(v=> v.meeple != null);
+            if (meeplesVertices.Any())
+                return meeplesVertices.Select(v => v.meeple);
+            
+            return new List<Meeple>();
         }
 
         [CanBeNull]
@@ -79,11 +96,6 @@ namespace Carcassonne.State
         public bool IsFree(Meeple m)
         {
             return Remaining.Contains(m);
-        }
-
-        public IEnumerable<Meeple> ForPlayer(Player p)
-        {
-            return All.Where(m => m.player == p);
         }
 
     }

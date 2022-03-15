@@ -26,16 +26,6 @@ namespace Carcassonne.AI
         
         public GameState state; //Contains TileState, MeepleState, FeatureState, PlayerState and a GameLog.
         public Player player;
-        // public int totalTiles;
-        // public float previousScore;
-        
-        
-        // public AIWrapper()
-        // {
-        //     controller = GameObject.Find("GameController").GetComponent<AIGameController>();
-        //     state = controller.gameController.state;
-        //     // totalTiles = state.Tiles.Remaining.Count;
-        // }
 
         private void Start()
         {

@@ -183,7 +183,13 @@ namespace Carcassonne.Models
 
             return d;
         }
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public Geography GetGeographyAt(Vector2Int direction)
         {
             if (Geographies.ContainsKey(direction)) return Geographies[direction];

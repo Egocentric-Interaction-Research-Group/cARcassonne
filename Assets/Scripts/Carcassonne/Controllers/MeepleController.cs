@@ -115,8 +115,11 @@ namespace Carcassonne.Controllers
             // Place meeple
             state.Meeples.Placement.Add(cell, meeple); //position, new PlacedMeeple(meeple, direction));
             
+            //TODO Figure out how to place a Meeple on the graph.
             //Not every valid cell for a Meeple will have a graph vertex
             // state.Features.Graph.Vertices.Single(subtile => subtile.location == cell).meeple = meeple;
+            var vertex = state.GetGraphVertexForMeeple(meeple);
+            vertex.meeple = meeple;
 
             // Move game to next phase
             state.phase = Phase.MeepleDown;
