@@ -157,9 +157,11 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     
     public void WriteGraphToFile(BoardGraph g)
     {
-        string gv = g.ToString();
-
-        File.WriteAllText($"Learning/{state.Timestamp.ToString("yyyyMMdd_HHmmss")}_{state.GameID.ToString()}_{turn}.gv", gv);
+        // string gv = g.ToString();
+        //
+        // File.WriteAllText($"Learning/{state.Timestamp.ToString("yyyyMMdd_HHmmss")}_{state.GameID.ToString()}_{turn}.gv", gv);
+        
+        g.GenerateGraphML($"Learning/{state.Timestamp.ToString("yyyyMMdd_HHmmss")}_{state.GameID.ToString()}_{turn}.graphml");
     }
 
     /// <summary>
