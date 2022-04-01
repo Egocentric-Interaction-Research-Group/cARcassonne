@@ -7,8 +7,8 @@ using QuikGraph;
 
 namespace Carcassonne.State.Features
 {
-    using CarcassonneEdge = TaggedUndirectedEdge<SubTile, ConnectionType>;
-    using BoardGraphFilter = Func<IEnumerable<TaggedUndirectedEdge<SubTile, ConnectionType>>, IEnumerable<TaggedUndirectedEdge<SubTile, ConnectionType>>>;
+    // using CarcassonneEdge = TaggedUndirectedEdge<SubTile, ConnectionType>;
+    using BoardGraphFilter = Func<IEnumerable<CarcassonneEdge>, IEnumerable<CarcassonneEdge>>;
     
     public class Road : FeatureGraph
     {

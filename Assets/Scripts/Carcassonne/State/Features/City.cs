@@ -7,12 +7,12 @@ using QuikGraph;
 
 namespace Carcassonne.State.Features
 {
-    using CarcassonneEdge = TaggedUndirectedEdge<SubTile, ConnectionType>;
-    using BoardGraphFilter = Func<IEnumerable<TaggedUndirectedEdge<SubTile, ConnectionType>>, IEnumerable<TaggedUndirectedEdge<SubTile, ConnectionType>>>;
+    // using CarcassonneEdge = CarcassonneEdge;
+    using BoardGraphFilter = Func<IEnumerable<CarcassonneEdge>, IEnumerable<CarcassonneEdge>>;
     
     public class City : FeatureGraph
     {
-        public int Shields => Vertices.Select(v=> v.tile).Distinct().Count(t=> t.Shield);
+        public int Shields => Vertices.Count(v => v.shield); //Vertices.Select(v=> v.tile).Distinct().Count(t=> t.Shield);
 
         public static BoardGraphFilter CityFilter = edges =>
             edges.Where(e =>

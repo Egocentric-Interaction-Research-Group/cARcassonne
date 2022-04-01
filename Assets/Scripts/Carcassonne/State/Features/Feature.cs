@@ -50,8 +50,8 @@ namespace Carcassonne.State.Features
         protected int IntraTileFeatureConnections =>
             Edges.Count(e => e.Tag == ConnectionType.Feature && e.Source.tile == e.Target.tile);
 
-        private IEnumerable<TaggedUndirectedEdge<SubTile, ConnectionType>> FeatureEdges => Edges.Where(e => e.Tag == ConnectionType.Feature);
-        private IEnumerable<TaggedUndirectedEdge<SubTile, ConnectionType>> BoardEdges => Edges.Where(e => e.Tag == ConnectionType.Board);
+        private IEnumerable<CarcassonneEdge> FeatureEdges => Edges.Where(e => e.Tag == ConnectionType.Feature);
+        private IEnumerable<CarcassonneEdge> BoardEdges => Edges.Where(e => e.Tag == ConnectionType.Board);
 
         /// <summary>
         /// Compute the number of open sides as the number of vertices that do not have Board Edges attached to them.

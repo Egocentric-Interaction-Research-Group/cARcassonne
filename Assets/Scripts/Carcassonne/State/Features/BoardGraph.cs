@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 using JetBrains.Annotations;
 using QuikGraph;
 using QuikGraph.Algorithms;
@@ -10,7 +11,21 @@ using Carcassonne.Models;
 namespace Carcassonne.State.Features
 {
     // Type Aliases
-    using CarcassonneEdge = TaggedUndirectedEdge<SubTile, ConnectionType>;
+    // using CarcassonneEdge = TaggedUndirectedEdge<SubTile, ConnectionType>;
+
+    public class CarcassonneEdge : Edge<SubTile>
+    {
+        public ConnectionType type;
+
+        public ConnectionType Tag => type;
+
+        [XmlAttribute("type")] public int typeID => (int)type;
+
+        public CarcassonneEdge([NotNull] SubTile source, [NotNull] SubTile target, ConnectionType type) : base(source, target)
+        {
+            this.type = type;
+        }
+    }
 
     public enum ConnectionType
     {
@@ -38,9 +53,19 @@ namespace Carcassonne.State.Features
             public Tile tile;
             public Vector2Int location;
             public Geography geography;
+            [XmlAttribute("shield")] public bool shield { get; set; }
             [CanBeNull] public Meeple meeple;
             [CanBeNull] public Player player;
-            public int turn;
+            [XmlAttribute("turn")] public int turn { get; set; }
+            
+            // XML Attribute-specific Properties
+            [XmlAttribute("tile")] public int tileID => tile.ID;
+            [XmlAttribute("tileRotation")] public int tileRotation => tile.Rotations;
+            [XmlAttribute("x")] public int x => location.x;
+            [XmlAttribute("y")] public int y => location.y;
+            [XmlAttribute("geography")] public int geographyID => (int)geography;
+            [XmlAttribute("meeple")] public bool hasMeeple => meeple != null;
+            [XmlAttribute("player")] public int playerID => player == null ? -1 : player.id;
 
             /// <summary>
             /// Create a new SubTile
@@ -49,11 +74,12 @@ namespace Carcassonne.State.Features
             /// <param name="tilePosition">Position of the tile in board matrix space</param>
             /// <param name="direction">Direction of the SubTile space. Valid arguments are Vector2Int.[up|down|left|right|zero]</param>
             /// <param name="meeple">Reference to Meeple, if Meeple is present.</param>
-            public SubTile(Tile tile, Vector2Int cell, Geography geography)//, [CanBeNull] Meeple meeple = null)
+            public SubTile(Tile tile, Vector2Int cell, Geography geography, bool shield)//, [CanBeNull] Meeple meeple = null)
             {
                 this.tile = tile;
                 this.location = cell;
                 this.geography = geography;
+                this.shield = shield;
                 // this.meeple = meeple;
             }
             
@@ -140,15 +166,24 @@ namespace Carcassonne.State.Features
         public static BoardGraph FromTile(Tile tile, Vector2Int location, GridMapper grid)
         {
             BoardGraph g = new BoardGraph();
-    
+
+            var shield = tile.Shield;
             foreach (var side in tile.Sides)
             {
                 // Add connection to neighbouring subtile
                 var direction = side.Key;
                 var cell = grid.TileToMeeple(location, direction);
                 var geography = side.Value;
+                var addShield = false;
+
+                if (geography == Geography.City && shield)
+                {
+                    addShield = true;
+                    shield = false; // Only add one per tile
+                }
+                
                 // Debug.Log($"GEOGRAPHY 140: {tile} @ {direction} = {geography}");
-                g = AddAndConnectSubTile(tile, cell, g, geography);
+                g = AddAndConnectSubTile(tile, cell, g, geography, addShield);
                 // g = AddAndConnectSubTile(tile, location, direction, g, geography);
             }
             
@@ -176,12 +211,12 @@ namespace Carcassonne.State.Features
             return g;
         }
 
-        private static BoardGraph AddAndConnectSubTile(Tile tile, Vector2Int cell, BoardGraph g, Geography geography)
+        private static BoardGraph AddAndConnectSubTile(Tile tile, Vector2Int cell, BoardGraph g, Geography geography, bool shield=false)
         // private static BoardGraph AddAndConnectSubTile(Tile tile, Vector2Int location, Vector2Int direction,
         //     BoardGraph g, Geography? geography)
         {
             // SubTile st = new SubTile(tile, location, direction);
-            SubTile st = new SubTile(tile, cell, geography);
+            SubTile st = new SubTile(tile, cell, geography, shield);
 
             g.AddVertex(st);
             
