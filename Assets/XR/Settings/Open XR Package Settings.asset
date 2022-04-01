@@ -215,7 +215,7 @@ MonoBehaviour:
   - {fileID: -7562206897457337479}
   - {fileID: -7111586734435807363}
   m_renderMode: 1
-  m_depthSubmissionMode: 0
+  m_depthSubmissionMode: 1
 --- !u!114 &-5445411243267039729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,7 +419,6 @@ MonoBehaviour:
   - {fileID: -7883798955526699335}
   - {fileID: 1937833035587907775}
   - {fileID: -6939258363827263271}
-  - {fileID: -8179132436167101752}
   - {fileID: 6954630163825700192}
   - {fileID: -1605200115041331502}
   - {fileID: 8778717664110003212}
@@ -427,7 +426,7 @@ MonoBehaviour:
   - {fileID: -7471147100663894949}
   - {fileID: 9176233276125350661}
   m_renderMode: 1
-  m_depthSubmissionMode: 1
+  m_depthSubmissionMode: 2
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -604,7 +603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f928d0d73a35f294fbe357ca17aa3547, type: 3}
   m_Name: MicrosoftHandInteraction WSA
   m_EditorClassIdentifier: 
-  m_enabled: 0
+  m_enabled: 1
   nameUi: Microsoft Hand Interaction Profile
   version: 0.0.1
   featureIdInternal: com.unity.openxr.feature.input.handtracking

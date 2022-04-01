@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Carcassonne.AR.Buttons;
 using Carcassonne.Meeples;
 using Carcassonne.Models;
 using Carcassonne.State;
-using Carcassonne.Tiles;
 using Carcassonne.Controllers;
 using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;

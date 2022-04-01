@@ -1,10 +1,6 @@
-using System;
-using Carcassonne.Controllers;
-using Carcassonne.Tiles;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace UI.Grid
 {

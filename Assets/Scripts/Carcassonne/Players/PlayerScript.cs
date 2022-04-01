@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Carcassonne.AI;
-using Carcassonne.AR;
-using Carcassonne.Controllers;
-using Carcassonne.Meeples;
 using Carcassonne.Models;
 using Carcassonne.State;
-using ExitGames.Client.Photon.StructWrapping;
 using MRTK.Tutorials.MultiUserCapabilities;
 using UnityEngine;
 using PhotonPlayer = Photon.Realtime.Player;

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Carcassonne.AR;
-using Carcassonne.Models;
+﻿using Carcassonne.Models;
 using Carcassonne.Controllers;
 using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;
-using UI.Grid;
 using UnityEngine;
-using UnityEngine.iOS;
 
 namespace Carcassonne.Tiles
 {

@@ -1,4 +1,3 @@
-using Carcassonne.Models;
 using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;
 using UnityEngine;

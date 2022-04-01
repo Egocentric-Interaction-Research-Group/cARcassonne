@@ -1,7 +1,6 @@
 using Carcassonne.Controllers;
 using Carcassonne.Models;
 using Carcassonne.State;
-using ExitGames.Client.Photon.StructWrapping;
 using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;
 using UI.Grid;

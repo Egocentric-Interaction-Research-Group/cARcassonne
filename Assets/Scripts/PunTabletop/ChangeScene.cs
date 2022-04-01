@@ -1,6 +1,4 @@
-﻿using Carcassonne.AR;
-using Carcassonne.Controllers;
-using Photon.Pun;
+﻿using Photon.Pun;
 using UnityEngine;
 
 namespace PunTabletop

@@ -3,7 +3,6 @@ using Carcassonne.State;
 using Carcassonne.Utilities;
 using Unity.MLAgents;
 using UnityEngine;
-using UnityEngine.WSA;
 
 namespace Carcassonne.AI.Training
 {

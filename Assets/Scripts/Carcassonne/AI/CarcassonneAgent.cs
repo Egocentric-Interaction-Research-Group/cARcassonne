@@ -7,7 +7,6 @@ using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Policies;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace Carcassonne.AI
 {

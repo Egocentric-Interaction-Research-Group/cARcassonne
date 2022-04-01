@@ -1,11 +1,10 @@
 using System;
 using System.IO;
 using System.Text;
-using Carcassonne.Controllers;
 using Carcassonne.State;
 using Newtonsoft.Json;
 using Photon.Pun;
-using UnityEditor.Scripting.Python;
+//using UnityEditor.Scripting.Python;
 using UnityEngine;
 
 namespace Carcassonne.AR
@@ -47,7 +46,7 @@ namespace Carcassonne.AR
         public void RunPythonImageGenerator()
         {
             Debug.Log("Running Python File");
-            PythonRunner.RunFile($"{Application.dataPath}/PythonImageGenerator/MatrixToGreyImage.py");
+            //PythonRunner.RunFile($"{Application.dataPath}/PythonImageGenerator/MatrixToGreyImage.py");
         }
     }
 }

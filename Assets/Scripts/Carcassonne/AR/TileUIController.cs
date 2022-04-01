@@ -1,5 +1,3 @@
-using System;
-using Carcassonne.Tiles;
 using Carcassonne.Controllers;
 using Carcassonne.Models;
 using Microsoft.MixedReality.Toolkit.UI;

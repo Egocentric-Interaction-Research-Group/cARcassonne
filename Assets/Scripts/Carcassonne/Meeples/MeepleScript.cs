@@ -1,13 +1,6 @@
-﻿using System;
-using System.Linq;
-using Carcassonne.AR;
-using Carcassonne.Models;
-using Carcassonne.Controllers;
-using Carcassonne.Players;
-using Carcassonne.Tiles;
+﻿using Carcassonne.Models;
 using MRTK.Tutorials.MultiUserCapabilities;
 using Photon.Pun;
-using UnityEngine;
 
 namespace Carcassonne.Meeples
 {

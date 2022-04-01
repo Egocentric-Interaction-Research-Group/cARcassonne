@@ -1,21 +1,15 @@
-using System;
 using Carcassonne;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Carcassonne.AI;
 using Carcassonne.Controllers;
-using Carcassonne.Interfaces;
 using Carcassonne.Models;
 using Carcassonne.State;
 using Carcassonne.State.Features;
 using Carcassonne.Utilities;
 using Unity.MLAgents.Policies;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
-using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 /// <summary>

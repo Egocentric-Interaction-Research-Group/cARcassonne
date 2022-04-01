@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Carcassonne.Controllers;
 using Carcassonne.Models;
-using Photon.Pun;
-using UnityEditor.AI;
+using Photon.Pun;   
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Carcassonne.AR.Buttons
 {

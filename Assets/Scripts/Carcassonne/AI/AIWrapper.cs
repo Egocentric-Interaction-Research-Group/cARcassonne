@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Carcassonne.AR;
 using Carcassonne.Controllers;
 using Carcassonne.Models;
-using Carcassonne.Players;
 using Carcassonne.State;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using UI.Grid;
 using UnityEngine;
 
 namespace Carcassonne.AI

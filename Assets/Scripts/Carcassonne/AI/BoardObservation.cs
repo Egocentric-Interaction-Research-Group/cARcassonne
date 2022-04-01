@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.Models;
 using Carcassonne.State;
-using Carcassonne.Tiles;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
 
