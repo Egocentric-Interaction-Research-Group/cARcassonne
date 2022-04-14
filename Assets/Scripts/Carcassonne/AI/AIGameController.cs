@@ -160,8 +160,12 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
         // string gv = g.ToString();
         //
         // File.WriteAllText($"Learning/{state.Timestamp.ToString("yyyyMMdd_HHmmss")}_{state.GameID.ToString()}_{turn}.gv", gv);
-        
-        g.GenerateGraphML($"Learning/{state.Timestamp.ToString("yyyyMMdd_HHmmss")}_{state.GameID.ToString()}_{turn}.graphml");
+        var path = $"Learning/Games/{state.Timestamp.ToString("yyyyMMdd_HHmmss")}_{state.GameID.ToString()}";
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+        g.GenerateGraphML($"{path}/{turn}.graphml");
     }
 
     /// <summary>
