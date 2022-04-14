@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.Models;
@@ -121,13 +122,8 @@ namespace Carcassonne.Controllers
 
                 // PrintTurnToLogWindow();
 
-                if (state.Tiles.Remaining.Count == 0)
-                {
-                    GameOver();
-                    return true;
-                }
-                
-                NewTurn();
+                var coroutine = StartNextTurn();
+                StartCoroutine(coroutine);
 
                 return true;
             }
@@ -246,6 +242,22 @@ namespace Carcassonne.Controllers
                     meepleController.Free(m);
                 }
             }
+        }
+
+        /// <summary>
+        /// Wait one frame before starting next turn to allow for end-of-turn computations.
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator StartNextTurn()
+        {
+            yield return 0; // Wait a frame
+            
+            if (state.Tiles.Remaining.Count == 0)
+            {
+                GameOver();
+            }
+            
+            NewTurn();
         }
     }
 }

@@ -24,6 +24,7 @@ namespace Carcassonne.AI.Training
 
         private int TilesDiscarded => state.Tiles.Discarded.Count;
         
+        //TODO Sequence contains no elements. Insert GameOver delay (like Turn delay coroutine)
         private float AvgMeeplesRemainingPerTurn => (float)log.Turns.Average(t => t.meeplesRemaining);
         // private float AvgMeepleTurnsOnFeature;
         

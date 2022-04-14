@@ -120,6 +120,31 @@ namespace Carcassonne.AI
             return (float)player.scoreChange;
         }
 
+        public float GetUnscoredPointsChange()
+        {
+            return (float)player.unscoredPointsChange;
+        }
+
+        public float GetPotentialPointsChange()
+        {
+            return (float)player.potentialPointsChange;
+        }
+        
+        public float GetOtherScoreChange()
+        {
+            return (float)state.Players.Others.Select(p => p.scoreChange).Sum();
+        }
+
+        public float GetOtherUnscoredPointsChange()
+        {
+            return (float)state.Players.Others.Select(p => p.unscoredPointsChange).Sum();
+        }
+
+        public float GetOtherPotentialPointsChange()
+        {
+            return (float)state.Players.Others.Select(p => p.potentialPointsChange).Sum();
+        }
+
         #endregion
         
         #region Tile Actions
@@ -141,11 +166,17 @@ namespace Carcassonne.AI
 
         public int GetCurrentTileId()
         {
+            if (state.Tiles.Current == null)
+                return GetMaxTileId()+1;
+            
             return state.Tiles.Current.ID;
         }
         
         public int GetCurrentTileRotations()
         {
+            if (state.Tiles.Current == null)
+                return 0;
+            
             return state.Tiles.Current.Rotations;
         }
         
@@ -161,6 +192,7 @@ namespace Carcassonne.AI
         
         public int GetTotalTiles()
         {
+            Debug.Assert(Tile.GetIDDistribution().Values.Sum() == 71, $"There should be 71 tiles in the stack. Found {Tile.GetIDDistribution().Values.Sum()}");
             return Tile.GetIDDistribution().Values.Sum();
         }
         

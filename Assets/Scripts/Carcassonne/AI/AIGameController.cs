@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using Carcassonne;
 using System.Collections.Generic;
 using System.IO;
@@ -145,14 +147,30 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
         var playersByScore = state.Players.All.OrderByDescending(p => p.score);
         
         playersByScore.First().GetComponent<CarcassonneAgent>().SetReward(1f);
-        playersByScore.First().GetComponent<CarcassonneAgent>().EndEpisode();
+        // playersByScore.First().GetComponent<CarcassonneAgent>().EndEpisode();
         
         foreach (var player in playersByScore.Where(p => p != playersByScore.First()))
         {
             player.GetComponent<CarcassonneAgent>().SetReward(-1f);
-            player.GetComponent<CarcassonneAgent>().EndEpisode();
+            // player.GetComponent<CarcassonneAgent>().EndEpisode();
         }
         
+        var coroutine = DelayedEndEpisode();
+        StartCoroutine(coroutine); 
+    }
+
+    /// <summary>
+    /// Wait one frame before starting next turn to allow for end-of-turn computations.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DelayedEndEpisode()
+    {
+        yield return new WaitForSeconds(1f); // Wait for a second
+
+        foreach (var p in state.Players.All)
+        {
+            p.GetComponent<CarcassonneAgent>().EndEpisode();
+        }
     }
     
     public void WriteGraphToFile(BoardGraph g)
@@ -230,6 +248,8 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
         
         // Put the first one on top
         tiles.Push(startingTile);
+        
+        Debug.Assert(tiles.Count == 71, $"There should be 71 tiles to start the game of Carcassonne. Found {tiles.Count}.");
 
         return tiles;
     }
@@ -258,6 +278,10 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
             {
                 p.score = 0;
                 p.previousScore = 0;
+                p.unscoredPoints = 0;
+                p.previousUnscoredPoints = 0;
+                p.potentialPoints = 0;
+                p.previousPotentialPoints = 0;
             }
         }
 
