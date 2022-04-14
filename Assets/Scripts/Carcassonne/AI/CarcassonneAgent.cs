@@ -8,6 +8,10 @@ using Unity.MLAgents.Policies;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
 
+
+/// Action could be ? branches: X, Y, rotation, Meeple
+/// 
+
 namespace Carcassonne.AI
 {
     //TODO need a default mask on each branch.
@@ -109,8 +113,8 @@ namespace Carcassonne.AI
                     else if (decision == (int)DecisionAction.EndTurn)
                     {
                         Debug.Log("Decided to end the turn.");
+                        EndOfTurnRewards();
                         wrapper.EndTurn(); //End turn without taking meeple
-                        AddReward(wrapper.GetScoreChange());
                     }
                     break;
                 case Phase.MeepleDrawn:
@@ -202,8 +206,8 @@ namespace Carcassonne.AI
                 if (wrapper.GetGamePhase() == Phase.MeepleDown) //If meeple is placed.
                 {
                     AddReward(0.1f); //Rewards successfully placing a meeple
+                    EndOfTurnRewards();
                     wrapper.EndTurn();
-                    AddReward(wrapper.GetScoreChange());
                 }
                 else if (wrapper.GetGamePhase() == Phase.MeepleDrawn) //If meeple gets returned.
                 {
@@ -232,24 +236,34 @@ namespace Carcassonne.AI
         /// <param name="sensor">The vector sensor to add observations to</param>
         public override void CollectObservations(VectorSensor sensor)
         {
+            var obsCount = 0;
             sensor.AddObservation(wrapper.GetScore() / MAX_GAME_SCORE);
-            //TODO: I think this should be a onehot observation
-            sensor.AddOneHotObservation(wrapper.GetCurrentTileId(),wrapper.GetMaxTileId());
+            obsCount++; // 1
+            sensor.AddOneHotObservation(wrapper.GetCurrentTileId(),wrapper.GetMaxTileId()+1);
+            obsCount += wrapper.GetMaxTileId() + 1; // 26
             sensor.AddObservation(wrapper.GetCurrentTileRotations() / 3f);
+            obsCount++; // 27
             // sensor.AddObservation(x / wrapper.GetMaxBoardSize());
             // sensor.AddObservation(z / wrapper.GetMaxBoardSize());
             sensor.AddObservation(cell / wrapper.GetMaxBoardSize());
+            obsCount += 2; // 29
             sensor.AddObservation(wrapper.GetNumberOfPlacedTiles() / wrapper.GetTotalTiles());
+            obsCount++; // 30
             sensor.AddObservation(wrapper.GetMeeplesLeft() / wrapper.GetMaxMeeples());
+            obsCount++; // 31
 
             //One-Hot observations of enums (can be done with less code, but this is more readable)
             int MAX_PHASES = Enum.GetValues(typeof(Phase)).Length;
             // int MAX_DIRECTIONS = 6; //TODO: DIRECTION DEPRECATION CHANGE - Enum.GetValues(typeof(Direction)).Length;
-
             sensor.AddOneHotObservation((int)wrapper.GetGamePhase(), MAX_PHASES);
+            obsCount += MAX_PHASES; // 37
+            
             //TODO: DIRECTION DEPRICATION CHANGE -sensor.AddOneHotObservation((int)meepleDirection, MAX_DIRECTIONS);
             // if (meepleDirection != null) sensor.AddObservation((Vector2)meepleDirection); //FIXME This not going to work. Can't be conditional.
             sensor.AddOneHotObservation(MeepleDirectionToOneHot(meepleDirection), nDirections);
+            obsCount += nDirections; // 43
+
+            Debug.Log($"Added {obsCount} general observations.");
             
             // Call the tile observation method that was assigned at initialization,
             // using the editor-exposed 'observationApproach' field.
@@ -367,6 +381,34 @@ namespace Carcassonne.AI
                 $"0 < direction < {nDirections}, but is {oneHotAngle}.");
             
             return oneHotAngle;
+        }
+
+        private void EndOfTurnRewards()
+        {
+            // Score changed reward
+            var scoreChange = wrapper.GetScoreChange();
+            AddReward(scoreChange);
+            var unscoredPointsChange = 0.5f * wrapper.GetUnscoredPointsChange();
+            AddReward(unscoredPointsChange);
+            var potentialPointsChange = 0.5f * wrapper.GetPotentialPointsChange();
+            AddReward(potentialPointsChange);
+
+            var otherScoreChange = wrapper.GetOtherScoreChange();
+            AddReward(otherScoreChange);
+            var otherUnscoredPointsChange = 0.5f * wrapper.GetOtherUnscoredPointsChange();
+            AddReward(otherUnscoredPointsChange);
+            var otherPotentialPointsChange = 0.5f * wrapper.GetOtherPotentialPointsChange();
+            AddReward(otherPotentialPointsChange);
+            
+            // Meeples Remaining
+            var meeplesRemaingingScore =
+                wrapper.GetMeeplesLeft() < 2 ? -0.1f * 1.0f / ((float)(wrapper.GetMeeplesLeft() + 1)) : 0.0f;
+            AddReward(meeplesRemaingingScore);
+
+            Debug.Log($"EOT Rewards (P{wrapper.player.id}) dScore={scoreChange}, dUnscore={unscoredPointsChange}, dPotential={potentialPointsChange}, " +
+                      $"dOther={otherScoreChange}, dOtherUnscore={otherUnscoredPointsChange}, dOtherPot={otherPotentialPointsChange}, " +
+                      $"meeples={meeplesRemaingingScore}, " +
+                      $"score={wrapper.player.score}, unscore={wrapper.player.unscoredPoints}, potential={wrapper.player.potentialPoints}");
         }
     }
 }
