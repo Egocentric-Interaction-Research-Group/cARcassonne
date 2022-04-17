@@ -200,6 +200,10 @@ namespace Carcassonne
             // Tile[,] allTiles = inputTiles.tiles;
             // Vector2Int updateDim = new Vector2Int(
             //     allTiles.GetLength(0), allTiles.GetLength(1));
+            
+            // Size adjustment
+            displaySize += 3*Vector2Int.one;
+            displayOffset -= Vector2Int.one;
 
             // Make sure to always display 1:1 column-row ratio.
             if (displaySize.x < displaySize.y)

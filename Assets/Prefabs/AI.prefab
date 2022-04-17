@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1695468876677109422}
   - component: {fileID: 2096977710434309626}
   - component: {fileID: -1820624487966107760}
+  - component: {fileID: 685205903244666190}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -52,6 +53,10 @@ MonoBehaviour:
   isAI: 0
   score: 0
   previousScore: 0
+  unscoredPoints: 0
+  previousUnscoredPoints: 0
+  potentialPoints: 0
+  previousPotentialPoints: 0
 --- !u!114 &4305211684211156123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,12 +70,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 286
+    VectorObservationSize: 287
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
-      BranchSizes: 03000000030000000400000002000000050000000300000002000000
-    VectorActionSize: 03000000030000000400000002000000050000000300000002000000
+      BranchSizes: 90000000900000000400000006000000
+    VectorActionSize: 90000000900000000400000006000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
@@ -99,7 +104,8 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
   observationApproach: 3
-  wrapper: {fileID: 0}
+  actionApproach: 1
+  wrapper: {fileID: -1820624487966107760}
   cell: {x: 0, y: 0}
 --- !u!114 &2096977710434309626
 MonoBehaviour:
@@ -108,7 +114,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2598782832212889485}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1a419dccbc7b9845a0499dbcec67bce, type: 3}
   m_Name: 
@@ -133,3 +139,17 @@ MonoBehaviour:
   tileController: {fileID: 0}
   state: {fileID: 0}
   player: {fileID: 0}
+--- !u!114 &685205903244666190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598782832212889485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0685bc5b0f704c148d267f8479cce136, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ai: {fileID: 1695468876677109422}
+  wrapper: {fileID: -1820624487966107760}

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.Models;
+using UnityEngine;
 
 namespace Carcassonne.State
 {
@@ -21,6 +22,7 @@ namespace Carcassonne.State
         public Player Next()
         {
             _currentIndex = (_currentIndex + 1) % All.Count;
+            Debug.Log($"Setting Current player to Player {All[_currentIndex].id} (index: {_currentIndex}, AI: {All[_currentIndex].isAI})");
             return Current;
         }
         

@@ -93,9 +93,6 @@ namespace Carcassonne.Controllers
         {
             if (state.phase == Phase.TileDown || state.phase == Phase.MeepleDown)
             {
-                //TODO: Do this by event instead.
-                // Log.LogTurn();
-
                 // Check finished features
                 var features = state.Features.CompleteWithMeeples.ToList();
                 var scores = ScoreFeatures(features);

@@ -6,7 +6,7 @@ namespace Carcassonne.Controllers
 {
     public abstract class GamePieceController<T> : MonoBehaviour
     {
-        public abstract void Draw();
+        public abstract bool Draw();
         
         public void Rotate(){}
         

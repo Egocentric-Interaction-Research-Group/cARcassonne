@@ -44,14 +44,14 @@ namespace Carcassonne.AI
 
         #region Game Actions
 
-        public void PickUpTile()
+        public bool PickUpTile()
         {
-            tileController.Draw();
+            return tileController.Draw();
         }
         
-        public void DrawMeeple()
+        public bool DrawMeeple()
         {
-            meepleController.Draw();
+            return meepleController.Draw();
         }
         
         public void EndTurn()
@@ -154,10 +154,10 @@ namespace Carcassonne.AI
             tileController.Rotate();
         }
 
-        public void PlaceTile(Vector2Int cell)
+        public bool PlaceTile(Vector2Int cell)
         {
             // var cell = new Vector2Int(x, z);
-            tileController.Place(cell);
+            return tileController.Place(cell);
         }
         
         #endregion
@@ -192,7 +192,7 @@ namespace Carcassonne.AI
         
         public int GetTotalTiles()
         {
-            Debug.Assert(Tile.GetIDDistribution().Values.Sum() == 71, $"There should be 71 tiles in the stack. Found {Tile.GetIDDistribution().Values.Sum()}");
+            Debug.Assert(Tile.GetIDDistribution().Values.Sum() == 72, $"There should be 72 tiles in the stack. Found {Tile.GetIDDistribution().Values.Sum()}");
             return Tile.GetIDDistribution().Values.Sum();
         }
         
@@ -211,7 +211,7 @@ namespace Carcassonne.AI
 
         #region Meeple Actions
 
-        public void PlaceMeeple(Vector2Int meepleDirection)
+        public bool PlaceMeeple(Vector2Int meepleDirection)
         {
             // float meepleX = 0.000f;
             // float meepleZ = 0.000f;
@@ -240,8 +240,13 @@ namespace Carcassonne.AI
             // controller.meepleControllerScript.aiMeepleZ = meepleZ;
             Debug.Assert(state.Tiles.lastPlayedPosition != null, "State.Tiles.lastPlayedPosition should not be null, but it is.");
             // controller.PlaceMeeple(state.grid.TileToMeeple((Vector2Int)state.Tiles.lastPlayedPosition, meepleDirection));
-            meepleController.Place(state.grid.TileToMeeple((Vector2Int)state.Tiles.lastPlayedPosition,
+            return meepleController.Place(state.grid.TileToMeeple((Vector2Int)state.Tiles.lastPlayedPosition,
                 meepleDirection));
+        }
+
+        public void DiscardMeeple()
+        {
+            meepleController.Discard();
         }
 
         public void FreeCurrentMeeple()

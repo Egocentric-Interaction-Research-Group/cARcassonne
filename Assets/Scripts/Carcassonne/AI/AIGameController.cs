@@ -245,7 +245,7 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
         // Put the first one on top
         tiles.Push(startingTile);
         
-        Debug.Assert(tiles.Count == 71, $"There should be 71 tiles to start the game of Carcassonne. Found {tiles.Count}.");
+        Debug.Assert(tiles.Count == 72, $"There should be 72 tiles to start the game of Carcassonne. Found {tiles.Count}.");
 
         return tiles;
     }

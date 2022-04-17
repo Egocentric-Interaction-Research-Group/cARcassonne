@@ -322,6 +322,8 @@ namespace Carcassonne.Models
             return distribution;
         }
 
+        public static int TileCount = GetIDDistribution().Values.Sum();
+
         // private void Awake()
         // {
         //     IsReady = false;
