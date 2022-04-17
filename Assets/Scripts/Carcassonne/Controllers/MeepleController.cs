@@ -128,13 +128,13 @@ namespace Carcassonne.Controllers
             return true;
         }
 
-        public override void Draw()
+        public override bool Draw()
         {
             if (state.phase != Phase.TileDown)
             {
                 Debug.LogWarning($"Can't draw meeple. Wrong game phase ({state.phase}).");
                 OnInvalidDraw.Invoke();
-                return;
+                return false;
             }
             
             Debug.Log("Drawing new Meeple.");
@@ -143,7 +143,7 @@ namespace Carcassonne.Controllers
             {
                 Debug.LogWarning($"Can't draw meeple. Too few remaining ({RemainingForCurrentPlayer.Count()}) or Meeple already drawn.");
                 OnInvalidDraw.Invoke();
-                return;
+                return false;
             }
             
             // Get a new current tile
@@ -154,6 +154,7 @@ namespace Carcassonne.Controllers
             state.phase = Phase.MeepleDrawn;
             
             OnDraw.Invoke(meeple);
+            return true;
         }
 
         public override void Discard()

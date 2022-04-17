@@ -22,7 +22,7 @@ namespace Carcassonne.AI
         /// <summary>
         /// Picks up the next tile to be drawn, done at the beginning of a new turn.
         /// </summary>
-        public void PickUpTile();
+        public bool PickUpTile();
 
         /// <summary>
         /// Returns the ID of the current tile.
@@ -44,7 +44,7 @@ namespace Carcassonne.AI
         /// <summary>
         /// Draws a new meeple for placement.
         /// </summary>
-        public void DrawMeeple();
+        public bool DrawMeeple();
 
         /// <summary>
         /// Rotates the current tile to be placed.
@@ -56,13 +56,13 @@ namespace Carcassonne.AI
         /// </summary>
         /// <param name="x"></param>
         /// <param name="z"></param>
-        public void PlaceTile(Vector2Int cell);
+        public bool PlaceTile(Vector2Int cell);
 
         /// <summary>
         /// Places the meeple on the specified direction of tile placed in this turn.
         /// </summary>
         /// <param name="meepleDirection"></param> The direction of the tile to place the meeple on (North, South, West, East, or Center)
-        public void PlaceMeeple(Vector2Int meepleDirection);
+        public bool PlaceMeeple(Vector2Int meepleDirection);
 
         /// <summary>
         /// Frees the current meeple up. Utilized as a workaround for a bug where the meeple cannot be placed and cannot be returned by the AI.

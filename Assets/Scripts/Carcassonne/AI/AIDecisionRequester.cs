@@ -34,7 +34,11 @@ namespace Carcassonne.AI
                     // ai.EndEpisode();
                     break;
                 default: //Calls for one AI action repeatedly with each FixedUpdate until the phase changes.
-                    ai.RequestDecision();
+                    if (ai.wrapper.state.Tiles.Current != null)
+                    {
+                        ai.RequestDecision();
+                    }
+
                     break;
             }
         }

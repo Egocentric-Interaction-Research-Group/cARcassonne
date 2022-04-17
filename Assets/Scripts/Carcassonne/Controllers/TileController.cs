@@ -56,7 +56,7 @@ namespace Carcassonne.Controllers
         ///
         /// Pick a tile from the stack, set the current tile state, check if the tile is valid, set game state, 
         /// </summary>
-        public override void Draw()
+        public override bool Draw()
         {
             // TODO Should this check phase validity??? Probably, right?
             Debug.Log("Drawing new Tile.");
@@ -65,7 +65,7 @@ namespace Carcassonne.Controllers
             // This can happen if Draw is called twice because of a Discard, for example.
             if (state.Tiles.Remaining.Count == 0){
                 GetComponent<GameController>().GameOver();
-                return;
+                return false;
             }
 
             // Get a new current tile
@@ -83,6 +83,8 @@ namespace Carcassonne.Controllers
             state.phase = Phase.TileDrawn;
             
             OnDraw.Invoke(tile);
+            
+            return true;
         }
 
         public void PlaceFirst()
