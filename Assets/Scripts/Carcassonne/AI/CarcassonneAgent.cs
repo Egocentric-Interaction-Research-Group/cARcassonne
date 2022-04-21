@@ -15,6 +15,15 @@ using UnityEngine;
 
 namespace Carcassonne.AI
 {
+    public struct Rewards
+    {
+        public static float ActionBias = -0.0001f;
+        public static float InvalidAction = 0.0f;//-0.010f;
+        public static float ValidAction = 0.0f;//0.020f;
+        public static float Score = 0.05f;
+        public static float OtherScore = -0.025f;
+    }
+    
     //TODO need a default mask on each branch.
     public enum SBSActions
     {
@@ -140,7 +149,7 @@ namespace Carcassonne.AI
 
             Debug.Log($"Placing at ({x},{y}), rotation {rotate} and meeple {meeplePos}.");
 
-            AddReward(-0.001f); //Each call to this method comes with a very minor penalty to promote performing quick actions.
+            AddReward(Rewards.ActionBias); //Each call to this method comes with a very minor penalty to promote performing quick actions.
 
             // Tile actions
             cell = new Vector2Int(x, y);
@@ -153,7 +162,7 @@ namespace Carcassonne.AI
 
             if (wrapper.PlaceTile(cell)) //If the placement was successful
             {
-                AddReward(0.002f);
+                AddReward(Rewards.ValidAction);
             }
             else // Placement was unsuccessful. Try again.
             {
@@ -165,7 +174,7 @@ namespace Carcassonne.AI
             {
                 if (!wrapper.DrawMeeple())
                 {
-                    AddReward(-0.005f);
+                    AddReward(Rewards.InvalidAction);
                 }
 
                 var meeplePlaced = false;
@@ -190,11 +199,11 @@ namespace Carcassonne.AI
 
                 if (meeplePlaced)
                 {
-                    AddReward(0.002f);
+                    AddReward(Rewards.ValidAction);
                 }
                 else
                 {
-                    AddReward(-0.002f);
+                    AddReward(Rewards.InvalidAction);
                     wrapper.DiscardMeeple();
                 }
 
@@ -547,28 +556,28 @@ namespace Carcassonne.AI
         private void EndOfTurnRewards()
         {
             // Score changed reward
-            var scoreChange = wrapper.GetScoreChange();
+            var scoreChange = Rewards.Score * wrapper.GetScoreChange();
             AddReward(scoreChange);
-            var unscoredPointsChange = 0.5f * wrapper.GetUnscoredPointsChange();
+            var unscoredPointsChange = 0.25f * Rewards.Score * wrapper.GetUnscoredPointsChange();
             AddReward(unscoredPointsChange);
-            var potentialPointsChange = 0.5f * wrapper.GetPotentialPointsChange();
+            var potentialPointsChange = 0.25f * Rewards.Score * wrapper.GetPotentialPointsChange();
             AddReward(potentialPointsChange);
 
-            var otherScoreChange = wrapper.GetOtherScoreChange();
+            var otherScoreChange = Rewards.OtherScore * wrapper.GetOtherScoreChange();
             AddReward(otherScoreChange);
-            var otherUnscoredPointsChange = 0.5f * wrapper.GetOtherUnscoredPointsChange();
+            var otherUnscoredPointsChange = 0.25f * Rewards.OtherScore * wrapper.GetOtherUnscoredPointsChange();
             AddReward(otherUnscoredPointsChange);
-            var otherPotentialPointsChange = 0.5f * wrapper.GetOtherPotentialPointsChange();
+            var otherPotentialPointsChange = 0.25f * Rewards.OtherScore * wrapper.GetOtherPotentialPointsChange();
             AddReward(otherPotentialPointsChange);
             
             // Meeples Remaining
-            var meeplesRemaingingScore =
+            /* var meeplesRemaingingScore =
                 wrapper.GetMeeplesLeft() < 2 ? -0.1f * 1.0f / ((float)(wrapper.GetMeeplesLeft() + 1)) : 0.0f;
-            AddReward(meeplesRemaingingScore);
+            AddReward(meeplesRemaingingScore); */
 
             Debug.Log($"EOT Rewards (P{wrapper.player.id}) dScore={scoreChange}, dUnscore={unscoredPointsChange}, dPotential={potentialPointsChange}, " +
                       $"dOther={otherScoreChange}, dOtherUnscore={otherUnscoredPointsChange}, dOtherPot={otherPotentialPointsChange}, " +
-                      $"meeples={meeplesRemaingingScore}, " +
+                      //$"meeples={meeplesRemaingingScore}, " +
                       $"score={wrapper.player.score}, unscore={wrapper.player.unscoredPoints}, potential={wrapper.player.potentialPoints}");
         }
     }

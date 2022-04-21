@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.State;
 using Carcassonne.Utilities;
@@ -12,6 +13,9 @@ namespace Carcassonne.AI.Training
         public GameLog log;
         private StatsRecorder stats => Academy.Instance.StatsRecorder;
 
+        private IEnumerable<Turn> P0Turns => log.Turns.Where(t => t.player.id == 0);
+        private IEnumerable<Turn> P1Turns => log.Turns.Where(t => t.player.id == 1);
+
         // Point statistics
         private int CompletedCities => state.Features.Cities.Count(c => c.Complete);
         private int CompletedRoads => state.Features.Roads.Count(r => r.Complete);
@@ -25,18 +29,22 @@ namespace Carcassonne.AI.Training
         private int TilesDiscarded => state.Tiles.Discarded.Count;
         
         //TODO Sequence contains no elements. Insert GameOver delay (like Turn delay coroutine)
-        private float AvgMeeplesRemainingPerTurn => (float)log.Turns.Average(t => t.meeplesRemaining);
+        private float AvgMeeplesRemainingPerTurn => (float)P0Turns.Average(t => t.meeplesRemaining);
         // private float AvgMeepleTurnsOnFeature;
         
-        private float AvgPointGainPerOwnTile => (float)log.Turns.Average(t => t.pointDifference[t.player].scoredPoints);
-        private float AvgPointGainPerOtherTile => (float)log.Turns.Average(t => t.pointDifference.Where(kvp => kvp.Key != t.player).
+        private float AvgPointGainPerOwnTile => (float)P0Turns.Average(t => t.pointDifference[t.player].scoredPoints);
+        private float AvgPointGainPerOtherTile => (float)P0Turns.Average(t => t.pointDifference.Where(kvp => kvp.Key != t.player).
             Average(pair => pair.Value.scoredPoints));
-        private float AvgUnscoredPointGainPerOwnTile => (float)log.Turns.Average(t => t.pointDifference[t.player].unscoredPoints);
-        private float AvgUnscoredPointGainPerOtherTile => (float)log.Turns.Average(t => t.pointDifference.Where(kvp => kvp.Key != t.player).
+        private float AvgUnscoredPointGainPerOwnTile => (float)P0Turns.Average(t => t.pointDifference[t.player].unscoredPoints);
+        private float AvgUnscoredPointGainPerOtherTile => (float)P0Turns.Average(t => t.pointDifference.Where(kvp => kvp.Key != t.player).
             Average(pair => pair.Value.unscoredPoints));
-        private float AvgPotentialPointGainPerOwnTile => (float)log.Turns.Average(t => t.pointDifference[t.player].potentialPoints);
-        private float AvgPotentialPointGainPerOtherTile => (float)log.Turns.Average(t => t.pointDifference.Where(kvp => kvp.Key != t.player).
+        private float AvgPotentialPointGainPerOwnTile => (float)P0Turns.Average(t => t.pointDifference[t.player].potentialPoints);
+        private float AvgPotentialPointGainPerOtherTile => (float)P0Turns.Average(t => t.pointDifference.Where(kvp => kvp.Key != t.player).
             Average(pair => pair.Value.potentialPoints));
+
+        private float P0Score => (float)state.Players.All.Single(p => p.id == 0).FinalScore;
+        private float P1Score => (float)state.Players.All.Single(p => p.id == 1).FinalScore;
+        private float Winner => P1Score > P0Score ? 1.0f : 0.0f;
         
         public void OnGameOver()
         {
@@ -62,6 +70,10 @@ namespace Carcassonne.AI.Training
             stats.Add("Opponent/Point gain per Opponent Turn", AvgPointGainPerOtherTile);
             stats.Add("Opponent/Unscored point gain per Opponent Turn", AvgUnscoredPointGainPerOtherTile);
             stats.Add("Opponent/Potential point gain per Opponent Turn", AvgPotentialPointGainPerOtherTile);
+            
+            stats.Add("Players/0", P0Score);
+            stats.Add("Players/1", P1Score);
+            stats.Add("Players/Winner", Winner);
         }
     }
 }

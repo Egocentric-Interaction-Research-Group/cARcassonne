@@ -253,8 +253,10 @@ namespace Carcassonne.Controllers
             {
                 GameOver();
             }
-            
-            NewTurn();
+            else
+            {
+                NewTurn();
+            }
         }
     }
 }

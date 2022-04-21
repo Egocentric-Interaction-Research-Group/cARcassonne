@@ -40,7 +40,7 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     public Transform tileParent;
     public Transform meepleParent;
 
-    private List<Player> m_players = new List<Player>();
+    public List<Player> m_players = new List<Player>();
 
     #region NewParams
 
@@ -144,18 +144,18 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
 
         WriteGraphToFile(state.Features.Graph);
 
-        var playersByScore = state.Players.All.OrderByDescending(p => p.score);
-        
-        playersByScore.First().GetComponent<CarcassonneAgent>().SetReward(1f);
-        // playersByScore.First().GetComponent<CarcassonneAgent>().EndEpisode();
+        var playersByScore = state.Players.All.OrderByDescending(p => p.FinalScore);
+
+        var winner = playersByScore.First(); //.GetComponent<CarcassonneAgent>().SetReward(1f);
+        Debug.Log($"Player {playersByScore.First().id} ({playersByScore.First().GetComponent<BehaviorParameters>().TeamId}) is first with a score of {playersByScore.First().FinalScore}");
         
         foreach (var player in playersByScore.Where(p => p != playersByScore.First()))
         {
-            player.GetComponent<CarcassonneAgent>().SetReward(-1f);
-            // player.GetComponent<CarcassonneAgent>().EndEpisode();
+            //player.GetComponent<CarcassonneAgent>().SetReward(-1f);
+            Debug.Log($"Player {player.id} ({player.GetComponent<BehaviorParameters>().TeamId}) is last with a score of {player.FinalScore}");
         }
         
-        var coroutine = DelayedEndEpisode();
+        var coroutine = DelayedEndEpisode(winner);
         StartCoroutine(coroutine); 
     }
 
@@ -163,12 +163,22 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     /// Wait one frame before starting next turn to allow for end-of-turn computations.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator DelayedEndEpisode()
+    private IEnumerator DelayedEndEpisode(Player winner)
     {
         yield return new WaitForSeconds(1f); // Wait for a second
 
         foreach (var p in state.Players.All)
         {
+            if (p == winner)
+            {
+                p.GetComponent<CarcassonneAgent>().SetReward(1f);
+                Debug.Log($"Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is first with a score of {p.FinalScore}");
+            }
+            else
+            {
+                p.GetComponent<CarcassonneAgent>().SetReward(0f);
+                Debug.Log($"Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is last with a score of {p.FinalScore}");
+            }
             p.GetComponent<CarcassonneAgent>().EndEpisode();
         }
     }
@@ -256,24 +266,24 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
 
     private List<Player> CreatePlayers()
     {
-        if (m_players.Count == 0) // First new game, create players
-        {
-            // Instantiate AI Players
-            for (int i = 0; i < nPlayers; i++) // Creates all the players
-            {
-                GameObject Agent = Instantiate(aiPrefab, playerParent); // Initiate AI prefab 
-                Player player = Agent.GetComponent<Player>();
-                player.id = i;
-                player.isAI = true;
-                Agent.GetComponent<BehaviorParameters>().TeamId = i;
-                
-                gameController.OnTurnStart.AddListener(player.OnNewTurn);
-
-                m_players.Add(player);
-            }
-        }
-        else // New game, same players
-        {
+        // if (m_players.Count == 0) // First new game, create players
+        // {
+        //     // Instantiate AI Players
+        //     for (int i = 0; i < nPlayers; i++) // Creates all the players
+        //     {
+        //         GameObject Agent = Instantiate(aiPrefab, playerParent); // Initiate AI prefab 
+        //         Player player = Agent.GetComponent<Player>();
+        //         player.id = i;
+        //         player.isAI = true;
+        //         Agent.GetComponent<BehaviorParameters>().TeamId = i;
+        //         
+        //         gameController.OnTurnStart.AddListener(player.OnNewTurn);
+        //
+        //         m_players.Add(player);
+        //     }
+        // }
+        // else // New game, same players
+        // {
             foreach (var p in m_players)
             {
                 p.score = 0;
@@ -283,7 +293,7 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
                 p.potentialPoints = 0;
                 p.previousPotentialPoints = 0;
             }
-        }
+        //}
 
         return m_players;
     }

@@ -14,7 +14,9 @@ namespace Carcassonne.Models
         public int unscoredPoints;
         public int previousUnscoredPoints = 0;
         public int potentialPoints;
-        public int previousPotentialPoints = 0;
+        public int previousPotentialPoints = 0; 
+        
+        public int FinalScore => score + unscoredPoints;
         
         public int scoreChange => score - previousScore;
         public int unscoredPointsChange => unscoredPoints - previousUnscoredPoints;

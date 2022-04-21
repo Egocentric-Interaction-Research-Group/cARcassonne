@@ -1,5 +1,6 @@
 using Carcassonne.State;
 using UnityEngine;
+using Player = Carcassonne.Models.Player;
 
 namespace Carcassonne.AI
 {
@@ -15,12 +16,22 @@ namespace Carcassonne.AI
         /// <summary>
         /// Acts on its own or repeatedly requests actions from the actual AI depending the game phase and state.
         /// </summary>
-        void FixedUpdate()
+        void Update()
         {
             if (ai == null || !ai.wrapper.IsAITurn())
             {
+                if (GetComponent<Player>() != null)
+                {
+                    Debug.Log($"Player {GetComponent<Player>().id}: Not my turn.");
+                }
+                else
+                {
+                    Debug.Log("Null player: Not my turn.");
+                }
+
                 return;
             }
+            Debug.Log($"Player {GetComponent<Player>().id}: Requesting decision.");
             switch (ai.wrapper.GetGamePhase())
             {
                 case Phase.NewTurn: // Picks a new tile automatically
