@@ -166,6 +166,18 @@ namespace Carcassonne.State
         //     _remaining = new List<Tile>();
         // }
 
+        public List<Vector2Int> OpenPositions()
+        {
+            var adjacent = Placement.Keys.Select(p => new List<Vector2Int>{
+                    p + Vector2Int.up,
+                    p + Vector2Int.right,
+                    p + Vector2Int.down,
+                    p + Vector2Int.left
+                }).SelectMany(adj => adj).Distinct().Except(Placement.Keys);
+            
+            return adjacent.ToList();
+        }
+
         public override string ToString()
         {
             var s = "";

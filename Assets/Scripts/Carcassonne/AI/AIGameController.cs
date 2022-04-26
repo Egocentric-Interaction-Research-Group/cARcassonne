@@ -10,6 +10,7 @@ using Carcassonne.Models;
 using Carcassonne.State;
 using Carcassonne.State.Features;
 using Carcassonne.Utilities;
+using Unity.MLAgents;
 using Unity.MLAgents.Policies;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -54,6 +55,11 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     public int startingTileID;
 
     #endregion
+
+    private void Awake()
+    {
+        Academy.Instance.AutomaticSteppingEnabled = false;
+    }
 
     /// <summary>
     /// MonoBehavior method that will create the necessary data before the game starts
@@ -128,6 +134,8 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
         }
 
         WriteGraphToFile(state.Features.Graph);
+
+        // Academy.Instance.EnvironmentStep();
     }
 
     /// <summary>

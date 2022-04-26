@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.Models;
 using Carcassonne.State;
+using Carcassonne.State.Features;
+using QuikGraph;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -85,6 +88,108 @@ namespace Carcassonne.Controllers
             }
 
             // Nothing makes it invalid, so return true
+            return true;
+        }
+
+        /// <summary>
+        /// Check whether the placement is valid ON A TILE THAT HAS NOT YET BEEN PLACED.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="direction"></param>
+        /// <returns></returns>
+        public bool IsPlacementValid(Vector2Int position, Vector2Int direction)
+        {
+            // If it is a corner, it is invalid.
+            if (direction.magnitude > 1.0)
+            {
+                Debug.Log($"Invalid: Direction magnitude {direction.magnitude} means this is a corner subtile.");
+                return false;
+            }
+
+            // If this side cannot hold a meeple, it is invalid.
+            if (!state.Tiles.Current.GetGeographyAt(direction).IsFeature())
+            {
+                Debug.Log($"Invalid: Geography ({state.Tiles.Current.GetGeographyAt(direction)}) is not a feature.");
+                return false;
+            }
+            
+            // Check if the feature is a cloister
+            if (direction == Vector2Int.zero && state.Tiles.Current.GetGeographyAt(direction) == Geography.Cloister)
+            {
+                Debug.Log($"Valid: Cloister geography is valid.");
+                return true;
+            }
+
+            // Check the feature that will be connected
+            if (state.Tiles.Placement.ContainsKey(position + direction)) // If there is a neighbouring tile
+            {
+                var feature =
+                    state.Features.GetFeatureAt(position + direction,
+                        -direction); // Direction goes to the next node on the adjacent tile
+                if (!FeatureCanHaveMeeple(feature, position)) return false;
+            }
+            
+            // Check additional connections made by the tile
+            var graph = BoardGraph.FromTile(state.Tiles.Current, position, state.grid);
+            var vertex = graph.Vertices.SingleOrDefault(v => v.location == state.grid.TileToMeeple(position, direction));
+            if (vertex == null)
+            {
+                Debug.Log("Invalid. Subtile does not exist.");
+                return false;
+            }
+
+            if (graph.AdjacentEdges(vertex).Any(e => e.type == ConnectionType.Feature))
+            {
+                //TODO Not just adjacent edges. All connected edges.
+                FeatureGraph featureGraph;
+                switch (vertex.geography)
+                {
+                    case Geography.Road:
+                        featureGraph = Road.FromBoardGraph(graph).First();
+                        break;
+                    case Geography.City:
+                        featureGraph = City.FromBoardGraph(graph).First();
+                        break;
+                    default:
+                        throw new ArgumentException(
+                            $"Something went wrong. Vertex geography should be Road or City, but is {vertex.geography}.");
+                }
+
+                // var adj = graph.AdjacentEdges(vertex).Where(e => e.type == ConnectionType.Feature)
+                //     .Select(e => e.GetOtherVertex(vertex));
+                foreach (var subTile in featureGraph.Vertices.Except(new []{vertex}))
+                {
+                    var d = state.grid.MeepleToDirection(subTile.location);
+                    if (state.Tiles.Placement.ContainsKey(position + d)) // If there is a neighbouring tile
+                    {
+                        var feature =
+                            state.Features.GetFeatureAt(position + d,
+                                -d); // Direction goes to the next node on the adjacent tile
+                        if (!FeatureCanHaveMeeple(feature, position)) return false;
+                    }
+                }
+            }
+
+            // Nothing makes it invalid, so return true
+            return true;
+        }
+
+        private bool FeatureCanHaveMeeple(FeatureGraph feature, Vector2Int position)
+        {
+            // Placement is invalid if not on a type of feature that can have a meeple
+            if (feature == null)
+            {
+                Debug.Log($"Invalid: No feature at {position}.");
+                return false;
+            }
+
+            // Placement is invalid if feature already has meeple
+            if (meeples.InFeature(feature).Any())
+            {
+                Debug.Log($"Invalid: Feature at {position} has meeple.");
+                return false;
+            }
+
             return true;
         }
 
