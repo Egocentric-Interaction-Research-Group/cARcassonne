@@ -18,10 +18,11 @@ namespace Carcassonne.AI
     public struct Rewards
     {
         public static float ActionBias = -0.0001f;
-        public static float InvalidAction = 0.0f;//-0.010f;
-        public static float ValidAction = 0.0f;//0.020f;
+        public static float InvalidAction = -0.0001f;//-0.010f;
+        public static float ValidAction = 0.001f;//0.020f;
         public static float Score = 0.05f;
-        public static float OtherScore = -0.025f;
+        public static float OtherScore = -0.01f;
+        public static float Meeple = -0.01f;
     }
     
     //TODO need a default mask on each branch.
@@ -571,9 +572,8 @@ namespace Carcassonne.AI
             AddReward(otherPotentialPointsChange);
             
             // Meeples Remaining
-            /* var meeplesRemaingingScore =
-                wrapper.GetMeeplesLeft() < 2 ? -0.1f * 1.0f / ((float)(wrapper.GetMeeplesLeft() + 1)) : 0.0f;
-            AddReward(meeplesRemaingingScore); */
+            var meeplesRemaingingScore = Rewards.Meeple * (1.0f / ((float)(wrapper.GetMeeplesLeft() + 1)) - 0.125f);
+            AddReward(meeplesRemaingingScore);
 
             Debug.Log($"EOT Rewards (P{wrapper.player.id}) dScore={scoreChange}, dUnscore={unscoredPointsChange}, dPotential={potentialPointsChange}, " +
                       $"dOther={otherScoreChange}, dOtherUnscore={otherUnscoredPointsChange}, dOtherPot={otherPotentialPointsChange}, " +

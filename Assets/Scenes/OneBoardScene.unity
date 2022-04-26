@@ -224,6 +224,12 @@ PrefabInstance:
       propertyPath: TeamId
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4305211684211156123, guid: c9686d6fa98efc2468f526b4b37003b2,
+        type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: 824aea69496c4dc45ab60f381f4b6ad6,
+        type: 3}
     - target: {fileID: 5035486819632716185, guid: c9686d6fa98efc2468f526b4b37003b2,
         type: 3}
       propertyPath: id
@@ -409,6 +415,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: AI 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4305211684211156123, guid: c9686d6fa98efc2468f526b4b37003b2,
+        type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: 824aea69496c4dc45ab60f381f4b6ad6,
+        type: 3}
     - target: {fileID: 5049481700367576526, guid: c9686d6fa98efc2468f526b4b37003b2,
         type: 3}
       propertyPath: m_RootOrder

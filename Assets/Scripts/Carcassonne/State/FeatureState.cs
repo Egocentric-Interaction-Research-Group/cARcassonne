@@ -94,13 +94,21 @@ namespace Carcassonne.State
 
         private IEnumerable<FeatureGraph> GetCompleteWithMeeples()
         {
-            // Subtile placement dictionary of meeples in complete features
-            var subtileMeeples = Meeples.Placement.Where(pm => GetFeatureAt(pm.Key).Complete);
-            
-            // Features for those Meeples
-            var features = subtileMeeples.Select(pm => GetFeatureAt(pm.Key));
-            
-            return features.Distinct();
+            try
+            {
+                // Subtile placement dictionary of meeples in complete features
+                var subtileMeeples = Meeples.Placement.Where(pm => GetFeatureAt(pm.Key).Complete);
+                
+                // Features for those Meeples
+                var features = subtileMeeples.Select(pm => GetFeatureAt(pm.Key));
+                
+                return features.Distinct();
+            }
+            catch (NullReferenceException e)
+            {
+                Debug.Log($"NullReferenceException: Meeples.Placement len: ({Meeples.Placement.Count}");
+                return new List<FeatureGraph>();
+            }
         }
 
         /// <summary>
