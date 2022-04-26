@@ -77,7 +77,29 @@ namespace Carcassonne.AI
 
         public bool IsAITurn()
         {
-            return state != null && state.Players != null && state.Players.Current != null && player.id == state.Players.Current.id;
+            if (state == null)
+            {
+                Debug.Log("Not AI Turn: Null state");
+                return false;
+            }
+            else if (state.Players == null)
+            {
+                Debug.Log("Not AI Turn: Null players");
+                return false;
+            }
+            else if (state.Players.Current == null)
+            {
+                Debug.Log("Not AI Turn: Null current player");
+                return false;
+            }
+            else if (player.id != state.Players.Current.id)
+            {
+                Debug.Log($"Not AI Turn: {player.id} != {state.Players.Current.id} (current)");
+                return false;
+            }
+
+            return true;
+            //return state != null && state.Players != null && state.Players.Current != null && player.id == state.Players.Current.id;
         }
 
         public Phase GetGamePhase()
@@ -213,31 +235,6 @@ namespace Carcassonne.AI
 
         public bool PlaceMeeple(Vector2Int meepleDirection)
         {
-            // float meepleX = 0.000f;
-            // float meepleZ = 0.000f;
-            //
-            // //If clause only changes X if it is east or west.
-            // if (meepleDirection == Vector2Int.right)
-            // {
-            //     meepleX = 0.011f;
-            // }
-            // else if (meepleDirection == Vector2Int.left)
-            // {
-            //     meepleX = -0.011f;
-            // }
-            //
-            // //If clause only changes Z if it is north or south
-            // if (meepleDirection == Vector2Int.up)
-            // {
-            //     meepleZ = 0.011f;
-            // }
-            // else if (meepleDirection == Vector2Int.down)
-            // {
-            //     meepleZ = -0.011f;
-            // }
-
-            // controller.meepleControllerScript.aiMeepleX = meepleX;
-            // controller.meepleControllerScript.aiMeepleZ = meepleZ;
             Debug.Assert(state.Tiles.lastPlayedPosition != null, "State.Tiles.lastPlayedPosition should not be null, but it is.");
             // controller.PlaceMeeple(state.grid.TileToMeeple((Vector2Int)state.Tiles.lastPlayedPosition, meepleDirection));
             return meepleController.Place(state.grid.TileToMeeple((Vector2Int)state.Tiles.lastPlayedPosition,
@@ -268,7 +265,7 @@ namespace Carcassonne.AI
         
         public int GetMeeplesLeft()
         {
-            return state.Meeples.ForPlayer(player).Count();
+            return state.Meeples.RemainingForPlayer(player).Count();
         }
 
         public int GetMaxMeeples()

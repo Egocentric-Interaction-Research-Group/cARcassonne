@@ -207,7 +207,7 @@ namespace Carcassonne.Models
             return Geography.Field;
         }
 
-        public static Vector2Int[] Directions = new Vector2Int[]{Vector2Int.up, Vector2Int.left, Vector2Int.down, Vector2Int.left};
+        public static Vector2Int[] Directions = new Vector2Int[]{Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left};
 
         #region Computed Properties
 

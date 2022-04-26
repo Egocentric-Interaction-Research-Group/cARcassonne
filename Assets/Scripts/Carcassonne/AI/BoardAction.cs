@@ -10,7 +10,11 @@ namespace Carcassonne.AI
 
         [InspectorName("Whole board")]
         [Tooltip("Action space size: ??\"Each turn, the AI tried to place the tile on any valid square on the board.")]
-        Board
+        Board,
+        
+        [InspectorName("Integrated")]
+        [Tooltip("Action space size: ??\"Each turn, the AI tried to place the tile and meeple on any valid integrated position on the board.")]
+        Integrated
     }
 
     public static class BoardAction

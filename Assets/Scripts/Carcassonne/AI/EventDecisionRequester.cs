@@ -3,6 +3,7 @@ using System.Collections;
 using Carcassonne.Controllers;
 using Carcassonne.Models;
 using Carcassonne.State;
+using Unity.MLAgents;
 using UnityEngine;
 
 namespace Carcassonne.AI
@@ -13,6 +14,7 @@ namespace Carcassonne.AI
     public class EventDecisionRequester : MonoBehaviour
     {
         public CarcassonneAgent ai;
+        public bool decisionRequested = false;
 
         private void Awake()
         {
@@ -37,13 +39,13 @@ namespace Carcassonne.AI
 
             if (!ai.wrapper.IsAITurn())
             {
-                Debug.Log("EDR found new turn. Ignored.");
+                Debug.Log($"EDR {ai.wrapper.player.id} found new turn. Ignored.");
                 yield return 0;
             }
             else
             {
 
-                Debug.Log("EDR found new turn.");
+                Debug.Log($"EDR {ai.wrapper.player.id} found new turn.");
 
                 ai.ResetAttributes();
                 ai.wrapper.PickUpTile();
@@ -54,25 +56,37 @@ namespace Carcassonne.AI
 
         public void RequestDecision(Tile t, Vector2Int v)
         {
-            Debug.Log("EDR invalid place decision requested.");
+            Debug.Log($"EDR {ai.wrapper.player.id} invalid place decision requested.");
             RequestDecision();
         }
         
         public void RequestDecision(Tile t)
         {
-            Debug.Log("EDR draw decision requested.");
+            Debug.Log($"EDR {ai.wrapper.player.id} draw decision requested.");
             RequestDecision();
         }
         
         public void RequestDecision()
         {
-            Debug.Log("EDR decision requested.");
             if (ai == null || !ai.wrapper.IsAITurn())
             {
                 return;
             }
             
+            Debug.Log($"EDR {ai.wrapper.player.id} decision requested.");
             ai.RequestDecision();
+
+            decisionRequested = true;
+        }
+
+        public void Update()
+        {
+            if (decisionRequested)
+            {
+                Academy.Instance.EnvironmentStep();
+
+                decisionRequested = false;
+            }
         }
 
         // /// <summary>

@@ -239,46 +239,10 @@ namespace Carcassonne.Controllers
                 }
             }
             
-            // TODO: Re-implement with a list of open cells adjacent placed tiles.
-            // for (var cell = new Vector2Int(); cell.x < tiles.Played.GetLength(0); cell.x++)
-            // {
-            //     for (cell.y = 0; cell.y < tiles.Played.GetLength(1); cell.y++)
-            //     {
-            //         for (var rotation = 0; rotation < 4; rotation++)
-            //         {
-            //             if (IsPlacementValid(cell))
-            //             {
-            //                 // tileControllerScript.ResetTileRotation();
-            //                 Debug.Log($"Found a valid position at ({cell.x},{cell.y}) with rotation {rotation}.");
-            //                 
-            //                 // Randomly rotate tile to not bias positioning
-            //                 tile.Rotate(Random.Range(0,4));
-            //                 
-            //                 return true;
-            //             }
-            //             
-            //             tile.Rotate();
-            //         }
-            //     }
-            // }
-
             Debug.LogWarning($"Tile ID {tile.ID} cannot be placed.");
             return false;
         }
 
-        // private bool PositionIsInBounds(Vector2Int p)
-        // {
-        //     var inBounds = p.x >= 0 && p.x < tiles.Played.GetLength(0) &&
-        //            p.y >= 0 && p.y < tiles.Played.GetLength(1);
-        //
-        //     if (!inBounds)
-        //     {
-        //         Debug.LogWarning($"Position {p} is not in bounds ({tiles.Played.GetLength(0)}x{tiles.Played.GetLength(1)}).");
-        //     }
-        //     
-        //     return inBounds;
-        // }
-        
         /// <summary>
         /// Tests whether a board position disqualifies a tile with a particular geography facing that position.
         /// Checks that the position has no tile OR a tile matching a particular geography in the given direction.
@@ -308,75 +272,5 @@ namespace Carcassonne.Controllers
 
         #endregion
 
-        // /// <summary>
-        // /// Perform a rotation of a tile, if in the correct phase. Always sets tile to the closest 90 degree angle greater than now.
-        // /// </summary>
-        // public void RotateTile()
-        // {
-        //     //TODO Why are we checking the phase anyways? I added NewTurn because this was causing the check for valid new piece to fail.
-        //     if (gameControllerScript.state.phase == Phase.TileDrawn || gameControllerScript.state.phase == Phase.NewTurn)
-        //     {
-        //         tiles.Current.Rotate();
-        //         
-        //         tiles.Current.gameObject.transform.Rotate(0.0f, 90.0f, 0.0f, Space.Self);
-        //     }
-        //     else
-        //     {
-        //         Debug.LogWarning($"Tile not rotated because call came in {gameControllerScript.state.phase} and rotation is only valid during TileDrawn and NewTurn.");
-        //     }
-        // }
-
-        /// <summary>
-        /// Reset tile rotation internal state. WARNING: This only deals with the internal state. It does not rotate the tile in the view.
-        /// </summary>
-        // public void ResetTileRotation()
-        // {
-        //     tiles.Current.Rotate(0);
-        // }
-
-        // #region Photon
-        // /// <summary>
-        // /// Called on Tile:Manipulation Started (set in Unity Inspector)
-        // /// </summary>
-        // public void ChangeCurrentTileOwnership()
-        // {
-        //     if (tiles.Current.gameObject.GetComponent<PhotonView>().Owner.NickName != (gameControllerScript.currentPlayer.id + 1).ToString())
-        //         tiles.Current.transferTileOwnership(gameControllerScript.currentPlayer.id);
-        // }
-        //
-        // #endregion
-        
-        // #region UI
-        //
-        // [PunRPC]
-        // public void RotateDegrees()
-        // {
-        //     var angles = tiles.Current.gameObject.transform.localEulerAngles;
-        //     var rotation = GetRotationFromAngle(angles.y);
-        //     
-        //     // Set the snap angle and snap the piece
-        //     angles.y = rotation * 90;
-        //     tiles.Current.gameObject.transform.localEulerAngles = angles;
-        //     
-        //     // Set the internal model
-        //     tiles.Current.Rotate(rotation);
-        //     
-        //     Debug.Log($"Tile {tiles.Current} transformed to {angles.y} (Rotation {rotation}).");
-        // }
-        //
-        // /// <summary>
-        // /// Calculates a rotation number (0-3) from an Euler angle in the y axis.
-        // /// </summary>
-        // /// <param name="angle"></param>
-        // /// <returns></returns>
-        // private int GetRotationFromAngle(float angle)
-        // {
-        //     int rotate = (int)(angle) / 90;
-        //     if (angle % 90 > 45)
-        //         rotate += 1;
-        //     return rotate % 4;
-        // }
-        //
-        // #endregion
     }
 }

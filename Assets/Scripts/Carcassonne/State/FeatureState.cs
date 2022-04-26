@@ -74,7 +74,7 @@ namespace Carcassonne.State
             var tile = subtileUp.tile; // Get the tile in question
             var geography = tile.GetGeographyAt(direction); // Get the geography in the specified direction.
             
-            // We don't need to check for Cidatels because they always have a vertex associated with them
+            // We don't need to check for Citadels because they always have a vertex associated with them
             if (geography.HasCityOrRoad())
             {
                 var newDirection = tile.Sides.First(kvp => kvp.Value == geography.Simple()).Key;
