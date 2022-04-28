@@ -17,18 +17,17 @@ namespace Carcassonne.AI.Training
         private IEnumerable<Turn> P1Turns => log.Turns.Where(t => t.player.id == 1);
 
         // Point statistics
-        private int CompletedCities => state.Features.Cities.Count(c => c.Complete);
-        private int CompletedRoads => state.Features.Roads.Count(r => r.Complete);
-        private int CompletedCloisters => state.Features.Cloisters.Count(c => c.Complete);
-        private float AvgCompletedCityPoints => CompletedCities > 0 ? (float)state.Features.Cities.Where(c => c.Complete).Average(c => c.Points) : 0f;
-        private float AvgCompletedRoadPoints => CompletedRoads > 0 ? (float)state.Features.Roads.Where(r => r.Complete).Average(r => r.Points) : 0f;
-        private int TotalCityPoints => state.Features.Cities.Sum(c => c.Points);
-        private int TotalRoadPoints => state.Features.Roads.Sum(r => r.Points);
-        private int TotalCloisterPoints => state.Features.Cloisters.Sum(c => c.Points);
+        private int CompletedCities => state.Features.Cities.Where(c => c.HasMeeples).Count(c => c.Complete);
+        private int CompletedRoads => state.Features.Roads.Where(r => r.HasMeeples).Count(r => r.Complete);
+        private int CompletedCloisters => state.Features.Cloisters.Where(c => c.HasMeeples).Count(c => c.Complete);
+        private float AvgCompletedCityPoints => CompletedCities > 0 ? (float)state.Features.Cities.Where(c => c.HasMeeples && c.Complete).Average(c => c.Points) : 0f;
+        private float AvgCompletedRoadPoints => CompletedRoads > 0 ? (float)state.Features.Roads.Where(r => r.HasMeeples && r.Complete).Average(r => r.Points) : 0f;
+        private int TotalCityPoints => state.Features.Cities.Where(c => c.HasMeeples).Sum(c => c.Points);
+        private int TotalRoadPoints => state.Features.Roads.Where(r => r.HasMeeples).Sum(r => r.Points);
+        private int TotalCloisterPoints => state.Features.Cloisters.Where(c => c.HasMeeples).Sum(c => c.Points);
 
         private int TilesDiscarded => state.Tiles.Discarded.Count;
         
-        //TODO Sequence contains no elements. Insert GameOver delay (like Turn delay coroutine)
         private float AvgMeeplesRemainingPerTurn => (float)P0Turns.Average(t => t.meeplesRemaining);
         // private float AvgMeepleTurnsOnFeature;
         
@@ -45,6 +44,8 @@ namespace Carcassonne.AI.Training
         private float P0Score => (float)state.Players.All.Single(p => p.id == 0).FinalScore;
         private float P1Score => (float)state.Players.All.Single(p => p.id == 1).FinalScore;
         private float Winner => P1Score > P0Score ? 1.0f : 0.0f;
+        
+        private RectInt GlobalMaxBounds = new RectInt();
         
         public void OnGameOver()
         {
@@ -74,6 +75,19 @@ namespace Carcassonne.AI.Training
             stats.Add("Players/0", P0Score);
             stats.Add("Players/1", P1Score);
             stats.Add("Players/Winner", Winner);
+            
+            GlobalMaxBounds.xMin = new[] { GlobalMaxBounds.xMin, state.Tiles.Limits.xMin }.Min();
+            GlobalMaxBounds.yMin = new[] { GlobalMaxBounds.yMin, state.Tiles.Limits.yMin }.Min();
+            GlobalMaxBounds.xMax = new[] { GlobalMaxBounds.xMax, state.Tiles.Limits.xMax }.Max();
+            GlobalMaxBounds.yMax = new[] { GlobalMaxBounds.yMax, state.Tiles.Limits.yMax }.Max();
+            stats.Add("Tiles/Extents", new[]
+            {
+                -GlobalMaxBounds.xMin,
+                -GlobalMaxBounds.yMin,
+                GlobalMaxBounds.xMax,
+                GlobalMaxBounds.yMax
+            }.Max());
+            
         }
     }
 }

@@ -110,5 +110,8 @@ namespace Carcassonne.State.Features
         }
 
         public IEnumerable<Vector2Int> Locations => Vertices.Select(v => v.location);
+
+        public bool HasMeeples => Vertices.Any(v => v.hasMeeple);
+        public IEnumerable<Meeple> Meeples => Vertices.Where(v => v.hasMeeple).Select(v => v.meeple);
     }
 }

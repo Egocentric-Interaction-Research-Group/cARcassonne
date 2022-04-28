@@ -4,6 +4,7 @@ using Carcassonne;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using Carcassonne.AI;
 using Carcassonne.Controllers;
 using Carcassonne.Models;
@@ -59,6 +60,7 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     private void Awake()
     {
         Academy.Instance.AutomaticSteppingEnabled = false;
+        Academy.Instance.OnEnvironmentReset += Restart;
     }
 
     /// <summary>
@@ -72,12 +74,25 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
         // size for upcoming shader data.
         shader = visualizationBoard.GetComponent<CarcassonneVisualization>();
         shader.Init();
+
+        StartCoroutine(WaitForAcademyInitialization());
+    }
+    
+    private IEnumerator WaitForAcademyInitialization(){
+        yield return new WaitUntil((() => Academy.IsInitialized));
         
-        NewGame();
+        Academy.Instance.EnvironmentStep();
     }
 
     public void Restart()
     {
+        // To ensure things aren't still getting placed.
+        foreach (var agent in GetComponentsInChildren<CarcassonneAgent>())
+        {
+            agent.StopAllCoroutines();
+        }
+
+        Debug.Log("Calling AIGameController.Restart");
         foreach (var tile in GetComponentsInChildren<Tile>())
         {
             Destroy(tile.gameObject);
@@ -128,14 +143,12 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
 
     public void OnEndTurn()
     {
-        foreach (var kvp in state.Tiles.Placement)
-        {
-            Debug.Log($"Turn End ({state.Tiles.Placement.Count - 1}): Tile {kvp.Value} at {kvp.Key}.");
-        }
+        // foreach (var kvp in state.Tiles.Placement)
+        // {
+        //     Debug.Log($"Turn End ({state.Tiles.Placement.Count - 1}): Tile {kvp.Value} at {kvp.Key}.");
+        // }
 
-        WriteGraphToFile(state.Features.Graph);
-
-        // Academy.Instance.EnvironmentStep();
+        //WriteGraphToFile(state.Features.Graph);
     }
 
     /// <summary>
@@ -173,22 +186,26 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
     /// <returns></returns>
     private IEnumerator DelayedEndEpisode(Player winner)
     {
-        yield return new WaitForSeconds(1f); // Wait for a second
+        yield return 0; // Wait for a second
 
         foreach (var p in state.Players.All)
         {
             if (p == winner)
             {
                 p.GetComponent<CarcassonneAgent>().SetReward(1f);
-                Debug.Log($"Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is first with a score of {p.FinalScore}");
+                Debug.Log($"DelayedEnd: Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is first with a score of {p.FinalScore}");
             }
             else
             {
                 p.GetComponent<CarcassonneAgent>().SetReward(0f);
-                Debug.Log($"Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is last with a score of {p.FinalScore}");
+                Debug.Log($"DelayedEnd: Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is last with a score of {p.FinalScore}");
             }
             p.GetComponent<CarcassonneAgent>().EndEpisode();
         }
+
+        yield return 0;
+        
+        Restart();
     }
     
     public void WriteGraphToFile(BoardGraph g)

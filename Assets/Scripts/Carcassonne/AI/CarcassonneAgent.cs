@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.Models;
 using Carcassonne.State;
-using Microsoft.MixedReality.Toolkit.Build.Editor;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Policies;
@@ -188,7 +187,7 @@ namespace Carcassonne.AI
         {
             //This occurs every X steps (Max Steps). It only serves to reset tile position if AI is stuck, and for AI to process current learning
             ResetAttributes();
-            wrapper.Restart();
+            //wrapper.Restart();
         }
 
         /// <summary>
@@ -644,9 +643,14 @@ namespace Carcassonne.AI
 
         private IEnumerator IntegratedActions(ActionBuffers actionBuffers)
         {
-            var (x, y, rotate, meeple) = IndexToParameters(actionBuffers.DiscreteActions[0]);
+            var action = actionBuffers.DiscreteActions[0];
+            Debug.Log($"IA {action}: Started Integrated Actions. Phase: {wrapper.state.phase}");
+            yield return new WaitUntil(() => wrapper.state.phase == Phase.TileDrawn);
+            Debug.Assert(wrapper.state.phase == Phase.TileDrawn, $"IA: Phase should be Phase.TileDrawn. Instead it is {wrapper.state.phase}.");
             
-            Debug.Log($"Placing at ({x},{y}), rotation {rotate} and meeple {Enum.GetName(typeof(MeeplePosition),meeple)}.");
+            var (x, y, rotate, meeple) = IndexToParameters(action);
+            
+            Debug.Log($"IA {action}: Placing at ({x},{y}), rotation {rotate} and meeple {Enum.GetName(typeof(MeeplePosition),meeple)}.");
             
             // Tile actions
             cell = new Vector2Int(x, y);
@@ -659,7 +663,7 @@ namespace Carcassonne.AI
 
             if (!wrapper.PlaceTile(cell)) //If the placement was successful
             {
-                Debug.LogWarning($"Tile was supposed to be placed at {cell} but it didn't work!");
+                Debug.LogWarning($"IA {action}: Tile was supposed to be placed at {cell} but it didn't work!");
                 yield break;
             }
             
@@ -670,7 +674,7 @@ namespace Carcassonne.AI
                 var drawnMeeple = wrapper.DrawMeeple();
                 if (!drawnMeeple)
                 {
-                    Debug.LogWarning($"Meeple couldn't be drawn.");
+                    Debug.LogWarning($"IA {action}: Meeple couldn't be drawn.");
                     yield break;
                 }
                 
@@ -699,7 +703,7 @@ namespace Carcassonne.AI
 
                 if (!meeplePlaced)
                 {
-                    Debug.LogWarning($"Meeple was supposed to be placed {(MeeplePosition)meeple} but it didn't work.");
+                    Debug.LogWarning($"IA {action}: Meeple was supposed to be placed {(MeeplePosition)meeple} but it didn't work.");
                     yield break;
                 }
                 
@@ -713,7 +717,11 @@ namespace Carcassonne.AI
         private void WriteDiscreteActionMaskIntegrated(IDiscreteActionMask actionMask)
         {
             Debug.Log("IntegratedActions: Searching for allowed actions.");
+            
+            var allowedActions = new List<int>();
 
+            var openPositions = wrapper.state.Tiles.OpenPositions();
+            
             foreach (var p in openPositions)
             {
                 foreach (var rotation in Enumerable.Range(0,4))

@@ -32,6 +32,7 @@ namespace Carcassonne.State
         //     Reset();
         // }
 
+        //TODO Resetting game state.
         public void Reset()
         {
             Debug.Log("Resetting Game State...");

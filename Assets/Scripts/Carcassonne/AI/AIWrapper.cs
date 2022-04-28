@@ -59,6 +59,7 @@ namespace Carcassonne.AI
             controller.EndTurn();
         }
         
+        [Obsolete("This *MIGHT* be obsolete. Perhaps don't use it.")]
         public void Restart()
         {
             try
