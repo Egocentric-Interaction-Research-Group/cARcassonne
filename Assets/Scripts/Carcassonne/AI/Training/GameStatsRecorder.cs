@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.State;
-using Carcassonne.Utilities;
 using Unity.MLAgents;
 using UnityEngine;
 

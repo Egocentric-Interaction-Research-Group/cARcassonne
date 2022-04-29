@@ -1,9 +1,11 @@
+using System.Diagnostics;
 using Carcassonne.Controllers;
 using Carcassonne.Models;
 using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Events;
+using Debug = UnityEngine.Debug;
 
 namespace Carcassonne.AR
 {
@@ -35,7 +37,7 @@ namespace Carcassonne.AR
         [PunRPC]
         public void Activate()
         {
-            Debug.Log((new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
+            Debug.Log((new StackTrace()).GetFrame(1).GetMethod().Name);
             Debug.Log("Tile Activated.");
             
             transform.parent = gameController.table.transform;
@@ -61,12 +63,12 @@ namespace Carcassonne.AR
 
         public void ActivateRPC(Tile t)
         {
-            Debug.Log((new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
+            Debug.Log((new StackTrace()).GetFrame(1).GetMethod().Name);
             ActivateRPC();
         }
         public void ActivateRPC()
         {
-            Debug.Log((new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
+            Debug.Log((new StackTrace()).GetFrame(1).GetMethod().Name);
             photonView.RPC("Activate", RpcTarget.All);
             
             // Set ownership

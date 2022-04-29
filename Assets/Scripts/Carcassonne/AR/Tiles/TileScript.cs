@@ -1,5 +1,5 @@
-﻿using Carcassonne.Models;
-using Carcassonne.Controllers;
+﻿using Carcassonne.Controllers;
+using Carcassonne.Models;
 using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;
 using UnityEngine;

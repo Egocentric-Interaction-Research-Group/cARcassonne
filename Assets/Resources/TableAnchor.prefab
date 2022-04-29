@@ -187,7 +187,8 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6950070732498665335, guid: 5cea51629c3f54fa594f0f7ce4050181, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5cea51629c3f54fa594f0f7ce4050181, type: 3}
 --- !u!156049354 &533866397834900340 stripped
 Grid:

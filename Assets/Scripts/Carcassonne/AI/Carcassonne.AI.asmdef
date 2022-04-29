@@ -1,0 +1,4 @@
+{
+  "name": "Carcassonne.AI",
+  "references": ["Carcassonne.Models","Carcassonne.State","Carcassonne.Controllers","Unity.ML-Agents"]
+}

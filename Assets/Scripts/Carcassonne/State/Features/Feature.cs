@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using QuikGraph;
 
 namespace Carcassonne.State.Features
 {

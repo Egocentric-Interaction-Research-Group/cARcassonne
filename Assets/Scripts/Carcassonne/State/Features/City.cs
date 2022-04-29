@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.Models;
 using UnityEngine;
-using QuikGraph;
 
 namespace Carcassonne.State.Features
 {
@@ -39,7 +38,7 @@ namespace Carcassonne.State.Features
 
             foreach (var cityVertexGroup in cityVertices)
             {
-                var city = City.CityFromVertexList(bg, cityVertices[cityVertexGroup.Key]);
+                var city = CityFromVertexList(bg, cityVertices[cityVertexGroup.Key]);
                 cities.Add(city);
             }
 

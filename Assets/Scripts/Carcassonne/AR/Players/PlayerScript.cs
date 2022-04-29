@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Carcassonne.AI;
 using Carcassonne.Models;
 using Carcassonne.State;
 using MRTK.Tutorials.MultiUserCapabilities;
@@ -60,12 +59,12 @@ namespace Carcassonne.Players
             // mat.name = playerName;
             // this.photonPlayer = photonPlayer;
 
-            if (player.isAI)
-            {
-                GameObject aiObj = Instantiate(ai, transform);
-                aiObj.GetComponent<CarcassonneAgent>().wrapper.player = GetComponent<Player>();
-                aiObj.SetActive(true);
-            }
+            // if (player.isAI)
+            // {
+            //     GameObject aiObj = Instantiate(ai, transform);
+            //     aiObj.GetComponent<CarcassonneAgent>().wrapper.player = GetComponent<Player>();
+            //     aiObj.SetActive(true);
+            // }
         }
         
         // public int Score

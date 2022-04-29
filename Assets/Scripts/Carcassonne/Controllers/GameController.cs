@@ -7,7 +7,6 @@ using Carcassonne.State;
 using Carcassonne.State.Features;
 using UnityEngine;
 using UnityEngine.Events;
-using Random = UnityEngine.Random;
 
 namespace Carcassonne.Controllers
 {

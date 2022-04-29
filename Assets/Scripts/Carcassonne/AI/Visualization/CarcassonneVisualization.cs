@@ -4,10 +4,10 @@
 // Modified: 2021-12-01
 //------------------------------------------------------------------------------------------------//
 
-using UnityEngine;
 using System.Collections.Generic;
 using Carcassonne.Models;
 using Carcassonne.State;
+using UnityEngine;
 
 // using Geography = Tile.Geography;
 // using Direction = Carcassonne.Point.Direction;
@@ -16,7 +16,7 @@ namespace Carcassonne
 {
     /// <summary>
     /// A method parameter struct that enforces a certain array size and handles erroneous input sizes to 
-    /// <see cref="CarcassonneVisualization.UpdateMaterial(Tile[,], Vector2Int, IReadOnlyList{Meeple})"/>
+    /// <see cref="CarcassonneVisualization.UpdateMaterial(Tile[,], Vector2Int, System.Collections.Generic.IReadOnlyList{Carcassonne.Models.Meeple})"/>
     /// </summary>
     public readonly struct VisualizationInputTiles
     {

@@ -1,20 +1,16 @@
-using System;
 using System.Collections;
-using Carcassonne;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Resources;
+using Carcassonne;
 using Carcassonne.AI;
 using Carcassonne.Controllers;
 using Carcassonne.Models;
 using Carcassonne.State;
 using Carcassonne.State.Features;
-using Carcassonne.Utilities;
 using Unity.MLAgents;
 using Unity.MLAgents.Policies;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 /// <summary>
 /// GameController handles all the game logic and the actual game loop

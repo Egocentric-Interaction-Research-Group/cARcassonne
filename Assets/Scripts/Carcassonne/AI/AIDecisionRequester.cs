@@ -1,6 +1,6 @@
+using Carcassonne.Models;
 using Carcassonne.State;
 using UnityEngine;
-using Player = Carcassonne.Models.Player;
 
 namespace Carcassonne.AI
 {

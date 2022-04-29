@@ -1,6 +1,6 @@
 using Carcassonne.Controllers;
 using Carcassonne.Models;
-using Photon.Pun;   
+using Photon.Pun;
 using UnityEngine;
 
 namespace Carcassonne.AR.Buttons
@@ -18,10 +18,10 @@ namespace Carcassonne.AR.Buttons
 
         private void Start()
         {
-            var gc = GameObject.FindObjectOfType<GameController>();
-            var tc = GameObject.FindObjectOfType<TileController>();
-            var mc = GameObject.FindObjectOfType<MeepleController>();
-            var mcs = GameObject.FindObjectOfType<MeepleControllerScript>();
+            var gc = FindObjectOfType<GameController>();
+            var tc = FindObjectOfType<TileController>();
+            var mc = FindObjectOfType<MeepleController>();
+            var mcs = FindObjectOfType<MeepleControllerScript>();
 
             if(newTurn)
                 gc.OnTurnStart.AddListener(HandleNewTurn);

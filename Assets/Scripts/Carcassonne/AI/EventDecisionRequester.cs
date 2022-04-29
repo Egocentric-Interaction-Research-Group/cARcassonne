@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using Carcassonne.Controllers;
 using Carcassonne.Models;
-using Carcassonne.State;
 using Unity.MLAgents;
 using UnityEngine;
 

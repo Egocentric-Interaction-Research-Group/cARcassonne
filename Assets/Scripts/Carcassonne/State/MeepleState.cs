@@ -90,7 +90,7 @@ namespace Carcassonne.State
         [CanBeNull]
         public Meeple MeepleAt(Vector2Int xy)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public bool IsFree(Meeple m)

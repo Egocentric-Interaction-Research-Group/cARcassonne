@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
+using Carcassonne.Models;
 using JetBrains.Annotations;
 using QuikGraph;
 using QuikGraph.Algorithms;
 using UnityEngine;
-using Carcassonne.Models;
 
 namespace Carcassonne.State.Features
 {

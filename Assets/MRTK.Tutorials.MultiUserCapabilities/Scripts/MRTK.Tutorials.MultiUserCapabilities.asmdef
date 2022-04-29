@@ -1,0 +1,7 @@
+{
+  "name": "MRTK.Tutorials.MultiUserCapabilities",
+  "references": [
+    "PhotonUnityNetworking","PhotonRealtime",
+    "Microsoft.MixedReality.Toolkit"
+  ]
+}

@@ -1,4 +1,4 @@
-namespace Carcassonne.Interfaces
+namespace Carcassonne.Controllers
 {
     public interface IGameControllerInterface
     {

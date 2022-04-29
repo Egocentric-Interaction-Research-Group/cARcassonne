@@ -4,8 +4,9 @@ using System.Text;
 using Carcassonne.State;
 using Newtonsoft.Json;
 using Photon.Pun;
-//using UnityEditor.Scripting.Python;
 using UnityEngine;
+
+//using UnityEditor.Scripting.Python;
 
 namespace Carcassonne.AR
 {
