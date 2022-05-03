@@ -62,7 +62,7 @@ namespace Carcassonne.AI
         public static float InvalidAction = -0.0001f;//-0.010f;
         public static float ValidAction = 0.001f;//0.020f;
         public static float Score = 0.05f;
-        public static float OtherScore = -0.01f;
+        public static float OtherScore = -0.02f;
         public static float Meeple = -0.01f;
     }
     
@@ -300,6 +300,12 @@ namespace Carcassonne.AI
             AddReward(unscoredPointsChange);
             var potentialPointsChange = 0.25f * Rewards.Score * wrapper.GetPotentialPointsChange();
             AddReward(potentialPointsChange);
+            
+            // Penalty for not adding to score
+            if (scoreChange == 0.0f && unscoredPointsChange == 0.0f)
+            {
+                AddReward(-0.25f * Rewards.Score);
+            }
 
             var otherScoreChange = Rewards.OtherScore * wrapper.GetOtherScoreChange();
             AddReward(otherScoreChange);
@@ -307,7 +313,7 @@ namespace Carcassonne.AI
             AddReward(otherUnscoredPointsChange);
             var otherPotentialPointsChange = 0.25f * Rewards.OtherScore * wrapper.GetOtherPotentialPointsChange();
             AddReward(otherPotentialPointsChange);
-            
+
             // Meeples Remaining
             var meeplesRemaingingScore = Rewards.Meeple * (1.0f / ((float)(wrapper.GetMeeplesLeft() + 1)) - 0.125f);
             AddReward(meeplesRemaingingScore);

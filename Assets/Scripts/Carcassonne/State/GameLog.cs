@@ -5,6 +5,7 @@ using System.Linq;
 using Carcassonne.Models;
 using Carcassonne.State;
 using UnityEngine;
+using UnityEngine.Events;
 
 [Serializable]
 public struct TurnPoints
@@ -68,6 +69,8 @@ public class GameLog : MonoBehaviour
     public GameState state;
     public GridMapper grid => GetComponent<GridMapper>();
 
+    public UnityEvent<Turn> TurnLogged = new UnityEvent<Turn>();
+
     public static string[] CSV_HEADER =
     {
         ", , Tile, , , ,Meeple, , , Player 1, , , Player 2, , , ", 
@@ -114,6 +117,8 @@ public class GameLog : MonoBehaviour
         };
 
         Turns.Push(t);
+        
+        TurnLogged.Invoke(t);
             
         File.AppendAllText(filepath, Environment.NewLine + $"{Turns.Count}, " + t);
     }
