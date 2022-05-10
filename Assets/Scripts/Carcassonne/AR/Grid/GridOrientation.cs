@@ -1,4 +1,4 @@
-using Carcassonne.Tiles;
+using Carcassonne.AR.GamePieces;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,8 +14,8 @@ namespace UI.Grid
         [FormerlySerializedAs("OnChangeRotation")] [Tooltip("A tile's rotational position has changed.")]
         public UnityEvent<int> OnChangeOrientation = new OrientationEvent();
 
-        public int direction => tileScript.rotation;
-        private TileScript tileScript => GetComponent<TileScript>();
+        public int direction => ARTile.rotation;
+        private ARTile ARTile => GetComponent<ARTile>();
 
         public void OrientToRPC(int o)
         {
@@ -32,7 +32,7 @@ namespace UI.Grid
             
             var oldOrientation = direction;
             
-            tileScript.RotateTo(o);
+            ARTile.RotateTo(o);
 
             if(oldOrientation != direction)
             {

@@ -23,8 +23,8 @@ namespace Carcassonne.AR
         
         public Grid meepleGrid;
         public ConfirmButton confirmButton;
-        
-        private int MeepleCount = 0;
+
+        internal int MeepleCount = 0;
         
         private GameState state => GetComponent<GameState>();
         private GameControllerScript gameControllerScript => GetComponent<GameControllerScript>();
@@ -198,6 +198,7 @@ namespace Carcassonne.AR
         // Instantiation Stuff
         public GameObject prefab;
         public GameObject parent;
+        public byte meepleGroup = 0;
 
         #region Photon
         

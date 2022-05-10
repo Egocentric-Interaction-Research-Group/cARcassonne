@@ -32,8 +32,14 @@ namespace Carcassonne.Players
         public void UpdateScore()
         {
             Debug.Assert(state != null, "State is null");
-            Debug.Assert(state.Players.All.Count > playerNumber, "Player number is greater than the length of the player list");
-            scoreText.text = "Score: " + player.score;
+
+            if (playerNumber < state.Players.All.Count)
+            {
+                Debug.Log($"Updating the score for Player {playerNumber} of {state.Players.All.Count}");
+                // Debug.Assert(state.Players.All.Count > playerNumber,
+                //     $"Player number ({playerNumber}) is greater than the length of the player list ({state.Players.All.Count})");
+                scoreText.text = "Score: " + player.score;
+            }
         }
 
         public void ChangeMaterial()

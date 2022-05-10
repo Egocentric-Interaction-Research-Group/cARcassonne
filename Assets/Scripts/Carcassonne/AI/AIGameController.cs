@@ -15,9 +15,8 @@ using UnityEngine;
 /// <summary>
 /// GameController handles all the game logic and the actual game loop
 /// </summary>
-public class AIGameController : MonoBehaviour//, IGameControllerInterface
+public class AIGameController : MonoBehaviour, IGameControllerInterface
 {
-    private bool[,] visited;
     
     public int minX, minZ, maxX, maxZ;
 
@@ -121,7 +120,7 @@ public class AIGameController : MonoBehaviour//, IGameControllerInterface
         gameController.NewGame(players, meeples, tiles);
         
         Debug.Assert(players.Count > 0, "Oops, there are no players.");
-        Debug.Assert(state.Players.Current != null, "There was a problem getting the current Player (it was null).");
+        Debug.Assert(state.Players.Current != null, "There was a problem getting the current Playe (it was null).");
         Debug.Assert(currentPlayer != null, "There was a problem getting the current PlayerScript (it was null).");
         Debug.Assert(tiles.Count > 0, "There was a problem getting the current Tiles (there are no tiles).");
         Debug.Assert(state.Tiles.Remaining == tiles, $"The remaining tiles was not set correctly. It has a length of {state.Tiles.Remaining.Count}, but tiles has {tiles.Count}.");

@@ -18,7 +18,7 @@ namespace PunTabletop
             if(gameController.GetComponent<GameControllerScript>().gameController.state.phase == Phase.TileDown || 
                gameController.GetComponent<GameControllerScript>().gameController.state.phase == Phase.MeepleDown)
             {
-                if(PhotonNetwork.LocalPlayer.NickName == (gameController.GetComponent<GameControllerScript>().currentPlayer.id + 1).ToString())
+                if(PhotonNetwork.LocalPlayer.NickName == (gameController.GetComponent<GameControllerScript>().state.Players.Current.id + 1).ToString())
                 {
                     photonView.RPC("StartAni", RpcTarget.All);
                 }
