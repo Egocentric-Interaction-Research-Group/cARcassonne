@@ -15,7 +15,8 @@ namespace Carcassonne.AI
     /// </summary>
     public class AIWrapper : MonoBehaviour, InterfaceAIWrapper
     {
-        public AIGameController aiController;
+        [SerializeField]
+        private AIGameController aiController;
         public GameController controller;
         public MeepleController meepleController;
         public TileController tileController;
@@ -112,26 +113,6 @@ namespace Carcassonne.AI
         {
             return GameRules.BoardSize;
         }
-
-        // public int GetMinX()
-        // {
-        //     return state.Tiles.Limits.xMin;
-        // }
-        //
-        // public int GetMaxX()
-        // {
-        //     return state.Tiles.Limits.xMax;
-        // }
-        //
-        // public int GetMinZ()
-        // {
-        //     return state.Tiles.Limits.yMin;
-        // }
-        //
-        // public int GetMaxZ()
-        // {
-        //     return state.Tiles.Limits.yMax;
-        // }
 
         public float GetScore()
         {
