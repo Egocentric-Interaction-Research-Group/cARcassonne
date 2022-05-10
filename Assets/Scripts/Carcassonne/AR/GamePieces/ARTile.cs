@@ -1,16 +1,20 @@
-﻿using Carcassonne.Controllers;
+﻿using System.Linq;
+using Carcassonne.AR.Buttons;
+using Carcassonne.Controllers;
 using Carcassonne.Models;
 using Microsoft.MixedReality.Toolkit.UI;
 using Photon.Pun;
+using UI.Grid;
 using UnityEngine;
 
-namespace Carcassonne.Tiles
+namespace Carcassonne.AR.GamePieces
 {
     [RequireComponent(typeof(Tile))]
-    public class TileScript : MonoBehaviourPun
+    public class ARTile : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         public Tile tile => GetComponent<Tile>();
         public TileController tileController => FindObjectOfType<TileController>();
+        public TileControllerScript arTileController => FindObjectOfType<TileControllerScript>();
         
         /// <summary>
         ///     How many times the tile has been rotated. In standard the rotation is 0, and rotated 4 times it returns to 0.
@@ -102,45 +106,38 @@ namespace Carcassonne.Tiles
                 return 2;
             return 3;
         }
-
-        #region GameObjectManipulations
-
         
-        /// <summary>
-        /// Called on Tile:Manipulation Ended (set in Unity Inspector)
-        /// </summary>
-        // public void SetCorrectRotation()
-        // {
-        //     // GameObject.Find("GameController").GetComponent<GameControllerScript>().tileController.RotateDegreesRPC();
-        //     throw new NotImplementedException();
-        // }
-        //
-        //
-        // public void DisableGravity()
-        // {
-        //     GetComponent<Rigidbody>().useGravity = false;
-        // }
-        //
-        // public void EnableGravity()
-        // {
-        //     GetComponent<Rigidbody>().useGravity = true;
-        // }
+        #region PUN
 
-        /// <summary>
-        /// Called on Tile:Manipulation Ended (set in Unity Inspector)
-        /// </summary>
-        // public void SetSnapPosForCurrentTile()
-        // {
-        //     GameObject.Find("GameController").GetComponent<GameControllerScript>().SetCurrentTileSnapPosition();
-        // }
-        //
-        // public void transferTileOwnership(int currentPlayerID)
-        // {
-        //     photonView.TransferOwnership(PhotonNetwork.PlayerList[currentPlayerID]);
-        // }
+        public void OnPhotonInstantiate(PhotonMessageInfo info)
+        {
+            tile.ID = (int)info.photonView.InstantiationData[0];
+            tile.set = (Tile.TileSet)info.photonView.InstantiationData[1];
+            transform.SetParent(arTileController.tileParent);
 
+            Debug.Log($"Setting texture to for tile ID {tile.ID} (TileSet: {tile.set}) to number {tile.ID - 1} in the list.");
+            var meshRenderer = tile.GetComponentInChildren<MeshRenderer>();
+            meshRenderer.material.mainTexture = textures[tile.ID-1];
+            
+            // Setup Grid
+            var gridPosition = GetComponent<GridPosition>();
+            if (gridPosition)
+                Debug.Log("GridPosition object found: " + gridPosition.name);
+            else
+                Debug.LogWarning("No GridPosition object could be found");
+            gridPosition.grid = arTileController.tileGrid;
+
+            var confirmButton = arTileController.confirmButton;
+            if (confirmButton)
+                Debug.Log("ConfirmButton object found: " + confirmButton.name);
+            else
+                Debug.LogWarning("No ConfirmButton object could be found");
+            
+            gridPosition.OnChangeCell.AddListener(i => confirmButton.OnTileChange());
+            GetComponent<GridOrientation>().OnChangeOrientation.AddListener(i => confirmButton.OnTileChange());
+        }
         #endregion
-        
+
         public override string ToString()
         {
             return tile.ToString();

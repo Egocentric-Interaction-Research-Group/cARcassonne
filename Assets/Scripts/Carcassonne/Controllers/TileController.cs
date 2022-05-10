@@ -184,7 +184,8 @@ namespace Carcassonne.Controllers
                 // Check whether a direction is empty or matches the geography of the tile
                 if (!DirectionIsEmptyOrMatchesGeography(neighbour, -dir, geo))
                 {
-                    Debug.Log($"Invalid placement: Non-matching geography at {dir}");
+                    Debug.Log($"Invalid placement: Non-matching geography at {neighbour} in the direction {dir}. " +
+                              $"Expected {geo}, got {tiles.Placement[neighbour].GetGeographyAt(dir)}.");
                     return false;
                 }
             }
@@ -253,13 +254,13 @@ namespace Carcassonne.Controllers
         {
             if (!tiles.Placement.ContainsKey(cell))
             {
-                // Debug.Log($"No tile at {cell}");
+                Debug.Log($"No tile at {cell}");
                 return true;
             }
             
             if (tiles.Placement[cell].GetGeographyAt(dir) == geography)
             {
-                // Debug.Log($"Tile at {cell} matches {geography} in the direction {dir}");
+                Debug.Log($"Tile at {cell} matches {geography} in the direction {dir}");
                 return true;
             }
             

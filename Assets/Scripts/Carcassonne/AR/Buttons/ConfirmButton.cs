@@ -2,6 +2,7 @@ using Carcassonne.Controllers;
 using Carcassonne.Players;
 using Carcassonne.State;
 using Microsoft.MixedReality.Toolkit.UI;
+using MRTK.Tutorials.MultiUserCapabilities;
 using PunTabletop;
 using UI.Grid;
 using UnityEngine;
@@ -66,9 +67,9 @@ namespace Carcassonne.AR.Buttons
             Debug.Assert(state != null, "ConfirmButton: state is not found (is null).");
             Debug.Assert(state.Players != null, "ConfirmButton: state players is not found (is null).");
             Debug.Assert(state.Players.Current != null, "Current player is null");
-            Debug.Assert(state.Players.Current.GetComponent<PlayerScript>() != null, "Current player does not have a PlayerScript component");
-            // Is local player current?
-            if (state.Players.Current.GetComponent<PlayerScript>().IsLocal)
+            
+            var photonUser = state.Players.Current.GetComponent<PhotonUser>(); // photonUser will be null for an AI player
+            if (photonUser && photonUser.IsLocal)
             {
                 gameObject.SetActive(true);
             }

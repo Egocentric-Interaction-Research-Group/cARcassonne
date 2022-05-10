@@ -1,15 +1,22 @@
-﻿using Carcassonne.Models;
+﻿using System.Linq;
+using Carcassonne.AR;
+using Carcassonne.Controllers;
+using Carcassonne.Models;
+using Carcassonne.State;
 using MRTK.Tutorials.MultiUserCapabilities;
 using Photon.Pun;
+using PunTabletop;
+using UI.Grid;
+using UnityEngine;
 
 namespace Carcassonne.Meeples
 {
-    public class MeepleScript : MonoBehaviourPun
+    public class MeepleScript : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         // Start is called before the first frame update
         // public Material[] materials = new Material[5];
         // public Vector2Int direction;
-        // public TileScript.Geography geography;
+        // public meepleScript.Geography geography;
         // public bool free;
         //
         // public int x, z;
@@ -28,7 +35,7 @@ namespace Carcassonne.Meeples
         //
         // // [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
         // // public Geography geography => GameObject.Find("GameController").GetComponent<GameControllerScript>().gameController.state.
-        // //     Tiles.Played[position.x, position.y].GetGeographyAt(direction);
+        // //     meeples.Played[position.x, position.y].GetGeographyAt(direction);
         // //
         // // [Obsolete("This property is obsolete. Find this in the game state instead.", LegacyDepricationError)]
         // // public bool free => !GameObject.Find("GameController").GetComponent<GameControllerScript>().gameController.state.Meeples
@@ -39,6 +46,7 @@ namespace Carcassonne.Meeples
         // // public int z=> position.y;
         //
         // #endregion
+        
         
 
         private Player _player;
@@ -70,7 +78,7 @@ namespace Carcassonne.Meeples
         /// <param name="z"></param>
         /// <param name="direction"></param>
         /// <param name="geography"></param>
-        // public void assignAttributes(int x, int z, Vector2Int direction, TileScript.Geography geography)
+        // public void assignAttributes(int x, int z, Vector2Int direction, meepleScript.Geography geography)
         // {
         //     this.direction = direction;
         //     this.geography = geography;
@@ -128,6 +136,45 @@ namespace Carcassonne.Meeples
         {
             return m.GetComponent<MeepleScript>();
         }
+        
+        #region PUN
+
+        public void OnPhotonInstantiate(PhotonMessageInfo info)
+        {
+            var state = FindObjectOfType<GameState>();
+            var meeple = GetComponent<Meeple>();
+            var p = FindObjectsOfType<Player>().ToList().Single(p=> p.id == (int)info.photonView.InstantiationData[0]);
+            // var meepleController = FindObjectOfType<MeepleController>();
+            var arMeepleController = FindObjectOfType<MeepleControllerScript>();
+            
+            SetPlayer(p);
+            
+            transform.SetParent(arMeepleController.parent.transform);
+            gameObject.name = $"Meeple {arMeepleController.MeepleCount}";
+
+            // Setup Grid
+            var gridPosition = GetComponent<GridPosition>();
+            if (gridPosition)
+                Debug.Log("GridPosition object found: " + gridPosition.name);
+            else
+                Debug.LogWarning("No GridPosition object could be found");
+            gridPosition.grid = arMeepleController.meepleGrid;
+
+            var confirmButton = arMeepleController.confirmButton;
+            if (confirmButton)
+                Debug.Log("ConfirmButton object found: " + confirmButton.name);
+            else
+                Debug.LogWarning("No ConfirmButton object could be found");
+            
+            gridPosition.OnChangeCell.AddListener(i => confirmButton.OnMeepleChange());
+            
+            
+            GetComponent<TableBoundaryEnforcerScript>().spawnPos = GameObject.Find("MeepleDrawPosition");
+            
+            gameObject.SetActive(false);
+            arMeepleController.MeepleCount++;
+        }
+        #endregion
 
     }
 }

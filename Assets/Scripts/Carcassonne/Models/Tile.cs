@@ -45,6 +45,7 @@ namespace Carcassonne.Models
         // [Obsolete("Only here to support Inspector-defined IDs.", error:false)]
         // public int id;
         
+        [field: SerializeField]
         public int ID
         {
             get => m_id;

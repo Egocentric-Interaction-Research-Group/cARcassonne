@@ -7,6 +7,14 @@ namespace Carcassonne.Controllers
     public abstract class GamePieceController<T> : MonoBehaviour
     {
         public abstract bool Draw();
+
+        /// <summary>
+        /// Thin wrapper around draw because Unity Events can't have return types.
+        /// </summary>
+        public void DoDraw()
+        {
+            Draw();
+        }
         
         public void Rotate(){}
         
