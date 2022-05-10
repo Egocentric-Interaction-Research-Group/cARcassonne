@@ -45,7 +45,7 @@ namespace Carcassonne.AI
             throw new ArgumentException($"{position} doesn't have a direction.");
         }
     }
-    
+
     public enum MeeplePosition : int
     {
         None = 0,
@@ -55,17 +55,7 @@ namespace Carcassonne.AI
         Left,
         Centre
     }
-    
-    public struct Rewards
-    {
-        public static float ActionBias = -0.0001f;
-        public static float InvalidAction = -0.0001f;//-0.010f;
-        public static float ValidAction = 0.001f;//0.020f;
-        public static float Score = 0.05f;
-        public static float OtherScore = -0.02f;
-        public static float Meeple = -0.01f;
-    }
-    
+
     //TODO need a default mask on each branch.
     public enum SBSActions
     {
@@ -124,6 +114,8 @@ namespace Carcassonne.AI
 
         // public int x = 0, z = 0;//, rot = 0;
         public Vector2Int cell;
+
+        public bool EnableEndOfTurnRewards = true;
 
         /// <summary>
         /// Initial setup which gets the scripts needed to AI calls and observations, called only once when the agent is enabled.
@@ -294,28 +286,28 @@ namespace Carcassonne.AI
         private void EndOfTurnRewards()
         {
             // Score changed reward
-            var scoreChange = Rewards.Score * wrapper.GetScoreChange();
+            var scoreChange = Score * wrapper.GetScoreChange();
             AddReward(scoreChange);
-            var unscoredPointsChange = 0.25f * Rewards.Score * wrapper.GetUnscoredPointsChange();
+            var unscoredPointsChange = 0.25f * Score * wrapper.GetUnscoredPointsChange();
             AddReward(unscoredPointsChange);
-            var potentialPointsChange = 0.25f * Rewards.Score * wrapper.GetPotentialPointsChange();
+            var potentialPointsChange = 0.25f * Score * wrapper.GetPotentialPointsChange();
             AddReward(potentialPointsChange);
             
             // Penalty for not adding to score
             if (scoreChange == 0.0f && unscoredPointsChange == 0.0f)
             {
-                AddReward(-0.25f * Rewards.Score);
+                AddReward(-0.25f * Score);
             }
 
-            var otherScoreChange = Rewards.OtherScore * wrapper.GetOtherScoreChange();
+            var otherScoreChange = OtherScore * wrapper.GetOtherScoreChange();
             AddReward(otherScoreChange);
-            var otherUnscoredPointsChange = 0.25f * Rewards.OtherScore * wrapper.GetOtherUnscoredPointsChange();
+            var otherUnscoredPointsChange = 0.25f * OtherScore * wrapper.GetOtherUnscoredPointsChange();
             AddReward(otherUnscoredPointsChange);
-            var otherPotentialPointsChange = 0.25f * Rewards.OtherScore * wrapper.GetOtherPotentialPointsChange();
+            var otherPotentialPointsChange = 0.25f * OtherScore * wrapper.GetOtherPotentialPointsChange();
             AddReward(otherPotentialPointsChange);
 
             // Meeples Remaining
-            var meeplesRemaingingScore = Rewards.Meeple * (1.0f / ((float)(wrapper.GetMeeplesLeft() + 1)) - 0.125f);
+            var meeplesRemaingingScore = Meeple * (1.0f / ((float)(wrapper.GetMeeplesLeft() + 1)) - 0.125f);
             AddReward(meeplesRemaingingScore);
 
             Debug.Log($"EOT Rewards (P{wrapper.player.id}) dScore={scoreChange}, dUnscore={unscoredPointsChange}, dPotential={potentialPointsChange}, " +
@@ -550,7 +542,7 @@ namespace Carcassonne.AI
 
             Debug.Log($"Placing at ({x},{y}), rotation {rotate} and meeple {meeplePos}.");
 
-            AddReward(Rewards.ActionBias); //Each call to this method comes with a very minor penalty to promote performing quick actions.
+            AddReward(ActionBias); //Each call to this method comes with a very minor penalty to promote performing quick actions.
 
             // Tile actions
             cell = new Vector2Int(x, y);
@@ -563,7 +555,7 @@ namespace Carcassonne.AI
 
             if (wrapper.PlaceTile(cell)) //If the placement was successful
             {
-                AddReward(Rewards.ValidAction);
+                AddReward(ValidAction);
             }
             else // Placement was unsuccessful. Try again.
             {
@@ -575,7 +567,7 @@ namespace Carcassonne.AI
             {
                 if (!wrapper.DrawMeeple())
                 {
-                    AddReward(Rewards.InvalidAction);
+                    AddReward(InvalidAction);
                 }
 
                 var meeplePlaced = false;
@@ -600,11 +592,11 @@ namespace Carcassonne.AI
 
                 if (meeplePlaced)
                 {
-                    AddReward(Rewards.ValidAction);
+                    AddReward(ValidAction);
                 }
                 else
                 {
-                    AddReward(Rewards.InvalidAction);
+                    AddReward(InvalidAction);
                     wrapper.DiscardMeeple();
                 }
 
@@ -713,10 +705,16 @@ namespace Carcassonne.AI
                     yield break;
                 }
                 
+                AddReward(MeeplePlacementPenalty);
+                
                 yield return new WaitUntil(() => wrapper.state.phase == Phase.MeepleDown);
             }
 
-            EndOfTurnRewards();
+            if (EnableEndOfTurnRewards)
+            {
+                EndOfTurnRewards();
+            }
+
             wrapper.EndTurn();
         }
 
@@ -791,5 +789,27 @@ namespace Carcassonne.AI
             return (x, y, rotation, meeple);
         }
         #endregion
+
+        public float ActionBias;
+        public float InvalidAction;
+        public float ValidAction;
+        public float OtherScore;
+        public float Meeple;
+        public float Score;
+        public float MeeplePlacementPenalty;
+        
+        public void Start(){
+            ActionBias = Academy.Instance.EnvironmentParameters.GetWithDefault("ActionBias",-0.0001f);
+            InvalidAction = Academy.Instance.EnvironmentParameters.GetWithDefault("InvalidAction", -0.0001f);//-0.010f;
+            ValidAction = Academy.Instance.EnvironmentParameters.GetWithDefault("ValidAction",0.001f);//0.020f;
+            OtherScore = Academy.Instance.EnvironmentParameters.GetWithDefault("OtherScore",-0.035f);
+            Meeple = Academy.Instance.EnvironmentParameters.GetWithDefault("Meeple",-0.01f);
+            Score = Academy.Instance.EnvironmentParameters.GetWithDefault("Score",0.1f);
+            MeeplePlacementPenalty = Academy.Instance.EnvironmentParameters.GetWithDefault("MeeplePlacementPenalty",-0.05f);
+
+            Debug.Log($"Parameters: Action Bias ({ActionBias}), Invalid Action ({InvalidAction}), Valid Action " +
+                      $"({ValidAction}), Other Score ({OtherScore}), Meeple ({Meeple}), Score ({Score}), " +
+                      $"Meeple Placement Penalty ({MeeplePlacementPenalty})");
+        }
     }
 }
