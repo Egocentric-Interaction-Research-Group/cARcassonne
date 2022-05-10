@@ -12,6 +12,12 @@ using Unity.MLAgents;
 using Unity.MLAgents.Policies;
 using UnityEngine;
 
+public enum RewardMode : int
+{
+    Winner=0,
+    Score=1
+}
+
 /// <summary>
 /// GameController handles all the game logic and the actual game loop
 /// </summary>
@@ -20,6 +26,10 @@ public class AIGameController : MonoBehaviour, IGameControllerInterface
     
     public int minX, minZ, maxX, maxZ;
 
+    // This reflects the value that a single-player score will be divided by to keep it roughly between 0 and 1. It is not truly the maximum Carcassonne score.
+    public float MaxScore = 250f;
+    public RewardMode Mode;
+    
     public int nPlayers;
 
     public int turn => state.Tiles.Placement.Count - 1;
@@ -39,6 +49,8 @@ public class AIGameController : MonoBehaviour, IGameControllerInterface
 
     public List<Player> m_players = new List<Player>();
 
+    
+    
     #region NewParams
 
     public GameController gameController;
@@ -75,6 +87,8 @@ public class AIGameController : MonoBehaviour, IGameControllerInterface
     
     private IEnumerator WaitForAcademyInitialization(){
         yield return new WaitUntil((() => Academy.IsInitialized));
+        
+        Mode = (RewardMode)Academy.Instance.EnvironmentParameters.GetWithDefault("RewardMode", (float)RewardMode.Winner);
         
         Academy.Instance.EnvironmentStep();
     }
@@ -185,16 +199,29 @@ public class AIGameController : MonoBehaviour, IGameControllerInterface
 
         foreach (var p in state.Players.All)
         {
-            if (p == winner)
+            switch (Mode)
             {
-                p.GetComponent<CarcassonneAgent>().SetReward(1f);
-                Debug.Log($"DelayedEnd: Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is first with a score of {p.FinalScore}");
+                case RewardMode.Winner:
+                    if (p == winner)
+                    {
+                        p.GetComponent<CarcassonneAgent>().SetReward(1f);
+                        Debug.Log(
+                            $"DelayedEnd (Winner Mode): Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is first with a score of {p.FinalScore}");
+                    }
+                    else
+                    {
+                        p.GetComponent<CarcassonneAgent>().SetReward(0f);
+                        Debug.Log(
+                            $"DelayedEnd (Winner Mode): Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is last with a score of {p.FinalScore}");
+                    }
+                    break;
+                case RewardMode.Score:
+                    p.GetComponent<CarcassonneAgent>().SetReward(p.FinalScore / MaxScore);
+                    Debug.Log(
+                        $"DelayedEnd (Score Mode): Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is first with a score of {p.FinalScore}");
+                    break;
             }
-            else
-            {
-                p.GetComponent<CarcassonneAgent>().SetReward(0f);
-                Debug.Log($"DelayedEnd: Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is last with a score of {p.FinalScore}");
-            }
+            
             p.GetComponent<CarcassonneAgent>().EndEpisode();
         }
 

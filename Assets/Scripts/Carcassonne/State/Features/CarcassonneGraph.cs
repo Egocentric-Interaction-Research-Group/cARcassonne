@@ -112,5 +112,17 @@ namespace Carcassonne.State.Features
 
         public bool HasMeeples => Vertices.Any(v => v.hasMeeple);
         public IEnumerable<Meeple> Meeples => Vertices.Where(v => v.hasMeeple).Select(v => v.meeple);
+
+        public IDictionary<Player, int> PlayerMeeples => Meeples.GroupBy(meeple => meeple.player)
+            .Select(group => new { key = group.Key, value = group.Count() }).
+            ToDictionary(g=>g.key, g=>g.value);
+
+        public bool ScoresPoints(Player p)
+        {
+            if (PlayerMeeples.ContainsKey(p) && PlayerMeeples[p] >= PlayerMeeples.Values.Max())
+                return true;
+
+            return false;
+        }
     }
 }

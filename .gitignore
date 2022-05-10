@@ -701,3 +701,7 @@ Packages/docfx.console.2.58.4/
 Learning/
 
 Assets/ML-Agents/Timers/OneBoardScene_timers.json
+
+Assets/Models/
+
+Assets/Models.meta

@@ -81,18 +81,24 @@ namespace Carcassonne.AI.Training
             stats.Add("Player/Point gain per Own Turn", AvgPointGainPerOwnTile);
             stats.Add("Player/Unscored point gain per Own Turn", AvgUnscoredPointGainPerOwnTile);
             stats.Add("Player/Potential point gain per Own Turn", AvgPotentialPointGainPerOwnTile);
-            
-            stats.Add("Opponent/Point gain per Opponent Turn", AvgPointGainPerOtherTile);
-            stats.Add("Opponent/Unscored point gain per Opponent Turn", AvgUnscoredPointGainPerOtherTile);
-            stats.Add("Opponent/Potential point gain per Opponent Turn", AvgPotentialPointGainPerOtherTile);
-            
+
+            if (state.Players.All.Count > 1)
+            {
+                stats.Add("Opponent/Point gain per Opponent Turn", AvgPointGainPerOtherTile);
+                stats.Add("Opponent/Unscored point gain per Opponent Turn", AvgUnscoredPointGainPerOtherTile);
+                stats.Add("Opponent/Potential point gain per Opponent Turn", AvgPotentialPointGainPerOtherTile);
+            }
+
             stats.Add("Turns/Turns with point gain", TurnsWithPointGain);
             stats.Add("Turns/Turns without point gain", TurnsWithoutPointGain);
             
             stats.Add("Players/0", P0Score);
-            stats.Add("Players/1", P1Score);
-            stats.Add("Players/Winner", Winner);
-            
+            if (state.Players.All.Count > 1)
+            {
+                stats.Add("Players/1", P1Score);
+                stats.Add("Players/Winner", Winner);
+            }
+
             GlobalMaxBounds.xMin = new[] { GlobalMaxBounds.xMin, state.Tiles.Limits.xMin }.Min();
             GlobalMaxBounds.yMin = new[] { GlobalMaxBounds.yMin, state.Tiles.Limits.yMin }.Min();
             GlobalMaxBounds.xMax = new[] { GlobalMaxBounds.xMax, state.Tiles.Limits.xMax }.Max();

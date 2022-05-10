@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2096977710434309626}
   - component: {fileID: -1820624487966107760}
   - component: {fileID: 685205903244666190}
+  - component: {fileID: 3207087264357258990}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -32,6 +33,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -107,6 +109,14 @@ MonoBehaviour:
   actionApproach: 1
   wrapper: {fileID: -1820624487966107760}
   cell: {x: 0, y: 0}
+  EnableEndOfTurnRewards: 1
+  ActionBias: 0
+  InvalidAction: 0
+  ValidAction: 0
+  OtherScore: 0
+  Meeple: 0
+  Score: 0
+  MeeplePlacementPenalty: 0
 --- !u!114 &2096977710434309626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,3 +162,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ai: {fileID: 1695468876677109422}
+  decisionRequested: 0
+--- !u!114 &3207087264357258990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598782832212889485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057168b3c9b74c73b4cea1462b967a70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 1695468876677109422}
+  OwnCompletedFeatureMultiplier: 0
+  UnownedCompletedFeatureMultiplier: 0
+  OtherCompletedFeatureMultiplier: 0
+  OwnCompletedFeatureScore: 0
+  UnownedCompletedFeatureScore: 0
+  OtherCompletedFeatureScore: 0
