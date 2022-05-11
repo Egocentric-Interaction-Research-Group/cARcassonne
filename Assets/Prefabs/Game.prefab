@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.1229429, y: 0.58050156, z: -1.0685024}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8493484197605914129}
   m_RootOrder: 1
@@ -43,19 +44,6 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 1
---- !u!114 &8493484197402072382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1990145932989947861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d54911d3cce4c49905ebddf28e2829a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: {fileID: 8493484197605914130}
 --- !u!1 &8493484197406953622
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,6 +70,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.1229429, y: -0.58050156, z: 1.0685024}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8493484197605914129}
   - {fileID: 1990145932989947857}
@@ -103,7 +92,7 @@ GameObject:
   - component: {fileID: 8493484197605914128}
   - component: {fileID: 8493484197605914142}
   - component: {fileID: 8493484197605914132}
-  - component: {fileID: 8493484197605914135}
+  - component: {fileID: 4211790740948910432}
   - component: {fileID: 8493484197605914134}
   m_Layer: 0
   m_Name: GameController
@@ -122,6 +111,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8493484199002616918}
   - {fileID: 8493484197395855424}
@@ -152,6 +142,7 @@ MonoBehaviour:
   playerParent: {fileID: 8493484197605914129}
   tileParent: {fileID: 8493484199002616918}
   meepleParent: {fileID: 8493484197395855424}
+  m_players: []
   gameController: {fileID: 8493484197605914131}
   tileController: {fileID: 8493484197605914128}
   meepleController: {fileID: 8493484197605914142}
@@ -240,8 +231,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8493484197605914135}
-        m_TargetAssemblyTypeName: Carcassonne.Utilities.GameLog, Assembly-CSharp
+      - m_Target: {fileID: 4211790740948910432}
+        m_TargetAssemblyTypeName: GameLog, Carcassonne.State
         m_MethodName: LogTurn
         m_Mode: 1
         m_Arguments:
@@ -309,8 +300,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8493484197605914135}
-        m_TargetAssemblyTypeName: Carcassonne.Utilities.GameLog, Assembly-CSharp
+      - m_Target: {fileID: 4211790740948910432}
+        m_TargetAssemblyTypeName: GameLog, Carcassonne.State
         m_MethodName: OnGameOver
         m_Mode: 1
         m_Arguments:
@@ -608,7 +599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tile: {fileID: 8493484199002616905}
   meeple: {fileID: 8493484197395855427}
---- !u!114 &8493484197605914135
+--- !u!114 &4211790740948910432
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -617,7 +608,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8493484197605914143}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdaeb030054d410fb147aa6599a1e2bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 098718ea4342f4d269ea483454c2b414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   state: {fileID: 8493484197605914130}
@@ -634,7 +625,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: {fileID: 8493484197605914130}
-  log: {fileID: 8493484197605914135}
+  log: {fileID: 4211790740948910432}
 --- !u!1 &8493484199002616919
 GameObject:
   m_ObjectHideFlags: 0
@@ -662,6 +653,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.1229429, y: 0.58050156, z: -1.0685024}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8493484197605914129}
   m_RootOrder: 0
@@ -748,15 +740,28 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 7944492466515630067, guid: 2fd50dbd8ce6cb440be4e85937bc8608, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2fd50dbd8ce6cb440be4e85937bc8608, type: 3}
---- !u!1 &1990145932989947861 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7944492466515630070, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
-    type: 3}
-  m_PrefabInstance: {fileID: 8493484199093962787}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1990145932989947857 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7944492466515630066, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
     type: 3}
   m_PrefabInstance: {fileID: 8493484199093962787}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1990145932989947861 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7944492466515630070, guid: 2fd50dbd8ce6cb440be4e85937bc8608,
+    type: 3}
+  m_PrefabInstance: {fileID: 8493484199093962787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8493484197402072382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990145932989947861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d54911d3cce4c49905ebddf28e2829a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: {fileID: 8493484197605914130}

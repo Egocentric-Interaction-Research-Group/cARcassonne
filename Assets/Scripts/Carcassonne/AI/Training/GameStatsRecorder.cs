@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Carcassonne.State;
@@ -27,6 +28,7 @@ namespace Carcassonne.AI.Training
 
         private int TilesDiscarded => state.Tiles.Discarded.Count;
         
+        //TODO FIXME
         private float AvgMeeplesRemainingPerTurn => (float)P0Turns.Average(t => t.meeplesRemaining);
         // private float AvgMeepleTurnsOnFeature;
         
@@ -39,6 +41,19 @@ namespace Carcassonne.AI.Training
         private float AvgPotentialPointGainPerOwnTile => (float)P0Turns.Average(t => t.pointDifference[t.player].potentialPoints);
         private float AvgPotentialPointGainPerOtherTile => (float)P0Turns.Average(t => t.pointDifference.Where(kvp => kvp.Key != t.player).
             Average(pair => pair.Value.potentialPoints));
+
+        private IEnumerable<int> PointGainPerOwnTile => P0Turns.Select(t =>
+            t.pointDifference[t.player].scoredPoints - t.pointDifference.Where(kvp => kvp.Key != t.player)
+                .Sum(pair => pair.Value.scoredPoints));
+        private IEnumerable<int> PointGainPerOtherTile => P1Turns.Select(t =>
+            t.pointDifference.Where(kvp => kvp.Key != t.player)
+                .Sum(pair => pair.Value.scoredPoints) - t.pointDifference[t.player].scoredPoints);
+
+
+        private float TurnsWithPointGain => (float)P0Turns.Count(t => t.pointDifference[t.player].scoredPoints +
+            t.pointDifference[t.player].unscoredPoints != 0);
+        private float TurnsWithoutPointGain => (float)P0Turns.Count(t => t.pointDifference[t.player].scoredPoints +
+                                                                         t.pointDifference[t.player].unscoredPoints == 0);
 
         private float P0Score => (float)state.Players.All.Single(p => p.id == 0).FinalScore;
         private float P1Score => (float)state.Players.All.Single(p => p.id == 1).FinalScore;
@@ -66,15 +81,24 @@ namespace Carcassonne.AI.Training
             stats.Add("Player/Point gain per Own Turn", AvgPointGainPerOwnTile);
             stats.Add("Player/Unscored point gain per Own Turn", AvgUnscoredPointGainPerOwnTile);
             stats.Add("Player/Potential point gain per Own Turn", AvgPotentialPointGainPerOwnTile);
-            
-            stats.Add("Opponent/Point gain per Opponent Turn", AvgPointGainPerOtherTile);
-            stats.Add("Opponent/Unscored point gain per Opponent Turn", AvgUnscoredPointGainPerOtherTile);
-            stats.Add("Opponent/Potential point gain per Opponent Turn", AvgPotentialPointGainPerOtherTile);
+
+            if (state.Players.All.Count > 1)
+            {
+                stats.Add("Opponent/Point gain per Opponent Turn", AvgPointGainPerOtherTile);
+                stats.Add("Opponent/Unscored point gain per Opponent Turn", AvgUnscoredPointGainPerOtherTile);
+                stats.Add("Opponent/Potential point gain per Opponent Turn", AvgPotentialPointGainPerOtherTile);
+            }
+
+            stats.Add("Turns/Turns with point gain", TurnsWithPointGain);
+            stats.Add("Turns/Turns without point gain", TurnsWithoutPointGain);
             
             stats.Add("Players/0", P0Score);
-            stats.Add("Players/1", P1Score);
-            stats.Add("Players/Winner", Winner);
-            
+            if (state.Players.All.Count > 1)
+            {
+                stats.Add("Players/1", P1Score);
+                stats.Add("Players/Winner", Winner);
+            }
+
             GlobalMaxBounds.xMin = new[] { GlobalMaxBounds.xMin, state.Tiles.Limits.xMin }.Min();
             GlobalMaxBounds.yMin = new[] { GlobalMaxBounds.yMin, state.Tiles.Limits.yMin }.Min();
             GlobalMaxBounds.xMax = new[] { GlobalMaxBounds.xMax, state.Tiles.Limits.xMax }.Max();
