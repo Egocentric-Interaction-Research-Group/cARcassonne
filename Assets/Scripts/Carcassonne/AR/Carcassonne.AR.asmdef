@@ -1,7 +1,8 @@
 {
   "name": "Carcassonne.AR",
   "references": [
-    "Carcassonne.Models","Carcassonne.State","Carcassonne.Controllers",
+    "Carcassonne.Models","Carcassonne.State","Carcassonne.Controllers","Carcassonne.AI",
+    "Unity.ML-Agents",
     "Unity.InputSystem", "Unity.TextMeshPro",
     "PhotonUnityNetworking","PhotonRealtime",
     "Microsoft.MixedReality.Toolkit", "Microsoft.MixedReality.Toolkit.Tools", "Microsoft.MixedReality.Toolkit.SDK",

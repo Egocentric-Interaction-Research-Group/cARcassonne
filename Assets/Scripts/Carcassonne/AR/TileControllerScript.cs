@@ -23,16 +23,24 @@ namespace Carcassonne.AR
 
         public void OnDraw(Tile tile)
         {
-            // photonView.RPC("RPCDraw", RpcTarget.Others);
+            tile.transform.SetParent(tileGrid.transform);
+            tile.gameObject.SetActive(true);
+            tile.GetComponent<Rigidbody>().isKinematic = false;
+            tile.GetComponent<Rigidbody>().useGravity = true;
+            tile.GetComponentInChildren<MeshRenderer>().enabled = true;
+            tile.GetComponent<BoxCollider>().enabled = true;
             
-            photonView.RPC("RPCDraw", RpcTarget.All, tile.GetComponent<PhotonView>().ViewID);
+            if(GetComponent<GameControllerScript>().IsLocalTurn()){
+                photonView.RPC("RPCDraw", RpcTarget.Others); 
+                tile.GetComponent<GridPosition>().MoveToRPC(new Vector2Int(startingPosition, startingPosition));
 
-            //TODO Do we need to disable if this is an AI?
-            tile.GetComponent<GridKeyboardMovable>().enabled = true;
-            tile.GetComponent<GridKeyboardRotatable>().enabled = true;
-            tile.GetComponent<ObjectManipulator>().enabled = true;
-
-            tile.GetComponent<GridPosition>().MoveToRPC(new Vector2Int(startingPosition, startingPosition));
+                if (GetComponent<GameControllerScript>().IsLocalHumanTurn())
+                {
+                    tile.GetComponent<GridKeyboardMovable>().enabled = true;
+                    tile.GetComponent<GridKeyboardRotatable>().enabled = true;
+                    tile.GetComponent<ObjectManipulator>().enabled = true;
+                }
+            }
         }
 
         public void OnPlace(Tile tile, Vector2Int cell)
@@ -66,16 +74,13 @@ namespace Carcassonne.AR
         public void OnInvalidPlace(){
         }
         
+        
+        #region RPC
+        
         [PunRPC]
-        public void RPCDraw(int viewID)
+        public void RPCDraw()
         {
-            var tile = PhotonView.Find(viewID).GetComponent<Tile>();
-            tile.transform.SetParent(tileGrid.transform);
-            tile.gameObject.SetActive(true);
-            tile.GetComponent<Rigidbody>().isKinematic = false;
-            tile.GetComponent<Rigidbody>().useGravity = true;
-            tile.GetComponentInChildren<MeshRenderer>().enabled = true;
-            tile.GetComponent<BoxCollider>().enabled = true;
+            GetComponent<TileController>().Draw();
         }
         public void RPCRotate(){
         }
@@ -85,5 +90,6 @@ namespace Carcassonne.AR
         }
         public void RPCInvalidPlace(){
         }
+        #endregion
     }
 }

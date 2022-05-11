@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Carcassonne.AI;
 using Carcassonne.AR.GamePieces;
 using Carcassonne.Controllers;
 using Carcassonne.Models;
@@ -201,7 +202,28 @@ namespace Carcassonne.AR
         #endregion
         
         #region Redesigned Functions
+        
+        /// <summary>
+        /// Is AI turn or human turn being executed on the local machine.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsLocalTurn()
+        {
+            return IsLocalHumanTurn() || IsLocalAITurn();
+        }
+        
+        public bool IsLocalAITurn()
+        {
+            var aiUser = state.Players.Current.GetComponent<CarcassonneAgent>();
+            
+            Debug.Log($"Found current user {aiUser.GetComponent<Player>().username} ({aiUser.GetComponent<Player>().id}), IsLocal: {PhotonNetwork.IsMasterClient}");
+            
+            if( aiUser && PhotonNetwork.IsMasterClient )
+                return true;
 
+            return false;
+        }
+        
         public bool IsLocalHumanTurn()
         {
             var photonUser = state.Players.Current.GetComponent<PhotonUser>();
