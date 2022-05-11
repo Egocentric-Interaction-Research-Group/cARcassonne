@@ -93,14 +93,14 @@ namespace MRTK.Tutorials.MultiUserCapabilities
 
         private void CreatePlayer()
         {
-            Debug.Log($"Creating player from {photonView.Owner.UserId} (number {playersInRoom}).");
+            Debug.Log($"Creating player (number {playersInRoom}).");
             var player = PhotonNetwork.Instantiate(photonUserPrefab.name, Vector3.zero, Quaternion.identity);
         }
 
         private void CreateInteractableObjects()
         {
 
-            Debug.Log($"Creating interactable object from {photonView.Owner.UserId}.");
+            Debug.Log($"Creating interactable object.");
             var go = PhotonNetwork.Instantiate(tableAnchor.name, Vector3.zero, Quaternion.identity);
 
         }
