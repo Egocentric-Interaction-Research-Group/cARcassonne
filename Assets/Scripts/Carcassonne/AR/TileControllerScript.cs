@@ -23,15 +23,19 @@ namespace Carcassonne.AR
 
         public void OnDraw(Tile tile)
         {
+            // photonView.RPC("RPCDraw", RpcTarget.Others);
+            
             tile.transform.SetParent(tileGrid.transform);
             tile.gameObject.SetActive(true);
+            tile.GetComponent<Rigidbody>().isKinematic = false;
+            tile.GetComponent<Rigidbody>().useGravity = true;
+            tile.GetComponentInChildren<MeshRenderer>().enabled = true;
             tile.GetComponent<BoxCollider>().enabled = true;
+
+            //TODO Do we need to disable if this is an AI?
             tile.GetComponent<GridKeyboardMovable>().enabled = true;
             tile.GetComponent<GridKeyboardRotatable>().enabled = true;
-            tile.GetComponent<Rigidbody>().useGravity = true;
             tile.GetComponent<ObjectManipulator>().enabled = true;
-            tile.GetComponent<Rigidbody>().isKinematic = false;
-            tile.GetComponentInChildren<MeshRenderer>().enabled = true;
 
             tile.GetComponent<GridPosition>().MoveToRPC(new Vector2Int(startingPosition, startingPosition));
         }
@@ -56,6 +60,32 @@ namespace Carcassonne.AR
 
             // Invoke the TileController's place call.
             tileController.Place(gridPosition.cell);
+        }
+        
+        public void OnRotate(){
+        }
+        public void OnDiscard(){
+        }
+        public void OnPlace(){
+        }
+        public void OnInvalidPlace(){
+        }
+        
+        public void RPCDraw(){
+            // tile.transform.SetParent(tileGrid.transform);
+            // tile.gameObject.SetActive(true);
+            // tile.GetComponent<Rigidbody>().isKinematic = false;
+            // tile.GetComponent<Rigidbody>().useGravity = true;
+            // tile.GetComponentInChildren<MeshRenderer>().enabled = true;
+            // tile.GetComponent<BoxCollider>().enabled = true;
+        }
+        public void RPCRotate(){
+        }
+        public void RPCDiscard(){
+        }
+        public void RPCPlace(){
+        }
+        public void RPCInvalidPlace(){
         }
     }
 }
