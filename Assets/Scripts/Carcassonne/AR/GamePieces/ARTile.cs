@@ -135,6 +135,8 @@ namespace Carcassonne.AR.GamePieces
             
             gridPosition.OnChangeCell.AddListener(i => confirmButton.OnTileChange());
             GetComponent<GridOrientation>().OnChangeOrientation.AddListener(i => confirmButton.OnTileChange());
+
+            tile.gameObject.name = $"Tile {tile.ID} ({tile.ToString()})";
         }
         #endregion
 

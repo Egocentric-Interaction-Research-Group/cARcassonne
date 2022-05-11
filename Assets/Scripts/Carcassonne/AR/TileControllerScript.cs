@@ -25,12 +25,7 @@ namespace Carcassonne.AR
         {
             // photonView.RPC("RPCDraw", RpcTarget.Others);
             
-            tile.transform.SetParent(tileGrid.transform);
-            tile.gameObject.SetActive(true);
-            tile.GetComponent<Rigidbody>().isKinematic = false;
-            tile.GetComponent<Rigidbody>().useGravity = true;
-            tile.GetComponentInChildren<MeshRenderer>().enabled = true;
-            tile.GetComponent<BoxCollider>().enabled = true;
+            photonView.RPC("RPCDraw", RpcTarget.All, tile.GetComponent<PhotonView>().ViewID);
 
             //TODO Do we need to disable if this is an AI?
             tile.GetComponent<GridKeyboardMovable>().enabled = true;
@@ -71,13 +66,16 @@ namespace Carcassonne.AR
         public void OnInvalidPlace(){
         }
         
-        public void RPCDraw(){
-            // tile.transform.SetParent(tileGrid.transform);
-            // tile.gameObject.SetActive(true);
-            // tile.GetComponent<Rigidbody>().isKinematic = false;
-            // tile.GetComponent<Rigidbody>().useGravity = true;
-            // tile.GetComponentInChildren<MeshRenderer>().enabled = true;
-            // tile.GetComponent<BoxCollider>().enabled = true;
+        [PunRPC]
+        public void RPCDraw(int viewID)
+        {
+            var tile = PhotonView.Find(viewID).GetComponent<Tile>();
+            tile.transform.SetParent(tileGrid.transform);
+            tile.gameObject.SetActive(true);
+            tile.GetComponent<Rigidbody>().isKinematic = false;
+            tile.GetComponent<Rigidbody>().useGravity = true;
+            tile.GetComponentInChildren<MeshRenderer>().enabled = true;
+            tile.GetComponent<BoxCollider>().enabled = true;
         }
         public void RPCRotate(){
         }

@@ -249,8 +249,6 @@ namespace Carcassonne.AR
 
             Debug.Assert(meeples.Count == players.Count * GameRules.MeeplesPerPlayer, 
                 $"There should be {players.Count * GameRules.MeeplesPerPlayer} meeples to start the game of Carcassonne. Found {meeples.Count}.");
-            Debug.Assert(FindObjectsOfType<Meeple>().Length == players.Count * GameRules.MeeplesPerPlayer, 
-                $"There should be {players.Count * GameRules.MeeplesPerPlayer} meeple game objects to start the game of Carcassonne. Found {FindObjectsOfType<Meeple>().Length}.");
 
             return meeples;
         }
