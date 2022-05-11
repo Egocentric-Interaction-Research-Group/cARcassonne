@@ -6,6 +6,7 @@ using Carcassonne.Controllers;
 using Carcassonne.Models;
 using Carcassonne.Players;
 using Carcassonne.State;
+using MRTK.Tutorials.MultiUserCapabilities;
 using Photon.Pun;
 using UI.Grid;
 using UnityEngine;
@@ -200,6 +201,18 @@ namespace Carcassonne.AR
         #endregion
         
         #region Redesigned Functions
+
+        public bool IsLocalHumanTurn()
+        {
+            var photonUser = state.Players.Current.GetComponent<PhotonUser>();
+            
+            Debug.Log($"Found current user {photonUser.GetComponent<Player>().username} ({photonUser.GetComponent<Player>().id}), IsLocal: {photonUser.IsLocal}");
+            
+            if( photonUser && photonUser.IsLocal )
+                return true;
+
+            return false;
+        }
 
         private void PlaceStartingTile()
         {

@@ -2053,9 +2053,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20686efda1e52c3448e558032e3eaada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materials: {fileID: 11400000, guid: 8c10690857f4c49dfb82c27fccb7d9f1, type: 2}
-  scale: 60
-  table: {fileID: 0}
 --- !u!114 &1060827977317108028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27236,6 +27233,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   state: {fileID: 2478767245811086802}
+  arGameController: {fileID: 1060827977317108023}
   tileController: {fileID: 1111868397933049842}
   meepleController: {fileID: 687296278683170434}
   ConfirmableMaterial: {fileID: 2100000, guid: 51f4a76041b8e134f9da30e6b2d6d32d, type: 2}

@@ -1,3 +1,4 @@
+using System.Linq;
 using Carcassonne.AR;
 using Carcassonne.Models;
 using Carcassonne.State;
@@ -72,7 +73,8 @@ namespace Carcassonne.Players
             
             Debug.Log($"Updating score for player {playerNumber} of {nPlayers}.");
             UpdateScore();
-            if (player.GetComponent<PhotonUser>().IsLocal)
+            var player = state.Players.All.SingleOrDefault(p => p.id == playerNumber);
+            if (player && player.GetComponent<PhotonUser>().IsLocal)
             {
                 SetLocal();
             }
