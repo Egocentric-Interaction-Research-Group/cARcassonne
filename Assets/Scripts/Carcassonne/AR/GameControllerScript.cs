@@ -215,10 +215,12 @@ namespace Carcassonne.AR
         public bool IsLocalAITurn()
         {
             var aiUser = state.Players.Current.GetComponent<CarcassonneAgent>();
+            if (aiUser == null)
+                return false;
             
             Debug.Log($"Found current user {aiUser.GetComponent<Player>().username} ({aiUser.GetComponent<Player>().id}), IsLocal: {PhotonNetwork.IsMasterClient}");
             
-            if( aiUser && PhotonNetwork.IsMasterClient )
+            if( PhotonNetwork.IsMasterClient )
                 return true;
 
             return false;
@@ -227,10 +229,12 @@ namespace Carcassonne.AR
         public bool IsLocalHumanTurn()
         {
             var photonUser = state.Players.Current.GetComponent<PhotonUser>();
+            if (photonUser == null)
+                return false;
             
             Debug.Log($"Found current user {photonUser.GetComponent<Player>().username} ({photonUser.GetComponent<Player>().id}), IsLocal: {photonUser.IsLocal}");
             
-            if( photonUser && photonUser.IsLocal )
+            if( photonUser.IsLocal )
                 return true;
 
             return false;
@@ -263,6 +267,13 @@ namespace Carcassonne.AR
         private List<Player> CreatePlayers()
         {
             List<Player> players = FindObjectsOfType<Player>().ToList();
+
+            var i = 0;
+            foreach (var player in players)
+            {
+                player.GetComponent<ARPlayer>().photonView.RPC("SetPlayerID", RpcTarget.All, i);
+                i++;
+            }
 
             return players;
         }

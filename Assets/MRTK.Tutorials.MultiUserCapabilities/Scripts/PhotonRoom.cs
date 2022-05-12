@@ -20,6 +20,7 @@ namespace MRTK.Tutorials.MultiUserCapabilities
             base.OnPlayerEnteredRoom(newPlayer);
             photonPlayers = PhotonNetwork.PlayerList;
             playersInRoom++;
+
         }
 
         private void Awake()
@@ -84,13 +85,9 @@ namespace MRTK.Tutorials.MultiUserCapabilities
                 CreateInteractableObjects();
             }
 
-            if (TableAnchor.Instance != null)
-            {
-               
-            }
-
         }
 
+        //TODO figure out consistent user ids
         private void CreatePlayer()
         {
             Debug.Log($"Creating player (number {playersInRoom}).");
