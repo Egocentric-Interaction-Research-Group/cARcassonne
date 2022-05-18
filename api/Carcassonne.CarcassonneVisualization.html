@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CarcassonneVisualization
+   | cARcassonne documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CarcassonneVisualization
+   | cARcassonne documentation ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Carcassonne.CarcassonneVisualization">
+  
+  
+  <h1 id="Carcassonne_CarcassonneVisualization" data-uid="Carcassonne.CarcassonneVisualization" class="text-break">Class CarcassonneVisualization
+  </h1>
+  <div class="markdown level0 summary"><p>This script is to be used in combination with the shader &quot;CarcassoneVisualization&quot;.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">CarcassonneVisualization</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Carcassonne.html">Carcassonne</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Carcassonne_CarcassonneVisualization_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class CarcassonneVisualization : MonoBehaviour</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Carcassonne_CarcassonneVisualization_state" data-uid="Carcassonne.CarcassonneVisualization.state">state</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameState state</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameState</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Carcassonne_CarcassonneVisualization_Init_" data-uid="Carcassonne.CarcassonneVisualization.Init*"></a>
+  <h4 id="Carcassonne_CarcassonneVisualization_Init" data-uid="Carcassonne.CarcassonneVisualization.Init">Init()</h4>
+  <div class="markdown level1 summary"><p>Initializes the board with empty tile and meeple data.
+If initial data with the max size is not sent initially, the size of the
+first call to <see cref="!:UpdateMaterial(Tile[,], Vector2Int, IReadOnlyList&lt;Meeple>)"></see> 
+will be set as the max size,
+and will not grow any larger.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Init()</code></pre>
+  </div>
+  
+  
+  <a id="Carcassonne_CarcassonneVisualization_UpdateMaterial_" data-uid="Carcassonne.CarcassonneVisualization.UpdateMaterial*"></a>
+  <h4 id="Carcassonne_CarcassonneVisualization_UpdateMaterial_Carcassonne_VisualizationInputTiles_Vector2Int_Vector2Int_MeepleState_" data-uid="Carcassonne.CarcassonneVisualization.UpdateMaterial(Carcassonne.VisualizationInputTiles,Vector2Int,Vector2Int,MeepleState)">UpdateMaterial(VisualizationInputTiles, Vector2Int, Vector2Int, MeepleState)</h4>
+  <div class="markdown level1 summary"><p>Updates the material to display the given section of tiles.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateMaterial(VisualizationInputTiles inputTiles, Vector2Int displaySize, Vector2Int displayOffset, MeepleState meeples)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Carcassonne.VisualizationInputTiles.html">VisualizationInputTiles</a></td>
+        <td><span class="parametername">inputTiles</span></td>
+        <td><p>A wrapped 2d array of the entire grid of tiles.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector2Int</span></td>
+        <td><span class="parametername">displaySize</span></td>
+        <td><p>The 2-dimensional nbr of tiles to be displayed.
+    Specifies how much of inputTiles to display.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector2Int</span></td>
+        <td><span class="parametername">displayOffset</span></td>
+        <td><p>The tile-space offset of the tiles to be displayed
+    into the entire tile array.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">MeepleState</span></td>
+        <td><span class="parametername">meeples</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Carcassonne_CarcassonneVisualization_VisualizeBoard_" data-uid="Carcassonne.CarcassonneVisualization.VisualizeBoard*"></a>
+  <h4 id="Carcassonne_CarcassonneVisualization_VisualizeBoard" data-uid="Carcassonne.CarcassonneVisualization.VisualizeBoard">VisualizeBoard()</h4>
+  <div class="markdown level1 summary"><p>Use this method to send tile and meeple data to the shader.</p>
+<p>If you&apos;re already sending a subsection of all tile data, consider
+using UpdateMaterial instead. However, you will have to know the
+current offset of your tiles into the original tile array of all tiles.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void VisualizeBoard()</code></pre>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            cARcassonne documentation
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

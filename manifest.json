@@ -1,0 +1,1329 @@
+{
+  "sitemap": {
+    "fileOptions": {
+      "api/*": {
+        "baseUrl": "https://normanderwan.github.io/DocFxForUnity/",
+        "changefreq": "daily"
+      }
+    },
+    "baseUrl": "https://normanderwan.github.io/DocFxForUnity/",
+    "changefreq": "weekly"
+  },
+  "homepages": [],
+  "source_base_path": "D:/a/cARcassonne/cARcassonne/Documentation",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      },
+      "is_incremental": false
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.AIDecisionRequester.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.AIDecisionRequester.html",
+          "hash": "8ToyhNSOFpAFvIjasnECztSesjdP0dXo7gs84xpmLlY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.AIWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.AIWrapper.html",
+          "hash": "qxqL0QQuy9uLFc4+ElON+xfU1P16VNVbqxDjj4ukfSw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.ActionApproach.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.ActionApproach.html",
+          "hash": "71Fj9pM3WUvslPGMakasLyIogOyz8V30toXEijM/TEo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.BoardAction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.BoardAction.html",
+          "hash": "nbbTpj15C/VVpBAKSCi6EI8UrP4nRR880FRo75u5dhc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.BoardObservation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.BoardObservation.html",
+          "hash": "2T7kChwV3wfbZFoGb2Qu+j/OCl/HdjlBLKKCFmOq5YE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.BrdActions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.BrdActions.html",
+          "hash": "wP3doCTfqbvn7mPO0/iE0A7P+HeRy5RMLJ9d6MyMKys="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.CarcassonneAgent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.CarcassonneAgent.html",
+          "hash": "SRMU5sohXKKP2mrLoP3WZhaoBMy+01Fhtx9+i0Xodsg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.DecisionAction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.DecisionAction.html",
+          "hash": "Q78Ct7nxY7JwKxxXejhhPZ3GDUyHBeR9vMsSbss484E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.EventDecisionRequester.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.EventDecisionRequester.html",
+          "hash": "JnCNUU4fDgo3koc1scv9s4qbw4KqGYqOFu8sgDjLb4E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.EventScorer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.EventScorer.html",
+          "hash": "OKiUIHi/iipraRYNAN0Fh7IP/Fr06+cQ43n1nfyPCow="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.Extensions.html",
+          "hash": "Rv0JKzNZoBpWIw4pAFiRdCJJG+qdTCjMStgM7PGbRGQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.MeeplePosition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.MeeplePosition.html",
+          "hash": "tfcfSpDZAvrvIJB/OGOopfVZcYWFaxaCtcb+Ub7b0vw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.ObservationApproach.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.ObservationApproach.html",
+          "hash": "wSLciKqk+/juNqpmB624SMBiYuNa/JMKzX/66SIithM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.SBSActions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.SBSActions.html",
+          "hash": "0rOg1NVDOPOChT22jUgCj28oeOT7EV2vTyOYFyOdcZk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.Training.GameStatsRecorder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.Training.GameStatsRecorder.html",
+          "hash": "JQ47WWuFSAf5wKgm3j4gEpAfV49gaRbpS+zBH6LDUBQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.Training.TurnStatsRecorder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.Training.TurnStatsRecorder.html",
+          "hash": "qebJTowxVofoAuDz5HaBnyRG2UfRhROKNRTw38qVAXE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.Training.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.Training.html",
+          "hash": "xgSvYMTFCG5Kj+r+kFhYKaa0KVxV8hfsHS9PsYk4ZP8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.html",
+          "hash": "Fs4XzMvqd0fSwDosJPaXIw9pX9eWpht9MstsMsykaWY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AR.Buttons.ButtonBackplate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AR.Buttons.ButtonBackplate.html",
+          "hash": "/kwZ83l3iWjg/ymR6hd+pO+qnKkQYriON1zyeL4i4q8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AR.Buttons.ConfirmButton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AR.Buttons.ConfirmButton.html",
+          "hash": "BCnXjBTBjtFiZH4wFGBIVhrn5iLBSgQHVdQiSxE4CjQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AR.Buttons.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AR.Buttons.html",
+          "hash": "sDrdiEyJD1PmaKQ92gnYwwWCDMgWOBHOhNm5PF7jBoY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AR.GameControllerScript.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AR.GameControllerScript.html",
+          "hash": "0qsO8Bvx7DWfTjgo62xOPgKprfFEPWcoAq7SfjqTey8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AR.GamePieces.ARTile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AR.GamePieces.ARTile.html",
+          "hash": "UvG+q8vHrOWF233dGVZYFwolfQrD2BbVzhAgUgsHxl8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AR.GamePieces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AR.GamePieces.html",
+          "hash": "3057VB9bwEmwS6FB9i4yk7w3MWUtEp4V0lwuyIjUBiE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AR.KeyboardController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AR.KeyboardController.html",
+          "hash": "aAWZ0Uh2uSqNYTsQsvCdwYl7b5U9o9AiSYDZkYPgflw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AR.Materials.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AR.Materials.html",
+          "hash": "9PKxtnP41PoKgek4Y8FL0/FB1dndoQzLxE1+hj31jhA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AR.MatrixRepresentationController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AR.MatrixRepresentationController.html",
+          "hash": "zIxM+7+Hks5IYV2w3NlKoQ9OmxVv/UZs8Z3SLcXVQAY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AR.MeepleControllerScript.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AR.MeepleControllerScript.html",
+          "hash": "DF2ISJsYqKoCQV8419n2ihWLuKOYdPUSed346DX/z08="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AR.TileControllerScript.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AR.TileControllerScript.html",
+          "hash": "az27kOQov6pxPDUJzTEoMApRiVRYBeYj7msA5Nr984I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AR.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AR.html",
+          "hash": "Vjlz0v1yUX9fN9UCdVphFMXhC/aVb1+tV+HXB+yHMO0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.CarcassonneVisualization.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.CarcassonneVisualization.html",
+          "hash": "/zzUPWYAHLl9dA7RblBsFoKfGQqiq/tPhw39WfreU3Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Controllers.GameController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Controllers.GameController.html",
+          "hash": "Vcq2NwzfHqYA2QAypveQl1CbwmVmSnBqPMOWSyyD31w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Controllers.GamePieceController-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Controllers.GamePieceController-1.html",
+          "hash": "hbotrjFpupuWsC8CJXfciQC20DdOnMQZO7/hUiO/cG8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Controllers.IGameControllerInterface.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Controllers.IGameControllerInterface.html",
+          "hash": "nyU+3ZfUITuYil5k4bDp4p6Lxr7k32SLzCgAyE4gK4E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Controllers.MeepleController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Controllers.MeepleController.html",
+          "hash": "afrvYU+ABta7JK8CEIHCT52qZNvSO7ZYx2jAyk6TYs8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Controllers.TileController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Controllers.TileController.html",
+          "hash": "NHI2B5YKTrp9lGc/LK63OtFEYBgAJ9W7sH9I7uNAiPA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Controllers.html",
+          "hash": "PkH7MUN2EEO4PrabQU7mScU7DV6KmgvphQoM6GH6M84="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Meeples.MeepleScript.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Meeples.MeepleScript.html",
+          "hash": "OUDv0atiUtgwUcpwS6pEvZdLIEPOp+Km1S3TUuPZ3tI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Meeples.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Meeples.html",
+          "hash": "nZT6aoHXgYSuh0TcnoLBs9bcEpYDfhMGjejuySjq5i8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Models.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Models.Extensions.html",
+          "hash": "+cfQs6DTRArwsIW7XcGl0xbxYT4iugQP+XDnQzXdyRk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Models.Geography.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Models.Geography.html",
+          "hash": "1RyJtc7A8sQSz4OFCk7hiSsbCuNCUNM7uTJ6M8CsIyI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Models.GridMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Models.GridMapper.html",
+          "hash": "gtPDY9lQmbEmdafVT0WjeHNcIMInk+sazGGXKKM2PkY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Models.Meeple.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Models.Meeple.html",
+          "hash": "EMvLL0EC0lGUyx+EX8WC5cwEWVmReGWIfLUEijUqpzc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Models.Player.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Models.Player.html",
+          "hash": "SphSpzkhqj4bzhSEvVqcnjIPAju/6rCuN998pEFHbbo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Models.Tile.TileSet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Models.Tile.TileSet.html",
+          "hash": "FlyVeRIF2fKhFCl/6CVLMzGRDgEB+HDpvPsa1RLsP7U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Models.Tile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Models.Tile.html",
+          "hash": "6pRUFntkVnLdBAs8b3oD4qZSfHHTc782QRXPhyOIOzY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Models.html",
+          "hash": "nr0xHnyidv/fgAzhv1T0CwUXZUrrXQ+vJouHnvehSaU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Players.ARPlayer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Players.ARPlayer.html",
+          "hash": "qQFQd/I4tTxIGq1WsUzHFe1Y2gj30ewdW2hED45ZHF4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Players.PlayerScoreScript.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Players.PlayerScoreScript.html",
+          "hash": "ru3go4vOPVlQSRCa9xE84xL9eONYZQk5YEd/ArkY5nY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.Players.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.Players.html",
+          "hash": "jVjiRyWx0NU0dOoAOZE0S/gKh0xs/Ej8ZgozASFsPis="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Coordinates.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Coordinates.html",
+          "hash": "3H1TvkBaW71YBYfdM+FRl6AB0AHylRd00CH51LrMwlE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.FeatureState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.FeatureState.html",
+          "hash": "Lyb+dMbD7TpH6QHtX1luIhoy1hoyWcs9W6lg940yAm0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.BoardChangedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.BoardChangedEventArgs.html",
+          "hash": "odY9/gQS75D0PdP3GdIUB6VPuVYrtZccZyMTw9FuH2Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.BoardGraph.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.BoardGraph.html",
+          "hash": "2taioEvqitGrQfe2CulqncF1YvUbVrOsS721+aeKjQM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.CarcassonneEdge.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.CarcassonneEdge.html",
+          "hash": "4v3enm7ubc1UPnRLYb0x95MPwggb8qLOoidW70d/Vrw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.CarcassonneGraph.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.CarcassonneGraph.html",
+          "hash": "TP5HZw6/NqGN5aquAm2G2wr5I/XC0yirkGd2B/Ek8Bg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.City.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.City.html",
+          "hash": "Cb0OMESMSgutMqE3BU+T4GuhfG6L+UpC1iUo0JrejwY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.Cloister.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.Cloister.html",
+          "hash": "MSOFNdc76fOSezKHGPCeoOLALOqMitILHuIWE1+LsSM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.ConnectionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.ConnectionType.html",
+          "hash": "eq3N9+Sc4Q2dHlnGbRyR1pbp0LPb4dp5K1htEGos/qA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.FeatureGraph.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.FeatureGraph.html",
+          "hash": "T4MSmKfJWGoFyEI2q6c+83bqF3LBgzSc7EB6nAOLcs8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.FilteredConnectedComponentsAlgorithm-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.FilteredConnectedComponentsAlgorithm-2.html",
+          "hash": "cpdFSU5x2tq5NmWkY1grA6elB8voNp+cJLR+QrHCtC4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.IFeature.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.IFeature.html",
+          "hash": "K+QMOVjxWN5lvPHhPISrfTOaEyDCp4KGWslvUztBq8c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.Road.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.Road.html",
+          "hash": "xVizkO95zbD8BPmQerHpPkU+tVDZsmY6WP5WF5v2gnE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.SubTile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.SubTile.html",
+          "hash": "dmBUGkt7bMKFI/G0L0gHcwNA9k0g23ea/LhG6KWV2G8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Features.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Features.html",
+          "hash": "hzEs78+TYtnuzpwWrnSxbl5MHgSfIe+wex08jbVz3cI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.GameRules.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.GameRules.html",
+          "hash": "QAwLL/mbTXHh4VCFZolM119gkg0t9HmF+3WpZFuJnJY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.GameState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.GameState.html",
+          "hash": "8IgN654p/1CDbI3qnMV0yQg4DZmpZtLixkr08ECxYd0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.IGamePieceState-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.IGamePieceState-1.html",
+          "hash": "kRNdcYeBRbsrzjaD2L/1HW4hK9EMmf4qIsvASS5TgeQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.MeepleState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.MeepleState.html",
+          "hash": "4/2fn7jshRVN8nMd+RvafyQLhuKnZGAv1vFQmxoaBmw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.Phase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.Phase.html",
+          "hash": "0AUjk6WECPqvSktrqfKZrGjrGpQpBEPKRR7YE79ozv4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.PlayerState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.PlayerState.html",
+          "hash": "SNqoGeqP3n742wFZvSfVYtYS0PNJx4pwplErhALpCHw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.TileIdComparer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.TileIdComparer.html",
+          "hash": "ocDXnqNFLQL0HQT9iVPlh1SdG3K1mqxs+dGxleUN4Xw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.TileState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.TileState.html",
+          "hash": "VhTJ5GHtaHbbBdcnQFXPhgvH28RmWfd62Ugh+G46IEM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.State.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.State.html",
+          "hash": "2AbcNOwkcnavNUFHnL2nxbrpzXbpEfNJjj8RV9f5EXU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.VisualizationInputTiles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.VisualizationInputTiles.html",
+          "hash": "IUt0siiowZAWfN6DPqV4l2GGFRQ9z7QoiWYrq/0VyRM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.html",
+          "hash": "hkmEekXuJkRxxnltjEuhs3filr5QJ6lEOsHf/xxD1x4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.AIGameController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.AIGameController.html",
+          "hash": "7oRzathVffiZ0Y192iE9AjMalyFBOk4Q8ODc+h7enHc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.AppSettingsExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.AppSettingsExtensions.html",
+          "hash": "jASib7fFcchR1c9ZUDPXL9dbt56eGN+/Jf8+HSKq2NE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.ChannelSelector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.ChannelSelector.html",
+          "hash": "6pCNUN7s8udrZx+Y08MekgsOYWplrbHKCivAbMp4csc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.ChatAppIdCheckerUI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.ChatAppIdCheckerUI.html",
+          "hash": "J9DpHRu++5w5hNQQvQys3helFF6fXtBXO6V8goc/fwc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.ChatGui.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.ChatGui.html",
+          "hash": "D7qrs0jOOi7uontY/heDfm8Q6tMwOQLut3X6o4xrEYE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.FriendItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.FriendItem.html",
+          "hash": "BFGr7VdYsTdhtSEUeK4fnZWNhXqGtsKyVKUDYCpc2pI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.GameLog.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.GameLog.html",
+          "hash": "pF8tiEqYKDqY8qytfLiw0PUYlAY48y4Fpc3J+vK0M5c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.IgnoreUiRaycastWhenInactive.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.IgnoreUiRaycastWhenInactive.html",
+          "hash": "dYM1pjLeSYYl44N8A5XgfSpRn8UhvlO5L3I/Gy/xVck="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.NamePickGui.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.NamePickGui.html",
+          "hash": "iX2Hb8PSUbKqghr7JDKZGJBTL12/H8kicXmI4g3xVZs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.PunStartup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.PunStartup.html",
+          "hash": "28iM5qe3VfPFWtRbrDBgna7GxWNt05RBDhBnuC9pvP0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.RewardMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.RewardMode.html",
+          "hash": "m+rlzLFnhUCYjDowh5zmj5TupzztLvbAaRxz/q5WQb8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.ServerSettingsInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.ServerSettingsInspector.html",
+          "hash": "ymMFy7d6yKjS7VKMe+IcZlaA2wHm+3rzlQz0w6ueW0E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.TileInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.TileInspector.html",
+          "hash": "/m4zHI5j/wIowY64o6bue1X6TvgCCswnJlsfqp2LU/4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.Turn.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.Turn.html",
+          "hash": "saUNTwSwVJ36kF0MVORh9bSTrsongg9zGZXprC9HYfg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.TurnPoints.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.TurnPoints.html",
+          "hash": "6eRBgwdrhWskiYCwW24dU9f9v8FDoPclmWHZ3wCtNB8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Global.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Global.html",
+          "hash": "Pt5LHOaPpV8V0oe8eR/f6l1byVtvwCCwG+ybNDx7stk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "PqPuN+X/4MNwIShFZGLtUETTbgLiN+SdJCdCUA4PWyU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/SituationRecognitionIdeas.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/SituationRecognitionIdeas.html",
+          "hash": "T8Vc/eO6qDIuPDt95w6njxLJcHAo6Kxye6vUqKM0Jbg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/architecture.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/architecture.html",
+          "hash": "KQ4DbeH5QEt0SQTF0ZxdD2Fhryfh/IvU789SzetKPwc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/gameplayAI.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/gameplayAI.html",
+          "hash": "YqNDkGSBfr1lKFy0YARfMQJ8tuUVHNGmImAR0ZTc60E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html",
+          "hash": "JuTutsSK2YU0hplUM48Z+sSdYuL6ds0pGsZpspf+fLU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/multiplayer.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/multiplayer.html",
+          "hash": "nTKI1xdtdlwNllK1k9WwJEODw5yheeVZdCyq4ZCh3Sk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/orientation.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/orientation.html",
+          "hash": "NntqIKS3mEnbDblCQXaSCmyRJc4g2oDDRm3yN+wRpio="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/situationRecognition.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/situationRecognition.html",
+          "hash": "qWvoNSr9w7jBJZvDtKrFY/4w7dj7dWLsf9R/YdESUQE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "articles/states.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/states.html",
+          "hash": "Gx3TMcDxckXMAuuBC0UPzJYc7T7BM/ZelEopyqkxUZo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "lE0LqHzYxi6Fol8ZGCKRyWPsKJ9jaAa6PmLMbNbSPz8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "5vrZ/1fN0GmWt2o9OVjsHt77vDH7AwynTeuPyGTZGxI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "WWMQcp51b2ykhEXKJeH7+hn0vqKdhiEbRTjI2Az72Ow="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 9,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 92,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: should not trace intermediate info.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

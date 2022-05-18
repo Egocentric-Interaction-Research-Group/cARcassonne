@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>cARcassonne | cARcassonne documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="cARcassonne | cARcassonne documentation ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="carcassonne">cARcassonne</h1>
+
+<p>Augmented Reality Carcassonne using the HoloLens2 and MRTK in Unity</p>
+<h3 id="dependencies">Dependencies</h3>
+<p>cARcassonne has recently moved to the Unity OpenXR Plugin system and Microsoft&#39;s Mixed Reality OpenXR plugin. <em>These should be installed automatically, but they are listed here for reference.</em></p>
+<ul>
+<li>Unity OpenXR plugin: version 1.2 or later</li>
+<li>Mixed Reality OpenXR plugin: version 1.0.0 or later</li>
+<li>MRTK: version 2.7.2 or later</li>
+<li>AR Foundation: version 4.1.1 or later</li>
+<li>Universal Render Pipeline (URP): version 10.5.1 or later</li>
+<li>Azure Spatial Anchors: version 2.10 or later</li>
+<li>Azure Remote Rendering: version 1.0.15 or later</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>Installation lists software versions that have been tested with the setup. Other versions may or may not work!</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<ol>
+<li>Windows 10 Education (21H1)<ul>
+<li><em>Tested on this particular build. Should work on many others as well.</em></li>
+<li>&gt; <strong>OS X</strong>: This also seems to work on OS X 11.6 Big Sur, tested on a Mac M1.</li>
+</ul>
+</li>
+<li>Unity Hub (v2.4.5)</li>
+<li>Microsoft Visual Studio Community 2019 (16.11.3) OR JetBrains Rider (2021.1+)</li>
+<li>Github Client<ul>
+<li>Terminal Client (any one will do)</li>
+<li>Github Desktop (<a href="https://desktop.github.com/">https://desktop.github.com/</a>)</li>
+<li>Gitkraken (<a href="https://www.gitkraken.com/">https://www.gitkraken.com/</a>)</li>
+</ul>
+</li>
+</ol>
+<h3 id="installing">Installing</h3>
+<ol>
+<li>Install Unity 20.3.19f1 from Unity Hub (v2.4.5)<ul>
+<li>Make sure <code>Universal Windows Platform Build Support</code> is checked.</li>
+<li>&gt; <strong>OS X</strong>: UWP isn&#39;t an option, so I&#39;ve just installed Mac and Windows build support</li>
+</ul>
+</li>
+<li>Clone the project from Github.<ul>
+<li>Check out the <code>develop</code> branch and fork from there.</li>
+<li>Actually, I&#39;d suggest each team make a main feature branch (e.g. <code>feature/gameplayai</code> and <code>feature/situationrecognition</code> that you all share and fork individial work branches from there.</li>
+</ul>
+</li>
+<li>Add the project to Unity Hub (<code>Projects &gt; Add</code>)</li>
+<li>Make sure the project has the right Unity version and open it.<ul>
+<li>This could take a while as Unity finds and downloads packages, etc.</li>
+</ul>
+</li>
+<li>The MRTK Project Configurator should pop up. <code>Apply</code> the default settings. The click <code>Next</code> and then <code>Done</code></li>
+<li>Add the missing Scenes to the Project Hierarchy:<ol>
+<li>Select <code>GameScene</code> and <code>StartmenuScene</code> from <code>Assets &gt; Scenes</code></li>
+<li>Drag them to the Hierarchy window</li>
+<li><code>Remove</code> the default Untitled Scene</li>
+<li><code>Unload</code> the <code>StartmenuScene</code> so that it is in the Hierarchy, but greyed out</li>
+</ol>
+</li>
+<li>Press play and the project should run!</li>
+</ol>
+<h3 id="building-the-documentation-windows-only">Building the documentation (windows only)</h3>
+<p>See <a href="Documentation/index.md">Documentation index</a></p>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<h4 id="reference-rewriter-error-type-systemwebhttputility-doesnt-exist-in-target-framework-it-is-referenced-from-restsharpdll-at-systemstring-restsharpextensionsstringextensionshtmlattributeencodesystemstring">Reference rewriter: Error: type <code>System.Web.HttpUtility</code> doesn&#39;t exist in target framework. It is referenced from RestSharp.dll at System.String RestSharp.Extensions.StringExtensions::HtmlAttributeEncode(System.String).</h4>
+<ol>
+<li>Select &quot;..\Assets\MRTK.Tutorials.AzureSpatialAnchors\Plugins\RestSharp.dll&quot;
+Change the settings of the inspector panel</li>
+<li>Platform settings-&gt;SDK-&gt;UWP<ol>
+<li>Check &quot;Don&#39;t process&quot;</li>
+<li>Uncheck “Select platforms for plugin-&gt;Any Platform”, and Check ALL platforms below</li>
+<li>P.S. I&#39;m not sure which step took effect. For steps 2.1 to 2.3, I did it together. According to experience, I think step 2.1 is the key, but I still did 2.2 and 2.3 to ensure that it is correct.</li>
+</ol>
+</li>
+</ol>
+<h4 id="unity-crashes-while-loading-importing-assets-compiling-assembly-definition-files-scripts">Unity crashes while loading, &quot;Importing Assets: Compiling Assembly Definition Files scripts&quot;</h4>
+<ol>
+<li>Delete Library and Temp folders</li>
+<li>Try again</li>
+</ol>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Egocentric-Interaction-Research-Group/cARcassonne/blob/feature/docs/Documentation/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            cARcassonne documentation
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

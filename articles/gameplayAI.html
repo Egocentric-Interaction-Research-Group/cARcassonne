@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Gameplay AI | cARcassonne documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Gameplay AI | cARcassonne documentation ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="gameplay-ai">Gameplay AI</h1>
+
+<h2 id="overview">Overview</h2>
+<p>The goal of this project is to develop an AI to play the board game Carcassonne. The AI should be able to learn how to play the game against other AI agents as well as against human players. It should have a tunable play difficulty and should be relatively transparent in its decision-making so that it is possible to understand why it is taking particular actions.</p>
+<p>The ultimate goal is to integrate the AI into the augmented reality (AR) version of Carcassonne that is under development. For this, it would be beneficial for the agent to be developed using Unity’s ML-Agents toolkit (<a href="https://unity.com/products/machine-learning-agents">https://unity.com/products/machine-learning-agents</a>). However, it is also possible to experiment with other versions of Carcassonne and alternative learning toolkits such as PyTorch and Tensorflow.</p>
+<p>A secondary goal of this project is to generate a dataset of possible game moves and their utility within the game. In training the AI agents, we will record all of the game metadata in order to create a large database of Carcassonne gameplay actions to use in future studies.</p>
+<h3 id="goals">Goals</h3>
+<p>In order of importance. Goals further down the list are secondary and only to be taken on if success is achieved in the first goal(s).</p>
+<ol>
+<li>Produce a working Carcassonne AI that plays in the cARcassonne game in Unity</li>
+<li>Simulate AI-vs-AI games</li>
+<li>Extend the AI to emulate different player strategies, levels of experience, etc.</li>
+</ol>
+<h3 id="remember">Remember</h3>
+<p>This project is part of a larger codebase. The job is not just to make something that works. It is also to develop something that is organized and well-documented so that the next people who come along can add/modify/enhance it. Please make sure to comment code using <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/recommended-tags">standard documentation formats</a>.</p>
+<p>David will spend some time trying to get proper documentation building and unit testing enabled on the project, so think about how the code will be tested as well!</p>
+<h2 id="resources">Resources</h2>
+<h3 id="carcassonne-ai">Carcassonne AI</h3>
+<p>Vincent Bons has written about preparing Carcassonne for machine learning at his <a href="https://wingedsheep.com/programming-carcassonne/">website</a>.
+A modified version of his data representation is detailed at the <a href="states.html">State Representation</a> document.</p>
+<h3 id="ai-in-unity">AI in Unity</h3>
+<p>Machine learning integration in Unity is often done using <a href="https://unity.com/products/machine-learning-agents">ML-Agents</a>. Detailed documentation for ML-Agents is <a href="https://github.com/Unity-Technologies/ml-agents/blob/release_18_docs/docs/Readme.md">here</a></p>
+<h3 id="mrtk-input-simulation">MRTK Input Simulation</h3>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/input-simulation/input-simulation-service?view=mrtkunity-2021-05">https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/features/input-simulation/input-simulation-service?view=mrtkunity-2021-05</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Egocentric-Interaction-Research-Group/cARcassonne/blob/feature/docs/Documentation/articles/gameplayAI.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            cARcassonne documentation
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Overview | cARcassonne documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Overview | cARcassonne documentation ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="overview">Overview</h1>
+
+<p>A proposed comprehensive game state is defined in this document as well as a proposed action representation. Actions cause state changes and the game should be able to be defined by an initial state and a set of actions, though this may not be true for portions (especially the physiological portions) of the player states.</p>
+<p>The state of the game is divided into categories: Rules, Game, and Player.
+Carcassonne can be played with different rule sets, so it is important to define here which rules and modifications are being used.
+In the current implementation of the game, the rules are fixed, but this is included for future developments and to specify which rules are being used currently.</p>
+<p>The state variables are further tagged as Intrinsic, <em>Derived</em>, <strong>Measured</strong>, <strong><em>Inaccessible</em></strong> using italics and bold font.
+Intrinsic state variables come directly from the game pieces, holding information like the location of tiles, etc.
+<em>Derived</em> state variables can be calculated from Intrinsic ones, such as the number of tiles remaining, which can be found using the set of tiles on the board.
+<strong>Measured</strong> state variables are primarily player-related physiological states that we can measure using the equipment being used.
+And <strong><em>Inaccessible</em></strong> are player-related states that are not immediately available and must be learned/estimated or require additional equipment (but could be interesting and relevant for assessing their gameplay).</p>
+<p>I should note that this draws heavily on the framework at <a href="https://wingedsheep.com/programming-carcassonne/">https://wingedsheep.com/programming-carcassonne/</a>.</p>
+<h2 id="board-representations">Board Representations</h2>
+<p>There are two possible representations (that I&#39;ve come up with...I&#39;m sure there are more!) for the positions of the tiles on the board.
+Each has its advantages and disadvantages and we might end up wanting to move between them.</p>
+<p>Tiles and the entire board can be represented as a matrix of features.
+Each tile is a 3x3 matrix and each feature is one of <strong>R</strong>oad, <strong>C</strong>ity, or <strong>Ch</strong>apel (we ignore Fields and Rivers for now because they are not being used in this rule set).</p>
+<p>The alternative representation is as a graph of features with ports on the <strong>N</strong>orth, <strong>S</strong>outh, <strong>E</strong>ast, and <strong>W</strong>est of each tile (these cardinal directions are fixed for a tile and if the tile is rotated, <strong>N</strong> might face down or to the side).</p>
+<p><img src="./representations/tile_representations.jpeg" alt="!"></p>
+<p>These two representations expand from the tile into the whole board, creating a board-wide matrix of roads and cities, or a board-wide graph of the same.</p>
+<p><img src="./representations/board_representations.jpeg" alt="!"></p>
+<h2 id="useful-data">Useful Data</h2>
+<h3 id="tiles">Tiles</h3>
+<p>There are 48 land tiles and 12 river tiles (if they are being used). </p>
+<ul>
+<li>48 land</li>
+<li>12 river (should not used here, but they do currently appear in the game)</li>
+</ul>
+<h3 id="meeples">Meeples</h3>
+<ul>
+<li>Colours: yellow, red, green, blue, black</li>
+<li>7 + abbot (-1 for scoreboard)</li>
+<li>Roles: highwayperson, knight, monk, farmer?</li>
+</ul>
+<h1 id="state">State</h1>
+<h2 id="rules">Rules</h2>
+<ul>
+<li>abbots (<code>bool</code>: <code>False</code>)</li>
+<li>river (<code>bool</code>: <code>False</code>)<ul>
+<li><em>This is currently implemented incorrectly. River tiles are mixed in with the main game tiles, but they should be placed at the beginning of the game if they are being used.</em></li>
+</ul>
+</li>
+<li>farmers (<code>bool</code>: <code>False</code>)</li>
+</ul>
+<h2 id="game">Game</h2>
+<ul>
+<li>phase {<code>GameControllerScript.phase</code>} (<code>enum: [tile, meeple, scoring]</code>)</li>
+<li>remaining tiles {<code>StackScript</code>} (<code>list</code>)</li>
+<li>current tile (<code>obj</code>)</li>
+<li><em>allowed tile placements</em> (<code>list</code>)</li>
+<li><em>allowed meeple placements</em> (<code>list</code>)</li>
+<li>players (<code>list</code>)</li>
+<li>current player (<code>obj</code>)</li>
+<li>played tiles {<code>PlacedTileScript</code>} (<code>matrix</code>)<ul>
+<li><em>we could also use a graph representation here, which might be more effective.</em></li>
+</ul>
+</li>
+<li><em>cities</em><ul>
+<li>complete (<code>bool</code>)</li>
+<li>segments (<code>int</code>)</li>
+<li>shields (<code>int</code>)</li>
+<li>meeples (<code>list</code>)</li>
+<li>open sides (<code>int</code>)</li>
+<li>completable (<code>bool</code>)<ul>
+<li><em>calculated from the remaining game tiles</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><em>roads</em><ul>
+<li>complete (<code>bool</code>)</li>
+<li>segments (<code>int</code>)</li>
+<li>meeples (<code>list</code>)</li>
+<li>open sides (<code>int</code>)</li>
+<li>completable (<code>bool</code>)<ul>
+<li><em>calculated from the remaining game tiles</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><em>chapels</em><ul>
+<li>complete (<code>bool</code>)</li>
+<li>segments (<code>int</code>)</li>
+<li>meeples (<code>list</code>)</li>
+<li>completable (<code>bool</code>)<ul>
+<li><em>calculated from the remaining game tiles</em></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="tile">Tile</h3>
+<ul>
+<li>set (<code>enum</code>: <code>[main, river, ...]</code>)</li>
+<li>shield (<code>bool</code>)</li>
+<li>layout (<code>matrix</code>)<ul>
+<li><em>we could also use a graph representation here, which might be more effective.</em></li>
+</ul>
+</li>
+<li>meeple (<code>obj</code>)</li>
+<li>meeple position (<code>enum</code>: <code>[N,S,E,W,C]</code>)</li>
+</ul>
+<h3 id="meeple">Meeple</h3>
+<ul>
+<li>set (<code>enum</code>: <code>[main, abbot]</code>)</li>
+<li>player (<code>obj</code>)</li>
+<li><em>colour</em></li>
+<li><em>placement</em></li>
+</ul>
+<h2 id="player">Player</h2>
+<ul>
+<li>score (<code>int</code>)</li>
+<li><em>score including unfinished</em> (<code>int</code>)</li>
+<li><p><em>remaining meeples</em> (<code>int</code>)</p>
+</li>
+<li><p><strong><em>priorities/focus/short-term goals</em></strong></p>
+</li>
+<li><strong><em>play style/strategy preference</em></strong></li>
+<li><strong><em>expertise/experience</em></strong></li>
+</ul>
+<h3 id="physiology">Physiology</h3>
+<ul>
+<li><strong>alertness</strong></li>
+<li><strong>distraction</strong></li>
+<li><strong>attention/saliency map</strong></li>
+<li><strong><em>emotional valence</em></strong></li>
+<li><strong><em>emotional arousal</em></strong></li>
+<li><strong><em>heartrate</em></strong></li>
+<li><strong><em>EEG data</em></strong> (for example from <a href="https://www.emotiv.com/">https://www.emotiv.com/</a>)</li>
+</ul>
+<h1 id="actions">Actions</h1>
+<ul>
+<li>Tile placement (<code>matrix</code>)<ul>
+<li><em>in graph representation: new connection point</em></li>
+</ul>
+</li>
+<li>Meeple placement (<code>enum</code>: <code>[N,S,E,W,C]</code>)</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Egocentric-Interaction-Research-Group/cARcassonne/blob/feature/docs/Documentation/articles/states.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            cARcassonne documentation
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
