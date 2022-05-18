@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class TileControllerScript
+    <title>Class Carcassonne2DSensorBase
    | cARcassonne documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class TileControllerScript
+    <meta name="title" content="Class Carcassonne2DSensorBase
    | cARcassonne documentation ">
     <meta name="generator" content="docfx 2.59.2.0">
     
@@ -78,58 +78,70 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Carcassonne.AR.TileControllerScript">
+            <article class="content wrap" id="_content" data-uid="Carcassonne.AI.Carcassonne2DSensorBase">
   
   
-  <h1 id="Carcassonne_AR_TileControllerScript" data-uid="Carcassonne.AR.TileControllerScript" class="text-break">Class TileControllerScript
+  <h1 id="Carcassonne_AI_Carcassonne2DSensorBase" data-uid="Carcassonne.AI.Carcassonne2DSensorBase" class="text-break">Class Carcassonne2DSensorBase
   </h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">TileControllerScript</span></div>
+    <div class="level1"><span class="xref">Carcassonne2DSensorBase</span></div>
+      <div class="level2"><a class="xref" href="Carcassonne.AI.Board2DSensor.html">Board2DSensor</a></div>
+      <div class="level2"><a class="xref" href="Carcassonne.AI.CurrentTile2DSensor.html">CurrentTile2DSensor</a></div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Carcassonne.AR.html">Carcassonne.AR</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Carcassonne.AI.html">Carcassonne.AI</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Carcassonne_AR_TileControllerScript_syntax">Syntax</h5>
+  <h5 id="Carcassonne_AI_Carcassonne2DSensorBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TileControllerScript : MonoBehaviourPun</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class Carcassonne2DSensorBase : ISensor, IDisposable</code></pre>
   </div>
-  <h3 id="fields">Fields
+  <h3 id="constructors">Constructors
   </h3>
   
   
-  <h4 id="Carcassonne_AR_TileControllerScript_confirmButton" data-uid="Carcassonne.AR.TileControllerScript.confirmButton">confirmButton</h4>
+  <a id="Carcassonne_AI_Carcassonne2DSensorBase__ctor_" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.#ctor*"></a>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase__ctor_GameState_System_String_" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.#ctor(GameState,System.String)">Carcassonne2DSensorBase(GameState, String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ConfirmButton confirmButton</code></pre>
+    <pre><code class="lang-csharp hljs">public Carcassonne2DSensorBase(GameState mState, string name)</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ConfirmButton</span></td>
+        <td><span class="xref">GameState</span></td>
+        <td><span class="parametername">mState</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  <h3 id="fields">Fields
+  </h3>
   
   
-  <h4 id="Carcassonne_AR_TileControllerScript_startingTileID" data-uid="Carcassonne.AR.TileControllerScript.startingTileID">startingTileID</h4>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_m_Channels" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.m_Channels">m_Channels</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int startingTileID</code></pre>
+    <pre><code class="lang-csharp hljs">protected int m_Channels</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -148,12 +160,12 @@
   </table>
   
   
-  <h4 id="Carcassonne_AR_TileControllerScript_tileGrid" data-uid="Carcassonne.AR.TileControllerScript.tileGrid">tileGrid</h4>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_m_Height" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.m_Height">m_Height</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Grid tileGrid</code></pre>
+    <pre><code class="lang-csharp hljs">protected int m_Height</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -165,19 +177,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Grid</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Carcassonne_AR_TileControllerScript_tileGroup" data-uid="Carcassonne.AR.TileControllerScript.tileGroup">tileGroup</h4>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_m_Name" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.m_Name">m_Name</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public byte tileGroup</code></pre>
+    <pre><code class="lang-csharp hljs">protected string m_Name</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -189,19 +201,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Carcassonne_AR_TileControllerScript_tileParent" data-uid="Carcassonne.AR.TileControllerScript.tileParent">tileParent</h4>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_m_State" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.m_State">m_State</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Transform tileParent</code></pre>
+    <pre><code class="lang-csharp hljs">protected GameState m_State</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -213,19 +225,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Transform</span></td>
+        <td><span class="xref">GameState</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Carcassonne_AR_TileControllerScript_tilePrefab" data-uid="Carcassonne.AR.TileControllerScript.tilePrefab">tilePrefab</h4>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_m_Width" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.m_Width">m_Width</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Tile tilePrefab</code></pre>
+    <pre><code class="lang-csharp hljs">protected int m_Width</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -237,7 +249,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Carcassonne.Models.Tile.html">Tile</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -246,23 +258,143 @@
   </h3>
   
   
-  <a id="Carcassonne_AR_TileControllerScript_OnDiscard_" data-uid="Carcassonne.AR.TileControllerScript.OnDiscard*"></a>
-  <h4 id="Carcassonne_AR_TileControllerScript_OnDiscard" data-uid="Carcassonne.AR.TileControllerScript.OnDiscard">OnDiscard()</h4>
+  <a id="Carcassonne_AI_Carcassonne2DSensorBase_Dispose_" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.Dispose*"></a>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_Dispose" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.Dispose">Dispose()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnDiscard()</code></pre>
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
   </div>
   
   
-  <a id="Carcassonne_AR_TileControllerScript_OnDraw_" data-uid="Carcassonne.AR.TileControllerScript.OnDraw*"></a>
-  <h4 id="Carcassonne_AR_TileControllerScript_OnDraw_Carcassonne_Models_Tile_" data-uid="Carcassonne.AR.TileControllerScript.OnDraw(Carcassonne.Models.Tile)">OnDraw(Tile)</h4>
+  <a id="Carcassonne_AI_Carcassonne2DSensorBase_GetCompressedObservation_" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.GetCompressedObservation*"></a>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_GetCompressedObservation" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.GetCompressedObservation">GetCompressedObservation()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnDraw(Tile tile)</code></pre>
+    <pre><code class="lang-csharp hljs">public byte[] GetCompressedObservation()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Carcassonne_AI_Carcassonne2DSensorBase_GetCompressionSpec_" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.GetCompressionSpec*"></a>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_GetCompressionSpec" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.GetCompressionSpec">GetCompressionSpec()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CompressionSpec GetCompressionSpec()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CompressionSpec</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Carcassonne_AI_Carcassonne2DSensorBase_GetName_" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.GetName*"></a>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_GetName" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.GetName">GetName()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetName()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Carcassonne_AI_Carcassonne2DSensorBase_GetObservationSpec_" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.GetObservationSpec*"></a>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_GetObservationSpec" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.GetObservationSpec">GetObservationSpec()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ObservationSpec GetObservationSpec()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ObservationSpec</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Carcassonne_AI_Carcassonne2DSensorBase_Reset_" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.Reset*"></a>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_Reset" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.Reset">Reset()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Reset()</code></pre>
+  </div>
+  
+  
+  <a id="Carcassonne_AI_Carcassonne2DSensorBase_Update_" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.Update*"></a>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_Update" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.Update">Update()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Update()</code></pre>
+  </div>
+  
+  
+  <a id="Carcassonne_AI_Carcassonne2DSensorBase_Write_" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.Write*"></a>
+  <h4 id="Carcassonne_AI_Carcassonne2DSensorBase_Write_ObservationWriter_" data-uid="Carcassonne.AI.Carcassonne2DSensorBase.Write(ObservationWriter)">Write(ObservationWriter)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract int Write(ObservationWriter writer)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -275,134 +407,27 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Carcassonne.Models.Tile.html">Tile</a></td>
-        <td><span class="parametername">tile</span></td>
+        <td><span class="xref">ObservationWriter</span></td>
+        <td><span class="parametername">writer</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Carcassonne_AR_TileControllerScript_OnInvalidPlace_" data-uid="Carcassonne.AR.TileControllerScript.OnInvalidPlace*"></a>
-  <h4 id="Carcassonne_AR_TileControllerScript_OnInvalidPlace" data-uid="Carcassonne.AR.TileControllerScript.OnInvalidPlace">OnInvalidPlace()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnInvalidPlace()</code></pre>
-  </div>
-  
-  
-  <a id="Carcassonne_AR_TileControllerScript_OnPlace_" data-uid="Carcassonne.AR.TileControllerScript.OnPlace*"></a>
-  <h4 id="Carcassonne_AR_TileControllerScript_OnPlace" data-uid="Carcassonne.AR.TileControllerScript.OnPlace">OnPlace()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnPlace()</code></pre>
-  </div>
-  
-  
-  <a id="Carcassonne_AR_TileControllerScript_OnPlace_" data-uid="Carcassonne.AR.TileControllerScript.OnPlace*"></a>
-  <h4 id="Carcassonne_AR_TileControllerScript_OnPlace_Carcassonne_Models_Tile_Vector2Int_" data-uid="Carcassonne.AR.TileControllerScript.OnPlace(Carcassonne.Models.Tile,Vector2Int)">OnPlace(Tile, Vector2Int)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnPlace(Tile tile, Vector2Int cell)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Carcassonne.Models.Tile.html">Tile</a></td>
-        <td><span class="parametername">tile</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">Vector2Int</span></td>
-        <td><span class="parametername">cell</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Carcassonne_AR_TileControllerScript_OnRotate_" data-uid="Carcassonne.AR.TileControllerScript.OnRotate*"></a>
-  <h4 id="Carcassonne_AR_TileControllerScript_OnRotate" data-uid="Carcassonne.AR.TileControllerScript.OnRotate">OnRotate()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnRotate()</code></pre>
-  </div>
-  
-  
-  <a id="Carcassonne_AR_TileControllerScript_PlaceTile_" data-uid="Carcassonne.AR.TileControllerScript.PlaceTile*"></a>
-  <h4 id="Carcassonne_AR_TileControllerScript_PlaceTile" data-uid="Carcassonne.AR.TileControllerScript.PlaceTile">PlaceTile()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void PlaceTile()</code></pre>
-  </div>
-  
-  
-  <a id="Carcassonne_AR_TileControllerScript_RPCDiscard_" data-uid="Carcassonne.AR.TileControllerScript.RPCDiscard*"></a>
-  <h4 id="Carcassonne_AR_TileControllerScript_RPCDiscard" data-uid="Carcassonne.AR.TileControllerScript.RPCDiscard">RPCDiscard()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RPCDiscard()</code></pre>
-  </div>
-  
-  
-  <a id="Carcassonne_AR_TileControllerScript_RPCDraw_" data-uid="Carcassonne.AR.TileControllerScript.RPCDraw*"></a>
-  <h4 id="Carcassonne_AR_TileControllerScript_RPCDraw" data-uid="Carcassonne.AR.TileControllerScript.RPCDraw">RPCDraw()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RPCDraw()</code></pre>
-  </div>
-  
-  
-  <a id="Carcassonne_AR_TileControllerScript_RPCInvalidPlace_" data-uid="Carcassonne.AR.TileControllerScript.RPCInvalidPlace*"></a>
-  <h4 id="Carcassonne_AR_TileControllerScript_RPCInvalidPlace" data-uid="Carcassonne.AR.TileControllerScript.RPCInvalidPlace">RPCInvalidPlace()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RPCInvalidPlace()</code></pre>
-  </div>
-  
-  
-  <a id="Carcassonne_AR_TileControllerScript_RPCPlace_" data-uid="Carcassonne.AR.TileControllerScript.RPCPlace*"></a>
-  <h4 id="Carcassonne_AR_TileControllerScript_RPCPlace" data-uid="Carcassonne.AR.TileControllerScript.RPCPlace">RPCPlace()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RPCPlace()</code></pre>
-  </div>
-  
-  
-  <a id="Carcassonne_AR_TileControllerScript_RPCRotate_" data-uid="Carcassonne.AR.TileControllerScript.RPCRotate*"></a>
-  <h4 id="Carcassonne_AR_TileControllerScript_RPCRotate" data-uid="Carcassonne.AR.TileControllerScript.RPCRotate">RPCRotate()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RPCRotate()</code></pre>
-  </div>
 </article>
           </div>
           

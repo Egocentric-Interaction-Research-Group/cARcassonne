@@ -468,6 +468,38 @@ references:
   commentId: F:Carcassonne.AI.AIWrapper.tileController
   fullName: Carcassonne.AI.AIWrapper.tileController
   nameWithType: AIWrapper.tileController
+- uid: Carcassonne.AI.Board2DSensor
+  name: Board2DSensor
+  href: api/Carcassonne.AI.Board2DSensor.html
+  commentId: T:Carcassonne.AI.Board2DSensor
+  fullName: Carcassonne.AI.Board2DSensor
+  nameWithType: Board2DSensor
+- uid: Carcassonne.AI.Board2DSensor.#ctor(GameState,System.String)
+  name: Board2DSensor(GameState, String)
+  href: api/Carcassonne.AI.Board2DSensor.html#Carcassonne_AI_Board2DSensor__ctor_GameState_System_String_
+  commentId: M:Carcassonne.AI.Board2DSensor.#ctor(GameState,System.String)
+  fullName: Carcassonne.AI.Board2DSensor.Board2DSensor(GameState, System.String)
+  nameWithType: Board2DSensor.Board2DSensor(GameState, String)
+- uid: Carcassonne.AI.Board2DSensor.#ctor*
+  name: Board2DSensor
+  href: api/Carcassonne.AI.Board2DSensor.html#Carcassonne_AI_Board2DSensor__ctor_
+  commentId: Overload:Carcassonne.AI.Board2DSensor.#ctor
+  isSpec: "True"
+  fullName: Carcassonne.AI.Board2DSensor.Board2DSensor
+  nameWithType: Board2DSensor.Board2DSensor
+- uid: Carcassonne.AI.Board2DSensor.Write(ObservationWriter)
+  name: Write(ObservationWriter)
+  href: api/Carcassonne.AI.Board2DSensor.html#Carcassonne_AI_Board2DSensor_Write_ObservationWriter_
+  commentId: M:Carcassonne.AI.Board2DSensor.Write(ObservationWriter)
+  fullName: Carcassonne.AI.Board2DSensor.Write(ObservationWriter)
+  nameWithType: Board2DSensor.Write(ObservationWriter)
+- uid: Carcassonne.AI.Board2DSensor.Write*
+  name: Write
+  href: api/Carcassonne.AI.Board2DSensor.html#Carcassonne_AI_Board2DSensor_Write_
+  commentId: Overload:Carcassonne.AI.Board2DSensor.Write
+  isSpec: "True"
+  fullName: Carcassonne.AI.Board2DSensor.Write
+  nameWithType: Board2DSensor.Write
 - uid: Carcassonne.AI.BoardAction
   name: BoardAction
   href: api/Carcassonne.AI.BoardAction.html
@@ -480,6 +512,19 @@ references:
   commentId: T:Carcassonne.AI.BoardObservation
   fullName: Carcassonne.AI.BoardObservation
   nameWithType: BoardObservation
+- uid: Carcassonne.AI.BoardObservation.AddNoObservations(Carcassonne.AI.AIWrapper,VectorSensor)
+  name: AddNoObservations(AIWrapper, VectorSensor)
+  href: api/Carcassonne.AI.BoardObservation.html#Carcassonne_AI_BoardObservation_AddNoObservations_Carcassonne_AI_AIWrapper_VectorSensor_
+  commentId: M:Carcassonne.AI.BoardObservation.AddNoObservations(Carcassonne.AI.AIWrapper,VectorSensor)
+  fullName: Carcassonne.AI.BoardObservation.AddNoObservations(Carcassonne.AI.AIWrapper, VectorSensor)
+  nameWithType: BoardObservation.AddNoObservations(AIWrapper, VectorSensor)
+- uid: Carcassonne.AI.BoardObservation.AddNoObservations*
+  name: AddNoObservations
+  href: api/Carcassonne.AI.BoardObservation.html#Carcassonne_AI_BoardObservation_AddNoObservations_
+  commentId: Overload:Carcassonne.AI.BoardObservation.AddNoObservations
+  isSpec: "True"
+  fullName: Carcassonne.AI.BoardObservation.AddNoObservations
+  nameWithType: BoardObservation.AddNoObservations
 - uid: Carcassonne.AI.BoardObservation.AddPackedTileIdObservations(Carcassonne.AI.AIWrapper,VectorSensor)
   name: AddPackedTileIdObservations(AIWrapper, VectorSensor)
   href: api/Carcassonne.AI.BoardObservation.html#Carcassonne_AI_BoardObservation_AddPackedTileIdObservations_Carcassonne_AI_AIWrapper_VectorSensor_
@@ -575,6 +620,210 @@ references:
   commentId: F:Carcassonne.AI.BrdActions.TileY
   fullName: Carcassonne.AI.BrdActions.TileY
   nameWithType: BrdActions.TileY
+- uid: Carcassonne.AI.Carcassonne2DSensorBase
+  name: Carcassonne2DSensorBase
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html
+  commentId: T:Carcassonne.AI.Carcassonne2DSensorBase
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase
+  nameWithType: Carcassonne2DSensorBase
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.#ctor(GameState,System.String)
+  name: Carcassonne2DSensorBase(GameState, String)
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase__ctor_GameState_System_String_
+  commentId: M:Carcassonne.AI.Carcassonne2DSensorBase.#ctor(GameState,System.String)
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.Carcassonne2DSensorBase(GameState, System.String)
+  nameWithType: Carcassonne2DSensorBase.Carcassonne2DSensorBase(GameState, String)
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.#ctor*
+  name: Carcassonne2DSensorBase
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase__ctor_
+  commentId: Overload:Carcassonne.AI.Carcassonne2DSensorBase.#ctor
+  isSpec: "True"
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.Carcassonne2DSensorBase
+  nameWithType: Carcassonne2DSensorBase.Carcassonne2DSensorBase
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.Dispose
+  name: Dispose()
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_Dispose
+  commentId: M:Carcassonne.AI.Carcassonne2DSensorBase.Dispose
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.Dispose()
+  nameWithType: Carcassonne2DSensorBase.Dispose()
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.Dispose*
+  name: Dispose
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_Dispose_
+  commentId: Overload:Carcassonne.AI.Carcassonne2DSensorBase.Dispose
+  isSpec: "True"
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.Dispose
+  nameWithType: Carcassonne2DSensorBase.Dispose
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.GetCompressedObservation
+  name: GetCompressedObservation()
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_GetCompressedObservation
+  commentId: M:Carcassonne.AI.Carcassonne2DSensorBase.GetCompressedObservation
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.GetCompressedObservation()
+  nameWithType: Carcassonne2DSensorBase.GetCompressedObservation()
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.GetCompressedObservation*
+  name: GetCompressedObservation
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_GetCompressedObservation_
+  commentId: Overload:Carcassonne.AI.Carcassonne2DSensorBase.GetCompressedObservation
+  isSpec: "True"
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.GetCompressedObservation
+  nameWithType: Carcassonne2DSensorBase.GetCompressedObservation
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.GetCompressionSpec
+  name: GetCompressionSpec()
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_GetCompressionSpec
+  commentId: M:Carcassonne.AI.Carcassonne2DSensorBase.GetCompressionSpec
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.GetCompressionSpec()
+  nameWithType: Carcassonne2DSensorBase.GetCompressionSpec()
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.GetCompressionSpec*
+  name: GetCompressionSpec
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_GetCompressionSpec_
+  commentId: Overload:Carcassonne.AI.Carcassonne2DSensorBase.GetCompressionSpec
+  isSpec: "True"
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.GetCompressionSpec
+  nameWithType: Carcassonne2DSensorBase.GetCompressionSpec
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.GetName
+  name: GetName()
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_GetName
+  commentId: M:Carcassonne.AI.Carcassonne2DSensorBase.GetName
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.GetName()
+  nameWithType: Carcassonne2DSensorBase.GetName()
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.GetName*
+  name: GetName
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_GetName_
+  commentId: Overload:Carcassonne.AI.Carcassonne2DSensorBase.GetName
+  isSpec: "True"
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.GetName
+  nameWithType: Carcassonne2DSensorBase.GetName
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.GetObservationSpec
+  name: GetObservationSpec()
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_GetObservationSpec
+  commentId: M:Carcassonne.AI.Carcassonne2DSensorBase.GetObservationSpec
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.GetObservationSpec()
+  nameWithType: Carcassonne2DSensorBase.GetObservationSpec()
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.GetObservationSpec*
+  name: GetObservationSpec
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_GetObservationSpec_
+  commentId: Overload:Carcassonne.AI.Carcassonne2DSensorBase.GetObservationSpec
+  isSpec: "True"
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.GetObservationSpec
+  nameWithType: Carcassonne2DSensorBase.GetObservationSpec
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.m_Channels
+  name: m_Channels
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_m_Channels
+  commentId: F:Carcassonne.AI.Carcassonne2DSensorBase.m_Channels
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.m_Channels
+  nameWithType: Carcassonne2DSensorBase.m_Channels
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.m_Height
+  name: m_Height
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_m_Height
+  commentId: F:Carcassonne.AI.Carcassonne2DSensorBase.m_Height
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.m_Height
+  nameWithType: Carcassonne2DSensorBase.m_Height
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.m_Name
+  name: m_Name
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_m_Name
+  commentId: F:Carcassonne.AI.Carcassonne2DSensorBase.m_Name
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.m_Name
+  nameWithType: Carcassonne2DSensorBase.m_Name
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.m_State
+  name: m_State
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_m_State
+  commentId: F:Carcassonne.AI.Carcassonne2DSensorBase.m_State
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.m_State
+  nameWithType: Carcassonne2DSensorBase.m_State
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.m_Width
+  name: m_Width
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_m_Width
+  commentId: F:Carcassonne.AI.Carcassonne2DSensorBase.m_Width
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.m_Width
+  nameWithType: Carcassonne2DSensorBase.m_Width
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.Reset
+  name: Reset()
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_Reset
+  commentId: M:Carcassonne.AI.Carcassonne2DSensorBase.Reset
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.Reset()
+  nameWithType: Carcassonne2DSensorBase.Reset()
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.Reset*
+  name: Reset
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_Reset_
+  commentId: Overload:Carcassonne.AI.Carcassonne2DSensorBase.Reset
+  isSpec: "True"
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.Reset
+  nameWithType: Carcassonne2DSensorBase.Reset
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.Update
+  name: Update()
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_Update
+  commentId: M:Carcassonne.AI.Carcassonne2DSensorBase.Update
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.Update()
+  nameWithType: Carcassonne2DSensorBase.Update()
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.Update*
+  name: Update
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_Update_
+  commentId: Overload:Carcassonne.AI.Carcassonne2DSensorBase.Update
+  isSpec: "True"
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.Update
+  nameWithType: Carcassonne2DSensorBase.Update
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.Write(ObservationWriter)
+  name: Write(ObservationWriter)
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_Write_ObservationWriter_
+  commentId: M:Carcassonne.AI.Carcassonne2DSensorBase.Write(ObservationWriter)
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.Write(ObservationWriter)
+  nameWithType: Carcassonne2DSensorBase.Write(ObservationWriter)
+- uid: Carcassonne.AI.Carcassonne2DSensorBase.Write*
+  name: Write
+  href: api/Carcassonne.AI.Carcassonne2DSensorBase.html#Carcassonne_AI_Carcassonne2DSensorBase_Write_
+  commentId: Overload:Carcassonne.AI.Carcassonne2DSensorBase.Write
+  isSpec: "True"
+  fullName: Carcassonne.AI.Carcassonne2DSensorBase.Write
+  nameWithType: Carcassonne2DSensorBase.Write
+- uid: Carcassonne.AI.Carcassonne2DSensorComponent
+  name: Carcassonne2DSensorComponent
+  href: api/Carcassonne.AI.Carcassonne2DSensorComponent.html
+  commentId: T:Carcassonne.AI.Carcassonne2DSensorComponent
+  fullName: Carcassonne.AI.Carcassonne2DSensorComponent
+  nameWithType: Carcassonne2DSensorComponent
+- uid: Carcassonne.AI.Carcassonne2DSensorComponent.CreateSensors
+  name: CreateSensors()
+  href: api/Carcassonne.AI.Carcassonne2DSensorComponent.html#Carcassonne_AI_Carcassonne2DSensorComponent_CreateSensors
+  commentId: M:Carcassonne.AI.Carcassonne2DSensorComponent.CreateSensors
+  fullName: Carcassonne.AI.Carcassonne2DSensorComponent.CreateSensors()
+  nameWithType: Carcassonne2DSensorComponent.CreateSensors()
+- uid: Carcassonne.AI.Carcassonne2DSensorComponent.CreateSensors*
+  name: CreateSensors
+  href: api/Carcassonne.AI.Carcassonne2DSensorComponent.html#Carcassonne_AI_Carcassonne2DSensorComponent_CreateSensors_
+  commentId: Overload:Carcassonne.AI.Carcassonne2DSensorComponent.CreateSensors
+  isSpec: "True"
+  fullName: Carcassonne.AI.Carcassonne2DSensorComponent.CreateSensors
+  nameWithType: Carcassonne2DSensorComponent.CreateSensors
+- uid: Carcassonne.AI.Carcassonne2DSensorComponent.Dispose
+  name: Dispose()
+  href: api/Carcassonne.AI.Carcassonne2DSensorComponent.html#Carcassonne_AI_Carcassonne2DSensorComponent_Dispose
+  commentId: M:Carcassonne.AI.Carcassonne2DSensorComponent.Dispose
+  fullName: Carcassonne.AI.Carcassonne2DSensorComponent.Dispose()
+  nameWithType: Carcassonne2DSensorComponent.Dispose()
+- uid: Carcassonne.AI.Carcassonne2DSensorComponent.Dispose*
+  name: Dispose
+  href: api/Carcassonne.AI.Carcassonne2DSensorComponent.html#Carcassonne_AI_Carcassonne2DSensorComponent_Dispose_
+  commentId: Overload:Carcassonne.AI.Carcassonne2DSensorComponent.Dispose
+  isSpec: "True"
+  fullName: Carcassonne.AI.Carcassonne2DSensorComponent.Dispose
+  nameWithType: Carcassonne2DSensorComponent.Dispose
+- uid: Carcassonne.AI.Carcassonne2DSensorComponent.SensorName
+  name: SensorName
+  href: api/Carcassonne.AI.Carcassonne2DSensorComponent.html#Carcassonne_AI_Carcassonne2DSensorComponent_SensorName
+  commentId: P:Carcassonne.AI.Carcassonne2DSensorComponent.SensorName
+  fullName: Carcassonne.AI.Carcassonne2DSensorComponent.SensorName
+  nameWithType: Carcassonne2DSensorComponent.SensorName
+- uid: Carcassonne.AI.Carcassonne2DSensorComponent.SensorName*
+  name: SensorName
+  href: api/Carcassonne.AI.Carcassonne2DSensorComponent.html#Carcassonne_AI_Carcassonne2DSensorComponent_SensorName_
+  commentId: Overload:Carcassonne.AI.Carcassonne2DSensorComponent.SensorName
+  isSpec: "True"
+  fullName: Carcassonne.AI.Carcassonne2DSensorComponent.SensorName
+  nameWithType: Carcassonne2DSensorComponent.SensorName
+- uid: Carcassonne.AI.Carcassonne2DSensorComponent.state
+  name: state
+  href: api/Carcassonne.AI.Carcassonne2DSensorComponent.html#Carcassonne_AI_Carcassonne2DSensorComponent_state
+  commentId: F:Carcassonne.AI.Carcassonne2DSensorComponent.state
+  fullName: Carcassonne.AI.Carcassonne2DSensorComponent.state
+  nameWithType: Carcassonne2DSensorComponent.state
 - uid: Carcassonne.AI.CarcassonneAgent
   name: CarcassonneAgent
   href: api/Carcassonne.AI.CarcassonneAgent.html
@@ -731,6 +980,38 @@ references:
   isSpec: "True"
   fullName: Carcassonne.AI.CarcassonneAgent.WriteDiscreteActionMask
   nameWithType: CarcassonneAgent.WriteDiscreteActionMask
+- uid: Carcassonne.AI.CurrentTile2DSensor
+  name: CurrentTile2DSensor
+  href: api/Carcassonne.AI.CurrentTile2DSensor.html
+  commentId: T:Carcassonne.AI.CurrentTile2DSensor
+  fullName: Carcassonne.AI.CurrentTile2DSensor
+  nameWithType: CurrentTile2DSensor
+- uid: Carcassonne.AI.CurrentTile2DSensor.#ctor(GameState,System.String)
+  name: CurrentTile2DSensor(GameState, String)
+  href: api/Carcassonne.AI.CurrentTile2DSensor.html#Carcassonne_AI_CurrentTile2DSensor__ctor_GameState_System_String_
+  commentId: M:Carcassonne.AI.CurrentTile2DSensor.#ctor(GameState,System.String)
+  fullName: Carcassonne.AI.CurrentTile2DSensor.CurrentTile2DSensor(GameState, System.String)
+  nameWithType: CurrentTile2DSensor.CurrentTile2DSensor(GameState, String)
+- uid: Carcassonne.AI.CurrentTile2DSensor.#ctor*
+  name: CurrentTile2DSensor
+  href: api/Carcassonne.AI.CurrentTile2DSensor.html#Carcassonne_AI_CurrentTile2DSensor__ctor_
+  commentId: Overload:Carcassonne.AI.CurrentTile2DSensor.#ctor
+  isSpec: "True"
+  fullName: Carcassonne.AI.CurrentTile2DSensor.CurrentTile2DSensor
+  nameWithType: CurrentTile2DSensor.CurrentTile2DSensor
+- uid: Carcassonne.AI.CurrentTile2DSensor.Write(ObservationWriter)
+  name: Write(ObservationWriter)
+  href: api/Carcassonne.AI.CurrentTile2DSensor.html#Carcassonne_AI_CurrentTile2DSensor_Write_ObservationWriter_
+  commentId: M:Carcassonne.AI.CurrentTile2DSensor.Write(ObservationWriter)
+  fullName: Carcassonne.AI.CurrentTile2DSensor.Write(ObservationWriter)
+  nameWithType: CurrentTile2DSensor.Write(ObservationWriter)
+- uid: Carcassonne.AI.CurrentTile2DSensor.Write*
+  name: Write
+  href: api/Carcassonne.AI.CurrentTile2DSensor.html#Carcassonne_AI_CurrentTile2DSensor_Write_
+  commentId: Overload:Carcassonne.AI.CurrentTile2DSensor.Write
+  isSpec: "True"
+  fullName: Carcassonne.AI.CurrentTile2DSensor.Write
+  nameWithType: CurrentTile2DSensor.Write
 - uid: Carcassonne.AI.DecisionAction
   name: DecisionAction
   href: api/Carcassonne.AI.DecisionAction.html
@@ -959,6 +1240,12 @@ references:
   commentId: T:Carcassonne.AI.ObservationApproach
   fullName: Carcassonne.AI.ObservationApproach
   nameWithType: ObservationApproach
+- uid: Carcassonne.AI.ObservationApproach.None
+  name: None
+  href: api/Carcassonne.AI.ObservationApproach.html#Carcassonne_AI_ObservationApproach_None
+  commentId: F:Carcassonne.AI.ObservationApproach.None
+  fullName: Carcassonne.AI.ObservationApproach.None
+  nameWithType: ObservationApproach.None
 - uid: Carcassonne.AI.ObservationApproach.Packed
   name: Packed
   href: api/Carcassonne.AI.ObservationApproach.html#Carcassonne_AI_ObservationApproach_Packed
@@ -1485,6 +1772,19 @@ references:
   isSpec: "True"
   fullName: Carcassonne.AR.GameControllerScript.gameController
   nameWithType: GameControllerScript.gameController
+- uid: Carcassonne.AR.GameControllerScript.IsLocalAITurn
+  name: IsLocalAITurn()
+  href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_IsLocalAITurn
+  commentId: M:Carcassonne.AR.GameControllerScript.IsLocalAITurn
+  fullName: Carcassonne.AR.GameControllerScript.IsLocalAITurn()
+  nameWithType: GameControllerScript.IsLocalAITurn()
+- uid: Carcassonne.AR.GameControllerScript.IsLocalAITurn*
+  name: IsLocalAITurn
+  href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_IsLocalAITurn_
+  commentId: Overload:Carcassonne.AR.GameControllerScript.IsLocalAITurn
+  isSpec: "True"
+  fullName: Carcassonne.AR.GameControllerScript.IsLocalAITurn
+  nameWithType: GameControllerScript.IsLocalAITurn
 - uid: Carcassonne.AR.GameControllerScript.IsLocalHumanTurn
   name: IsLocalHumanTurn()
   href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_IsLocalHumanTurn
@@ -1498,6 +1798,19 @@ references:
   isSpec: "True"
   fullName: Carcassonne.AR.GameControllerScript.IsLocalHumanTurn
   nameWithType: GameControllerScript.IsLocalHumanTurn
+- uid: Carcassonne.AR.GameControllerScript.IsLocalTurn
+  name: IsLocalTurn()
+  href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_IsLocalTurn
+  commentId: M:Carcassonne.AR.GameControllerScript.IsLocalTurn
+  fullName: Carcassonne.AR.GameControllerScript.IsLocalTurn()
+  nameWithType: GameControllerScript.IsLocalTurn()
+- uid: Carcassonne.AR.GameControllerScript.IsLocalTurn*
+  name: IsLocalTurn
+  href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_IsLocalTurn_
+  commentId: Overload:Carcassonne.AR.GameControllerScript.IsLocalTurn
+  isSpec: "True"
+  fullName: Carcassonne.AR.GameControllerScript.IsLocalTurn
+  nameWithType: GameControllerScript.IsLocalTurn
 - uid: Carcassonne.AR.GameControllerScript.meepleController
   name: meepleController
   href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_meepleController
@@ -2147,12 +2460,12 @@ references:
   isSpec: "True"
   fullName: Carcassonne.AR.TileControllerScript.RPCDiscard
   nameWithType: TileControllerScript.RPCDiscard
-- uid: Carcassonne.AR.TileControllerScript.RPCDraw(System.Int32)
-  name: RPCDraw(Int32)
-  href: api/Carcassonne.AR.TileControllerScript.html#Carcassonne_AR_TileControllerScript_RPCDraw_System_Int32_
-  commentId: M:Carcassonne.AR.TileControllerScript.RPCDraw(System.Int32)
-  fullName: Carcassonne.AR.TileControllerScript.RPCDraw(System.Int32)
-  nameWithType: TileControllerScript.RPCDraw(Int32)
+- uid: Carcassonne.AR.TileControllerScript.RPCDraw
+  name: RPCDraw()
+  href: api/Carcassonne.AR.TileControllerScript.html#Carcassonne_AR_TileControllerScript_RPCDraw
+  commentId: M:Carcassonne.AR.TileControllerScript.RPCDraw
+  fullName: Carcassonne.AR.TileControllerScript.RPCDraw()
+  nameWithType: TileControllerScript.RPCDraw()
 - uid: Carcassonne.AR.TileControllerScript.RPCDraw*
   name: RPCDraw
   href: api/Carcassonne.AR.TileControllerScript.html#Carcassonne_AR_TileControllerScript_RPCDraw_
@@ -3677,19 +3990,19 @@ references:
   commentId: T:Carcassonne.Players.ARPlayer
   fullName: Carcassonne.Players.ARPlayer
   nameWithType: ARPlayer
-- uid: Carcassonne.Players.ARPlayer.OnPhotonInstantiate(PhotonMessageInfo)
-  name: OnPhotonInstantiate(PhotonMessageInfo)
-  href: api/Carcassonne.Players.ARPlayer.html#Carcassonne_Players_ARPlayer_OnPhotonInstantiate_PhotonMessageInfo_
-  commentId: M:Carcassonne.Players.ARPlayer.OnPhotonInstantiate(PhotonMessageInfo)
-  fullName: Carcassonne.Players.ARPlayer.OnPhotonInstantiate(PhotonMessageInfo)
-  nameWithType: ARPlayer.OnPhotonInstantiate(PhotonMessageInfo)
-- uid: Carcassonne.Players.ARPlayer.OnPhotonInstantiate*
-  name: OnPhotonInstantiate
-  href: api/Carcassonne.Players.ARPlayer.html#Carcassonne_Players_ARPlayer_OnPhotonInstantiate_
-  commentId: Overload:Carcassonne.Players.ARPlayer.OnPhotonInstantiate
+- uid: Carcassonne.Players.ARPlayer.SetPlayerID(System.Int32)
+  name: SetPlayerID(Int32)
+  href: api/Carcassonne.Players.ARPlayer.html#Carcassonne_Players_ARPlayer_SetPlayerID_System_Int32_
+  commentId: M:Carcassonne.Players.ARPlayer.SetPlayerID(System.Int32)
+  fullName: Carcassonne.Players.ARPlayer.SetPlayerID(System.Int32)
+  nameWithType: ARPlayer.SetPlayerID(Int32)
+- uid: Carcassonne.Players.ARPlayer.SetPlayerID*
+  name: SetPlayerID
+  href: api/Carcassonne.Players.ARPlayer.html#Carcassonne_Players_ARPlayer_SetPlayerID_
+  commentId: Overload:Carcassonne.Players.ARPlayer.SetPlayerID
   isSpec: "True"
-  fullName: Carcassonne.Players.ARPlayer.OnPhotonInstantiate
-  nameWithType: ARPlayer.OnPhotonInstantiate
+  fullName: Carcassonne.Players.ARPlayer.SetPlayerID
+  nameWithType: ARPlayer.SetPlayerID
 - uid: Carcassonne.Players.PlayerScoreScript
   name: PlayerScoreScript
   href: api/Carcassonne.Players.PlayerScoreScript.html
@@ -5311,6 +5624,19 @@ references:
   isSpec: "True"
   fullName: Carcassonne.State.MeepleState.IsFree
   nameWithType: MeepleState.IsFree
+- uid: Carcassonne.State.MeepleState.Matrix
+  name: Matrix
+  href: api/Carcassonne.State.MeepleState.html#Carcassonne_State_MeepleState_Matrix
+  commentId: P:Carcassonne.State.MeepleState.Matrix
+  fullName: Carcassonne.State.MeepleState.Matrix
+  nameWithType: MeepleState.Matrix
+- uid: Carcassonne.State.MeepleState.Matrix*
+  name: Matrix
+  href: api/Carcassonne.State.MeepleState.html#Carcassonne_State_MeepleState_Matrix_
+  commentId: Overload:Carcassonne.State.MeepleState.Matrix
+  isSpec: "True"
+  fullName: Carcassonne.State.MeepleState.Matrix
+  nameWithType: MeepleState.Matrix
 - uid: Carcassonne.State.MeepleState.MatrixOrigin
   name: MatrixOrigin
   href: api/Carcassonne.State.MeepleState.html#Carcassonne_State_MeepleState_MatrixOrigin
@@ -5662,6 +5988,19 @@ references:
   isSpec: "True"
   fullName: Carcassonne.State.TileState.Remaining
   nameWithType: TileState.Remaining
+- uid: Carcassonne.State.TileState.ShieldMatrix
+  name: ShieldMatrix
+  href: api/Carcassonne.State.TileState.html#Carcassonne_State_TileState_ShieldMatrix
+  commentId: P:Carcassonne.State.TileState.ShieldMatrix
+  fullName: Carcassonne.State.TileState.ShieldMatrix
+  nameWithType: TileState.ShieldMatrix
+- uid: Carcassonne.State.TileState.ShieldMatrix*
+  name: ShieldMatrix
+  href: api/Carcassonne.State.TileState.html#Carcassonne_State_TileState_ShieldMatrix_
+  commentId: Overload:Carcassonne.State.TileState.ShieldMatrix
+  isSpec: "True"
+  fullName: Carcassonne.State.TileState.ShieldMatrix
+  nameWithType: TileState.ShieldMatrix
 - uid: Carcassonne.State.TileState.TilePlacement
   name: TilePlacement
   href: api/Carcassonne.State.TileState.html#Carcassonne_State_TileState_TilePlacement
