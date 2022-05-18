@@ -39,3 +39,7 @@ Here's a short list of some resources on *situation recognition*. Treat this as 
   * [Situation Recognition Using EventShop](https://www.springer.com/gp/book/9783319305356) is a book that is available through the MAU library
   * [A research website dealing with EventShop](http://slnlab.ics.uci.edu/research.html)
   * [EventShop Github page](https://github.com/Eventshop)
+
+#### Object detection
+* https://cocodataset.org/#detection-2020
+* https://pytorch.org/tutorials/intermediate/torchvision_tutorial.html
