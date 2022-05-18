@@ -92,8 +92,7 @@ namespace Carcassonne.State
         private Geography?[,] CalculateMatrix()
         {
             // Create a new matrix that is 3 * (xmax-xmin) x 3 * (ymax - ymin);
-            var geographyMatrix = new Geography?[3 * (GameRules.BoardLimits.xMax - GameRules.BoardLimits.xMin),
-                3 * (GameRules.BoardLimits.yMax - GameRules.BoardLimits.yMin)];
+            var geographyMatrix = new Geography?[3 * (GameRules.BoardLimits.width), 3 * (GameRules.BoardLimits.height)];
 
             foreach (var kvp in Placement)
             {
@@ -111,6 +110,25 @@ namespace Carcassonne.State
             }
             
             return geographyMatrix;
+        }
+
+        public bool[,] ShieldMatrix
+        {
+            get
+            {
+                bool[,] shields = new bool[3 * (GameRules.BoardLimits.width), 3 * (GameRules.BoardLimits.height)];
+
+                foreach (var kvp in Placement.Where(kvp => kvp.Value.Shield))
+                {
+                    var t = kvp.Value;
+                    var st = t.Geographies.First(g => g.Value == Geography.City);
+                    var p = Coordinates.TileToSubTile(kvp.Key + Vector2Int.FloorToInt(GameRules.BoardLimits.center), st.Key);
+                    
+                    shields[p.x, p.y] = true;
+                }
+                
+                return shields;
+            }
         }
 
         private RectInt CalculateLimits()

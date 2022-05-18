@@ -37,8 +37,10 @@ namespace Carcassonne.State
 
         private static readonly int BaseTileID = 8;
         public const int MeeplesPerPlayer = 7;
-
+        
         public const int BoardSize = 40;
+        
+        //TODO Should this actually be from [-BoardSize/2, BoardSize/2] instead of [0, BoardSize]?
         public static readonly RectInt BoardLimits = new RectInt(0, 0, BoardSize, BoardSize);
 
         public bool Abbots;

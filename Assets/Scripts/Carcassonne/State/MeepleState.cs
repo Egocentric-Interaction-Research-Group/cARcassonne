@@ -44,6 +44,27 @@ namespace Carcassonne.State
         //
         //     return subTilePlacement;
         // }
+        
+        /// <summary>
+        ///
+        /// NB Uses Player ID + 1 so that 0 can be an empty cell.
+        /// </summary>
+        public int[,] Matrix { get
+        {
+            int[,] m = new int[GameRules.BoardLimits.width*3, GameRules.BoardLimits.height*3];
+
+            foreach (var kvp in Placement)
+            {
+                var p = kvp.Key + Vector2Int.FloorToInt(GameRules.BoardLimits.center*3);
+                var meeple = kvp.Value;
+
+                m[p.x, p.y] = meeple.player.id+1;
+                
+                Debug.Assert(meeple.player.id >= 0,$"Meeple player ID should be an int >= 0, but is {meeple.player.id}");
+            }
+            
+            return m;
+        } }
 
         /// <summary>
         /// The set of all Meeples in the game.
