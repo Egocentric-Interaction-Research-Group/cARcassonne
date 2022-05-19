@@ -3609,12 +3609,12 @@ references:
   isSpec: "True"
   fullName: Carcassonne.Models.Tile.SubTileDictionary
   nameWithType: Tile.SubTileDictionary
-- uid: Carcassonne.Models.Tile.SubtTileDimension
-  name: SubtTileDimension
-  href: api/Carcassonne.Models.Tile.html#Carcassonne_Models_Tile_SubtTileDimension
-  commentId: F:Carcassonne.Models.Tile.SubtTileDimension
-  fullName: Carcassonne.Models.Tile.SubtTileDimension
-  nameWithType: Tile.SubtTileDimension
+- uid: Carcassonne.Models.Tile.SubTileDimension
+  name: SubTileDimension
+  href: api/Carcassonne.Models.Tile.html#Carcassonne_Models_Tile_SubTileDimension
+  commentId: F:Carcassonne.Models.Tile.SubTileDimension
+  fullName: Carcassonne.Models.Tile.SubTileDimension
+  nameWithType: Tile.SubTileDimension
 - uid: Carcassonne.Models.Tile.TileCount
   name: TileCount
   href: api/Carcassonne.Models.Tile.html#Carcassonne_Models_Tile_TileCount
