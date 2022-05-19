@@ -1,3 +1,5 @@
 ### YamlMime:TableOfContent
 - name: Overview
   href: Overview.md
+- name: Carcassonne Base
+  href: base.md
