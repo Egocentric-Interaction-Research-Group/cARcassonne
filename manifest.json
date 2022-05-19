@@ -1,14 +1,4 @@
 {
-  "sitemap": {
-    "fileOptions": {
-      "api/*": {
-        "baseUrl": "https://normanderwan.github.io/DocFxForUnity/",
-        "changefreq": "daily"
-      }
-    },
-    "baseUrl": "https://normanderwan.github.io/DocFxForUnity/",
-    "changefreq": "weekly"
-  },
   "homepages": [],
   "source_base_path": "D:/a/cARcassonne/cARcassonne/Documentation",
   "xrefmap": "xrefmap.yml",
@@ -496,7 +486,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.Models.Extensions.html",
-          "hash": "+cfQs6DTRArwsIW7XcGl0xbxYT4iugQP+XDnQzXdyRk="
+          "hash": "zafgLqpiKsFBUUmemDdEF/7pfijVqulcp/CoCZRrviM="
         }
       },
       "is_incremental": false,
@@ -1265,12 +1255,48 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "manual/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "manual/Overview.html",
+          "hash": "FK+2nKhyyuESe8WIqHxnM0DftLrOOE0AcEt+dqETyS0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "manual/base.md",
+      "output": {
+        ".html": {
+          "relative_path": "manual/base.html",
+          "hash": "/YeuSnswZ251p5T9pP2RtL7XNgT+gZ5/5NB/NuEGSsE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "manual/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "manual/toc.html",
+          "hash": "rOyWvjZlues2PdLSvxb3RLM/+nNkrCURAta3Up2+8NM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "Toc",
       "source_relative_path": "toc.yml",
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "r3KDqcx/6IaXV90BapAfSvJVsL0/9GtOOIFrUQVIVKw="
+          "hash": "Qrc41pGZ4bC0nWIXA0AkKt+e4xDe1GcBEkDH7aHH5a4="
         }
       },
       "is_incremental": false,
@@ -1291,7 +1317,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 9,
+          "total_file_count": 11,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
