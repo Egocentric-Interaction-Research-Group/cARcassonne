@@ -5,46 +5,38 @@ using UnityEngine;
 
 namespace Carcassonne.Models
 {
+    /// <summary>
+    ///     A tile piece from the Carcassonne game. This is the base model for a game tile and holds information about the
+    ///     features that it contains as well as its rotational state.
+    ///     The tile class also contains static information about the base tile deck for the game as a whole, so that
+    ///     the tiles can be instantiated in the game.
+    /// </summary>
     public class Tile : MonoBehaviour
-
     {
-        #region Constants
+        /// <summary>
+        ///     Describes the different set of game tiles (used in different versions of gameplay).
+        /// </summary>
+        public enum TileSet
+        {
+            Base,
+            River
+        }
 
-        public const int SubtTileDimension = 3;
+        public const int SubTileDimension = 3;
 
-        #endregion
+        public static Vector2Int[] Directions = { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
 
-        // public Tile(int id, IDictionary<Vector2Int, Geography> geographies, TileSet set = TileSet.Base,
-        //     bool shield = false)
-        // {
-        //     this.id = id;
-        //     this.set = set;
-        //     Geographies = geographies;
-        //     Shield = shield;
-        // }
-        //
-        // public Tile(int id, Geography north, Geography east, Geography south, Geography west, Geography center,
-        //     TileSet set = TileSet.Base, bool shield = false)
-        // {
-        //     this.id = id;
-        //     this.set = set;
-        //     Geographies.Add(Vector2Int.up, north);
-        //     Geographies.Add(Vector2Int.right, east);
-        //     Geographies.Add(Vector2Int.down, south);
-        //     Geographies.Add(Vector2Int.left, west);
-        //     Geographies.Add(Vector2Int.zero, center);
-        //
-        //     Shield = shield;
-        // }
+        public static int TileCount = GetIDDistribution().Values.Sum();
 
         /// <summary>
-        ///     The ID decides which type of tile this tile is. Refer to the ID graph for exact results.
-        ///
-        /// THIS IS ONLY NEEDED FOR Inspector-EDITED ID VALUES.
+        ///     Defines whether the tile is a member of the base set or one of the expansions or alternate tile sets.
         /// </summary>
-        // [Obsolete("Only here to support Inspector-defined IDs.", error:false)]
-        // public int id;
-        
+        public TileSet set = TileSet.Base;
+
+        private int m_id;
+
+        private int m_Rotations;
+
         [field: SerializeField]
         public int ID
         {
@@ -56,35 +48,29 @@ namespace Carcassonne.Models
         // Has been initialized with Geography.
         public bool IsReady { get; private set; }
 
-        /// <summary>
-        ///     Defines whether the tile is a member of the base set or one of the expansions or alternate tile sets.
-        /// </summary>
-        public TileSet set = TileSet.Base;
-
-        public IDictionary<Vector2Int, Geography> Geographies { get; private set; } = new Dictionary<Vector2Int, Geography>();
+        public IDictionary<Vector2Int, Geography> Geographies { get; private set; } =
+            new Dictionary<Vector2Int, Geography>();
 
         /// <summary>
-        ///     The number of times the tile has been rotated by 90 degrees.
+        ///     The number of times the tile has been rotated by 90 degrees. Valid values [0,3].
         /// </summary>
         public int Rotations
         {
-            get { return m_Rotations; }
-            private set { m_Rotations = value % 4; }
+            get => m_Rotations;
+            private set => m_Rotations = value % 4;
         }
 
-        private int m_Rotations;
-        private int m_id;
-
         /// <summary>
-        ///     Public property detailing whether this tile has a shield
+        ///     True if this tile has a shield (worth 2 extra points for the city on the tile).
         /// </summary>
-        public bool Shield { get; private set; } = false;
+        public bool Shield { get; private set; }
 
         /// <summary>
-        ///     A dictionary of the side geographies, indexed by Vector2Int.{up,down,left,right}.
+        ///     The <see cref="Geography"/> of each of the 4 outer sides of the tile. Values are stored as a Dic 
         /// </summary>
         public Dictionary<Vector2Int, Geography> Sides =>
-            Geographies.Where(kvp => kvp.Key.sqrMagnitude == 1).ToDictionary(item => item.Key, item => item.Value);
+            Geographies.Where(kvp => kvp.Key.sqrMagnitude == 1).
+                ToDictionary(item => item.Key, item => item.Value);
 
         /// <summary>
         ///     The sub-tile matrix representation of this tile. The bottom corner (Left-Down) is 0,0 and the top (Right, Top is
@@ -98,8 +84,8 @@ namespace Carcassonne.Models
         public Dictionary<Vector2Int, Geography> SubTileDictionary => getSubTileDictionary();
 
         /// <summary>
-        /// This should only be called by the tile controller. All in-game rotations should use the tile controller's
-        /// rotation function.
+        ///     This should only be called by the tile controller. All in-game rotations should use the tile controller's
+        ///     rotation function.
         /// </summary>
         /// <param name="times"></param>
         public void Rotate(int times = 1)
@@ -135,7 +121,7 @@ namespace Carcassonne.Models
 
         private Geography[,] GetMatrix()
         {
-            var matrix = new Geography[SubtTileDimension, SubtTileDimension];
+            var matrix = new Geography[SubTileDimension, SubTileDimension];
 
             matrix[1, 0] = South;
             matrix[0, 1] = West;
@@ -178,15 +164,14 @@ namespace Carcassonne.Models
         private Dictionary<Vector2Int, Geography> getSubTileDictionary()
         {
             var d = new Dictionary<Vector2Int, Geography>();
-            for (var i = 0; i < SubtTileDimension; i++)
-            for (var j = 0; j < SubtTileDimension; j++)
+            for (var i = 0; i < SubTileDimension; i++)
+            for (var j = 0; j < SubTileDimension; j++)
                 d.Add(new Vector2Int(i, j) - Vector2Int.one, Matrix[i, j]);
 
             return d;
         }
-        
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="direction"></param>
         /// <returns></returns>
@@ -208,25 +193,6 @@ namespace Carcassonne.Models
             return Geography.Field;
         }
 
-        public static Vector2Int[] Directions = new Vector2Int[]{Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left};
-
-        #region Computed Properties
-
-        /// <summary>
-        ///     These are closely related to the Up, Down, Left and Right geographies. When the tile is rotated the values shift to
-        ///     correlate to the new rotation:
-        ///     If Up is road, but the rotation is 1 then East gets the value of Up, since it's rotated 90 degrees clockwise. If
-        ///     rotation is 0 then North is equal to Up.
-        /// </summary>
-        public Geography North => Geographies[Vector2Int.up];
-
-        public Geography South => Geographies[Vector2Int.down];
-        public Geography West => Geographies[Vector2Int.left];
-        public Geography East => Geographies[Vector2Int.right];
-        public Geography? Center => Geographies.ContainsKey(Vector2Int.zero) ? Geographies[Vector2Int.zero] : (Geography?) null;
-
-        #endregion
-
         /// <summary>
         ///     Depending on the ID of the tile it recieves different attributes.
         ///     ID's in tiles are not unique and they share them with other tiles who also recieve the same attributes.
@@ -239,7 +205,7 @@ namespace Carcassonne.Models
             var Left = new Geography();
             var Right = new Geography();
             var Center = new Geography();
-            
+
             if (id == 1 || id == 2 || id == 3 || id == 4 || id == 5 || id == 6 || id == 12 || id == 17 || id == 25 ||
                 id == 26 || id == 27 || id == 28) Up = Geography.Field;
             if (id == 1 || id == 2 || id == 4 || id == 7 || id == 9 || id == 14 || id == 25 || id == 27)
@@ -286,44 +252,42 @@ namespace Carcassonne.Models
             geographies[Vector2Int.right] = Right;
             geographies[Vector2Int.up] = Up;
             geographies[Vector2Int.zero] = Center;
-            
+
             return geographies;
         }
 
         public static Dictionary<int, int> GetIDDistribution()
         {
-            var distribution = new Dictionary<int, int>()
+            var distribution = new Dictionary<int, int>
             {
-                {1,4},
-                {2,2},
-                {3,8},
-                {4,9},
-                {5,4},
-                {6,1},
-                {7,5},
-                {8,4},
-                {9,3},
-                {10,3},
-                {11,3},
-                {12,1},
-                {13,3},
-                {14,3},
-                {15,2},
-                {16,3},
-                {17,2},
-                {18,2},
-                {19,2},
-                {20,3},
-                {21,1},
-                {22,1},
-                {23,2},
-                {24,1},
+                { 1, 4 },
+                { 2, 2 },
+                { 3, 8 },
+                { 4, 9 },
+                { 5, 4 },
+                { 6, 1 },
+                { 7, 5 },
+                { 8, 4 },
+                { 9, 3 },
+                { 10, 3 },
+                { 11, 3 },
+                { 12, 1 },
+                { 13, 3 },
+                { 14, 3 },
+                { 15, 2 },
+                { 16, 3 },
+                { 17, 2 },
+                { 18, 2 },
+                { 19, 2 },
+                { 20, 3 },
+                { 21, 1 },
+                { 22, 1 },
+                { 23, 2 },
+                { 24, 1 }
             };
-            
+
             return distribution;
         }
-
-        public static int TileCount = GetIDDistribution().Values.Sum();
 
         // private void Awake()
         // {
@@ -344,7 +308,7 @@ namespace Carcassonne.Models
             // id = ID;
             return i;
         }
-        
+
         private static bool GetShield(int id)
         {
             if (id == 17 || id == 18 || id == 19 || id == 22 || id == 23 || id == 24)
@@ -352,14 +316,22 @@ namespace Carcassonne.Models
 
             return false;
         }
-        
+
+        #region Computed Properties
+
         /// <summary>
-        ///     Describes the different set of game tiles (used in different versions of gameplay).
+        ///     These are closely related to the Up, Down, Left and Right geographies. When the tile is rotated the values shift to
+        ///     correlate to the new rotation:
+        ///     If Up is road, but the rotation is 1 then East gets the value of Up, since it's rotated 90 degrees clockwise. If
+        ///     rotation is 0 then North is equal to Up.
         /// </summary>
-        public enum TileSet
-        {
-            Base,
-            River
-        }
-	}
+        public Geography North => Geographies[Vector2Int.up];
+
+        public Geography South => Geographies[Vector2Int.down];
+        public Geography West => Geographies[Vector2Int.left];
+        public Geography East => Geographies[Vector2Int.right];
+        public Geography? Center => Geographies.ContainsKey(Vector2Int.zero) ? Geographies[Vector2Int.zero] : null;
+
+        #endregion
+    }
 }
