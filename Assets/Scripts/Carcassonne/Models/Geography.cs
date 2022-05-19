@@ -9,7 +9,7 @@ namespace Carcassonne.Models
         /// Does this @Geography include a City?
         /// </summary>
         /// <param name="geography"></param>
-        /// <returns>True if @Geography is one of @Geography.City, @Geography.CityRoad, <xref:Geography.CityStream/></returns>
+        /// <returns>True if <see cref="Geography"/> is one of Geography.City, Geography.CityRoad, <see cref="Geography.CityStream"/></returns>
         public static bool HasCity(this Geography geography) => (geography & Geography.City) == Geography.City;
         public static bool HasRoad(this Geography geography) => (geography & Geography.Road) == Geography.Road;
         public static bool HasCityOrRoad(this Geography geography) => (geography & Geography.City) == Geography.City ||
