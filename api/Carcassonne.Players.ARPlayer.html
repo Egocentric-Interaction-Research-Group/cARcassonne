@@ -90,6 +90,10 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">ARPlayer</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IPunInstantiateMagicCallback</span></div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Carcassonne.Players.html">Carcassonne.Players</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Carcassonne_Players_ARPlayer_syntax">Syntax</h5>
@@ -100,13 +104,13 @@
   </h3>
   
   
-  <a id="Carcassonne_Players_ARPlayer_SetPlayerID_" data-uid="Carcassonne.Players.ARPlayer.SetPlayerID*"></a>
-  <h4 id="Carcassonne_Players_ARPlayer_SetPlayerID_System_Int32_" data-uid="Carcassonne.Players.ARPlayer.SetPlayerID(System.Int32)">SetPlayerID(Int32)</h4>
+  <a id="Carcassonne_Players_ARPlayer_OnPhotonInstantiate_" data-uid="Carcassonne.Players.ARPlayer.OnPhotonInstantiate*"></a>
+  <h4 id="Carcassonne_Players_ARPlayer_OnPhotonInstantiate_PhotonMessageInfo_" data-uid="Carcassonne.Players.ARPlayer.OnPhotonInstantiate(PhotonMessageInfo)">OnPhotonInstantiate(PhotonMessageInfo)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetPlayerID(int id)</code></pre>
+    <pre><code class="lang-csharp hljs">public void OnPhotonInstantiate(PhotonMessageInfo info)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -119,12 +123,16 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">id</span></td>
+        <td><span class="xref">PhotonMessageInfo</span></td>
+        <td><span class="parametername">info</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IPunInstantiateMagicCallback</span>
+  </div>
 </article>
           </div>
           

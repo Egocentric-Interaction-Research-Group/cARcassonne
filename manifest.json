@@ -60,18 +60,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Carcassonne.AI.Board2DSensor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Carcassonne.AI.Board2DSensor.html",
-          "hash": "exQk43Fy1tAdWnpDmm319txVZzkTW5DL6xp6ck33hso="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Carcassonne.AI.BoardAction.yml",
       "output": {
         ".html": {
@@ -88,7 +76,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.AI.BoardObservation.html",
-          "hash": "y5eIUNoMl2iJKgBAf+6MRyayF55+tjahBR0dzLi3HqE="
+          "hash": "2T7kChwV3wfbZFoGb2Qu+j/OCl/HdjlBLKKCFmOq5YE="
         }
       },
       "is_incremental": false,
@@ -108,47 +96,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Carcassonne.AI.Carcassonne2DSensorBase.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Carcassonne.AI.Carcassonne2DSensorBase.html",
-          "hash": "w9Bx/JonPhTSxwiuHqmhepZgZFSjxUgP51/pXLPrmNo="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Carcassonne.AI.Carcassonne2DSensorComponent.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Carcassonne.AI.Carcassonne2DSensorComponent.html",
-          "hash": "ial0QsCBtKgunizAwMSomuGU/pUEk5yvKSdYwxIYyPk="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Carcassonne.AI.CarcassonneAgent.yml",
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.AI.CarcassonneAgent.html",
           "hash": "SRMU5sohXKKP2mrLoP3WZhaoBMy+01Fhtx9+i0Xodsg="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Carcassonne.AI.CurrentTile2DSensor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Carcassonne.AI.CurrentTile2DSensor.html",
-          "hash": "l2O2g19/fhTfYKgdSf9fBg42gqNYdLydf2HGx9enV4c="
         }
       },
       "is_incremental": false,
@@ -220,7 +172,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.AI.ObservationApproach.html",
-          "hash": "Xg0LCnweuJ4pXGq740eVA290st3XtnyKN7rCjP68peM="
+          "hash": "wSLciKqk+/juNqpmB624SMBiYuNa/JMKzX/66SIithM="
         }
       },
       "is_incremental": false,
@@ -280,7 +232,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.AI.html",
-          "hash": "8pTgIF9uYewgyzw0r18WDlhHCuLr8kc9uZ8FxzjFxGE="
+          "hash": "Fs4XzMvqd0fSwDosJPaXIw9pX9eWpht9MstsMsykaWY="
         }
       },
       "is_incremental": false,
@@ -328,7 +280,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.AR.GameControllerScript.html",
-          "hash": "v51Kqz/yGVhbueiDFcs2DF/eQV+W3C7Jt6GZRHthK7g="
+          "hash": "0qsO8Bvx7DWfTjgo62xOPgKprfFEPWcoAq7SfjqTey8="
         }
       },
       "is_incremental": false,
@@ -412,7 +364,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.AR.TileControllerScript.html",
-          "hash": "YvE5cq3Hgy1kTkyfv4nNDOczjj2h45avV6/qCGdUiYk="
+          "hash": "az27kOQov6pxPDUJzTEoMApRiVRYBeYj7msA5Nr984I="
         }
       },
       "is_incremental": false,
@@ -640,7 +592,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.Players.ARPlayer.html",
-          "hash": "EQFSjzkJbwr7Wzdt0Yx24NJbkFAKAv83pzrhrh6NKbU="
+          "hash": "qQFQd/I4tTxIGq1WsUzHFe1Y2gj30ewdW2hED45ZHF4="
         }
       },
       "is_incremental": false,
@@ -892,7 +844,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.State.MeepleState.html",
-          "hash": "oCbKJ72/rNFuJ/dU1kPW/BUQF9R3W9yCoNsFPCukeSg="
+          "hash": "4/2fn7jshRVN8nMd+RvafyQLhuKnZGAv1vFQmxoaBmw="
         }
       },
       "is_incremental": false,
@@ -940,7 +892,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.State.TileState.html",
-          "hash": "CcuAR8Hh/hy1cE427GIsPkLY4p/dqJHSEL5Qbj/xoj0="
+          "hash": "VhTJ5GHtaHbbBdcnQFXPhgvH28RmWfd62Ugh+G46IEM="
         }
       },
       "is_incremental": false,
@@ -1180,7 +1132,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "7dleVl9Ek5F+rgSm7WavR0hmR1fghCAUvMevIWiSycU="
+          "hash": "PqPuN+X/4MNwIShFZGLtUETTbgLiN+SdJCdCUA4PWyU="
         }
       },
       "is_incremental": false,
@@ -1192,7 +1144,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/SituationRecognitionIdeas.html",
-          "hash": "lHTQAbaraxhxOFM40ZAkFgRbnkrGidxLxhtbVWEfCy4="
+          "hash": "T8Vc/eO6qDIuPDt95w6njxLJcHAo6Kxye6vUqKM0Jbg="
         }
       },
       "is_incremental": false,
@@ -1204,7 +1156,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/architecture.html",
-          "hash": "kNrFMDU7tCVsq5NAcKoY2K+G25qwr+uYhzagUk0EVEc="
+          "hash": "KQ4DbeH5QEt0SQTF0ZxdD2Fhryfh/IvU789SzetKPwc="
         }
       },
       "is_incremental": false,
@@ -1216,7 +1168,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/gameplayAI.html",
-          "hash": "wPa6b1v8jxF3wUw0Ff85JZekWcuPa5qlqdxHras8CkY="
+          "hash": "YqNDkGSBfr1lKFy0YARfMQJ8tuUVHNGmImAR0ZTc60E="
         }
       },
       "is_incremental": false,
@@ -1228,7 +1180,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/intro.html",
-          "hash": "OD8UnhQylA0jhOd98KANOWJrBPZB958aNpk8scNn57Q="
+          "hash": "JuTutsSK2YU0hplUM48Z+sSdYuL6ds0pGsZpspf+fLU="
         }
       },
       "is_incremental": false,
@@ -1240,7 +1192,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/multiplayer.html",
-          "hash": "VcLdVGaQLcH0Dhihnt6aiGHqJl07Z/xcftSdgyqSTlY="
+          "hash": "nTKI1xdtdlwNllK1k9WwJEODw5yheeVZdCyq4ZCh3Sk="
         }
       },
       "is_incremental": false,
@@ -1252,7 +1204,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/orientation.html",
-          "hash": "a5vqmUu0lOAM7KnJwSR1BFU2fSgKpYhvcpDRbDzJNmE="
+          "hash": "NntqIKS3mEnbDblCQXaSCmyRJc4g2oDDRm3yN+wRpio="
         }
       },
       "is_incremental": false,
@@ -1264,7 +1216,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/situationRecognition.html",
-          "hash": "qomCMtlSFzuvROsp+2PPPiFfvw/VeiFsQAeqra3HqMk="
+          "hash": "qWvoNSr9w7jBJZvDtKrFY/4w7dj7dWLsf9R/YdESUQE="
         }
       },
       "is_incremental": false,
@@ -1279,7 +1231,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/states.html",
-          "hash": "A7Pz36xcLtV3B2J6qdkvCmb0SHWqqB8qkbFFpAYwbQE="
+          "hash": "Gx3TMcDxckXMAuuBC0UPzJYc7T7BM/ZelEopyqkxUZo="
         }
       },
       "is_incremental": false,
@@ -1306,7 +1258,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "JXdxddKCRfFgoCSgPzR+nw4jcUOAccXbiG9TnSnA7LE="
+          "hash": "5vrZ/1fN0GmWt2o9OVjsHt77vDH7AwynTeuPyGTZGxI="
         }
       },
       "is_incremental": false,
@@ -1345,7 +1297,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 96,
+          "total_file_count": 92,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
