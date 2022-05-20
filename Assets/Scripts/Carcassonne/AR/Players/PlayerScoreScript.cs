@@ -14,38 +14,43 @@ namespace Carcassonne.Players
         /// <summary>
         /// Zero-indexed player number
         /// </summary>
-        public int playerNumber;
         public Materials materials;
         public GameState state;
+        public GameControllerScript controller;
 
         public int[] materialIndex = {0, 1, 2, 3};
 
         private TextMeshPro scoreText => transform.GetComponentsInChildren<TextMeshPro>()[0];
         private TextMeshPro playerText => transform.GetComponentsInChildren<TextMeshPro>()[1];
 
-        private Player player => state.Players.All[playerNumber];
+        public Player player;
+
+        private bool m_IsLocal;
 
         private void Start()
         {
             state = FindObjectOfType<GameState>();
+            controller = state.GetComponent<GameControllerScript>();
         }
 
         public void UpdateScore()
         {
             Debug.Assert(state != null, "State is null");
 
-            if (playerNumber < state.Players.All.Count)
-            {
-                Debug.Log($"Updating the score for Player {playerNumber} of {state.Players.All.Count}");
-                // Debug.Assert(state.Players.All.Count > playerNumber,
-                //     $"Player number ({playerNumber}) is greater than the length of the player list ({state.Players.All.Count})");
-                scoreText.text = "Score: " + player.score;
-            }
+            Debug.Log($"Updating the score for Player {player}");
+            scoreText.text = "Score: " + player.score;
         }
 
-        public void NewTurn()
+        public void UpdateCurrentPlayer()
         {
+            var IsCurrent = player == state.Players.Current;
+
+            Debug.Log($"Updating player {player.id}: Current {IsCurrent}, Local {m_IsLocal}");
             
+            var text = $"Player {player.id}";
+            text += m_IsLocal ? " (You)" : "";
+            text += IsCurrent ? " *" : "";
+            playerText.text = text;
         }
 
         public void ChangeMaterial()
@@ -56,7 +61,8 @@ namespace Carcassonne.Players
 
         public void SetLocal()
         {
-            playerText.text = $"Player {playerNumber} (You)";
+            playerText.text = $"Player {player.id} (You)";
+            m_IsLocal = true;
         }
 
         /// <summary>
@@ -67,19 +73,9 @@ namespace Carcassonne.Players
             state = FindObjectOfType<GameState>(); // This isn't a great solution
             Debug.Assert(state != null, "State is null");
 
-            Debug.Log($"PlayerScoreScript {playerNumber} got GameStart signal.");
-            var nPlayers = PhotonNetwork.PlayerList.Length;
-
-            if (playerNumber >= nPlayers)
-            {
-                this.gameObject.SetActive(false);
-                return;
-            }
-            
-            Debug.Log($"Updating score for player {playerNumber} of {nPlayers}.");
+            Debug.Log($"Updating score for player {player.id}.");
             UpdateScore();
-            var player = state.Players.All.SingleOrDefault(p => p.id == playerNumber);
-            if (player && player.GetComponent<PhotonUser>().IsLocal)
+            if (player && player.GetComponent<PhotonUser>() && player.GetComponent<PhotonUser>().IsLocal)
             {
                 SetLocal();
             }

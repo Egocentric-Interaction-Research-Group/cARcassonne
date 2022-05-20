@@ -53,12 +53,14 @@ namespace Carcassonne.AR
                 var players = CreatePlayers();
                 var meeples = CreateMeeples(players);
                 var tiles = CreateDeck();
+                
 
                 var tileOrder = tiles.Select(t => t.GetComponent<ARTile>().photonView.ViewID).ToArray();
                 photonView.RPC("NewGameGuest", RpcTarget.Others, tileOrder);
 
                 gameController.NewGame(players, meeples, tiles);
 
+                AssignScoreboards(players);
                 PlaceStartingTile();
 
                 Debug.Assert(players.Count > 0, "Oops, there are no players.");
@@ -93,6 +95,7 @@ namespace Carcassonne.AR
             // New Game
             gameController.NewGame(players, meeples, tileStack);
             
+            AssignScoreboards(players);
             PlaceStartingTile();
 
             Debug.Assert(players.Count > 0, "Oops, there are no players.");
@@ -105,6 +108,38 @@ namespace Carcassonne.AR
                 $"The remaining tiles was not set correctly. It has a length of {state.Tiles.Remaining.Count}, but tiles has {tiles.Count}.");
 
             Debug.Log("Denna spelarese namn: " + PhotonNetwork.LocalPlayer.NickName);
+        }
+
+        private void AssignScoreboards(List<Player> players)
+        {
+            var scoreboards = FindObjectsOfType<PlayerScoreScript>().ToList();
+            scoreboards.Sort((pss1, pss2) =>
+                pss1.transform.GetSiblingIndex() - pss2.transform.GetSiblingIndex());
+
+            var i = 0;
+            foreach (var scoreboard in scoreboards)
+            {
+                if (i < players.Count)
+                {
+                    // Set player
+                    var player = players[i];
+                    scoreboard.player = player;
+                    
+                    // Connect to events
+                    gameController.OnGameStart.AddListener(scoreboard.OnGameStart);
+                    gameController.OnTurnEnd.AddListener(scoreboard.ChangeMaterial);
+                    gameController.OnTurnStart.AddListener(scoreboard.UpdateCurrentPlayer);
+                    gameController.OnGameOver.AddListener(scoreboard.ChangeMaterial);
+                    gameController.OnScoreChanged.AddListener(scoreboard.UpdateScore);
+                    
+                    scoreboard.OnGameStart();
+                }
+                else
+                {
+                    scoreboard.gameObject.SetActive(false);
+                }
+                i++;
+            }
         }
 
         #region Proton

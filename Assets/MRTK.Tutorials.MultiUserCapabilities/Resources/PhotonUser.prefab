@@ -294,7 +294,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   username: 
-  isAI: 0
   score: 0
   previousScore: 0
   unscoredPoints: 0

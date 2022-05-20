@@ -6,7 +6,6 @@ namespace Carcassonne.Models
     {
         public int id;
         public string username;
-        public bool isAI;
         public int score;
         public int previousScore = 0;
         public int unscoredPoints;

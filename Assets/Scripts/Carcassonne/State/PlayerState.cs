@@ -22,7 +22,7 @@ namespace Carcassonne.State
         public Player Next()
         {
             _currentIndex = (_currentIndex + 1) % All.Count;
-            Debug.Log($"Setting Current player to Player {All[_currentIndex].id} (index: {_currentIndex}, AI: {All[_currentIndex].isAI})");
+            Debug.Log($"Setting Current player to Player {All[_currentIndex].id} (index: {_currentIndex})");
             return Current;
         }
         
