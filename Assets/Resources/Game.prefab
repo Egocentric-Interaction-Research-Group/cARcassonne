@@ -2400,19 +2400,6 @@ MonoBehaviour:
   OnGameStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6499101751387526074, guid: 72734a54c4f1c894aaa10698a82a8816,
-          type: 3}
-        m_TargetAssemblyTypeName: Carcassonne.Players.PlayerScript, Assembly-CSharp
-        m_MethodName: OnGameStart
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 8960675605114284209}
         m_TargetAssemblyTypeName: Carcassonne.Players.PlayerScoreScript, Assembly-CSharp
         m_MethodName: OnGameStart

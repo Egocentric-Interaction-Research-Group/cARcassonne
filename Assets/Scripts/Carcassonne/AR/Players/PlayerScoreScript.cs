@@ -43,6 +43,11 @@ namespace Carcassonne.Players
             }
         }
 
+        public void NewTurn()
+        {
+            
+        }
+
         public void ChangeMaterial()
         {
             var playerIndex = state.Players.All.IndexOf(state.Players.Current);

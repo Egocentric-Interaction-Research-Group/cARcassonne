@@ -24,7 +24,5 @@ MonoBehaviour:
     keys: []
     values: []
   stringPreferences:
-    keys:
-    - BuildDeployWindow_AppLauncherModelLocation
-    values:
-    - 
+    keys: []
+    values: []

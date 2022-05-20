@@ -79,9 +79,10 @@ namespace Carcassonne.AR
         {
             // Find players and meeples and tiles
             var players = FindObjectsOfType<Player>().ToList();
+            players.Sort((p1, p2) => p1.id - p2.id);
             var meeples = FindObjectsOfType<Meeple>().ToList();
             var tiles = FindObjectsOfType<ARTile>().ToList();
-            
+
             // Order tiles
             var tileStack = new Stack<Tile>();
             foreach (var id in tileOrder.Reverse())
@@ -274,7 +275,9 @@ namespace Carcassonne.AR
                 player.GetComponent<ARPlayer>().photonView.RPC("SetPlayerID", RpcTarget.All, i);
                 i++;
             }
-
+            
+            players.Sort((p1, p2) => p1.id - p2.id);
+            
             return players;
         }
 
