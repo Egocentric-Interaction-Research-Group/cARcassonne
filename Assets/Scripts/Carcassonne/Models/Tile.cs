@@ -66,7 +66,9 @@ namespace Carcassonne.Models
         public bool Shield { get; private set; }
 
         /// <summary>
-        ///     The <see cref="Geography"/> of each of the 4 outer sides of the tile. Values are stored as a Dic 
+        ///     The <see cref="Geography"/> of each of the 4 outer sides of the tile. Values are stored as a Dictionary
+        ///     with the keys being the directions represented by the <see cref="Vector2Int"/> values
+        ///     <c>Vector2Int.Up</c>, <c>Vector2Int.Right</c>, <c>Vector2Int.Down</c>, and <c>Vector2Int.Left</c>. 
         /// </summary>
         public Dictionary<Vector2Int, Geography> Sides =>
             Geographies.Where(kvp => kvp.Key.sqrMagnitude == 1).
@@ -80,8 +82,6 @@ namespace Carcassonne.Models
         ///     Coordinates are represented [Horiz, Vert]
         /// </summary>
         public Geography[,] Matrix => GetMatrix();
-
-        public Dictionary<Vector2Int, Geography> SubTileDictionary => getSubTileDictionary();
 
         /// <summary>
         ///     This should only be called by the tile controller. All in-game rotations should use the tile controller's
@@ -159,16 +159,6 @@ namespace Carcassonne.Models
             }
 
             return matrix;
-        }
-
-        private Dictionary<Vector2Int, Geography> getSubTileDictionary()
-        {
-            var d = new Dictionary<Vector2Int, Geography>();
-            for (var i = 0; i < SubTileDimension; i++)
-            for (var j = 0; j < SubTileDimension; j++)
-                d.Add(new Vector2Int(i, j) - Vector2Int.one, Matrix[i, j]);
-
-            return d;
         }
 
         /// <summary>
