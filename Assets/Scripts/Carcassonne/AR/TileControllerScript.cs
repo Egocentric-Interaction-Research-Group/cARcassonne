@@ -45,6 +45,8 @@ namespace Carcassonne.AR
                     tile.GetComponent<GridKeyboardMovable>().enabled = true;
                     tile.GetComponent<GridKeyboardRotatable>().enabled = true;
                     tile.GetComponent<ObjectManipulator>().enabled = true;
+                    
+                    tile.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
                 }
             }
         }
