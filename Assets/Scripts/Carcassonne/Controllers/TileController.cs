@@ -64,6 +64,18 @@ namespace Carcassonne.Controllers
                 return false;
             }
 
+            if (state.phase != Phase.NewTurn)
+            {
+                Debug.Log($"Tried to draw a tile during phase {state.phase}. Tiles may only be drawn during Phase.NewTurn.");
+                return false;
+            }
+
+            if (state.Tiles.Current != null)
+            {
+                Debug.Log("Tried to draw a tile while a tile is in play. Not Allowed.");
+                return false;
+            }
+
             // Get a new current tile
             state.Tiles.Current = state.Tiles.Remaining.Pop();
             Debug.Log($"Drew Tile id {tile.ID} ({tile})");
@@ -72,8 +84,6 @@ namespace Carcassonne.Controllers
             {
                 Debug.Log($"Tile (ID: {tile.ID}) not possible to place: discarding and drawing a new one.");
                 Discard();
-                
-                // Draw();
             }
             
             state.phase = Phase.TileDrawn;

@@ -31,6 +31,7 @@ namespace Carcassonne.AR
         public GameController gameController => GetComponent<GameController>();
         public MeepleController meepleController => GetComponent<MeepleController>();
         public TileController tileController => GetComponent<TileController>();
+        public TurnController turnController => GetComponent<TurnController>();
 
         internal TileControllerScript tileControllerScript => GetComponent<TileControllerScript>();
         internal MeepleControllerScript meepleControllerScript => GetComponent<MeepleControllerScript>();
@@ -133,6 +134,7 @@ namespace Carcassonne.AR
                     gameController.OnScoreChanged.AddListener(scoreboard.UpdateScore);
                     
                     scoreboard.OnGameStart();
+                    scoreboard.UpdateCurrentPlayer();
                 }
                 else
                 {
@@ -238,43 +240,6 @@ namespace Carcassonne.AR
         #endregion
         
         #region Redesigned Functions
-        
-        /// <summary>
-        /// Is AI turn or human turn being executed on the local machine.
-        /// </summary>
-        /// <returns></returns>
-        public bool IsLocalTurn()
-        {
-            return IsLocalHumanTurn() || IsLocalAITurn();
-        }
-        
-        public bool IsLocalAITurn()
-        {
-            var aiUser = state.Players.Current.GetComponent<CarcassonneAgent>();
-            if (aiUser == null)
-                return false;
-            
-            Debug.Log($"Found current user {aiUser.GetComponent<Player>().username} ({aiUser.GetComponent<Player>().id}), IsLocal: {PhotonNetwork.IsMasterClient}");
-            
-            if( PhotonNetwork.IsMasterClient )
-                return true;
-
-            return false;
-        }
-        
-        public bool IsLocalHumanTurn()
-        {
-            var photonUser = state.Players.Current.GetComponent<PhotonUser>();
-            if (photonUser == null)
-                return false;
-            
-            Debug.Log($"Found current user {photonUser.GetComponent<Player>().username} ({photonUser.GetComponent<Player>().id}), IsLocal: {photonUser.IsLocal}");
-            
-            if( photonUser.IsLocal )
-                return true;
-
-            return false;
-        }
 
         private void PlaceStartingTile()
         {

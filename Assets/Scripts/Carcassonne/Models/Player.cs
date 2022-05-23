@@ -24,7 +24,7 @@ namespace Carcassonne.Models
             score = 0;
         }
 
-        public void OnNewTurn()
+        public void UpdateScores()
         {
             Debug.Log($"EOT New Turn (P{id}). Setting previous points. Score: {score}, Unscored Points: {unscoredPoints}, Potential Points: {potentialPoints} " +
                       $"prev: {previousScore}, prevUnscore: {previousUnscoredPoints}, prevPot: {previousPotentialPoints}, " +

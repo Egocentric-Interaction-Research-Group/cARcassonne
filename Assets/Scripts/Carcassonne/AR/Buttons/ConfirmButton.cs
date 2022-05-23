@@ -16,7 +16,7 @@ namespace Carcassonne.AR.Buttons
         public UnityEvent InvalidCick = new UnityEvent();
         
         public GameState state;
-        public GameControllerScript arGameController;
+        public TurnController turnController;
         public TileController tileController;
         public MeepleController meepleController;
         
@@ -69,7 +69,7 @@ namespace Carcassonne.AR.Buttons
             Debug.Assert(state.Players != null, "ConfirmButton: state players is not found (is null).");
             Debug.Assert(state.Players.Current != null, "Current player is null");
             
-            if (arGameController.IsLocalHumanTurn())
+            if (turnController.IsLocalHumanTurn())
             {
                 gameObject.SetActive(true);
             }
