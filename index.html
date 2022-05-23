@@ -73,16 +73,15 @@
 <h1 id="carcassonne">cARcassonne</h1>
 
 <p>Augmented Reality Carcassonne using the HoloLens2 and MRTK in Unity</p>
+<p>Code at <a href="https://github.com/Egocentric-Interaction-Research-Group/cARcassonne">https://github.com/Egocentric-Interaction-Research-Group/cARcassonne</a></p>
 <h3 id="dependencies">Dependencies</h3>
 <p>cARcassonne has recently moved to the Unity OpenXR Plugin system and Microsoft&#39;s Mixed Reality OpenXR plugin. <em>These should be installed automatically, but they are listed here for reference.</em></p>
 <ul>
-<li>Unity OpenXR plugin: version 1.2 or later</li>
-<li>Mixed Reality OpenXR plugin: version 1.0.0 or later</li>
-<li>MRTK: version 2.7.2 or later</li>
-<li>AR Foundation: version 4.1.1 or later</li>
-<li>Universal Render Pipeline (URP): version 10.5.1 or later</li>
-<li>Azure Spatial Anchors: version 2.10 or later</li>
-<li>Azure Remote Rendering: version 1.0.15 or later</li>
+<li>Mixed Reality OpenXR plugin: version 1.0.3</li>
+<li>MRTK: version 2.7.3</li>
+<li>ML Agents: version 2.0.1</li>
+<li>AR Foundation: version 4.2.2</li>
+<li>Universal Render Pipeline (URP): version 12.1.6</li>
 </ul>
 <h2 id="installation">Installation</h2>
 <p>Installation lists software versions that have been tested with the setup. Other versions may or may not work!</p>
@@ -90,11 +89,11 @@
 <ol>
 <li>Windows 10 Education (21H1)<ul>
 <li><em>Tested on this particular build. Should work on many others as well.</em></li>
-<li>&gt; <strong>OS X</strong>: This also seems to work on OS X 11.6 Big Sur, tested on a Mac M1.</li>
+<li>&gt; <strong>OS X</strong>: This also seems to work on OS X 11.6 Big Sur and 12.2 Monterey, tested on a Mac M1. Note that there are limitations here. At the time of writing (May 2022), Unity and Jetbrains Rider have Native M1 apps, but they are slow. It is also not possible to build for Hololens on the M1.</li>
 </ul>
 </li>
-<li>Unity Hub (v2.4.5)</li>
-<li>Microsoft Visual Studio Community 2019 (16.11.3) OR JetBrains Rider (2021.1+)</li>
+<li>Unity Hub (v3.1.2)</li>
+<li>Microsoft Visual Studio Community 2019 (16.11.3) OR JetBrains Rider (2022.1+)</li>
 <li>Github Client<ul>
 <li>Terminal Client (any one will do)</li>
 <li>Github Desktop (<a href="https://desktop.github.com/">https://desktop.github.com/</a>)</li>
@@ -104,14 +103,13 @@
 </ol>
 <h3 id="installing">Installing</h3>
 <ol>
-<li>Install Unity 20.3.19f1 from Unity Hub (v2.4.5)<ul>
+<li>Install Unity 2021.3.1f1 from Unity Hub<ul>
 <li>Make sure <code>Universal Windows Platform Build Support</code> is checked.</li>
 <li>&gt; <strong>OS X</strong>: UWP isn&#39;t an option, so I&#39;ve just installed Mac and Windows build support</li>
 </ul>
 </li>
 <li>Clone the project from Github.<ul>
-<li>Check out the <code>develop</code> branch and fork from there.</li>
-<li>Actually, I&#39;d suggest each team make a main feature branch (e.g. <code>feature/gameplayai</code> and <code>feature/situationrecognition</code> that you all share and fork individial work branches from there.</li>
+<li>Check out the <code>develop</code> branch and fork from there.individial work branches from there.</li>
 </ul>
 </li>
 <li>Add the project to Unity Hub (<code>Projects &gt; Add</code>)</li>
@@ -121,16 +119,11 @@
 </li>
 <li>The MRTK Project Configurator should pop up. <code>Apply</code> the default settings. The click <code>Next</code> and then <code>Done</code></li>
 <li>Add the missing Scenes to the Project Hierarchy:<ol>
-<li>Select <code>GameScene</code> and <code>StartmenuScene</code> from <code>Assets &gt; Scenes</code></li>
-<li>Drag them to the Hierarchy window</li>
-<li><code>Remove</code> the default Untitled Scene</li>
-<li><code>Unload</code> the <code>StartmenuScene</code> so that it is in the Hierarchy, but greyed out</li>
+<li>Open <code>GameScene</code> from <code>Assets &gt; Scenes</code></li>
 </ol>
 </li>
 <li>Press play and the project should run!</li>
 </ol>
-<h3 id="building-the-documentation-windows-only">Building the documentation (windows only)</h3>
-<p>See <a href="Documentation/index.md">Documentation index</a></p>
 <h3 id="troubleshooting">Troubleshooting</h3>
 <h4 id="reference-rewriter-error-type-systemwebhttputility-doesnt-exist-in-target-framework-it-is-referenced-from-restsharpdll-at-systemstring-restsharpextensionsstringextensionshtmlattributeencodesystemstring">Reference rewriter: Error: type <code>System.Web.HttpUtility</code> doesn&#39;t exist in target framework. It is referenced from RestSharp.dll at System.String RestSharp.Extensions.StringExtensions::HtmlAttributeEncode(System.String).</h4>
 <ol>
@@ -156,7 +149,7 @@ Change the settings of the inspector panel</li>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Egocentric-Interaction-Research-Group/cARcassonne/blob/feature/docs/Documentation/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Egocentric-Interaction-Research-Group/cARcassonne/blob/develop/Documentation/index.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

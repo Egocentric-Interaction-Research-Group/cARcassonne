@@ -1,4 +1,14 @@
 {
+  "sitemap": {
+    "fileOptions": {
+      "api/*": {
+        "baseUrl": "https://normanderwan.github.io/DocFxForUnity/",
+        "changefreq": "daily"
+      }
+    },
+    "baseUrl": "https://normanderwan.github.io/DocFxForUnity/",
+    "changefreq": "weekly"
+  },
   "homepages": [],
   "source_base_path": "D:/a/cARcassonne/cARcassonne/Documentation",
   "xrefmap": "xrefmap.yml",
@@ -50,6 +60,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.Board2DSensor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.Board2DSensor.html",
+          "hash": "exQk43Fy1tAdWnpDmm319txVZzkTW5DL6xp6ck33hso="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Carcassonne.AI.BoardAction.yml",
       "output": {
         ".html": {
@@ -66,7 +88,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.AI.BoardObservation.html",
-          "hash": "2T7kChwV3wfbZFoGb2Qu+j/OCl/HdjlBLKKCFmOq5YE="
+          "hash": "y5eIUNoMl2iJKgBAf+6MRyayF55+tjahBR0dzLi3HqE="
         }
       },
       "is_incremental": false,
@@ -86,11 +108,47 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.Carcassonne2DSensorBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.Carcassonne2DSensorBase.html",
+          "hash": "w9Bx/JonPhTSxwiuHqmhepZgZFSjxUgP51/pXLPrmNo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.Carcassonne2DSensorComponent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.Carcassonne2DSensorComponent.html",
+          "hash": "ial0QsCBtKgunizAwMSomuGU/pUEk5yvKSdYwxIYyPk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Carcassonne.AI.CarcassonneAgent.yml",
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.AI.CarcassonneAgent.html",
           "hash": "SRMU5sohXKKP2mrLoP3WZhaoBMy+01Fhtx9+i0Xodsg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Carcassonne.AI.CurrentTile2DSensor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Carcassonne.AI.CurrentTile2DSensor.html",
+          "hash": "l2O2g19/fhTfYKgdSf9fBg42gqNYdLydf2HGx9enV4c="
         }
       },
       "is_incremental": false,
@@ -162,7 +220,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.AI.ObservationApproach.html",
-          "hash": "wSLciKqk+/juNqpmB624SMBiYuNa/JMKzX/66SIithM="
+          "hash": "Xg0LCnweuJ4pXGq740eVA290st3XtnyKN7rCjP68peM="
         }
       },
       "is_incremental": false,
@@ -222,7 +280,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.AI.html",
-          "hash": "Fs4XzMvqd0fSwDosJPaXIw9pX9eWpht9MstsMsykaWY="
+          "hash": "8pTgIF9uYewgyzw0r18WDlhHCuLr8kc9uZ8FxzjFxGE="
         }
       },
       "is_incremental": false,
@@ -270,7 +328,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.AR.GameControllerScript.html",
-          "hash": "0qsO8Bvx7DWfTjgo62xOPgKprfFEPWcoAq7SfjqTey8="
+          "hash": "v51Kqz/yGVhbueiDFcs2DF/eQV+W3C7Jt6GZRHthK7g="
         }
       },
       "is_incremental": false,
@@ -354,7 +412,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.AR.TileControllerScript.html",
-          "hash": "az27kOQov6pxPDUJzTEoMApRiVRYBeYj7msA5Nr984I="
+          "hash": "YvE5cq3Hgy1kTkyfv4nNDOczjj2h45avV6/qCGdUiYk="
         }
       },
       "is_incremental": false,
@@ -486,7 +544,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.Models.Extensions.html",
-          "hash": "xMWTaRIGm8VSgSFQMu94mGwN0EbzH+Nqr09LTfIiROE="
+          "hash": "+cfQs6DTRArwsIW7XcGl0xbxYT4iugQP+XDnQzXdyRk="
         }
       },
       "is_incremental": false,
@@ -558,7 +616,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.Models.Tile.html",
-          "hash": "WfaMVqy3TKWBfvA11M9/QDGE+HaVPhOfkMeUE7cyU+8="
+          "hash": "6pRUFntkVnLdBAs8b3oD4qZSfHHTc782QRXPhyOIOzY="
         }
       },
       "is_incremental": false,
@@ -570,7 +628,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.Models.html",
-          "hash": "PreHudbffHPTGELZUICUrMSmwozri/cYsKUFzfaI1f0="
+          "hash": "nr0xHnyidv/fgAzhv1T0CwUXZUrrXQ+vJouHnvehSaU="
         }
       },
       "is_incremental": false,
@@ -582,7 +640,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.Players.ARPlayer.html",
-          "hash": "qQFQd/I4tTxIGq1WsUzHFe1Y2gj30ewdW2hED45ZHF4="
+          "hash": "EQFSjzkJbwr7Wzdt0Yx24NJbkFAKAv83pzrhrh6NKbU="
         }
       },
       "is_incremental": false,
@@ -834,7 +892,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.State.MeepleState.html",
-          "hash": "4/2fn7jshRVN8nMd+RvafyQLhuKnZGAv1vFQmxoaBmw="
+          "hash": "oCbKJ72/rNFuJ/dU1kPW/BUQF9R3W9yCoNsFPCukeSg="
         }
       },
       "is_incremental": false,
@@ -882,7 +940,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.State.TileState.html",
-          "hash": "VhTJ5GHtaHbbBdcnQFXPhgvH28RmWfd62Ugh+G46IEM="
+          "hash": "CcuAR8Hh/hy1cE427GIsPkLY4p/dqJHSEL5Qbj/xoj0="
         }
       },
       "is_incremental": false,
@@ -1122,7 +1180,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "PqPuN+X/4MNwIShFZGLtUETTbgLiN+SdJCdCUA4PWyU="
+          "hash": "7dleVl9Ek5F+rgSm7WavR0hmR1fghCAUvMevIWiSycU="
         }
       },
       "is_incremental": false,
@@ -1134,7 +1192,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/SituationRecognitionIdeas.html",
-          "hash": "T8Vc/eO6qDIuPDt95w6njxLJcHAo6Kxye6vUqKM0Jbg="
+          "hash": "lHTQAbaraxhxOFM40ZAkFgRbnkrGidxLxhtbVWEfCy4="
         }
       },
       "is_incremental": false,
@@ -1146,7 +1204,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/architecture.html",
-          "hash": "KQ4DbeH5QEt0SQTF0ZxdD2Fhryfh/IvU789SzetKPwc="
+          "hash": "kNrFMDU7tCVsq5NAcKoY2K+G25qwr+uYhzagUk0EVEc="
         }
       },
       "is_incremental": false,
@@ -1158,7 +1216,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/gameplayAI.html",
-          "hash": "YqNDkGSBfr1lKFy0YARfMQJ8tuUVHNGmImAR0ZTc60E="
+          "hash": "wPa6b1v8jxF3wUw0Ff85JZekWcuPa5qlqdxHras8CkY="
         }
       },
       "is_incremental": false,
@@ -1170,7 +1228,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/intro.html",
-          "hash": "JuTutsSK2YU0hplUM48Z+sSdYuL6ds0pGsZpspf+fLU="
+          "hash": "OD8UnhQylA0jhOd98KANOWJrBPZB958aNpk8scNn57Q="
         }
       },
       "is_incremental": false,
@@ -1182,7 +1240,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/multiplayer.html",
-          "hash": "nTKI1xdtdlwNllK1k9WwJEODw5yheeVZdCyq4ZCh3Sk="
+          "hash": "VcLdVGaQLcH0Dhihnt6aiGHqJl07Z/xcftSdgyqSTlY="
         }
       },
       "is_incremental": false,
@@ -1194,7 +1252,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/orientation.html",
-          "hash": "NntqIKS3mEnbDblCQXaSCmyRJc4g2oDDRm3yN+wRpio="
+          "hash": "a5vqmUu0lOAM7KnJwSR1BFU2fSgKpYhvcpDRbDzJNmE="
         }
       },
       "is_incremental": false,
@@ -1206,7 +1264,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/situationRecognition.html",
-          "hash": "qWvoNSr9w7jBJZvDtKrFY/4w7dj7dWLsf9R/YdESUQE="
+          "hash": "qomCMtlSFzuvROsp+2PPPiFfvw/VeiFsQAeqra3HqMk="
         }
       },
       "is_incremental": false,
@@ -1221,7 +1279,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/states.html",
-          "hash": "Gx3TMcDxckXMAuuBC0UPzJYc7T7BM/ZelEopyqkxUZo="
+          "hash": "A7Pz36xcLtV3B2J6qdkvCmb0SHWqqB8qkbFFpAYwbQE="
         }
       },
       "is_incremental": false,
@@ -1240,51 +1298,12 @@
       "version": ""
     },
     {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
       "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "5vrZ/1fN0GmWt2o9OVjsHt77vDH7AwynTeuPyGTZGxI="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "manual/Overview.md",
-      "output": {
-        ".html": {
-          "relative_path": "manual/Overview.html",
-          "hash": "FK+2nKhyyuESe8WIqHxnM0DftLrOOE0AcEt+dqETyS0="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "manual/base.md",
-      "output": {
-        ".html": {
-          "relative_path": "manual/base.html",
-          "hash": "0CKrJjTl4eH7woff8VJzaPeYzIrLjxXYT82smqstRaM="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "manual/toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "manual/toc.html",
-          "hash": "rOyWvjZlues2PdLSvxb3RLM/+nNkrCURAta3Up2+8NM="
+          "hash": "+03yqoGn+yTPNzubpgdzqciJ7I1dQ5QYSXXyueevE18="
         }
       },
       "is_incremental": false,
@@ -1296,7 +1315,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "Qrc41pGZ4bC0nWIXA0AkKt+e4xDe1GcBEkDH7aHH5a4="
+          "hash": "WWMQcp51b2ykhEXKJeH7+hn0vqKdhiEbRTjI2Az72Ow="
         }
       },
       "is_incremental": false,
@@ -1317,13 +1336,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 11,
+          "total_file_count": 9,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 92,
+          "total_file_count": 96,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {

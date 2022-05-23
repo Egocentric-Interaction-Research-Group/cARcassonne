@@ -83,11 +83,7 @@
   
   <h1 id="Carcassonne_Models_Tile" data-uid="Carcassonne.Models.Tile" class="text-break">Class Tile
   </h1>
-  <div class="markdown level0 summary"><p>A tile piece from the Carcassonne game. This is the base model for a game tile and holds information about the
-features that it contains as well as its rotational state.
-The tile class also contains static information about the base tile deck for the game as a whole, so that
-the tiles can be instantiated in the game.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -153,12 +149,12 @@ the tiles can be instantiated in the game.</p>
   </table>
   
   
-  <h4 id="Carcassonne_Models_Tile_SubTileDimension" data-uid="Carcassonne.Models.Tile.SubTileDimension">SubTileDimension</h4>
+  <h4 id="Carcassonne_Models_Tile_SubtTileDimension" data-uid="Carcassonne.Models.Tile.SubtTileDimension">SubtTileDimension</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int SubTileDimension = 3</code></pre>
+    <pre><code class="lang-csharp hljs">public const int SubtTileDimension = 3</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -280,7 +276,9 @@ the tiles can be instantiated in the game.</p>
   
   <a id="Carcassonne_Models_Tile_ID_" data-uid="Carcassonne.Models.Tile.ID*"></a>
   <h4 id="Carcassonne_Models_Tile_ID" data-uid="Carcassonne.Models.Tile.ID">ID</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The ID decides which type of tile this tile is. Refer to the ID graph for exact results.</p>
+<p>THIS IS ONLY NEEDED FOR Inspector-EDITED ID VALUES.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -389,7 +387,7 @@ rotation is 0 then North is equal to Up.</p>
   
   <a id="Carcassonne_Models_Tile_Rotations_" data-uid="Carcassonne.Models.Tile.Rotations*"></a>
   <h4 id="Carcassonne_Models_Tile_Rotations" data-uid="Carcassonne.Models.Tile.Rotations">Rotations</h4>
-  <div class="markdown level1 summary"><p>The number of times the tile has been rotated by 90 degrees. Valid values [0,3].</p>
+  <div class="markdown level1 summary"><p>The number of times the tile has been rotated by 90 degrees.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -415,7 +413,7 @@ rotation is 0 then North is equal to Up.</p>
   
   <a id="Carcassonne_Models_Tile_Shield_" data-uid="Carcassonne.Models.Tile.Shield*"></a>
   <h4 id="Carcassonne_Models_Tile_Shield" data-uid="Carcassonne.Models.Tile.Shield">Shield</h4>
-  <div class="markdown level1 summary"><p>True if this tile has a shield (worth 2 extra points for the city on the tile).</p>
+  <div class="markdown level1 summary"><p>Public property detailing whether this tile has a shield</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -441,7 +439,7 @@ rotation is 0 then North is equal to Up.</p>
   
   <a id="Carcassonne_Models_Tile_Sides_" data-uid="Carcassonne.Models.Tile.Sides*"></a>
   <h4 id="Carcassonne_Models_Tile_Sides" data-uid="Carcassonne.Models.Tile.Sides">Sides</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="Carcassonne.Models.Geography.html">Geography</a> of each of the 4 outer sides of the tile. Values are stored as a Dic </p>
+  <div class="markdown level1 summary"><p>A dictionary of the side geographies, indexed by Vector2Int.{up,down,left,right}.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
