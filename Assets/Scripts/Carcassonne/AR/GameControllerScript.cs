@@ -276,7 +276,7 @@ namespace Carcassonne.AR
                 i++;
             }
             
-            players.Sort((p1, p2) => p1.id - p2.id);
+            players.Sort((p1, p2) => p2.id - p1.id);
             
             return players;
         }

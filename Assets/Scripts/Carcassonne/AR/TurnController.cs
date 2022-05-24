@@ -2,10 +2,12 @@
 using Carcassonne.AI;
 using Carcassonne.Models;
 using Carcassonne.State;
+using Carcassonne.State.Features;
 using Microsoft.MixedReality.Toolkit.UI;
 using MRTK.Tutorials.MultiUserCapabilities;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Carcassonne.AR
 {
@@ -16,40 +18,72 @@ namespace Carcassonne.AR
         public List<Interactable> buttons;
         public List<ObjectManipulator> manipulators;
 
+        public UnityEvent OnLocalTurnStart = new UnityEvent();
+        public UnityEvent OnLocalTurnEnd = new UnityEvent();
+        public UnityEvent OnLocalAITurnStart = new UnityEvent();
+        public UnityEvent OnLocalAITurnEnd = new UnityEvent();
+        public UnityEvent OnLocalHumanTurnStart = new UnityEvent();
+        public UnityEvent OnLocalHumanTurnEnd = new UnityEvent();
+
         public void OnTurnStart()
         {
-            if(IsLocalHumanTurn()){
-                Debug.Log($"TurnController: Got local human turn. Enabling Buttons and Bell.");
-                // Enable Buttons
-                foreach (var button in buttons)
+            if (IsLocalTurn())
+            {
+                OnLocalTurnStart.Invoke();
+                if (IsLocalHumanTurn())
                 {
-                    button.enabled = true;
+                    Debug.Log($"TurnController: Got local human turn. Enabling Buttons and Bell.");
+                    OnLocalHumanTurnStart.Invoke();
+
+                    // Enable Buttons
+                    foreach (var button in buttons)
+                    {
+                        button.enabled = true;
+                    }
+
+                    // Enable Bell
+                    foreach (var manipulator in manipulators)
+                    {
+                        manipulator.enabled = true;
+                    }
+
+                    // Enable Tile Movement
                 }
-                
-                // Enable Bell
-                foreach (var manipulator in manipulators)
+                else if (IsLocalAITurn())
                 {
-                    manipulator.enabled = true;
+                    OnLocalAITurnStart.Invoke();
                 }
-                
-                // Enable Tile Movement
-                
             }
         }
 
-        public void OnTurnEnd(){
-        
+        public void OnTurnEnd()
+        {
             Debug.Log($"TurnController: Ending turn. Disabling Buttons and Bell.");
             // Disable buttons
             foreach (var button in buttons)
             {
                 button.enabled = false;
             }
-                
+
             // Disable bell 
             foreach (var manipulator in manipulators)
             {
                 manipulator.enabled = false;
+            }
+
+            if (IsLocalTurn())
+            {
+                if (IsLocalHumanTurn())
+                {
+                    OnLocalHumanTurnEnd.Invoke();
+                }
+
+                else if (IsLocalAITurn())
+                {
+                    OnLocalAITurnEnd.Invoke();
+                }
+
+                OnLocalTurnEnd.Invoke();
             }
         }
 
@@ -67,10 +101,11 @@ namespace Carcassonne.AR
             var aiUser = state.Players.Current.GetComponent<CarcassonneAgent>();
             if (aiUser == null)
                 return false;
-            
-            Debug.Log($"Found current user {aiUser.GetComponent<Player>().username} ({aiUser.GetComponent<Player>().id}), IsLocal: {PhotonNetwork.IsMasterClient}");
-            
-            if( PhotonNetwork.IsMasterClient )
+
+            Debug.Log(
+                $"Found current user {aiUser.GetComponent<Player>().username} ({aiUser.GetComponent<Player>().id}), IsLocal: {PhotonNetwork.IsMasterClient}");
+
+            if (PhotonNetwork.IsMasterClient)
                 return true;
 
             return false;
@@ -81,10 +116,11 @@ namespace Carcassonne.AR
             var photonUser = state.Players.Current.GetComponent<PhotonUser>();
             if (photonUser == null)
                 return false;
-            
-            Debug.Log($"Found current user {photonUser.GetComponent<Player>().username} ({photonUser.GetComponent<Player>().id}), IsLocal: {photonUser.IsLocal}");
-            
-            if( photonUser.IsLocal )
+
+            Debug.Log(
+                $"Found current user {photonUser.GetComponent<Player>().username} ({photonUser.GetComponent<Player>().id}), IsLocal: {photonUser.IsLocal}");
+
+            if (photonUser.IsLocal)
                 return true;
 
             return false;
