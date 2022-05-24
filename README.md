@@ -1,17 +1,17 @@
 # cARcassonne
 Augmented Reality Carcassonne using the HoloLens2 and MRTK in Unity
 
+Code at https://github.com/Egocentric-Interaction-Research-Group/cARcassonne
+
 ### Dependencies
 
 cARcassonne has recently moved to the Unity OpenXR Plugin system and Microsoft's Mixed Reality OpenXR plugin. *These should be installed automatically, but they are listed here for reference.*
 
-* Unity OpenXR plugin: version 1.2 or later
-* Mixed Reality OpenXR plugin: version 1.0.0 or later
-* MRTK: version 2.7.2 or later
-* AR Foundation: version 4.1.1 or later
-* Universal Render Pipeline (URP): version 10.5.1 or later
-* Azure Spatial Anchors: version 2.10 or later
-* Azure Remote Rendering: version 1.0.15 or later
+* Mixed Reality OpenXR plugin: version 1.0.3
+* MRTK: version 2.7.3
+* ML Agents: version 2.0.1
+* AR Foundation: version 4.2.2
+* Universal Render Pipeline (URP): version 12.1.6
 
 ## Installation
 
@@ -21,9 +21,9 @@ Installation lists software versions that have been tested with the setup. Other
 
 1. Windows 10 Education (21H1)
    * *Tested on this particular build. Should work on many others as well.*
-   * > **OS X**: This also seems to work on OS X 11.6 Big Sur, tested on a Mac M1.
-3. Unity Hub (v2.4.5)
-4. Microsoft Visual Studio Community 2019 (16.11.3) OR JetBrains Rider (2021.1+)
+   * > **OS X**: This also seems to work on OS X 11.6 Big Sur and 12.2 Monterey, tested on a Mac M1. Note that there are limitations here. At the time of writing (May 2022), Unity and Jetbrains Rider have Native M1 apps, but they are slow. It is also not possible to build for Hololens on the M1.
+3. Unity Hub (v3.1.2)
+4. Microsoft Visual Studio Community 2019 (16.11.3) OR JetBrains Rider (2022.1+)
 5. Github Client
     * Terminal Client (any one will do)
     * Github Desktop (https://desktop.github.com/)
@@ -31,25 +31,18 @@ Installation lists software versions that have been tested with the setup. Other
 
 ### Installing
 
-1. Install Unity 20.3.19f1 from Unity Hub (v2.4.5)
+1. Install Unity 2021.3.1f1 from Unity Hub
     * Make sure `Universal Windows Platform Build Support` is checked.
     * > **OS X**: UWP isn't an option, so I've just installed Mac and Windows build support
 3. Clone the project from Github.
-    * Check out the `develop` branch and fork from there.
-    * Actually, I'd suggest each team make a main feature branch (e.g. `feature/gameplayai` and `feature/situationrecognition` that you all share and fork individial work branches from there.
+    * Check out the `develop` branch and fork from there.individial work branches from there.
 5. Add the project to Unity Hub (`Projects > Add`)
 6. Make sure the project has the right Unity version and open it.
     * This could take a while as Unity finds and downloads packages, etc.
 1. The MRTK Project Configurator should pop up. `Apply` the default settings. The click `Next` and then `Done`
 2. Add the missing Scenes to the Project Hierarchy:
-    1. Select `GameScene` and `StartmenuScene` from `Assets > Scenes`
-    2. Drag them to the Hierarchy window
-    3. `Remove` the default Untitled Scene
-    1. `Unload` the `StartmenuScene` so that it is in the Hierarchy, but greyed out
+    1. Open `GameScene` from `Assets > Scenes`
 11. Press play and the project should run!
-
-### Building the documentation (windows only)
-See [Documentation index](Documentation/index.md)
 
 ### Troubleshooting
 
