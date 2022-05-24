@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ConfirmButton
+    <title>Class TurnController
    | cARcassonne documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ConfirmButton
+    <meta name="title" content="Class TurnController
    | cARcassonne documentation ">
     <meta name="generator" content="docfx 2.59.2.0">
     
@@ -78,34 +78,34 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Carcassonne.AR.Buttons.ConfirmButton">
+            <article class="content wrap" id="_content" data-uid="Carcassonne.AR.TurnController">
   
   
-  <h1 id="Carcassonne_AR_Buttons_ConfirmButton" data-uid="Carcassonne.AR.Buttons.ConfirmButton" class="text-break">Class ConfirmButton
+  <h1 id="Carcassonne_AR_TurnController" data-uid="Carcassonne.AR.TurnController" class="text-break">Class TurnController
   </h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">ConfirmButton</span></div>
+    <div class="level1"><span class="xref">TurnController</span></div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Carcassonne.AR.Buttons.html">Carcassonne.AR.Buttons</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Carcassonne.AR.html">Carcassonne.AR</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Carcassonne_AR_Buttons_ConfirmButton_syntax">Syntax</h5>
+  <h5 id="Carcassonne_AR_TurnController_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ConfirmButton : MonoBehaviour</code></pre>
+    <pre><code class="lang-csharp hljs">public class TurnController : MonoBehaviour</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
   
   
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_ConfirmableMaterial" data-uid="Carcassonne.AR.Buttons.ConfirmButton.ConfirmableMaterial">ConfirmableMaterial</h4>
+  <h4 id="Carcassonne_AR_TurnController_buttons" data-uid="Carcassonne.AR.TurnController.buttons">buttons</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Material ConfirmableMaterial</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;Interactable&gt; buttons</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -117,19 +117,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Material</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<span class="xref">Interactable</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_ConfirmableSprite" data-uid="Carcassonne.AR.Buttons.ConfirmButton.ConfirmableSprite">ConfirmableSprite</h4>
+  <h4 id="Carcassonne_AR_TurnController_manipulators" data-uid="Carcassonne.AR.TurnController.manipulators">manipulators</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Sprite ConfirmableSprite</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;ObjectManipulator&gt; manipulators</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -141,19 +141,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Sprite</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<span class="xref">ObjectManipulator</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_InvalidCick" data-uid="Carcassonne.AR.Buttons.ConfirmButton.InvalidCick">InvalidCick</h4>
+  <h4 id="Carcassonne_AR_TurnController_OnLocalAITurnEnd" data-uid="Carcassonne.AR.TurnController.OnLocalAITurnEnd">OnLocalAITurnEnd</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnityEvent InvalidCick</code></pre>
+    <pre><code class="lang-csharp hljs">public UnityEvent OnLocalAITurnEnd</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -172,12 +172,12 @@
   </table>
   
   
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_meepleController" data-uid="Carcassonne.AR.Buttons.ConfirmButton.meepleController">meepleController</h4>
+  <h4 id="Carcassonne_AR_TurnController_OnLocalAITurnStart" data-uid="Carcassonne.AR.TurnController.OnLocalAITurnStart">OnLocalAITurnStart</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MeepleController meepleController</code></pre>
+    <pre><code class="lang-csharp hljs">public UnityEvent OnLocalAITurnStart</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -189,19 +189,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">MeepleController</span></td>
+        <td><span class="xref">UnityEvent</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_NonConfirmableMaterial" data-uid="Carcassonne.AR.Buttons.ConfirmButton.NonConfirmableMaterial">NonConfirmableMaterial</h4>
+  <h4 id="Carcassonne_AR_TurnController_OnLocalHumanTurnEnd" data-uid="Carcassonne.AR.TurnController.OnLocalHumanTurnEnd">OnLocalHumanTurnEnd</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Material NonConfirmableMaterial</code></pre>
+    <pre><code class="lang-csharp hljs">public UnityEvent OnLocalHumanTurnEnd</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -213,19 +213,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Material</span></td>
+        <td><span class="xref">UnityEvent</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_NonConfirmableSprite" data-uid="Carcassonne.AR.Buttons.ConfirmButton.NonConfirmableSprite">NonConfirmableSprite</h4>
+  <h4 id="Carcassonne_AR_TurnController_OnLocalHumanTurnStart" data-uid="Carcassonne.AR.TurnController.OnLocalHumanTurnStart">OnLocalHumanTurnStart</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Sprite NonConfirmableSprite</code></pre>
+    <pre><code class="lang-csharp hljs">public UnityEvent OnLocalHumanTurnStart</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -237,19 +237,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Sprite</span></td>
+        <td><span class="xref">UnityEvent</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_state" data-uid="Carcassonne.AR.Buttons.ConfirmButton.state">state</h4>
+  <h4 id="Carcassonne_AR_TurnController_OnLocalTurnEnd" data-uid="Carcassonne.AR.TurnController.OnLocalTurnEnd">OnLocalTurnEnd</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GameState state</code></pre>
+    <pre><code class="lang-csharp hljs">public UnityEvent OnLocalTurnEnd</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -261,67 +261,19 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">GameState</span></td>
+        <td><span class="xref">UnityEvent</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_tileController" data-uid="Carcassonne.AR.Buttons.ConfirmButton.tileController">tileController</h4>
+  <h4 id="Carcassonne_AR_TurnController_OnLocalTurnStart" data-uid="Carcassonne.AR.TurnController.OnLocalTurnStart">OnLocalTurnStart</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TileController tileController</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TileController</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_turnController" data-uid="Carcassonne.AR.Buttons.ConfirmButton.turnController">turnController</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TurnController turnController</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Carcassonne.AR.TurnController.html">TurnController</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_ValidClick" data-uid="Carcassonne.AR.Buttons.ConfirmButton.ValidClick">ValidClick</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnityEvent ValidClick</code></pre>
+    <pre><code class="lang-csharp hljs">public UnityEvent OnLocalTurnStart</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -342,166 +294,99 @@
   </h3>
   
   
-  <a id="Carcassonne_AR_Buttons_ConfirmButton_OnClick_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.OnClick*"></a>
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_OnClick" data-uid="Carcassonne.AR.Buttons.ConfirmButton.OnClick">OnClick()</h4>
+  <a id="Carcassonne_AR_TurnController_IsLocalAITurn_" data-uid="Carcassonne.AR.TurnController.IsLocalAITurn*"></a>
+  <h4 id="Carcassonne_AR_TurnController_IsLocalAITurn" data-uid="Carcassonne.AR.TurnController.IsLocalAITurn">IsLocalAITurn()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnClick()</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsLocalAITurn()</code></pre>
   </div>
-  
-  
-  <a id="Carcassonne_AR_Buttons_ConfirmButton_OnDiscard_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.OnDiscard*"></a>
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_OnDiscard_MonoBehaviour_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.OnDiscard(MonoBehaviour)">OnDiscard(MonoBehaviour)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnDiscard(MonoBehaviour gamePiece)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">MonoBehaviour</span></td>
-        <td><span class="parametername">gamePiece</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Carcassonne_AR_Buttons_ConfirmButton_OnDraw_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.OnDraw*"></a>
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_OnDraw_MonoBehaviour_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.OnDraw(MonoBehaviour)">OnDraw(MonoBehaviour)</h4>
+  <a id="Carcassonne_AR_TurnController_IsLocalHumanTurn_" data-uid="Carcassonne.AR.TurnController.IsLocalHumanTurn*"></a>
+  <h4 id="Carcassonne_AR_TurnController_IsLocalHumanTurn" data-uid="Carcassonne.AR.TurnController.IsLocalHumanTurn">IsLocalHumanTurn()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnDraw(MonoBehaviour gamePiece)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsLocalHumanTurn()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">MonoBehaviour</span></td>
-        <td><span class="parametername">gamePiece</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Carcassonne_AR_Buttons_ConfirmButton_OnMeepleChange_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.OnMeepleChange*"></a>
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_OnMeepleChange" data-uid="Carcassonne.AR.Buttons.ConfirmButton.OnMeepleChange">OnMeepleChange()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Carcassonne_AR_TurnController_IsLocalTurn_" data-uid="Carcassonne.AR.TurnController.IsLocalTurn*"></a>
+  <h4 id="Carcassonne_AR_TurnController_IsLocalTurn" data-uid="Carcassonne.AR.TurnController.IsLocalTurn">IsLocalTurn()</h4>
+  <div class="markdown level1 summary"><p>Is AI turn or human turn being executed on the local machine.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnMeepleChange()</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsLocalTurn()</code></pre>
   </div>
-  
-  
-  <a id="Carcassonne_AR_Buttons_ConfirmButton_OnPlace_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.OnPlace*"></a>
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_OnPlace_MonoBehaviour_Vector2Int_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.OnPlace(MonoBehaviour,Vector2Int)">OnPlace(MonoBehaviour, Vector2Int)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnPlace(MonoBehaviour gamePiece, Vector2Int placement)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">MonoBehaviour</span></td>
-        <td><span class="parametername">gamePiece</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">Vector2Int</span></td>
-        <td><span class="parametername">placement</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Carcassonne_AR_Buttons_ConfirmButton_OnTileChange_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.OnTileChange*"></a>
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_OnTileChange" data-uid="Carcassonne.AR.Buttons.ConfirmButton.OnTileChange">OnTileChange()</h4>
+  <a id="Carcassonne_AR_TurnController_OnTurnEnd_" data-uid="Carcassonne.AR.TurnController.OnTurnEnd*"></a>
+  <h4 id="Carcassonne_AR_TurnController_OnTurnEnd" data-uid="Carcassonne.AR.TurnController.OnTurnEnd">OnTurnEnd()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnTileChange()</code></pre>
+    <pre><code class="lang-csharp hljs">public void OnTurnEnd()</code></pre>
   </div>
   
   
-  <a id="Carcassonne_AR_Buttons_ConfirmButton_ReAnchor_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.ReAnchor*"></a>
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_ReAnchor_GameObject_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.ReAnchor(GameObject)">ReAnchor(GameObject)</h4>
+  <a id="Carcassonne_AR_TurnController_OnTurnStart_" data-uid="Carcassonne.AR.TurnController.OnTurnStart*"></a>
+  <h4 id="Carcassonne_AR_TurnController_OnTurnStart" data-uid="Carcassonne.AR.TurnController.OnTurnStart">OnTurnStart()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void ReAnchor(GameObject gamepiece)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">GameObject</span></td>
-        <td><span class="parametername">gamepiece</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Carcassonne_AR_Buttons_ConfirmButton_SetConfirmable_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.SetConfirmable*"></a>
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_SetConfirmable" data-uid="Carcassonne.AR.Buttons.ConfirmButton.SetConfirmable">SetConfirmable()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetConfirmable()</code></pre>
-  </div>
-  
-  
-  <a id="Carcassonne_AR_Buttons_ConfirmButton_SetNonConfirmable_" data-uid="Carcassonne.AR.Buttons.ConfirmButton.SetNonConfirmable*"></a>
-  <h4 id="Carcassonne_AR_Buttons_ConfirmButton_SetNonConfirmable" data-uid="Carcassonne.AR.Buttons.ConfirmButton.SetNonConfirmable">SetNonConfirmable()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetNonConfirmable()</code></pre>
+    <pre><code class="lang-csharp hljs">public void OnTurnStart()</code></pre>
   </div>
 </article>
           </div>

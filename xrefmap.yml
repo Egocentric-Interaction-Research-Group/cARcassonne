@@ -1511,12 +1511,6 @@ references:
   commentId: T:Carcassonne.AR.Buttons.ConfirmButton
   fullName: Carcassonne.AR.Buttons.ConfirmButton
   nameWithType: ConfirmButton
-- uid: Carcassonne.AR.Buttons.ConfirmButton.arGameController
-  name: arGameController
-  href: api/Carcassonne.AR.Buttons.ConfirmButton.html#Carcassonne_AR_Buttons_ConfirmButton_arGameController
-  commentId: F:Carcassonne.AR.Buttons.ConfirmButton.arGameController
-  fullName: Carcassonne.AR.Buttons.ConfirmButton.arGameController
-  nameWithType: ConfirmButton.arGameController
 - uid: Carcassonne.AR.Buttons.ConfirmButton.ConfirmableMaterial
   name: ConfirmableMaterial
   href: api/Carcassonne.AR.Buttons.ConfirmButton.html#Carcassonne_AR_Buttons_ConfirmButton_ConfirmableMaterial
@@ -1682,6 +1676,12 @@ references:
   commentId: F:Carcassonne.AR.Buttons.ConfirmButton.tileController
   fullName: Carcassonne.AR.Buttons.ConfirmButton.tileController
   nameWithType: ConfirmButton.tileController
+- uid: Carcassonne.AR.Buttons.ConfirmButton.turnController
+  name: turnController
+  href: api/Carcassonne.AR.Buttons.ConfirmButton.html#Carcassonne_AR_Buttons_ConfirmButton_turnController
+  commentId: F:Carcassonne.AR.Buttons.ConfirmButton.turnController
+  fullName: Carcassonne.AR.Buttons.ConfirmButton.turnController
+  nameWithType: ConfirmButton.turnController
 - uid: Carcassonne.AR.Buttons.ConfirmButton.ValidClick
   name: ValidClick
   href: api/Carcassonne.AR.Buttons.ConfirmButton.html#Carcassonne_AR_Buttons_ConfirmButton_ValidClick
@@ -1772,45 +1772,6 @@ references:
   isSpec: "True"
   fullName: Carcassonne.AR.GameControllerScript.gameController
   nameWithType: GameControllerScript.gameController
-- uid: Carcassonne.AR.GameControllerScript.IsLocalAITurn
-  name: IsLocalAITurn()
-  href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_IsLocalAITurn
-  commentId: M:Carcassonne.AR.GameControllerScript.IsLocalAITurn
-  fullName: Carcassonne.AR.GameControllerScript.IsLocalAITurn()
-  nameWithType: GameControllerScript.IsLocalAITurn()
-- uid: Carcassonne.AR.GameControllerScript.IsLocalAITurn*
-  name: IsLocalAITurn
-  href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_IsLocalAITurn_
-  commentId: Overload:Carcassonne.AR.GameControllerScript.IsLocalAITurn
-  isSpec: "True"
-  fullName: Carcassonne.AR.GameControllerScript.IsLocalAITurn
-  nameWithType: GameControllerScript.IsLocalAITurn
-- uid: Carcassonne.AR.GameControllerScript.IsLocalHumanTurn
-  name: IsLocalHumanTurn()
-  href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_IsLocalHumanTurn
-  commentId: M:Carcassonne.AR.GameControllerScript.IsLocalHumanTurn
-  fullName: Carcassonne.AR.GameControllerScript.IsLocalHumanTurn()
-  nameWithType: GameControllerScript.IsLocalHumanTurn()
-- uid: Carcassonne.AR.GameControllerScript.IsLocalHumanTurn*
-  name: IsLocalHumanTurn
-  href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_IsLocalHumanTurn_
-  commentId: Overload:Carcassonne.AR.GameControllerScript.IsLocalHumanTurn
-  isSpec: "True"
-  fullName: Carcassonne.AR.GameControllerScript.IsLocalHumanTurn
-  nameWithType: GameControllerScript.IsLocalHumanTurn
-- uid: Carcassonne.AR.GameControllerScript.IsLocalTurn
-  name: IsLocalTurn()
-  href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_IsLocalTurn
-  commentId: M:Carcassonne.AR.GameControllerScript.IsLocalTurn
-  fullName: Carcassonne.AR.GameControllerScript.IsLocalTurn()
-  nameWithType: GameControllerScript.IsLocalTurn()
-- uid: Carcassonne.AR.GameControllerScript.IsLocalTurn*
-  name: IsLocalTurn
-  href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_IsLocalTurn_
-  commentId: Overload:Carcassonne.AR.GameControllerScript.IsLocalTurn
-  isSpec: "True"
-  fullName: Carcassonne.AR.GameControllerScript.IsLocalTurn
-  nameWithType: GameControllerScript.IsLocalTurn
 - uid: Carcassonne.AR.GameControllerScript.meepleController
   name: meepleController
   href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_meepleController
@@ -1863,6 +1824,19 @@ references:
   isSpec: "True"
   fullName: Carcassonne.AR.GameControllerScript.tileController
   nameWithType: GameControllerScript.tileController
+- uid: Carcassonne.AR.GameControllerScript.turnController
+  name: turnController
+  href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_turnController
+  commentId: P:Carcassonne.AR.GameControllerScript.turnController
+  fullName: Carcassonne.AR.GameControllerScript.turnController
+  nameWithType: GameControllerScript.turnController
+- uid: Carcassonne.AR.GameControllerScript.turnController*
+  name: turnController
+  href: api/Carcassonne.AR.GameControllerScript.html#Carcassonne_AR_GameControllerScript_turnController_
+  commentId: Overload:Carcassonne.AR.GameControllerScript.turnController
+  isSpec: "True"
+  fullName: Carcassonne.AR.GameControllerScript.turnController
+  nameWithType: GameControllerScript.turnController
 - uid: Carcassonne.AR.GamePieces
   name: Carcassonne.AR.GamePieces
   href: api/Carcassonne.AR.GamePieces.html
@@ -2542,6 +2516,125 @@ references:
   commentId: F:Carcassonne.AR.TileControllerScript.tilePrefab
   fullName: Carcassonne.AR.TileControllerScript.tilePrefab
   nameWithType: TileControllerScript.tilePrefab
+- uid: Carcassonne.AR.TurnController
+  name: TurnController
+  href: api/Carcassonne.AR.TurnController.html
+  commentId: T:Carcassonne.AR.TurnController
+  fullName: Carcassonne.AR.TurnController
+  nameWithType: TurnController
+- uid: Carcassonne.AR.TurnController.buttons
+  name: buttons
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_buttons
+  commentId: F:Carcassonne.AR.TurnController.buttons
+  fullName: Carcassonne.AR.TurnController.buttons
+  nameWithType: TurnController.buttons
+- uid: Carcassonne.AR.TurnController.IsLocalAITurn
+  name: IsLocalAITurn()
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_IsLocalAITurn
+  commentId: M:Carcassonne.AR.TurnController.IsLocalAITurn
+  fullName: Carcassonne.AR.TurnController.IsLocalAITurn()
+  nameWithType: TurnController.IsLocalAITurn()
+- uid: Carcassonne.AR.TurnController.IsLocalAITurn*
+  name: IsLocalAITurn
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_IsLocalAITurn_
+  commentId: Overload:Carcassonne.AR.TurnController.IsLocalAITurn
+  isSpec: "True"
+  fullName: Carcassonne.AR.TurnController.IsLocalAITurn
+  nameWithType: TurnController.IsLocalAITurn
+- uid: Carcassonne.AR.TurnController.IsLocalHumanTurn
+  name: IsLocalHumanTurn()
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_IsLocalHumanTurn
+  commentId: M:Carcassonne.AR.TurnController.IsLocalHumanTurn
+  fullName: Carcassonne.AR.TurnController.IsLocalHumanTurn()
+  nameWithType: TurnController.IsLocalHumanTurn()
+- uid: Carcassonne.AR.TurnController.IsLocalHumanTurn*
+  name: IsLocalHumanTurn
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_IsLocalHumanTurn_
+  commentId: Overload:Carcassonne.AR.TurnController.IsLocalHumanTurn
+  isSpec: "True"
+  fullName: Carcassonne.AR.TurnController.IsLocalHumanTurn
+  nameWithType: TurnController.IsLocalHumanTurn
+- uid: Carcassonne.AR.TurnController.IsLocalTurn
+  name: IsLocalTurn()
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_IsLocalTurn
+  commentId: M:Carcassonne.AR.TurnController.IsLocalTurn
+  fullName: Carcassonne.AR.TurnController.IsLocalTurn()
+  nameWithType: TurnController.IsLocalTurn()
+- uid: Carcassonne.AR.TurnController.IsLocalTurn*
+  name: IsLocalTurn
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_IsLocalTurn_
+  commentId: Overload:Carcassonne.AR.TurnController.IsLocalTurn
+  isSpec: "True"
+  fullName: Carcassonne.AR.TurnController.IsLocalTurn
+  nameWithType: TurnController.IsLocalTurn
+- uid: Carcassonne.AR.TurnController.manipulators
+  name: manipulators
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_manipulators
+  commentId: F:Carcassonne.AR.TurnController.manipulators
+  fullName: Carcassonne.AR.TurnController.manipulators
+  nameWithType: TurnController.manipulators
+- uid: Carcassonne.AR.TurnController.OnLocalAITurnEnd
+  name: OnLocalAITurnEnd
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_OnLocalAITurnEnd
+  commentId: F:Carcassonne.AR.TurnController.OnLocalAITurnEnd
+  fullName: Carcassonne.AR.TurnController.OnLocalAITurnEnd
+  nameWithType: TurnController.OnLocalAITurnEnd
+- uid: Carcassonne.AR.TurnController.OnLocalAITurnStart
+  name: OnLocalAITurnStart
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_OnLocalAITurnStart
+  commentId: F:Carcassonne.AR.TurnController.OnLocalAITurnStart
+  fullName: Carcassonne.AR.TurnController.OnLocalAITurnStart
+  nameWithType: TurnController.OnLocalAITurnStart
+- uid: Carcassonne.AR.TurnController.OnLocalHumanTurnEnd
+  name: OnLocalHumanTurnEnd
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_OnLocalHumanTurnEnd
+  commentId: F:Carcassonne.AR.TurnController.OnLocalHumanTurnEnd
+  fullName: Carcassonne.AR.TurnController.OnLocalHumanTurnEnd
+  nameWithType: TurnController.OnLocalHumanTurnEnd
+- uid: Carcassonne.AR.TurnController.OnLocalHumanTurnStart
+  name: OnLocalHumanTurnStart
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_OnLocalHumanTurnStart
+  commentId: F:Carcassonne.AR.TurnController.OnLocalHumanTurnStart
+  fullName: Carcassonne.AR.TurnController.OnLocalHumanTurnStart
+  nameWithType: TurnController.OnLocalHumanTurnStart
+- uid: Carcassonne.AR.TurnController.OnLocalTurnEnd
+  name: OnLocalTurnEnd
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_OnLocalTurnEnd
+  commentId: F:Carcassonne.AR.TurnController.OnLocalTurnEnd
+  fullName: Carcassonne.AR.TurnController.OnLocalTurnEnd
+  nameWithType: TurnController.OnLocalTurnEnd
+- uid: Carcassonne.AR.TurnController.OnLocalTurnStart
+  name: OnLocalTurnStart
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_OnLocalTurnStart
+  commentId: F:Carcassonne.AR.TurnController.OnLocalTurnStart
+  fullName: Carcassonne.AR.TurnController.OnLocalTurnStart
+  nameWithType: TurnController.OnLocalTurnStart
+- uid: Carcassonne.AR.TurnController.OnTurnEnd
+  name: OnTurnEnd()
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_OnTurnEnd
+  commentId: M:Carcassonne.AR.TurnController.OnTurnEnd
+  fullName: Carcassonne.AR.TurnController.OnTurnEnd()
+  nameWithType: TurnController.OnTurnEnd()
+- uid: Carcassonne.AR.TurnController.OnTurnEnd*
+  name: OnTurnEnd
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_OnTurnEnd_
+  commentId: Overload:Carcassonne.AR.TurnController.OnTurnEnd
+  isSpec: "True"
+  fullName: Carcassonne.AR.TurnController.OnTurnEnd
+  nameWithType: TurnController.OnTurnEnd
+- uid: Carcassonne.AR.TurnController.OnTurnStart
+  name: OnTurnStart()
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_OnTurnStart
+  commentId: M:Carcassonne.AR.TurnController.OnTurnStart
+  fullName: Carcassonne.AR.TurnController.OnTurnStart()
+  nameWithType: TurnController.OnTurnStart()
+- uid: Carcassonne.AR.TurnController.OnTurnStart*
+  name: OnTurnStart
+  href: api/Carcassonne.AR.TurnController.html#Carcassonne_AR_TurnController_OnTurnStart_
+  commentId: Overload:Carcassonne.AR.TurnController.OnTurnStart
+  isSpec: "True"
+  fullName: Carcassonne.AR.TurnController.OnTurnStart
+  nameWithType: TurnController.OnTurnStart
 - uid: Carcassonne.CarcassonneVisualization
   name: CarcassonneVisualization
   href: api/Carcassonne.CarcassonneVisualization.html
@@ -3583,25 +3676,6 @@ references:
   commentId: F:Carcassonne.Models.Player.id
   fullName: Carcassonne.Models.Player.id
   nameWithType: Player.id
-- uid: Carcassonne.Models.Player.isAI
-  name: isAI
-  href: api/Carcassonne.Models.Player.html#Carcassonne_Models_Player_isAI
-  commentId: F:Carcassonne.Models.Player.isAI
-  fullName: Carcassonne.Models.Player.isAI
-  nameWithType: Player.isAI
-- uid: Carcassonne.Models.Player.OnNewTurn
-  name: OnNewTurn()
-  href: api/Carcassonne.Models.Player.html#Carcassonne_Models_Player_OnNewTurn
-  commentId: M:Carcassonne.Models.Player.OnNewTurn
-  fullName: Carcassonne.Models.Player.OnNewTurn()
-  nameWithType: Player.OnNewTurn()
-- uid: Carcassonne.Models.Player.OnNewTurn*
-  name: OnNewTurn
-  href: api/Carcassonne.Models.Player.html#Carcassonne_Models_Player_OnNewTurn_
-  commentId: Overload:Carcassonne.Models.Player.OnNewTurn
-  isSpec: "True"
-  fullName: Carcassonne.Models.Player.OnNewTurn
-  nameWithType: Player.OnNewTurn
 - uid: Carcassonne.Models.Player.potentialPoints
   name: potentialPoints
   href: api/Carcassonne.Models.Player.html#Carcassonne_Models_Player_potentialPoints
@@ -3677,6 +3751,19 @@ references:
   isSpec: "True"
   fullName: Carcassonne.Models.Player.unscoredPointsChange
   nameWithType: Player.unscoredPointsChange
+- uid: Carcassonne.Models.Player.UpdateScores
+  name: UpdateScores()
+  href: api/Carcassonne.Models.Player.html#Carcassonne_Models_Player_UpdateScores
+  commentId: M:Carcassonne.Models.Player.UpdateScores
+  fullName: Carcassonne.Models.Player.UpdateScores()
+  nameWithType: Player.UpdateScores()
+- uid: Carcassonne.Models.Player.UpdateScores*
+  name: UpdateScores
+  href: api/Carcassonne.Models.Player.html#Carcassonne_Models_Player_UpdateScores_
+  commentId: Overload:Carcassonne.Models.Player.UpdateScores
+  isSpec: "True"
+  fullName: Carcassonne.Models.Player.UpdateScores
+  nameWithType: Player.UpdateScores
 - uid: Carcassonne.Models.Player.username
   name: username
   href: api/Carcassonne.Models.Player.html#Carcassonne_Models_Player_username
@@ -4022,6 +4109,12 @@ references:
   isSpec: "True"
   fullName: Carcassonne.Players.PlayerScoreScript.ChangeMaterial
   nameWithType: PlayerScoreScript.ChangeMaterial
+- uid: Carcassonne.Players.PlayerScoreScript.controller
+  name: controller
+  href: api/Carcassonne.Players.PlayerScoreScript.html#Carcassonne_Players_PlayerScoreScript_controller
+  commentId: F:Carcassonne.Players.PlayerScoreScript.controller
+  fullName: Carcassonne.Players.PlayerScoreScript.controller
+  nameWithType: PlayerScoreScript.controller
 - uid: Carcassonne.Players.PlayerScoreScript.materialIndex
   name: materialIndex
   href: api/Carcassonne.Players.PlayerScoreScript.html#Carcassonne_Players_PlayerScoreScript_materialIndex
@@ -4047,12 +4140,12 @@ references:
   isSpec: "True"
   fullName: Carcassonne.Players.PlayerScoreScript.OnGameStart
   nameWithType: PlayerScoreScript.OnGameStart
-- uid: Carcassonne.Players.PlayerScoreScript.playerNumber
-  name: playerNumber
-  href: api/Carcassonne.Players.PlayerScoreScript.html#Carcassonne_Players_PlayerScoreScript_playerNumber
-  commentId: F:Carcassonne.Players.PlayerScoreScript.playerNumber
-  fullName: Carcassonne.Players.PlayerScoreScript.playerNumber
-  nameWithType: PlayerScoreScript.playerNumber
+- uid: Carcassonne.Players.PlayerScoreScript.player
+  name: player
+  href: api/Carcassonne.Players.PlayerScoreScript.html#Carcassonne_Players_PlayerScoreScript_player
+  commentId: F:Carcassonne.Players.PlayerScoreScript.player
+  fullName: Carcassonne.Players.PlayerScoreScript.player
+  nameWithType: PlayerScoreScript.player
 - uid: Carcassonne.Players.PlayerScoreScript.SetLocal
   name: SetLocal()
   href: api/Carcassonne.Players.PlayerScoreScript.html#Carcassonne_Players_PlayerScoreScript_SetLocal
@@ -4072,6 +4165,19 @@ references:
   commentId: F:Carcassonne.Players.PlayerScoreScript.state
   fullName: Carcassonne.Players.PlayerScoreScript.state
   nameWithType: PlayerScoreScript.state
+- uid: Carcassonne.Players.PlayerScoreScript.UpdateCurrentPlayer
+  name: UpdateCurrentPlayer()
+  href: api/Carcassonne.Players.PlayerScoreScript.html#Carcassonne_Players_PlayerScoreScript_UpdateCurrentPlayer
+  commentId: M:Carcassonne.Players.PlayerScoreScript.UpdateCurrentPlayer
+  fullName: Carcassonne.Players.PlayerScoreScript.UpdateCurrentPlayer()
+  nameWithType: PlayerScoreScript.UpdateCurrentPlayer()
+- uid: Carcassonne.Players.PlayerScoreScript.UpdateCurrentPlayer*
+  name: UpdateCurrentPlayer
+  href: api/Carcassonne.Players.PlayerScoreScript.html#Carcassonne_Players_PlayerScoreScript_UpdateCurrentPlayer_
+  commentId: Overload:Carcassonne.Players.PlayerScoreScript.UpdateCurrentPlayer
+  isSpec: "True"
+  fullName: Carcassonne.Players.PlayerScoreScript.UpdateCurrentPlayer
+  nameWithType: PlayerScoreScript.UpdateCurrentPlayer
 - uid: Carcassonne.Players.PlayerScoreScript.UpdateScore
   name: UpdateScore()
   href: api/Carcassonne.Players.PlayerScoreScript.html#Carcassonne_Players_PlayerScoreScript_UpdateScore
