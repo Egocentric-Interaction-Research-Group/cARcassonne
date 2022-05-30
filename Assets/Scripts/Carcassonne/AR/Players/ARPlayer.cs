@@ -8,20 +8,19 @@ namespace Carcassonne.Players
 {
     public class ARPlayer : MonoBehaviourPun//, IPunInstantiateMagicCallback
     {
-        // public void OnPhotonInstantiate(PhotonMessageInfo info)
-        // {
-        //     var players = FindObjectsOfType<Player>().ToList();
-        //     var id = players.Count - 1; // Zero-indexed
-        //     GetComponent<Player>().id = id;
-        //
-        //     Debug.Log($"Created new player with ID {id}.");
-        //
-        // }
-
-        [PunRPC]
-        public void SetPlayerID(int id)
+        public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
+            var id = GetComponent<PhotonView>().CreatorActorNr; 
             GetComponent<Player>().id = id;
+        
+            Debug.Log($"Created new player with ID {id}.");
+        
         }
+
+        // [PunRPC]
+        // public void SetPlayerID(int id)
+        // {
+        //     GetComponent<Player>().id = id;
+        // }
     }
 }

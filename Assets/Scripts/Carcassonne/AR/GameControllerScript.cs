@@ -269,12 +269,12 @@ namespace Carcassonne.AR
         {
             List<Player> players = FindObjectsOfType<Player>().ToList();
 
-            var i = 0;
-            foreach (var player in players)
-            {
-                player.GetComponent<ARPlayer>().photonView.RPC("SetPlayerID", RpcTarget.All, i);
-                i++;
-            }
+            // var i = 0;
+            // foreach (var player in players)
+            // {
+            //     player.GetComponent<ARPlayer>().photonView.RPC("SetPlayerID", RpcTarget.All, i);
+            //     i++;
+            // }
             
             players.Sort();
             
