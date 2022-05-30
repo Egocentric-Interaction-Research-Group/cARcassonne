@@ -2418,6 +2418,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 6533926945335894883}
+        m_TargetAssemblyTypeName: PunTabletop.StartBellAnimation, Carcassonne.AR
+        m_MethodName: StartAni
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnTurnStart:
     m_PersistentCalls:
       m_Calls:
@@ -40011,21 +40023,9 @@ MonoBehaviour:
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6533926945335894883}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: StartAniRPC
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: AnimationBell
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1060827977317108023}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: EndTurnRPC
+        m_TargetAssemblyTypeName: Carcassonne.AR.GameControllerScript, Carcassonne.AR
+        m_MethodName: EndTurn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
