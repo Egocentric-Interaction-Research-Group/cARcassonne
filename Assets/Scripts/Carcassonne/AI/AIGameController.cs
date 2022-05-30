@@ -174,18 +174,21 @@ public class AIGameController : MonoBehaviour, IGameControllerInterface
 
         WriteGraphToFile(state.Features.Graph);
 
-        var playersByScore = state.Players.All.OrderByDescending(p => p.FinalScore);
+        var maxScore = state.Players.All.Select(p => p.FinalScore).Max();
+        var winners = state.Players.All.Where(p => p.FinalScore == maxScore);
 
-        var winner = playersByScore.First(); //.GetComponent<CarcassonneAgent>().SetReward(1f);
-        Debug.Log($"Player {playersByScore.First().id} ({playersByScore.First().GetComponent<BehaviorParameters>().TeamId}) is first with a score of {playersByScore.First().FinalScore}");
+        // var playersByScore = state.Players.All.OrderByDescending(p => p.FinalScore);
+        // 
+        // var winner = playersByScore.First(); //.GetComponent<CarcassonneAgent>().SetReward(1f);
+        // Debug.Log($"Player {playersByScore.First().id} ({playersByScore.First().GetComponent<BehaviorParameters>().TeamId}) is first with a score of {playersByScore.First().FinalScore}");
+        // 
+        // foreach (var player in playersByScore.Where(p => p != playersByScore.First()))
+        // {
+        //     //player.GetComponent<CarcassonneAgent>().SetReward(-1f);
+        //     Debug.Log($"Player {player.id} ({player.GetComponent<BehaviorParameters>().TeamId}) is last with a score of {player.FinalScore}");
+        // }
         
-        foreach (var player in playersByScore.Where(p => p != playersByScore.First()))
-        {
-            //player.GetComponent<CarcassonneAgent>().SetReward(-1f);
-            Debug.Log($"Player {player.id} ({player.GetComponent<BehaviorParameters>().TeamId}) is last with a score of {player.FinalScore}");
-        }
-        
-        var coroutine = DelayedEndEpisode(winner);
+        var coroutine = DelayedEndEpisode(winners.ToList());
         StartCoroutine(coroutine); 
     }
 
@@ -193,7 +196,7 @@ public class AIGameController : MonoBehaviour, IGameControllerInterface
     /// Wait one frame before starting next turn to allow for end-of-turn computations.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator DelayedEndEpisode(Player winner)
+    private IEnumerator DelayedEndEpisode(List<Player> winners)
     {
         yield return 0; // Wait for a second
 
@@ -202,17 +205,26 @@ public class AIGameController : MonoBehaviour, IGameControllerInterface
             switch (Mode)
             {
                 case RewardMode.Winner:
-                    if (p == winner)
+                    if (winners.Count == 1 && p == winners[0])
                     {
                         p.GetComponent<CarcassonneAgent>().SetReward(1f);
                         Debug.Log(
-                            $"DelayedEnd (Winner Mode): Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is first with a score of {p.FinalScore}");
+                            $"DelayedEnd (Winner Mode): Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId})" +
+                            $" is first with a score of {p.FinalScore}");
                     }
-                    else
+                    else if (winners.Count > 1)
                     {
                         p.GetComponent<CarcassonneAgent>().SetReward(0f);
                         Debug.Log(
-                            $"DelayedEnd (Winner Mode): Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId}) is last with a score of {p.FinalScore}");
+                            $"DelayedEnd (Winner Mode): Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId})" +
+                            $" is tied for the win with a score of {p.FinalScore}");
+                    }
+                    else
+                    {
+                        p.GetComponent<CarcassonneAgent>().SetReward(-1f);
+                        Debug.Log(
+                            $"DelayedEnd (Winner Mode): Player {p.id} ({p.GetComponent<BehaviorParameters>().TeamId})" +
+                            $" has lost with a score of {p.FinalScore}");
                     }
                     break;
                 case RewardMode.Score:

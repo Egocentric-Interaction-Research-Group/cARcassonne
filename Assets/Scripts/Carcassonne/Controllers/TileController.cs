@@ -139,12 +139,17 @@ namespace Carcassonne.Controllers
             return true;
         }
 
+        /// <summary>
+        /// Discard the current tile. This is used when the tile is not playable on the board and should be removed
+        /// from the game. The current tile is set to <c>null</c> and the <see cref="TileController.OnDiscard"/> event
+        /// is invoked.
+        /// </summary>
         public override void Discard()
         {
-            //TODO: Is this right?
-            // Destroy(tile);
             state.Tiles.Discarded.Add(tile);
             tile.gameObject.SetActive(false);
+            
+            state.Tiles.Current = null;
                 
             OnDiscard.Invoke(tile);
         }

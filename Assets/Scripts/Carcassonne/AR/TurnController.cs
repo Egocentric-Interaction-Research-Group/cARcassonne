@@ -39,12 +39,14 @@ namespace Carcassonne.AR
                     foreach (var button in buttons)
                     {
                         button.enabled = true;
+                        button.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
                     }
 
                     // Enable Bell
                     foreach (var manipulator in manipulators)
                     {
                         manipulator.enabled = true;
+                        manipulator.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
                     }
 
                     // Enable Tile Movement
