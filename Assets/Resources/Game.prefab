@@ -40025,7 +40025,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1060827977317108023}
         m_TargetAssemblyTypeName: Carcassonne.AR.GameControllerScript, Carcassonne.AR
-        m_MethodName: EndTurn
+        m_MethodName: EndTurnRPC
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

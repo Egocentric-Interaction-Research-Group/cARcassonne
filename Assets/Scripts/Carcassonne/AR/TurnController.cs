@@ -119,8 +119,8 @@ namespace Carcassonne.AR
             if (photonUser == null)
                 return false;
 
-            Debug.Log(
-                $"Found current user {photonUser.GetComponent<Player>().username} ({photonUser.GetComponent<Player>().id}), IsLocal: {photonUser.IsLocal}");
+            // Debug.Log(
+            //     $"Found current user {photonUser.GetComponent<Player>().username} ({photonUser.GetComponent<Player>().id}), IsLocal: {photonUser.IsLocal}");
 
             if (photonUser.IsLocal)
                 return true;

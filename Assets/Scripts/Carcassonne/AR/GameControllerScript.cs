@@ -181,6 +181,20 @@ namespace Carcassonne.AR
             }
         }
         
+        public void EndTurnRPC()
+        {
+            if (turnController.IsLocalHumanTurn())
+            {
+                photonView.RPC("EndTurn", RpcTarget.All);
+                // photonView.RPC("DebugStuff", RpcTarget.All);
+            }
+        }
+
+        #endregion
+        
+        #region ToEventify
+
+        [PunRPC]
         public void EndTurn()
         {
             var ended = gameController.EndTurn();
