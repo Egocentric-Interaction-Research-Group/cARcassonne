@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Carcassonne.Players
 {
-    public class ARPlayer : MonoBehaviourPun//, IPunInstantiateMagicCallback
+    public class ARPlayer : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         public void OnPhotonInstantiate(PhotonMessageInfo info)
         {

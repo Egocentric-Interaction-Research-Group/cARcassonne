@@ -141,6 +141,7 @@ namespace Carcassonne.Meeples
 
         public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
+            Debug.Log($"Instantiating meeple for player {(int)info.photonView.InstantiationData[0]}");
             var state = FindObjectOfType<GameState>();
             var meeple = GetComponent<Meeple>();
             var p = FindObjectsOfType<Player>().ToList().Single(p=> p.id == (int)info.photonView.InstantiationData[0]);

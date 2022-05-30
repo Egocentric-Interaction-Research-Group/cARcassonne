@@ -286,6 +286,7 @@ namespace Carcassonne.AR
             var meeples = new List<Meeple>();
             foreach (var player in players)
             {
+                Debug.Log($"Creating Meeples for player {player.id} ({player.GetComponent<PhotonView>().CreatorActorNr})");
                 for (var i = 0; i < GameRules.MeeplesPerPlayer; i++)
                 {
                     var meepleData = new[] { player.id }.Cast<object>().ToArray();
