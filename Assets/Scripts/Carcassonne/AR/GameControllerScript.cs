@@ -82,7 +82,7 @@ namespace Carcassonne.AR
         {
             // Find players and meeples and tiles
             var players = FindObjectsOfType<Player>().ToList();
-            players.Sort((p1, p2) => p1.id - p2.id);
+            players.Sort();
             var meeples = FindObjectsOfType<Meeple>().ToList();
             var tiles = FindObjectsOfType<ARTile>().ToList();
 
@@ -276,7 +276,7 @@ namespace Carcassonne.AR
                 i++;
             }
             
-            players.Sort((p1, p2) => p2.id - p1.id);
+            players.Sort();
             
             return players;
         }

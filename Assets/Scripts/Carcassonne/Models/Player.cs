@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace Carcassonne.Models
 {
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, IComparable<Player>
     {
         public int id;
         public string username;
@@ -32,6 +33,13 @@ namespace Carcassonne.Models
             previousScore = score;
             previousUnscoredPoints = unscoredPoints;
             previousPotentialPoints = potentialPoints;
+        }
+
+        public int CompareTo(Player other)
+        {
+            if (ReferenceEquals(this, other)) return 0;
+            if (ReferenceEquals(null, other)) return 1;
+            return id.CompareTo(other.id);
         }
     }
 }
