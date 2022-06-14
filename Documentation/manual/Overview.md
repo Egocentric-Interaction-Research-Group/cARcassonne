@@ -15,4 +15,6 @@ They are designed to be Unity-specific, but implementation-independent, meaning 
 They are meant to be used as the basis for many different game interfaces with different needs.
 
 The main models are @Carcassonne.Models.Player, @Carcassonne.Models.Tile, @Carcassonne.Models.Meeple.
-These classes represent the players and gamepieces and store information about their underlying properties (e.g. @Carcassonne.Models.Tile.Rotations) and state (@Carcassonne.Models.Player..
+These classes represent the players and game pieces and store information about their underlying properties (e.g. @Carcassonne.Models.Tile.Rotations) and state (@Carcassonne.Models.Player.score).
+
+Also included in the @Carcassone.Models assembly are a set of Enums and helper classes.
