@@ -594,7 +594,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Carcassonne.Models.Player.html",
-          "hash": "2JD9WAsmynHScAY1TbNrUh550ef41KEX7Ze1/+3ozpo="
+          "hash": "367wEIITzz3u1zFbqxishGxCOdR7OcB7/IagggA+G6k="
         }
       },
       "is_incremental": false,
@@ -1300,12 +1300,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "TQCBRWjHIk8m8t669LEZPNuZUZ8PgxcY7x3j4TiyDaM="
+          "hash": "RelFu8xjgy8BBdkgOh8/B2td65H5htUNH8H69S/n4T8="
         }
       },
       "is_incremental": false,
@@ -1317,7 +1320,7 @@
       "output": {
         ".html": {
           "relative_path": "manual/Overview.html",
-          "hash": "FK+2nKhyyuESe8WIqHxnM0DftLrOOE0AcEt+dqETyS0="
+          "hash": "fsVFD43zcYJXwOLH2G4J10/7IEaKbBpXZGVYsSjXhZQ="
         }
       },
       "is_incremental": false,
