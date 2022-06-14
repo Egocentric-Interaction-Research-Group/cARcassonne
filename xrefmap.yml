@@ -3657,6 +3657,19 @@ references:
   commentId: T:Carcassonne.Models.Player
   fullName: Carcassonne.Models.Player
   nameWithType: Player
+- uid: Carcassonne.Models.Player.CompareTo(Carcassonne.Models.Player)
+  name: CompareTo(Player)
+  href: api/Carcassonne.Models.Player.html#Carcassonne_Models_Player_CompareTo_Carcassonne_Models_Player_
+  commentId: M:Carcassonne.Models.Player.CompareTo(Carcassonne.Models.Player)
+  fullName: Carcassonne.Models.Player.CompareTo(Carcassonne.Models.Player)
+  nameWithType: Player.CompareTo(Player)
+- uid: Carcassonne.Models.Player.CompareTo*
+  name: CompareTo
+  href: api/Carcassonne.Models.Player.html#Carcassonne_Models_Player_CompareTo_
+  commentId: Overload:Carcassonne.Models.Player.CompareTo
+  isSpec: "True"
+  fullName: Carcassonne.Models.Player.CompareTo
+  nameWithType: Player.CompareTo
 - uid: Carcassonne.Models.Player.FinalScore
   name: FinalScore
   href: api/Carcassonne.Models.Player.html#Carcassonne_Models_Player_FinalScore
@@ -4009,12 +4022,12 @@ references:
   isSpec: "True"
   fullName: Carcassonne.Models.Tile.SubTileDictionary
   nameWithType: Tile.SubTileDictionary
-- uid: Carcassonne.Models.Tile.SubtTileDimension
-  name: SubtTileDimension
-  href: api/Carcassonne.Models.Tile.html#Carcassonne_Models_Tile_SubtTileDimension
-  commentId: F:Carcassonne.Models.Tile.SubtTileDimension
-  fullName: Carcassonne.Models.Tile.SubtTileDimension
-  nameWithType: Tile.SubtTileDimension
+- uid: Carcassonne.Models.Tile.SubTileDimension
+  name: SubTileDimension
+  href: api/Carcassonne.Models.Tile.html#Carcassonne_Models_Tile_SubTileDimension
+  commentId: F:Carcassonne.Models.Tile.SubTileDimension
+  fullName: Carcassonne.Models.Tile.SubTileDimension
+  nameWithType: Tile.SubTileDimension
 - uid: Carcassonne.Models.Tile.TileCount
   name: TileCount
   href: api/Carcassonne.Models.Tile.html#Carcassonne_Models_Tile_TileCount
@@ -4077,19 +4090,19 @@ references:
   commentId: T:Carcassonne.Players.ARPlayer
   fullName: Carcassonne.Players.ARPlayer
   nameWithType: ARPlayer
-- uid: Carcassonne.Players.ARPlayer.SetPlayerID(System.Int32)
-  name: SetPlayerID(Int32)
-  href: api/Carcassonne.Players.ARPlayer.html#Carcassonne_Players_ARPlayer_SetPlayerID_System_Int32_
-  commentId: M:Carcassonne.Players.ARPlayer.SetPlayerID(System.Int32)
-  fullName: Carcassonne.Players.ARPlayer.SetPlayerID(System.Int32)
-  nameWithType: ARPlayer.SetPlayerID(Int32)
-- uid: Carcassonne.Players.ARPlayer.SetPlayerID*
-  name: SetPlayerID
-  href: api/Carcassonne.Players.ARPlayer.html#Carcassonne_Players_ARPlayer_SetPlayerID_
-  commentId: Overload:Carcassonne.Players.ARPlayer.SetPlayerID
+- uid: Carcassonne.Players.ARPlayer.OnPhotonInstantiate(PhotonMessageInfo)
+  name: OnPhotonInstantiate(PhotonMessageInfo)
+  href: api/Carcassonne.Players.ARPlayer.html#Carcassonne_Players_ARPlayer_OnPhotonInstantiate_PhotonMessageInfo_
+  commentId: M:Carcassonne.Players.ARPlayer.OnPhotonInstantiate(PhotonMessageInfo)
+  fullName: Carcassonne.Players.ARPlayer.OnPhotonInstantiate(PhotonMessageInfo)
+  nameWithType: ARPlayer.OnPhotonInstantiate(PhotonMessageInfo)
+- uid: Carcassonne.Players.ARPlayer.OnPhotonInstantiate*
+  name: OnPhotonInstantiate
+  href: api/Carcassonne.Players.ARPlayer.html#Carcassonne_Players_ARPlayer_OnPhotonInstantiate_
+  commentId: Overload:Carcassonne.Players.ARPlayer.OnPhotonInstantiate
   isSpec: "True"
-  fullName: Carcassonne.Players.ARPlayer.SetPlayerID
-  nameWithType: ARPlayer.SetPlayerID
+  fullName: Carcassonne.Players.ARPlayer.OnPhotonInstantiate
+  nameWithType: ARPlayer.OnPhotonInstantiate
 - uid: Carcassonne.Players.PlayerScoreScript
   name: PlayerScoreScript
   href: api/Carcassonne.Players.PlayerScoreScript.html
