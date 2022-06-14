@@ -21,18 +21,34 @@ namespace Carcassonne.AR
         public byte tileGroup;
         public ConfirmButton confirmButton;
 
+        private TurnController turnController => GetComponent<TurnController>();
+
         public void OnDraw(Tile tile)
         {
-            // photonView.RPC("RPCDraw", RpcTarget.Others);
+            Debug.Log("TileControllerScript: Drawing tile.");
+            tile.transform.SetParent(tileGrid.transform);
+            tile.gameObject.SetActive(true);
+            tile.GetComponent<Rigidbody>().isKinematic = false;
+            tile.GetComponent<Rigidbody>().useGravity = true;
+            tile.GetComponentInChildren<MeshRenderer>().enabled = true;
+            tile.GetComponent<BoxCollider>().enabled = true;
             
-            photonView.RPC("RPCDraw", RpcTarget.All, tile.GetComponent<PhotonView>().ViewID);
+            if(turnController.IsLocalTurn()){
+                Debug.Log("TileControllerScript: Local turn. Sending RPC Draw command.");
+                
+                photonView.RPC("RPCDraw", RpcTarget.Others); 
+                tile.GetComponent<GridPosition>().MoveToRPC(new Vector2Int(startingPosition, startingPosition));
 
-            //TODO Do we need to disable if this is an AI?
-            tile.GetComponent<GridKeyboardMovable>().enabled = true;
-            tile.GetComponent<GridKeyboardRotatable>().enabled = true;
-            tile.GetComponent<ObjectManipulator>().enabled = true;
-
-            tile.GetComponent<GridPosition>().MoveToRPC(new Vector2Int(startingPosition, startingPosition));
+                if (turnController.IsLocalHumanTurn())
+                {
+                    Debug.Log("TileControllerScript: Local human turn. Enabling keyboard move, rotate, and hand manipulation.");
+                    tile.GetComponent<GridKeyboardMovable>().enabled = true;
+                    tile.GetComponent<GridKeyboardRotatable>().enabled = true;
+                    tile.GetComponent<ObjectManipulator>().enabled = true;
+                    
+                    tile.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
+                }
+            }
         }
 
         public void OnPlace(Tile tile, Vector2Int cell)
@@ -66,16 +82,13 @@ namespace Carcassonne.AR
         public void OnInvalidPlace(){
         }
         
+        
+        #region RPC
+        
         [PunRPC]
-        public void RPCDraw(int viewID)
+        public void RPCDraw()
         {
-            var tile = PhotonView.Find(viewID).GetComponent<Tile>();
-            tile.transform.SetParent(tileGrid.transform);
-            tile.gameObject.SetActive(true);
-            tile.GetComponent<Rigidbody>().isKinematic = false;
-            tile.GetComponent<Rigidbody>().useGravity = true;
-            tile.GetComponentInChildren<MeshRenderer>().enabled = true;
-            tile.GetComponent<BoxCollider>().enabled = true;
+            GetComponent<TileController>().Draw();
         }
         public void RPCRotate(){
         }
@@ -85,5 +98,6 @@ namespace Carcassonne.AR
         }
         public void RPCInvalidPlace(){
         }
+        #endregion
     }
 }

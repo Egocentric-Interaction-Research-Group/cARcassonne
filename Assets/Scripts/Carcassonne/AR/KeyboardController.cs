@@ -18,7 +18,7 @@ namespace Carcassonne.AR
         private void Update()
         {
             var keyboard = Keyboard.current;
-            if( keyboard != null && _gameControllerScript.photonView.IsMine)
+            if( keyboard != null && _gameControllerScript.turnController.IsLocalHumanTurn())
             {
                 if (keyboard.pKey.wasReleasedThisFrame) _gameControllerScript.EndTurnRPC();
 

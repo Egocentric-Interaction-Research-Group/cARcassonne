@@ -10,12 +10,17 @@ namespace Carcassonne.Players
     {
         public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
-            var players = FindObjectsOfType<Player>().ToList();
-            var id = players.Count - 1; // Zero-indexed
+            var id = GetComponent<PhotonView>().CreatorActorNr; 
             GetComponent<Player>().id = id;
-
+        
             Debug.Log($"Created new player with ID {id}.");
-
+        
         }
+
+        // [PunRPC]
+        // public void SetPlayerID(int id)
+        // {
+        //     GetComponent<Player>().id = id;
+        // }
     }
 }

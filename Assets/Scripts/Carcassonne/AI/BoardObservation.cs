@@ -37,7 +37,10 @@ namespace Carcassonne.AI
     
         [Tooltip("Observation size: (72 tiles x 2 (rotation+cell) + 7 x nPlayers meeples) = 151 (1 player)\n" +
                  "For each tile, add an entry with the position and rotation, for each meeple, add position.")]
-        TileWise
+        TileWise,
+        
+        [Tooltip("No observation strategy (43). Observations are performed by external sensor.")]
+        None
     }
 
     /// <summary>
@@ -283,6 +286,11 @@ namespace Carcassonne.AI
             }
             
             Debug.Log($"Added {obsCount} meeple observations ({wrapper.state.Players.All.Count} player).");
+        }
+
+        public static void AddNoObservations(AIWrapper wrapper, VectorSensor sensor)
+        {
+            
         }
     }
 }

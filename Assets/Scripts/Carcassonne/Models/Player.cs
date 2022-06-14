@@ -1,12 +1,12 @@
+using System;
 using UnityEngine;
 
 namespace Carcassonne.Models
 {
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, IComparable<Player>
     {
         public int id;
         public string username;
-        public bool isAI;
         public int score;
         public int previousScore = 0;
         public int unscoredPoints;
@@ -25,7 +25,7 @@ namespace Carcassonne.Models
             score = 0;
         }
 
-        public void OnNewTurn()
+        public void UpdateScores()
         {
             Debug.Log($"EOT New Turn (P{id}). Setting previous points. Score: {score}, Unscored Points: {unscoredPoints}, Potential Points: {potentialPoints} " +
                       $"prev: {previousScore}, prevUnscore: {previousUnscoredPoints}, prevPot: {previousPotentialPoints}, " +
@@ -33,6 +33,13 @@ namespace Carcassonne.Models
             previousScore = score;
             previousUnscoredPoints = unscoredPoints;
             previousPotentialPoints = potentialPoints;
+        }
+
+        public int CompareTo(Player other)
+        {
+            if (ReferenceEquals(this, other)) return 0;
+            if (ReferenceEquals(null, other)) return 1;
+            return id.CompareTo(other.id);
         }
     }
 }

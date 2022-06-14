@@ -8,24 +8,7 @@ namespace PunTabletop
     public class StartBellAnimation : MonoBehaviourPun
     {
         public GameObject gameController;
-        void Start()
-        {
-        
-        }
 
-        public void StartAniRPC()
-        {
-            if(gameController.GetComponent<GameControllerScript>().gameController.state.phase == Phase.TileDown || 
-               gameController.GetComponent<GameControllerScript>().gameController.state.phase == Phase.MeepleDown)
-            {
-                if(PhotonNetwork.LocalPlayer.NickName == (gameController.GetComponent<GameControllerScript>().state.Players.Current.id + 1).ToString())
-                {
-                    photonView.RPC("StartAni", RpcTarget.All);
-                }
-            }
-        }
-
-        [PunRPC]
         public void StartAni()
         {
             Animation animation = gameObject.GetComponent<Animation>();

@@ -1094,13 +1094,11 @@ PrefabInstance:
     - target: {fileID: 8493484197605914131, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: OnTurnStart.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: OnNewTurn
-      objectReference: {fileID: 0}
+      value:UpdateScores      objectReference: {fileID: 0}
     - target: {fileID: 8493484197605914131, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: OnTurnStart.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: OnNewTurn
-      objectReference: {fileID: 0}
+      value:UpdateScores      objectReference: {fileID: 0}
     - target: {fileID: 8493484197605914131, guid: 22829c5994e7e4b9b8a46d4f738987ec,
         type: 3}
       propertyPath: OnTurnStart.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName

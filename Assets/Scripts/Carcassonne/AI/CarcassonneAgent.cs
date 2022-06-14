@@ -147,6 +147,10 @@ namespace Carcassonne.AI
                 case ObservationApproach.TileWise:
                     AddTileObservations = BoardObservation.AddTileWiseObservations;
                     break;
+                
+                case ObservationApproach.None:
+                    AddTileObservations = BoardObservation.AddNoObservations;
+                    break;
             }
         }
 

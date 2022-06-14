@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Carcassonne.AI;
 using Carcassonne.AR.GamePieces;
 using Carcassonne.Controllers;
 using Carcassonne.Models;
@@ -30,6 +31,7 @@ namespace Carcassonne.AR
         public GameController gameController => GetComponent<GameController>();
         public MeepleController meepleController => GetComponent<MeepleController>();
         public TileController tileController => GetComponent<TileController>();
+        public TurnController turnController => GetComponent<TurnController>();
 
         internal TileControllerScript tileControllerScript => GetComponent<TileControllerScript>();
         internal MeepleControllerScript meepleControllerScript => GetComponent<MeepleControllerScript>();
@@ -52,12 +54,14 @@ namespace Carcassonne.AR
                 var players = CreatePlayers();
                 var meeples = CreateMeeples(players);
                 var tiles = CreateDeck();
+                
 
                 var tileOrder = tiles.Select(t => t.GetComponent<ARTile>().photonView.ViewID).ToArray();
                 photonView.RPC("NewGameGuest", RpcTarget.Others, tileOrder);
 
                 gameController.NewGame(players, meeples, tiles);
 
+                AssignScoreboards(players);
                 PlaceStartingTile();
 
                 Debug.Assert(players.Count > 0, "Oops, there are no players.");
@@ -78,9 +82,10 @@ namespace Carcassonne.AR
         {
             // Find players and meeples and tiles
             var players = FindObjectsOfType<Player>().ToList();
+            players.Sort();
             var meeples = FindObjectsOfType<Meeple>().ToList();
             var tiles = FindObjectsOfType<ARTile>().ToList();
-            
+
             // Order tiles
             var tileStack = new Stack<Tile>();
             foreach (var id in tileOrder.Reverse())
@@ -91,6 +96,7 @@ namespace Carcassonne.AR
             // New Game
             gameController.NewGame(players, meeples, tileStack);
             
+            AssignScoreboards(players);
             PlaceStartingTile();
 
             Debug.Assert(players.Count > 0, "Oops, there are no players.");
@@ -103,6 +109,39 @@ namespace Carcassonne.AR
                 $"The remaining tiles was not set correctly. It has a length of {state.Tiles.Remaining.Count}, but tiles has {tiles.Count}.");
 
             Debug.Log("Denna spelarese namn: " + PhotonNetwork.LocalPlayer.NickName);
+        }
+
+        private void AssignScoreboards(List<Player> players)
+        {
+            var scoreboards = FindObjectsOfType<PlayerScoreScript>().ToList();
+            scoreboards.Sort((pss1, pss2) =>
+                pss1.transform.GetSiblingIndex() - pss2.transform.GetSiblingIndex());
+
+            var i = 0;
+            foreach (var scoreboard in scoreboards)
+            {
+                if (i < players.Count)
+                {
+                    // Set player
+                    var player = players[i];
+                    scoreboard.player = player;
+                    
+                    // Connect to events
+                    gameController.OnGameStart.AddListener(scoreboard.OnGameStart);
+                    gameController.OnTurnEnd.AddListener(scoreboard.ChangeMaterial);
+                    gameController.OnTurnStart.AddListener(scoreboard.UpdateCurrentPlayer);
+                    gameController.OnGameOver.AddListener(scoreboard.ChangeMaterial);
+                    gameController.OnScoreChanged.AddListener(scoreboard.UpdateScore);
+                    
+                    scoreboard.OnGameStart();
+                    scoreboard.UpdateCurrentPlayer();
+                }
+                else
+                {
+                    scoreboard.gameObject.SetActive(false);
+                }
+                i++;
+            }
         }
 
         #region Proton
@@ -144,7 +183,7 @@ namespace Carcassonne.AR
         
         public void EndTurnRPC()
         {
-            if (PhotonNetwork.LocalPlayer.NickName == (state.Players.Current.id + 1).ToString())
+            if (turnController.IsLocalHumanTurn())
             {
                 photonView.RPC("EndTurn", RpcTarget.All);
                 // photonView.RPC("DebugStuff", RpcTarget.All);
@@ -202,18 +241,6 @@ namespace Carcassonne.AR
         
         #region Redesigned Functions
 
-        public bool IsLocalHumanTurn()
-        {
-            var photonUser = state.Players.Current.GetComponent<PhotonUser>();
-            
-            Debug.Log($"Found current user {photonUser.GetComponent<Player>().username} ({photonUser.GetComponent<Player>().id}), IsLocal: {photonUser.IsLocal}");
-            
-            if( photonUser && photonUser.IsLocal )
-                return true;
-
-            return false;
-        }
-
         private void PlaceStartingTile()
         {
             var startingTile = state.Tiles.Remaining.Peek();
@@ -242,6 +269,15 @@ namespace Carcassonne.AR
         {
             List<Player> players = FindObjectsOfType<Player>().ToList();
 
+            // var i = 0;
+            // foreach (var player in players)
+            // {
+            //     player.GetComponent<ARPlayer>().photonView.RPC("SetPlayerID", RpcTarget.All, i);
+            //     i++;
+            // }
+            
+            players.Sort();
+            
             return players;
         }
 
@@ -250,6 +286,7 @@ namespace Carcassonne.AR
             var meeples = new List<Meeple>();
             foreach (var player in players)
             {
+                Debug.Log($"Creating Meeples for player {player.id} ({player.GetComponent<PhotonView>().CreatorActorNr})");
                 for (var i = 0; i < GameRules.MeeplesPerPlayer; i++)
                 {
                     var meepleData = new[] { player.id }.Cast<object>().ToArray();

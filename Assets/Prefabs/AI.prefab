@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5035486819632716185}
   - component: {fileID: 4305211684211156123}
   - component: {fileID: 1695468876677109422}
+  - component: {fileID: 6526495461232344498}
   - component: {fileID: 2096977710434309626}
   - component: {fileID: -1820624487966107760}
   - component: {fileID: 685205903244666190}
@@ -72,7 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 287
+    VectorObservationSize: 43
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -105,7 +106,7 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
-  observationApproach: 3
+  observationApproach: 4
   actionApproach: 1
   wrapper: {fileID: -1820624487966107760}
   cell: {x: 0, y: 0}
@@ -117,6 +118,20 @@ MonoBehaviour:
   Meeple: 0
   Score: 0
   MeeplePlacementPenalty: 0
+--- !u!114 &6526495461232344498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598782832212889485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05c25be7c4f249ad844f36a5aa96c6c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: Board2D Sensor
+  state: {fileID: 0}
 --- !u!114 &2096977710434309626
 MonoBehaviour:
   m_ObjectHideFlags: 0
