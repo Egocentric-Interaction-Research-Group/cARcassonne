@@ -126,7 +126,12 @@
   
   
   <h4 id="Carcassonne_Models_Player_potentialPoints" data-uid="Carcassonne.Models.Player.potentialPoints">potentialPoints</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Player&apos;s unscored point potential <em>if</em> the features they currently control were completed.
+The difference between this and @unscoredPoints is that controlled, incomplete city tiles are counted at
+full value (2 or 4, for a shielded city).
+It is used to calculate the potential value of a tile for a player, to privilege the building (and completing)
+of cities over roads. </p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -150,7 +155,8 @@
   
   
   <h4 id="Carcassonne_Models_Player_previousPotentialPoints" data-uid="Carcassonne.Models.Player.previousPotentialPoints">previousPotentialPoints</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Player&apos;s potential points at the end of the previous turn.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -171,10 +177,18 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Carcassonne_Models_Player_previousPotentialPoints_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Carcassonne.Models.Player.html#Carcassonne_Models_Player_previousUnscoredPoints">previousUnscoredPoints</a></div>
+  </div>
   
   
   <h4 id="Carcassonne_Models_Player_previousScore" data-uid="Carcassonne.Models.Player.previousScore">previousScore</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Player&apos;s score at the previous turn.
+Used to calculate the point gain at every turn.
+Note that this is updated every turn (regardless of player) so that it reflects the points after the previous tile.
+This will always be ≤ @score.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -198,7 +212,10 @@
   
   
   <h4 id="Carcassonne_Models_Player_previousUnscoredPoints" data-uid="Carcassonne.Models.Player.previousUnscoredPoints">previousUnscoredPoints</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Player&apos;s unscored points at the end of the previous turn.
+This differs from @previousScore in that it <strong>can</strong> be &gt; @unscoredPoints if a feature is completed or
+control is lost over the feature in a turn. </p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -219,6 +236,10 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Carcassonne_Models_Player_previousUnscoredPoints_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Carcassonne.Models.Player.html#Carcassonne_Models_Player_previousPotentialPoints">previousPotentialPoints</a></div>
+  </div>
   
   
   <h4 id="Carcassonne_Models_Player_score" data-uid="Carcassonne.Models.Player.score">score</h4>
