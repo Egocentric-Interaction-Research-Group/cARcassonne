@@ -1,5 +1,8 @@
 # cARcassonne
-Augmented Reality Carcassonne using the HoloLens2 and MRTK in Unity
+Augmented Reality Carcassonne using the HoloLens2 and MRTK in Unity.
+
+This document details the project dependencies and installation proceedures.
+To get started with development, you can also browse the [Manual](Documentation/manual/Overview.md) and [API Docs] and look through associated [Articles](Documentation/articles/intro.md). 
 
 Code at https://github.com/Egocentric-Interaction-Research-Group/cARcassonne
 

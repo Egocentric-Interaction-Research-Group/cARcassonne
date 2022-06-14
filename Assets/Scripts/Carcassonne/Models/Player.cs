@@ -7,6 +7,11 @@ namespace Carcassonne.Models
     {
         public int id;
         public string username;
+        
+        /// <summary>
+        /// Player's current score as it appears on the Carcassonne scorecard.
+        /// Includes only points gained from completed features.
+        /// </summary>
         public int score;
         public int previousScore = 0;
         public int unscoredPoints;
@@ -14,6 +19,10 @@ namespace Carcassonne.Models
         public int potentialPoints;
         public int previousPotentialPoints = 0; 
         
+        /// <summary>
+        /// Player's score if the game were over.
+        /// </summary>
+        /// <remarks>The final score is the sum of the current @Player.score and the remaining @Player.unscoredPoints.</remarks>
         public int FinalScore => score + unscoredPoints;
         
         public int scoreChange => score - previousScore;
