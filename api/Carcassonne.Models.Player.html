@@ -101,7 +101,8 @@
   
   
   <h4 id="Carcassonne_Models_Player_id" data-uid="Carcassonne.Models.Player.id">id</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>A unique identifier for the player</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -247,7 +248,12 @@ Includes only points gained from completed features.</p>
   
   
   <h4 id="Carcassonne_Models_Player_unscoredPoints" data-uid="Carcassonne.Models.Player.unscoredPoints">unscoredPoints</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Points that the player would gain <em>if</em> the game were over.
+This reflects the points of features (@Carcassonne.State.Feature.City, @Carcassonne.State.Feature.Road, and
+@Carcassonne.State.Feature.Cloister elements) that the player currently controls (or shares control of).
+These points are not guaranteed for the player (they can lose control of the feature) and they don&apos;t reflect
+the increase in city points that are gained when a player completes a city before the end of the game.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -271,7 +277,8 @@ Includes only points gained from completed features.</p>
   
   
   <h4 id="Carcassonne_Models_Player_username" data-uid="Carcassonne.Models.Player.username">username</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>A unique, human-readable name for the player</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -321,7 +328,7 @@ Includes only points gained from completed features.</p>
     </tbody>
   </table>
   <h5 id="Carcassonne_Models_Player_FinalScore_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The final score is the sum of the current @Player.score and the remaining @Player.unscoredPoints.</p>
+  <div class="markdown level1 remarks"><p>The final score is the sum of the current <a class="xref" href="Carcassonne.Models.Player.html#Carcassonne_Models_Player_score">score</a> and the remaining @unscoredPoints.</p>
 </div>
   
   
