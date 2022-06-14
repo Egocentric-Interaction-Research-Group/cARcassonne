@@ -26,7 +26,7 @@ namespace Carcassonne.Models
         /// Player's score at the previous turn.
         /// Used to calculate the point gain at every turn.
         /// Note that this is updated every turn (regardless of player) so that it reflects the points after the previous tile.
-        /// This will always be \<= @score.
+        /// This will always be ≤ @score.
         /// </summary>
         public int previousScore = 0;
         
@@ -41,11 +41,25 @@ namespace Carcassonne.Models
         
         /// <summary>
         /// Player's unscored points at the end of the previous turn.
-        /// This differs from @previousScore in that it **can** be < @unscoredPoints if a feature is completed or
+        /// This differs from @previousScore in that it **can** be &gt; @unscoredPoints if a feature is completed or
         /// control is lost over the feature in a turn. 
         /// </summary>
+        /// <seealso cref="previousPotentialPoints"/>
         public int previousUnscoredPoints = 0;
+        
+        /// <summary>
+        /// Player's unscored point potential *if* the features they currently control were completed.
+        /// The difference between this and @unscoredPoints is that controlled, incomplete city tiles are counted at
+        /// full value (2 or 4, for a shielded city).
+        /// It is used to calculate the potential value of a tile for a player, to privilege the building (and completing)
+        /// of cities over roads. 
+        /// </summary>
         public int potentialPoints;
+        
+        /// <summary>
+        /// Player's potential points at the end of the previous turn.
+        /// </summary>
+        /// <seealso cref="previousUnscoredPoints"/>
         public int previousPotentialPoints = 0; 
         
         /// <summary>
