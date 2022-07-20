@@ -8,7 +8,10 @@ def draw_board(board: nx.Graph):
     draw_nodes(board, pos)
     draw_edges(board, pos)
 
-    nx.draw_networkx_labels(board, pos)
+    # Change candidate positions to "C"
+    labels = dict([(k, type(k) == int and k or '*') for k in pos])
+
+    nx.draw_networkx_labels(board, pos, labels)
 
 def draw_nodes(board: nx.Graph, pos: dict):
     n_col = node_colours(board)

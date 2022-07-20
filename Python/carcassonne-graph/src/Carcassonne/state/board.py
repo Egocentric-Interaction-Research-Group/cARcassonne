@@ -6,8 +6,6 @@ from scipy.spatial.transform import Rotation as R
 from torch_geometric.data import Data
 
 from Carcassonne import Link, Geography, to_graph, remove_last
-from CarcassonneGNN import board_to_data
-from CarcassonneGNN import graphml_to_board
 
 
 def candidate_board(board: nx.Graph, tile: nx.Graph):
