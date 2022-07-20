@@ -4009,6 +4009,19 @@ references:
   isSpec: "True"
   fullName: Carcassonne.Models.Tile.South
   nameWithType: Tile.South
+- uid: Carcassonne.Models.Tile.SubTileDictionary
+  name: SubTileDictionary
+  href: api/Carcassonne.Models.Tile.html#Carcassonne_Models_Tile_SubTileDictionary
+  commentId: P:Carcassonne.Models.Tile.SubTileDictionary
+  fullName: Carcassonne.Models.Tile.SubTileDictionary
+  nameWithType: Tile.SubTileDictionary
+- uid: Carcassonne.Models.Tile.SubTileDictionary*
+  name: SubTileDictionary
+  href: api/Carcassonne.Models.Tile.html#Carcassonne_Models_Tile_SubTileDictionary_
+  commentId: Overload:Carcassonne.Models.Tile.SubTileDictionary
+  isSpec: "True"
+  fullName: Carcassonne.Models.Tile.SubTileDictionary
+  nameWithType: Tile.SubTileDictionary
 - uid: Carcassonne.Models.Tile.SubTileDimension
   name: SubTileDimension
   href: api/Carcassonne.Models.Tile.html#Carcassonne_Models_Tile_SubTileDimension

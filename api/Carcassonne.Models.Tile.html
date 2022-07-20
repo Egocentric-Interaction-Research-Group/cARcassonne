@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Tile
    | cARcassonne documentation ">
-    <meta name="generator" content="docfx 2.59.2.0">
+    <meta name="generator" content="docfx 2.59.3.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -441,9 +441,7 @@ rotation is 0 then North is equal to Up.</p>
   
   <a id="Carcassonne_Models_Tile_Sides_" data-uid="Carcassonne.Models.Tile.Sides*"></a>
   <h4 id="Carcassonne_Models_Tile_Sides" data-uid="Carcassonne.Models.Tile.Sides">Sides</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="Carcassonne.Models.Geography.html">Geography</a> of each of the 4 outer sides of the tile. Values are stored as a Dictionary
-with the keys being the directions represented by the <see cref="!:Vector2Int"></see> values
-<code>Vector2Int.Up</code>, <code>Vector2Int.Right</code>, <code>Vector2Int.Down</code>, and <code>Vector2Int.Left</code>. </p>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Carcassonne.Models.Geography.html">Geography</a> of each of the 4 outer sides of the tile. Values are stored as a Dic </p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -486,6 +484,31 @@ with the keys being the directions represented by the <see cref="!:Vector2Int"><
     <tbody>
       <tr>
         <td><a class="xref" href="Carcassonne.Models.Geography.html">Geography</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Carcassonne_Models_Tile_SubTileDictionary_" data-uid="Carcassonne.Models.Tile.SubTileDictionary*"></a>
+  <h4 id="Carcassonne_Models_Tile_SubTileDictionary" data-uid="Carcassonne.Models.Tile.SubTileDictionary">SubTileDictionary</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;Vector2Int, Geography&gt; SubTileDictionary { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<span class="xref">Vector2Int</span>, <a class="xref" href="Carcassonne.Models.Geography.html">Geography</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
